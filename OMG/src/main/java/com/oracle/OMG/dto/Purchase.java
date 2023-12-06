@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class Purchase {
-	private int custcode;
-    private String pur_date;
-    private int pur_status;
+	private String 	pur_date;
+	private int 	custcode;
+    private int 	pur_status;
+    private String 	title;
 }
