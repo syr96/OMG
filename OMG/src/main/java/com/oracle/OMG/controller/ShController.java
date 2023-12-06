@@ -12,6 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ShController {
 	@RequestMapping(value = "/")
 	public String main() {
-		return "main";
+		return "example";
 	}
 }
