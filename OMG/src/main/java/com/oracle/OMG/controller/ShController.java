@@ -13,9 +13,16 @@ public class ShController {
 	
 	@RequestMapping(value = "/")
 	public String main() {
-		return "example";
+		return "main";
 	}
 
-
+	@RequestMapping(value = "memberR")
+	public String memberRegistration() {
+		return "sh/memberRegistration";
+	}
 	
+	@RequestMapping(value = "example")
+	public String example() {
+		return "example";
+	}
 }
