@@ -8,4 +8,6 @@ public class Purchase {
 	private int 	custcode;
     private int 	pur_status;
     private String 	title;
+    private int		mem_id;
+    private String	ref;
 }
