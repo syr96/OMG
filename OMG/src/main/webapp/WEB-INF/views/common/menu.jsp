@@ -333,7 +333,7 @@
         <div class="layout-page">
           <!-- Navbar -->
           
-          <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     
@@ -422,5 +422,3 @@
           <div class="content-wrapper">
           
           	<div class="container-xxl flex-grow-1 container-p-y">
-          		<div class="row">
-          		<div class="card">
