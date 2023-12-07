@@ -13,7 +13,7 @@ public class ShController {
 	
 	@RequestMapping(value = "/")
 	public String main() {
-		return "main";
+		return "example";
 	}
 
 
