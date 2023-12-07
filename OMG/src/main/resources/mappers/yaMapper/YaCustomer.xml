@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oracle.OMG.YaCustomer">
+	<select id="customerList" parameterType="customer" resultType="customer">
+		SELECT c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, m.mem_name
+		FROM   customer c , member m
+		WHERE  c.mem_id = m.mem_id
+	</select>
+</mapper>

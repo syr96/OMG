@@ -23,16 +23,23 @@
 							<td>제목</td>
 							<td>회사명</td>
 							<td>발주일</td>
-							<td>상품수</td>
+							<td>상품종류</td>
 							<td>총수량</td>
 							<td>총금액</td>
 							<td>상태</td>
 						</tr>
 					</thead>
+					<c:set var="num" value="1"></c:set>
 					<tbody>
-						<tr>
-							<td></td>
-						</tr>
+						<c:forEach items="#{purList }" var="purList">
+							<tr>
+								<td>${num }</td>
+								<td>${purList.title }</td>
+								<td>${purList.mem_name }</td>
+							</tr>
+							<c:set var="num" value="${num+1 }"></c:set>
+						</c:forEach>
+						
 					</tbody>
 				</table>
 			</div>
