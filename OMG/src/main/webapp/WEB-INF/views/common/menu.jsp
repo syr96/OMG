@@ -210,7 +210,7 @@
             </li>
 
             <!-- Sales -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">매입&amp;매출 관리</span></li>
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">매입 &amp; 매출 관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
