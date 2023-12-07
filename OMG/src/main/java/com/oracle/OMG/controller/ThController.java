@@ -18,9 +18,45 @@ public class ThController {
 		return "th/noticeList";
 	}
 	
+	@GetMapping("/noticeDetail")
+	public String noticeDetail(){
+		System.out.println("ThController noticeDetail Start...");
+		return "th/noticeDetail";
+	}
+	
+	@GetMapping("/noticeUpdateForm")
+	public String noticeUpdateForm(){
+		System.out.println("ThController noticeUpdateForm Start...");
+		return "th/noticeUpdateForm";
+	}
+	
+	@GetMapping("/noticeWriteForm")
+	public String noticeWriteForm(){
+		System.out.println("ThController noticeWriteForm Start...");
+		return "th/noticeWriteForm";
+	}
+
 	@GetMapping("/QnAList")
 	public String QnAList(){
 		System.out.println("ThController QnAList Start...");
 		return "th/QnAList";
+	}	
+	
+	@GetMapping("/QnADetail")
+	public String QnADetail(){
+		System.out.println("ThController QnADetail Start...");
+		return "th/QnADetail";
+	}
+	
+	@GetMapping("/QnAUpdateForm")
+	public String QnAUpdateForm(){
+		System.out.println("ThController QnAUpdateForm Start...");
+		return "th/QnAUpdateForm";
+	}
+	
+	@GetMapping("/QnAWriteForm")
+	public String QnAWriteForm(){
+		System.out.println("ThController QnAWriteForm Start...");
+		return "th/QnAWriteForm";
 	}
 }
