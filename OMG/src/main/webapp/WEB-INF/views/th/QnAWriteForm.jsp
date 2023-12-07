@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>문의사항 작성</title>
 </head>
 <body>
-똑똑한 찬하님
+
 </body>
 </html>

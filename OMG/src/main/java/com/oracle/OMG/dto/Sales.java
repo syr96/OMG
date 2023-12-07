@@ -8,4 +8,5 @@ public class Sales {
 	private int 	custcode;
     private int 	sales_status;
     private String 	title;
+    private String	ref;
 }
