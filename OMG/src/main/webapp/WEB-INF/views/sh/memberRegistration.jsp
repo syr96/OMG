@@ -9,7 +9,7 @@
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
-	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원등록</h4>
+	<h4 class="fw-bold py-3"><span class="text-muted fw-light">인사 /</span> 사원등록</h4>
               <!-- Content -->
               <div class="row">
                 <div class="col-md-12">
