@@ -535,12 +535,7 @@
               </div>
             </div>
             <!-- / Content -->
-<<<<<<< HEAD
-            
-<%-- <%@ include file="common/footer.jsp" %>             --%>
-=======
 
-<%@ include file="common/footer.jsp" %>       
-  </body>
-</html>     
->>>>>>> main
+<%@ include file="common/footer.jsp" %>        
+</body>
+</html>    
