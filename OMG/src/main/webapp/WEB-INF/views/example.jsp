@@ -9,7 +9,7 @@
 <%@ include file="common/header.jsp" %>
 <body>
 <%@ include file="common/menu.jsp" %>
-<%@ include file="common/navbar.jsp" %>
+
 
 
 <%@ include file="common/footer.jsp" %>
