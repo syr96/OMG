@@ -10,4 +10,8 @@ public class Purchase {
     private String 	title;
     private int		mem_id;
     private String	ref;
+    
+    
+    // 참조용
+    private String mem_name;
 }

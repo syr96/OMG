@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.oracle.OMG.mappers.chPurchase">
-	<select id="chPurList">
-		Select *
-		From purchase
-		Order by pur_date
+	<select id="chPurList" resultType="Purchase">
+		Select p.*, m.mem_name
+		From purchase p, member m
+		Where p.mem_id = m.mem_id
+		Order by p.pur_date
 	</select>
 </mapper>
