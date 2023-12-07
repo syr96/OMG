@@ -260,7 +260,7 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">재고 관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+               <a href="invRegister" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Form Elements</div>
               </a>
