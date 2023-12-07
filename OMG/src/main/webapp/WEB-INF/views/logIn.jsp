@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 <!-- =========================================================
@@ -135,12 +137,12 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Welcome to OMG! 👋</h4>
+              <h4 class="mb-2">Welcome to OMG! ð</h4>
               <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
               <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
                 <div class="mb-3">
-                  <label for="email" class="form-label">Member ID</label>
+                  <label for="email" class="form-label">아이디</label>
                   <input
                     type="text"
                     class="form-control"
@@ -152,7 +154,7 @@
                 </div>
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
+                    <label class="form-label" for="password">비번 써줘</label>
                     <a href="auth-forgot-password-basic.html">
                       <small>Forgot Password?</small>
                     </a>
