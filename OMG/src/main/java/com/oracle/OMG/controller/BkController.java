@@ -10,8 +10,21 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class BkController {
+	
+	
 	@RequestMapping(value = "logIn")
 	public String logIn() {
 		return "logIn";
 	}
+	
+	
+	@RequestMapping(value = "/forgotPassword")
+	public String forgotPassword() {
+		
+		System.out.println("MainController forgotPassword Start...");
+		
+		return "forgotPassword";
+	}
+
+
 }

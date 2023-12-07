@@ -71,7 +71,10 @@
 
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
-        <div class="authentication-inner">
+      
+      	<div class="col-md-4">
+      
+        <div class="authentication-inner ">
           <!-- Register -->
           <div class="card">
             <div class="card-body">
@@ -92,14 +95,14 @@
                     class="form-control"
                     id="email"
                     name="email-username"
-                    placeholder="Enter your email or username"
+                    placeholder=""
                     autofocus
                   />
                 </div>
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">비밀번호</label>
-                    <a href="auth-forgot-password-basic.html">
+                    <a href="/forgotPassword">
                       <small>비밀번호를 잊으셨나요?</small>
                     </a>
                   </div>
@@ -129,7 +132,73 @@
             </div>
           </div>
           <!-- /Register -->
-        </div>
+          </div>
+          </div>
+          
+          
+          <div class="col-md-6">
+          <!-- Basic Bootstrap Table -->
+              <div class="card">
+                <h5 class="card-header d-flex justify-content-between align-items-center"><strong>공지사항</strong>
+                
+                <button type="button" class="btn btn-sm btn-outline-primary ms-auto">더보기</button>
+                </h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>제목</th>
+                        <th class="text-end">날짜</th>
+                        
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                      <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> Angular Project</td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                      </tr>
+                      <tr>
+                        <td><i class="fab fa-react fa-lg text-info me-3"></i>React Project</td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                        
+                      </tr>
+                      <tr>
+                        <td><i class="fab fa-vuejs fa-lg text-success me-3"></i>VueJs Project</td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
+                        </td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
+                        </td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                      </tr>
+                      <tr>
+                        <td>
+                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
+                        </td>
+                        <td class="text-end">2023-12-07</td>
+                        
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!--/ Basic Bootstrap Table -->
+          
+          </div>
+        
       </div>
     </div>
 
