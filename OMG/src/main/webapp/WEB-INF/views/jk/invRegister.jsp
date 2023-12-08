@@ -7,13 +7,62 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<!-- 부트스트랩 CSS -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<!-- 제이쿼리 및 부트스트랩 JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // 페이지 로드 시 초기 데이터 로딩
+    fetchDataAndRenderList();
+
+    // 기준년월과 구분이 변경될 때마다 데이터 다시 로딩
+    $('#monthSelect, #invType').change(function() {
+      fetchDataAndRenderList();
+    });
+
+    function fetchDataAndRenderList() {
+    	var selectedMonth = $('#monthSelect').val().replace('-', '');
+    	var selectedType = $('#invType option:selected').val();
+
+      console.log('Selected Month:', selectedMonth);
+      console.log('Selected Type:', selectedType);
+      // Ajax 요청을 통해 서버에서 데이터를 가져옵니다.
+      $.ajax({
+        url: '/monthData',
+        method: 'GET',
+        data: { month: selectedMonth, invType: selectedType },
+        success: function(response) {
+        	console.log('Received data from server:', response);
+        	  updateInventoryList(response);
+        },
+        error: function(error) {
+          console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+        }
+      });
+    }
+
+    function updateInventoryList(data) {
+    	  var tbody = $('#inventoryTable tbody');
+    	  tbody.empty(); // 테이블 초기화
+
+    	  for (var i = 0; i < data.length; i++) {
+    	    var row = '<tr>' +
+    	 	  '<td style="width: 3px;">' + (i + 1) + '</td>' + 
+    	      '<td>' + data[i].ym + '</td>' +
+    	      '<td>' + (data[i].inven === 0 ? '기초' : '기말') + '</td>' +
+    	      '<td>' + data[i].code + '</td>' +
+    	      '<td>' +  + '</td>' +
+    	      '<td>' + data[i].cnt + '</td>' +
+    	      '<td>' +  + '</td>' +
+    	      '<td>' +  + '</td>' +
+    	      '<td>' + data[i].reg_date + '</td>' +
+    	      '</tr>';
+    	    tbody.append(row);
+    	  }
+    	}
+
+  });
+</script>
+
 
 <%@ include file="../common/header.jsp" %>
 <body>
@@ -26,14 +75,14 @@
 					<div class="row">
 						<div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-                          <input class="form-control" type="month" value="2021-06-18" id="html5-date-input">
+                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect" name="month">
                         </div>
                          <div class="mb-3 col-md-6">
                          <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
                          <select id="invType" class="select2 form-select">
-                              <option value="">전체</option>
-                              <option value="Australia">기초</option>
-                              <option value="Bangladesh">기말</option>
+                              <option value="ALL">전체</option>
+                              <option value="OPENING">기초</option>
+                              <option value="CLOSING">기말</option>
                          </select>
                          </div>
                       </div>
@@ -42,51 +91,26 @@
 		<!-- 재고리스트 -->
  			<div class="card">
                 <h5 class="card-header">재고리스트</h5>
+                <div class="card-body">
                 <div class="table-responsive text-nowrap">
-                  <table class="table">
+                  <table class="table table-bordered" id="inventoryTable">
                     <thead>
                       <tr>
                         <th>번호</th>
+                        <th>년월</th>
+                        <th>구분</th>
                         <th>품번</th>
-                        <th>품목</th>
                         <th>품명</th>
                         <th>수량</th>
                         <th>조정수량</th>
+                        <th>담당자</th>
                         <th>등록일</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>Angular Project</strong></td>
-                        <td>Albert Cook</td>
-                        <td>
-                          <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Lilian Fuller">
-                              <img src="../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
-                            </li>
-                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Sophia Wilkerson">
-                              <img src="../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
-                            </li>
-                            <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="" data-bs-original-title="Christina Parker">
-                              <img src="../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
-                            </li>
-                          </ul>
-                        </td>
-                        <td><span class="badge bg-label-primary me-1">Active</span></td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                              <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
+                         </tbody>
                   </table>
+                  </div>
                 </div>
               </div>
  			</div>
@@ -107,14 +131,14 @@
 							<div class="row">
 								<div class="mb-3 col-md-6">
 		                        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-		                          <input class="form-control" type="month" value="2021-06-18" id="html5-date-input">
+		                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect">
 		                        </div>
 		                         <div class="mb-3 col-md-6">
 		                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
 		                         <select id="invType" class="select2 form-select">
 		                              <option value="">전체</option>
-		                              <option value="Australia">기초</option>
-		                              <option value="Bangladesh">기말</option>
+		                              <option value="Opening">기초</option>
+		                              <option value="Closing">기말</option>
 		                         </select>
 		                         </div>
 		                      </div>

@@ -18,37 +18,38 @@
 			</div>
 			<div class="col-12">
 				<a href="/purWriteForm"></a>
-				<table class="table text-center">
-					<thead>
-						<tr>
-							<td>No.</td>
-							<td>제목</td>
-							<td>회사명</td>
-							<td>발주일</td>
-							<td>발주자</td>
-							<td>상품수</td>
-							<td>총수량</td>
-							<td>총금액</td>
-						</tr>
-					</thead>
-					<c:set var="num" value="1"></c:set>
-					<tbody>
-						<c:forEach items="${purList }" var="purList">
+				<div class="table-responsive">
+				  <table class="table bg-white bordered">
+				    <thead class="table-dark">
+				      <tr>
+				        <td>No.</td>
+						<td>제목</td>
+						<td>회사명</td>
+						<td>발주일</td>
+						<td>발주자</td>
+						<td>상품수</td>
+						<td>총수량</td>
+						<td>총금액</td>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    	<c:set value="1" var="num"/>
+				    	<c:forEach items="${purList }" var="purList">
 							<tr>
 								<td>${num }</td>
 								<td class="text-start"><a href="/purDtail?pur_date=${purList.pur_date }&custcode=${purList.custcode }">${purList.title }</a></td>
 								<td>${purList.company }</td>
 								<td>${purList.pur_date }</td>
 								<td>${purList.appli_name}</td>
-								<td>${purList.alltype}</td>
-								<td class="text-end">${purList.tq}개</td>
-								<td class="text-end"><fmt:formatNumber value="${purList.tp}" pattern="#,###"/>원</td>
+								<td>${purList.totalType}</td>
+								<td>${purList.totalQty}개</td>
+								<td><fmt:formatNumber value="${purList.totalPrice}" pattern="#,###"/>원</td>
 							</tr>
 							<c:set var="num" value="${num+1 }"></c:set>
 						</c:forEach>
-						
-					</tbody>
-				</table>
+				    </tbody>
+				  </table>
+				</div>
 			</div>
 			
 		</div>

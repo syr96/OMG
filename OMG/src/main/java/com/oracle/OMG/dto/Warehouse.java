@@ -3,7 +3,7 @@ package com.oracle.OMG.dto;
 import lombok.Data;
 
 @Data
-public class Wharehouse {
+public class Warehouse {
 	private String 	ym;
     private int 	inven;
     private int 	code;    
