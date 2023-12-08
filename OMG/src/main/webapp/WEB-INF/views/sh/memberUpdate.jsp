@@ -9,13 +9,12 @@
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
-	<h4 class="fw-bold py-3"><span class="text-muted fw-light">인사 /</span> 사원 등록</h4>
+	<h4 class="fw-bold py-3"><span class="text-muted fw-light">인사 /</span> 사원 상세</h4>
               <!-- Content -->
               <div class="row">
                 <div class="col-md-12">
                   <div class="card mb-4">
-                    <h5 class="card-header">
-                      <i class="bx bx-user me-1"></i> Account</h5>
+                    <h5 class="card-header"><i class="bx bx-user me-1"></i>Profile Details</h5>
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -75,7 +74,7 @@
 	                      </div>
                       
                            <div class="mb-3 col-md-6">
-                             <label for="mem_name" class="form-label">성명</label>
+                             <label for="mem_name" class="form-label">이름</label>
                              <input
                                class="form-control"
                                type="text"
@@ -85,11 +84,16 @@
                              />
                            </div>
                            
-                           
+                           <div class="mb-3 col-md-6">
+	                         <label for="mem_leave" class="col-md-2 col-form-label">휴직 일자</label>
+	                         <div class="col-md-10">
+	                           <input class="form-control" type="date" id="mem_leave" />
+	                         </div>
+	                       </div>
                       
-                      	<div class="mb-3 col-md-6">
+                           <div class="mb-3 col-md-6">
                             <label for="mem_bd" class="form-label">생년월일</label>
-                           	<div class="input-group">
+                            <div class="input-group">
 	                        	<input
 		                          type="text"
 		                          class="form-control"
@@ -100,10 +104,17 @@
 		                        />
 		                        <button class="btn btn-outline-primary" type="button" value="0">남</button>
 		                        <button class="btn btn-outline-primary" type="button" value="1">녀</button>
-		                	</div>  
-	                  	</div>
+		                    </div>  
+	                      </div>
+                            
+                          <div class="mb-3 col-md-6">
+	                        <label for="mem_rein" class="col-md-2 col-form-label">복직 일자</label>
+	                        <div class="col-md-10">
+	                          <input class="form-control" type="date" id="mem_rein" />
+	                        </div>
+                      	 </div>
                       
-                       	<div class="mb-3 col-md-6">
+                         <div class="mb-3 col-md-6">
                             <label for="mem_email" class="form-label">이메일</label>
                             <input
                               class="form-control"
@@ -112,9 +123,16 @@
                               name="mem_email"
                               placeholder="john.doe@example.com"
                             />
-                       	</div>
+                          </div>
                           
-                     	<div class="mb-3 col-md-6">
+                         <div class="mb-3 col-md-6">
+	                        <label for="mem_resi" class="col-md-2 col-form-label">퇴직 일자</label>
+	                        <div class="col-md-10">
+	                          <input class="form-control" type="date" id="mem_resi" />
+	                        </div>
+                      	 </div>
+                      
+                         <div class="mb-3 col-md-6">
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text">KR (+82)</span>
@@ -125,10 +143,10 @@
                                 class="form-control"
                                 placeholder="010-1111-1111"
                               />
-                        	</div>
-                     	</div>
+                            </div>
+                          </div>
                           
-                     	<div class="mb-3 col-md-6">
+                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="memb_dept_md">부서</label>
                             <div class="input-group">
 	                            <select id="memb_dept_md" class="select2 form-select">
@@ -231,7 +249,7 @@
 	                      
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">Create</button>
+                          <button type="submit" class="btn btn-primary me-2">Update</button>
                           <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                       </form>
