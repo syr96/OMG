@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,34 +7,33 @@
 <title>공지사항</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/common/menu.jsp" %>
-	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">고객지원/</span> 공지사항</h4>
+	<%@ include file="/WEB-INF/views/common/menu.jsp"%>
+	<h4 class="fw-bold py-3 mb-4">
+		<span class="text-muted fw-light">고객지원/</span> 공지사항
+	</h4>
 	<div class="card">
-				<!-- 검색 필터 부분 -->
+		<!-- 검색 필터 부분 -->
 		<div class="row mx-1 mt-2">
 			<div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
 				<div class="dataTables_length" id="DataTables_Table_0_length">
-					<label><select name="DataTables_Table_0_length"
-						aria-controls="DataTables_Table_0" class="form-select"><option
-								value="10">10</option>
+					<label><select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
+							<option value="10">10</option>
 							<option value="25">25</option>
 							<option value="50">50</option>
-							<option value="100">100</option></select></label>
+							<option value="100">100</option>
+						</select></label>
 				</div>
 				<div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
 					<div class="dt-buttons">
-						<button class="dt-button btn btn-primary" tabindex="0"
-							aria-controls="DataTables_Table_0" type="button">
-							<span><i class="bx bx-plus me-md-1"></i><span
-								class="d-md-inline-block d-none">공지글 작성</span></span>
+						<button class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" onclick="location.href='/notice/write'">
+							<span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">공지글 작성</span></span>
 						</button>
 					</div>
 				</div>
 			</div>
 			<div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
 				<div id="DataTables_Table_0_filter" class="dataTables_filter">
-					<label><input type="search" class="form-control"
-						placeholder="검색" aria-controls="DataTables_Table_0"></label>
+					<label><input type="search" class="form-control" placeholder="검색" aria-controls="DataTables_Table_0"></label>
 				</div>
 			</div>
 		</div>
@@ -199,7 +197,7 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 
 </html>
