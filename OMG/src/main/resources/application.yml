@@ -62,3 +62,4 @@ mybatis:
 
 logging.level:
   org.hibernate.sql: debug # logger를 통해 하이버네이트 실행 SQL
+  com.oracle.OMG.mappers.jkWarehouse: debug  
