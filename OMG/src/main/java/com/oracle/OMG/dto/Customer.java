@@ -18,6 +18,10 @@ public class Customer {
     private String 	email;
     
     
+    //참조용
+    private String mem_name;
+    private String mem_dept;
+    
     
 	// 페이징 조회용    //검색타입		//검색 내용
 	private String search;   	private String keyword;

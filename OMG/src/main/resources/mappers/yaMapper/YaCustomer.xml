@@ -3,8 +3,51 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oracle.OMG.YaCustomer">
 	<select id="customerList" parameterType="customer" resultType="customer">
-		SELECT c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, m.mem_name
-		FROM   customer c , member m
-		WHERE  c.mem_id = m.mem_id
+ 		 SELECT *
+ 		 FROM (
+ 		 		SELECT  ROWNUM AS rn, a.* 
+ 		 		FROM (
+		 		 		SELECT  c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, m.mem_name
+		 		 		FROM   customer c
+		 		 		INNER JOIN member m ON c.mem_id = m.mem_id
+		 		 	    WHERE c.mem_id = m.mem_id
+		      		    ORDER BY 	c.custcode) a
+ 		 )
+ 		 WHERE rn BETWEEN #{start} AND #{end}  
 	</select>
+	
+	<select id="totalCustomer" parameterType="customer" resultType="int">
+		SELECT count(*) 
+		FROM customer
+	</select>
+	
+	<select id="customerOne" parameterType="int" resultType="customer">
+    	 SELECT  *
+    	 FROM customer c, member m
+    	 Where custcode =#{custcode}
+    	 AND c.mem_id = m.mem_id	
+	</select>
+	
+	<select id="CmemberList" parameterType="member" resultType="member">
+		SELECT mem_name, mem_dept
+		FROM   member 
+	</select>
+	
+	<update id="updateCustomer" parameterType="customer">
+		  UPDATE customer
+		  SET
+			    company   = #{company},
+			    businum   = #{businum},
+			    custstyle = #{custstyle},
+			    cust_md   = #{cust_md},
+			    ceo       = #{ceo},
+			    busitype  = #{busitype},
+			    busiitems = #{busiitems},
+			    tel       = #{tel},
+			    email     = #{email},
+			    mem_name  = #{mem_name},
+		  WHERE custcode  = #{custcode}
+	</update>	
+	
+	
 </mapper>
