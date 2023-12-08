@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>문의사항</title>
+<title>문의</title>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
-	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">고객지원/</span> 문의사항</h4>
+	<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">고객지원/</span> 문의</h4>
 	<div class="card">
 		
 		<!-- 검색 필터 부분 -->
@@ -28,7 +28,7 @@
 						<button class="dt-button btn btn-primary" tabindex="0"
 							aria-controls="DataTables_Table_0" type="button">
 							<span><i class="bx bx-plus me-md-1"></i><span
-								class="d-md-inline-block d-none">Create Invoice</span></span>
+								class="d-md-inline-block d-none">문의하기</span></span>
 						</button>
 					</div>
 				</div>
@@ -36,7 +36,7 @@
 			<div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
 				<div id="DataTables_Table_0_filter" class="dataTables_filter">
 					<label><input type="search" class="form-control"
-						placeholder="Search Invoice" aria-controls="DataTables_Table_0"></label>
+						placeholder="검색" aria-controls="DataTables_Table_0"></label>
 				</div>
 				<div class="invoice_status mb-3 mb-md-0">
 					<select id="UserRole" class="form-select"><option value="">

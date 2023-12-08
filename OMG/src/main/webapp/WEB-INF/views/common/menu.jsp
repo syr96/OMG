@@ -289,7 +289,19 @@
             
             <!-- Misc -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">고객 지원</span></li>
-            <li class="menu-item">
+				<li class="menu-item">
+					<a href="/noticeList" target="_blank" class="menu-link">
+						<i class="menu-icon tf-icons bx bx-support"></i>
+						공지사항
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="/QnAList" class="menu-link">
+						<i class="menu-icon tf-icons bx bx-support"></i>
+						문의
+					</a>
+				</li>
+				<li class="menu-item">
               <a
                 href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
                 target="_blank"
