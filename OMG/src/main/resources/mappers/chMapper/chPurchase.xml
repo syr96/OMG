@@ -11,7 +11,7 @@
 	</select>
 	
 	<select id="chPurDList" parameterType="Purchase" resultType="PurDetail">
-		Select pd.*,i.name item_name
+		Select pd.*,i.name item_name, pd.qty * pd.price price_sum
 		From pur_detail pd, item i
 		Where pd.pur_date = #{pur_date}
 		and   pd.custcode = #{custcode}

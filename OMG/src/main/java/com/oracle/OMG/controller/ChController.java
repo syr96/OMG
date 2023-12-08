@@ -1,6 +1,7 @@
 package com.oracle.OMG.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,20 +35,19 @@ public class ChController {
 			// purList 조회 성공 시
 			for(Purchase p: purList) {
 				// 제품 종류			총수량		총가격(전체 가격)
-				int allType = 0; int tQ = 0; int tP = 0;
+				int totalType = 0; int totalPrice = 0;
 				
 				// 발주서 상세 내용 불러오기 
 				List<PurDetail> pd = chPurService.purDList(p);
-				allType = pd.size(); // row 수 = 발주서 내 물품 수
+				totalType = pd.size(); // row 수 = 발주서 내 물품 수
 				System.out.println();
 				// 상세 내용의 물품 항목별 수량과 결제액 
 				for(PurDetail pd2 : pd) {
-					tQ += pd2.getQty();
-					tP += pd2.getQty() * pd2.getPrice();
+					totalPrice += pd2.getQty() * pd2.getPrice();
 				}
-				p.setAlltype(allType);
-				p.setTq(tQ);
-				p.setTp(tP);
+				p.setTotalType(totalType);
+				p.setTotalQty(pd.stream().mapToInt(m->m.getQty()).sum());
+				p.setTotalPrice(totalPrice);
 			}
 		}
 		
@@ -75,13 +75,20 @@ public class ChController {
 		
 		// PK를 이용한 단일 발주서 확인
 		Purchase pc = chPurService.onePur(purchase);
-		System.out.println("pc.size()->" + pc);
+		// 해당 발주서의 상세 항목 출력 
+		List<PurDetail> pdList = chPurService.purDList(pc);
+		// 람다 이용 총 합계 구하기 
+//		int totalPrice = pdList.stream().map(m->m.getPrice() * m.getQty()).collect(Collectors.summarizingInt(m))
+		int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
+		int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
+		
+		
 		
 		
 		model.addAttribute("pc",pc);
-		
-		
-		
+		model.addAttribute("pdList",pdList);
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("totalQty", totalQty);
 		
 		return "ch/purDtailPage";
 	}

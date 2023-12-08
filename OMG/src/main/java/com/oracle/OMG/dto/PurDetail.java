@@ -13,4 +13,5 @@ public class PurDetail {
     
     // 조회용
     private String	item_name;
+    private int		price_sum;
 }
