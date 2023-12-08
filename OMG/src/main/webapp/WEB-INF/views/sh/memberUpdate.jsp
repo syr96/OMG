@@ -116,14 +116,30 @@
                       
                          <div class="mb-3 col-md-6">
                             <label for="mem_email" class="form-label">이메일</label>
-                            <input
-                              class="form-control"
-                              type="text"
-                              id="mem_email"
-                              name="mem_email"
-                              placeholder="john.doe@example.com"
-                            />
-                          </div>
+                            <div class="input-group">
+	                            <input
+	                              class="form-control"
+	                              type="text"
+	                              id="mem_email"
+	                              name="mem_email"
+	                            />
+	                            <span class="input-group-text">@</span>
+	                            <input
+	                              class="form-control"
+	                              type="text"
+	                              id="mem_email"
+	                              name="mem_email"
+	                              value=""
+	                            />
+	                            <select id="memb_email" class="select2 form-select">
+		                            <option value="">직접입력</option>
+		                            <option value="100">naver.com</option>
+		                            <option value="101">gmail.com</option>
+		                            <option value="102">daum.net</option>
+		                        	<option value="103">hotmail.com</option>
+		                        </select>
+                            </div>
+                       	</div>
                           
                          <div class="mb-3 col-md-6">
 	                        <label for="mem_resi" class="col-md-2 col-form-label">퇴직 일자</label>
@@ -196,18 +212,20 @@
 	                      	</div>
                           </div>
                           
-                          <div class="mb-6 col-md-12">
-                            <label for="exampleFormControlInput1" class="form-label">이메일</label>
-                            <div class="mb-2 col-md-2">
-	                            <input type="text" class="form-control" id="sample6_postcode" placeholder="주소">
-	                        </div>
-	                        <div class="mb-1 col-md-1">
-	                        	<input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
-	                        </div>
-	                        <div class="mb-6 col-md-12">
+                          <div class="mb-3 col-md-6">
+                            <label for="exampleFormControlInput1" class="form-label">주소</label>
+                            <div class="row">
+						        <div class="mb-2 col-md-4">
+						            <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호">
+						        </div>
+						        <div class="mb-1 col-md-2">
+						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
+						        </div>
+						    </div>
+	                        <div class="mb-2 col-md-8">
 								<input type="text" class="form-control" id="sample6_address" placeholder="주소"><br>
 							</div>
-							<div class="mb-3 col-md-6">
+							<div class="mb-2 col-md-6">
 								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소"><br>
 								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목">
 							</div>
@@ -215,36 +233,36 @@
                           
                           
                            
-                          <div class="form-password-toggle">
-                        	<label class="form-label" for="basic-default-password12">비밀번호</label>
-                       		<div class="input-group">
-                          	<input
-	                            type="password"
-	                            class="form-control"
-	                            id="basic-default-password12"
-	                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-	                            aria-describedby="basic-default-password2"
-	                          />
-	                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
-	                            ><i class="bx bx-hide"></i
-	                          ></span>
-                       		</div>
-                       	  </div>
-                        
-                        <div class="form-password-toggle">
-	                        <label class="form-label" for="basic-default-password12">비밀번호 재확인</label>
-	                        <div class="input-group">
-	                          <input
-	                            type="password"
-	                            class="form-control"
-	                            id="basic-default-password12"
-	                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-	                            aria-describedby="basic-default-password2"
-	                          />
-	                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
-	                            ><i class="bx bx-hide"></i
-	                          ></span>
-	                        </div>
+                           <div class="mb-2 col-md-4">
+	                          <div class="form-password-toggle">
+	                        	<label class="form-label" for="basic-default-password12">비밀번호</label>
+	                       		<div class="input-group">
+	                          	<input
+		                            type="password"
+		                            class="form-control"
+		                            id="basic-default-password12"
+		                            aria-describedby="basic-default-password2"
+		                          />
+		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                            ><i class="bx bx-hide"></i
+		                          ></span>
+	                       		</div>
+	                       	  </div>
+                       	 
+	                        <div class="form-password-toggle">
+		                        <label class="form-label" for="basic-default-password12">비밀번호 재확인</label>
+		                        <div class="input-group">
+		                          <input
+		                            type="password"
+		                            class="form-control"
+		                            id="basic-default-password12"
+		                            aria-describedby="basic-default-password2"
+		                          />
+		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                            ><i class="bx bx-hide"></i
+		                          ></span>
+		                        </div>
+		                      </div>
 	                      </div>
 	                      
                         </div>
