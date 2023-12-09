@@ -12,6 +12,7 @@ public interface YaCustomerService {
 	Customer       customerDetail(int custcode);
 	List<Member>   memberList(Member member);
 	Customer 	   updateCustomer(Customer customer);
+	Customer       insertCustomer(Customer customer);
 
 
 }

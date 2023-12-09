@@ -60,6 +60,15 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		List<Member> memberList = ycd.memberList(member);
 		return memberList;
 	}
+	
+	//거래처등록
+	@Override
+	public Customer insertCustomer(Customer customer) {
+		System.out.println("YaCustomerService insertCustomer start...");
+		customer = ycd.insertCustomer(customer);
+		return customer;
+		
+	}
 		
 		
 }

@@ -78,6 +78,19 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		}
 		return customer;
 	}
+	
+	@Override
+	//거래처등록
+	public Customer insertCustomer(Customer customer) {
+		System.out.println("YaCustomerDao insertCustomer start...");
+		try {
+			session.insert("insertCustomer", customer);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl insertCustomer e.getMessage()?"+e.getMessage());
+		}
+		
+		return customer;
+	}
 
 
 }

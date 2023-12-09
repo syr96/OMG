@@ -48,23 +48,14 @@ public class YaController {
 		model.addAttribute("totalCustomer", totalCustomer);
 		model.addAttribute("custPage", custPage);
 		model.addAttribute("customerList", customerList);
-	
-	return "ya/customer";
 		
+		
+	return "ya/customer";	
 	}
 	
 	//거래처 상세보기
 	@GetMapping(value="/customerDetail")
 	@ResponseBody
-/*	public String customerDetail(@RequestParam("custcode")int custcode, Model model) {
-		System.out.println("YaController Start customerDetail start...");
-		
-		Customer customer = ycs.customerDetail(custcode);
-		model.addAttribute("customer", customer);
-		System.out.println("YaConroller detailCustomer custcode:"+customer.getCustcode());
-		System.out.println("YaConroller detailCustomer company:"+customer.getCompany());		
-		
-		return "ya/customer";*/
 	public Map<String, Object> customerDetail(@RequestParam("custcode")int custcode) {
 		System.out.println("YaController Start customerDetail start...");
 		
@@ -78,14 +69,17 @@ public class YaController {
 		return result;
 	}
 	
-	//직원 전체조회
-	@GetMapping(value="/memeberList")
+	//직원 전체조회 ( 거래처수정용) 미완 
+	@PostMapping(value="/memberList")
 	@ResponseBody
-	public List<Member> memberList(Member member, Model model){
-		List<Member> memberList = ycs.memberList(member);
+	public Map<String, Object> memberList(@RequestBody Member member){
+		Map<String, Object> result = new HashMap<>();
 		
-		model.addAttribute("member", member);
-		return memberList;
+		List<Member> memberList = null;
+		memberList = ycs.memberList(member);
+		result.put("memberList", memberList);
+	
+		return result;
 	}
 	
 	
@@ -102,6 +96,19 @@ public class YaController {
 				
 	}
 	
+	//거래처 등록
+	@RequestMapping(value="/insertCustomer")
+	@ResponseBody
+	public Map<String, Object> insertCustomer(@RequestBody Customer customer){
+		 Map<String, Object> result = new HashMap<>();
+		 
+		 customer = ycs.insertCustomer(customer);
+		 result.put("success", true);
+		 
+		 
+		return result;
+		 
+	}
 	
 	
 }
