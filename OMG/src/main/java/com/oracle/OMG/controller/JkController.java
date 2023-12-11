@@ -64,6 +64,33 @@ public class JkController {
 
 	    return monthData;
 	}
+	
+	// 월별 입고리스트 조회
+	@GetMapping("/getIOData")
+	@ResponseBody
+	public List<Warehouse> getIOData(
+	        @RequestParam(name = "month") String month,
+	        @RequestParam(name = "IO_Type", required = false) String IO_Type) {
+	    System.out.println("JkController getIOData start....");
+	    logger.info("Received month: {}", month);
+	    logger.info("Received IO_Type: {}", IO_Type);
+
+	    List<Warehouse> getIOData;
+	    if ("INBOUND".equals(IO_Type)) {
+	        // 호출할 구매 데이터에 대한 매퍼 사용
+	        getIOData = jws.getPurchaseData(month);
+	    } else if ("OUTBOUND".equals(IO_Type)) {
+	        // 호출할 판매 데이터에 대한 매퍼 사용
+	        getIOData = jws.getSalesData(month);
+	    } else {
+	        // 기본적으로는 두 데이터를 합친 매퍼 사용
+	        getIOData = jws.getIOData(month);
+	    }
+
+	    logger.info("JkController getIOData.size(): {}", getIOData.size());
+
+	    return getIOData;
+	}
 
 
 

@@ -10,35 +10,37 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
-  $(document).ready(function() {
+jQuery(document).ready(function() {
     // 페이지 로드 시 초기 데이터 로딩
     fetchDataAndRenderList();
 
     // 기준년월과 구분이 변경될 때마다 데이터 다시 로딩
-    $('#monthSelect, #invType').change(function() {
-      fetchDataAndRenderList();
+    jQuery('#monthSelect, #IO_Type').change(function() {
+        fetchDataAndRenderList();
     });
 
     function fetchDataAndRenderList() {
-    	var selectedMonth = $('#monthSelect').val().replace('-', '');
-    	var selectedType = $('#invType option:selected').val();
+        var selectedMonth = jQuery('#monthSelect').val().replace('-', '');
+        var selectedType = jQuery('#IO_Type option:selected').val();
 
-      console.log('Selected Month:', selectedMonth);
-      console.log('Selected Type:', selectedType);
-      // Ajax 요청을 통해 서버에서 데이터를 가져옵니다.
-      $.ajax({
-        url: '/monthData',
-        method: 'GET',
-        data: { month: selectedMonth, invType: selectedType },
-        success: function(response) {
-        	console.log('Received data from server:', response);
-        	  updateInventoryList(response);
-        },
-        error: function(error) {
-          console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
-        }
-      });
+        console.log('Selected Month:', selectedMonth);
+        console.log('Selected Type:', selectedType);
+        // Ajax 요청을 통해 서버에서 데이터를 가져옵니다.
+        jQuery.ajax({
+            url: '/getIOData',
+            method: 'GET',
+            data: { month: selectedMonth, IO_Type: selectedType },
+            success: function(response) {
+                console.log('Received data from server:', response);
+                updateInventoryList(response);
+            },
+            error: function(error) {
+                console.error('데이터를 불러오는 중 오류가 발생했습니다.', error);
+            }
+        });
     }
+
+
 
     function updateInventoryList(data) {
     	  var tbody = $('#inventoryTable tbody');
@@ -75,14 +77,14 @@
 					<div class="row">
 						<div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect" name="month">
+                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect" name="monthIOData">
                         </div>
                          <div class="mb-3 col-md-6">
                          <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
-                         <select id="invType" class="select2 form-select">
+                         <select id="IO_Type" class="select2 form-select">
                               <option value="ALL">전체</option>
-                              <option value="OPENING">기초</option>
-                              <option value="CLOSING">기말</option>
+                              <option value="INBOUND">입고</option>
+                              <option value="OUTBOUND">출고</option>
                          </select>
                          </div>
                       </div>
@@ -119,8 +121,8 @@
  		
         		 <div class="demo-inline-spacing mt-3">
                         <div class="list-group list-group-horizontal-md text-md-center">
-                          <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">기초재고등록</a>
-                          <a class="list-group-item list-group-item-action" id="profile-list-item" data-bs-toggle="list" href="#horizontal-profile">기초재고조정</a>
+                          <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">입고등록</a>
+                          <a class="list-group-item list-group-item-action" id="profile-list-item" data-bs-toggle="list" href="#horizontal-profile">출고등록</a>
                           <a class="list-group-item list-group-item-action" id="messages-list-item" data-bs-toggle="list" href="#horizontal-messages">입고조정</a>
                           <a class="list-group-item list-group-item-action " id="settings-list-item" data-bs-toggle="list" href="#horizontal-settings">출고조정</a>
                         </div>
@@ -145,7 +147,7 @@
 		 					</div>                            	
                           </div>
                           <div class="tab-pane fade" id="horizontal-profile">
-                      			기초재고조정폼
+                      			입출고관리폼
                     
                   
                           </div>
