@@ -5,5 +5,6 @@ import java.util.List;
 import com.oracle.OMG.dto.Item;
 
 public interface YrItemDao {
-	List<Item> itemList();
+	List<Item> 	itemList();
+	Item 		selectItem(int code);
 }

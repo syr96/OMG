@@ -9,4 +9,12 @@
 		and i.cate_md = c.ct_md
 		ORDER BY i.code
 	</select>
+	
+	<select id="selectItem" parameterType="int" resultType="Item">
+		SELECT i.*, c.com_cn
+		FROM item i, comm c
+		where i.cate_lg = c.ct_lg
+		and i.cate_md = c.ct_md
+		and i.code = #{code}
+	</select>
 </mapper>

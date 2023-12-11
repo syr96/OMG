@@ -1,4 +1,4 @@
-package com.oracle.OMG.controller;
+package com.oracle.OMG.controller.yrController;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,28 +19,28 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Data
 @Slf4j
-public class YrController {
+@RequestMapping("/item")
+public class YrItemController {
 	private final YrItemService yis;
 	
-	@RequestMapping("/item/list")
+	@GetMapping("/list")
 	public String itemList(Item item, Model model, HttpSession session) {
-		System.out.println("YrController itemList start");
-		
+		System.out.println("YrItemController itemList start");
 		List<Item> itemList = yis.itemList();
-		
 		model.addAttribute("itemList", itemList);
-		
 		return "yr/item/itemList";
 	}
 
-	// ajax로 구현할 예정
-	@RequestMapping("/item/detail")
-	public String itemDetail(@RequestParam("code") int code) {
-		
+	// 아이템 상세보기
+	@GetMapping("/detail")
+	public String itemDetail(@RequestParam("code") int code, Model model) {
+		System.out.println("YrItemController itemDetail start");
+		Item itemDetail = yis.selectItem(code);
+		model.addAttribute("i", itemDetail);
 		return "yr/item/itemDetail";
 	}
 	
-	@RequestMapping("/item/create")
+	@RequestMapping("/create")
 	public String itemCreate() {
 		
 		return "yr/item/itemCreate";

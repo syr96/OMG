@@ -6,6 +6,7 @@ import com.oracle.OMG.dto.Item;
 
 public interface YrItemService {
 
-	List<Item> itemList();
+	List<Item> 	itemList();
+	Item 		selectItem(int code);
 
 }

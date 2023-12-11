@@ -28,4 +28,16 @@ public class YrItemDaoImpl implements YrItemDao {
 		return itemList;
 	}
 
+	@Override
+	public Item selectItem(int code) {
+		System.out.println("YrItemDaoImpl itemList start");
+		Item itemDetail = null;
+		try {
+			itemDetail = session.selectOne("selectItem", code);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return itemDetail;
+	}
+
 }
