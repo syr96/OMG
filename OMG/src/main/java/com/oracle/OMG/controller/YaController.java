@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -110,5 +112,39 @@ public class YaController {
 		 
 	}
 	
+	//거래처삭제
+	@GetMapping(value="/deleteCustomer")
+	public String deleteCustomer(int custcode, Model model) {
+		int deleteResult = ycs.deleteCustomer(custcode);
+		System.out.println("YaController ycs.deleteCustomer start...");
+		
+		return "redirect:customerList";
+	}
+	
+	//거래처 검색
+	@GetMapping(value="/customerSearch")
+	@ResponseBody
+	public Map<String, Object> customerSearch(HttpServletRequest request){
+		System.out.println("YaController ycs.customerSearch Start...");
+		String keyword=request.getParameter("keyword");
+		String currentPage = request.getParameter("currentPage");
+		
+		System.out.println("kewyord?:"+keyword);
+		
+		
+		int totalSearch = ycs.totalSearch(keyword);
+		System.out.println("YaController totalSearch(keyword):"+totalSearch);
+		
+		
+		
+		Paging paging = new Paging(totalSearch, currentPage);
+		List<Customer> customerSearchList = ycs.customerSearch(keyword,paging.getStart(), paging.getEnd());
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("customerSearchList", customerSearchList);
+		result.put("paging",paging);
+		
+		return result;
+	}
 	
 }
