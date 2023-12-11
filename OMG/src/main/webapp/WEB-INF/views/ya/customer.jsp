@@ -28,12 +28,12 @@
         <!-- 첫 번째 열 -->
         <div class="col-md-6">
             <form>
-                <div class="row mb-3">
+<!--                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" for="custcode">거래처코드</label>
                      <div class="col-sm-10">
                          <input type="text" class="form-control"  readonly="readonly" placeholder="자동생성"/>
                      </div>
-                </div>
+                </div> -->
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" for="company">상호명</label>
                     <div class="col-sm-10">
@@ -184,20 +184,126 @@ $(document).ready(function () {
 </script>
 <!-----------------검색--------------------------------------------------------->     
 		<div class="row mx-3">
-		    <form class="d-flex">
+		    <div class="d-flex">
 		        <div class="col-4">
-		            <input class="form-control" type="search" placeholder="거래처검색" aria-label="Search" />
+		            <input class="form-control" id="keyword"  type="search" placeholder="거래처검색" aria-label="Search"  value="${keyword}"/>
 		        </div>
 		        <div class="col-4">
-		            <button class="btn btn-outline-primary" type="submit">Search</button>
+		            <button class="btn btn-outline-primary" id="searchButton" type="button">Search</button>
 		        </div>
-		    </form>
+		    </div>
 		</div>
+ 
+<!-- 검색 결과 표시 -->
+<div id="searchResults" class="table-responsive text-nowrap mx-3">
+    <!-- 검색 결과가 없을 경우 표시할 메시지 -->
+    <p id="noResultsMessage" style="display:none;">검색 결과가 없습니다.</p>
+</div>
+ 
+ 
+<script type="text/javascript">
+    $(document).ready(function () {
+    	
+        // 검색 버튼 클릭 시 페이지 1로 검색 요청
+        $("#searchButton").on("click", function () {
+            searchWithPage(1);
+        });
+    	
+        // 페이지 번호 클릭 시 해당 페이지로 검색 요청
+        function searchWithPage(pageNumber) {
+            var keyword = $("#keyword").val();   
+            $.ajax({
+                type: "GET",
+                url: "/customerSearch",
+                data: {
+                    keyword: keyword,
+                    currentPage: pageNumber,
+                },
+                success: function (data) {
+                    console.log("서버 응답 데이터:", data);
+                    var customerSearchList = data.customerSearchList;
+                    var paging = data.paging;
+
+                    // 검색 결과가 없을 경우
+                    if (customerSearchList.length === 0) {
+                        $("#noResultsMessage").show();
+                        $("#searchResultsTable").hide();
+                        $("#staticPagination").hide();
+                        $(".ajaxPagination").hide();
+                    } else {
+                        $("#noResultsMessage").hide();
+
+                        // 검색 결과가 있을 경우
+                        $("#searchResultsTable tbody").empty();
+                        $.each(customerSearchList, function (index, customer) {
+                            var row = "<tr>" +
+                                "<td><strong>" + customer.custcode + "</strong></td>" +
+                                "<td>" + (customer.cust_md == 101 ? '매입처' : '매출처') + "</td>" +
+                                "<td>" + customer.company + "</td>" +
+                                "<td>" + customer.ceo + "</td>" +
+                                "<td>" + customer.businum + "</td>" +
+                                "<td>" + customer.busitype + "</td>" +
+                                "<td>" + customer.busiitems + "</td>" +
+                                "<td><button class='btn btn-xs btn-primary btn-show-detail' type='button' " +
+                                "data-bs-toggle='offcanvas' data-bs-target='#offcanvasScroll' " +
+                                "data-custcode='" + customer.custcode + "' aria-controls='offcanvasScroll'>상세</button></td>" +
+                                "<td><button class='btn btn-xs btn-primary' type='button' " +
+                                "onclick='location.href=\"/deleteCustomer?custcode=" + customer.custcode + "\"'>삭제</button></td>" +
+                                "</tr>";
+                            $("#searchResultsTable tbody").append(row);
+                        });
+
+                        // 검색 결과를 표시& 기존 페이징 숨기기
+                        $("#searchResultsTable").show();
+                        $("#staticPagination").hide();
+                        //아작스페이징 생성
+                        updateAjaxPagination(paging);
+                        $(".ajaxPagination").show();
+                    }
+                },
+                error: function (error) {
+                    console.log("에러:", error);
+                }
+            });
+        }
+
+
+        // 페이징 처리 업데이트
+        function updateAjaxPagination(paging) {
+            console.log(paging); 
+            $(".ajaxPagination").empty();
+            if (paging.totalPage > 0) {
+                var paginationList = $("<ul class='pagination pagination-sm justify-content-center'></ul>");
+                for (let i = paging.startPage; i <= paging.endPage; i++) {
+                    var link = $("<a class='page-link' href='#'></a>").text(i).on("click", (function (page) {
+                        return function () {
+                            searchWithPage(page);
+                        };
+                    })(i));
+                    var listItem = $("<li class='page-item'></li>").append(link);
+                    paginationList.append(listItem);
+                }
+                $(".ajaxPagination").append(paginationList);
+            }
+        }
+
+
+
+        // 검색창 엔터버튼
+        $("#keyword").keypress(function(e){	
+            if(e.keyCode && e.keyCode == 13){
+                $("#searchButton").trigger("click");
+                return false;
+            }
+        });
+    });
+</script>
+ 
        
 <!-----------------거래처 전체조회--------------------------------------------------------->   
          <div class="table-responsive text-nowrap mx-3">
            <c:set var="num" value="${custPage.total - custPage.start+1 }"></c:set> 
-             <table class="table table-hover">
+             <table id="searchResultsTable"class="table table-hover">
               <thead>
                    <tr>
                      <th>거래처코드</th>
@@ -212,6 +318,7 @@ $(document).ready(function () {
                      <th>이메일</th>
                      <th>담당직원</th> -->
                      <th>상세</th>
+                     <th>삭제</th>
                     </tr>
                </thead>
                <tbody class="table-border-bottom-0">
@@ -228,8 +335,9 @@ $(document).ready(function () {
 <%--                    <td>${customer.tel}</td>
                         <td>${customer.email}</td>
                         <td>${customer.mem_name}</td> --%>
-                        <td><button class="btn btn-sm  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
+                        <td><button class="btn btn-xs  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
                           			data-custcode="${customer.custcode}" aria-controls="offcanvasScroll">상세 </button></td>                       
+                      	<td><button class="btn btn-xs btn-primary" type="button"  onclick="location.href='/deleteCustomer?custcode=${customer.custcode}'">삭제</button></td>
                       </tr>
                 </c:forEach>
                 </tbody>
@@ -440,8 +548,21 @@ $(document).ready(function () {
 </script>
 
 
-              
- 				<div class="container text-center" id="boardPagination">
+				<!--검색 결과에 따른 페이징  ------->
+				<div class="ajaxPagination container text-center">
+					 <ul class="pagination pagination-sm justify-content-center">
+					 	 <li class="page-item">
+				    	<c:if test="${paging.totalPage > 1}">
+				        	<c:forEach begin="${paging.startPage}" end="${paging.endPage}" var="pageNumber">
+				            <a href="#" onclick="searchWithPage(${pageNumber})">${pageNumber}</a>
+				       	 </c:forEach> 
+				 	   </c:if>
+				 	   </li> 	  
+				 	</ul>   
+				</div>
+
+              	<!-- 전체 리스트 페이징 ----------> 
+ 				<div class=" container text-center" id="staticPagination">
 				     <ul class="pagination pagination-sm justify-content-center">
 				        <c:if test="${custPage.startPage > custPage.pageBlock}">
 				            <li class="page-item">
