@@ -15,4 +15,7 @@ public class Item {
     private String 	reg_date;
     private String 	deleted;
     private String 	delete_date;
+    
+    // comm 명칭 가져오기
+    private String	com_cn;
 }
