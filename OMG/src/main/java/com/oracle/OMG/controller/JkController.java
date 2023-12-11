@@ -37,6 +37,15 @@ public class JkController {
 		return "jk/invRegister";
 		}
 	
+	// 입고등록
+	@RequestMapping(value="/inboundRegister")
+	public String inboundRegister(HttpSession session) {
+		System.out.println("JkController inboundRegister start...");
+	
+		
+		return "jk/inboundRegister";
+		}
+	
 	// 월별 재고리스트 조회
 
 	@GetMapping("/monthData")

@@ -205,7 +205,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="form-layouts-vertical.html" class="menu-link">
+                  <a href="inboundRegister" class="menu-link">
                     <div data-i18n="Vertical Form">입고등록</div>
                   </a>
                 </li>
