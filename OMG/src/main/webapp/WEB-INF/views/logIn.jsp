@@ -29,7 +29,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>OMG</title>
+    <title>logIn</title>
 
     <meta name="description" content="" />
 
@@ -61,12 +61,22 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+	<style>
+		body {
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+	</style>
+	<script type="text/javascript">
+		// 모델에 추가한 메시지 가져오기
+		var message = "${message}";
+		
+		// 메시지가 비어있지 않으면 알림창 띄우기
+		if (message && message.trim() !== "") {
+			alert(message);
+		}
+	</script>
   </head>
-  <style>
-  	body {
-		font-family: 'Noto Sans KR', sans-serif;
-	}
-  </style>
+
 
   <body>
     <!-- Content -->
@@ -89,14 +99,14 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <form id="formAuthentication" class="mb-3" action="/login" method="POST">
                 <div class="mb-3">
                   <label for="email" class="form-label">아이디</label>
                   <input
                     type="text"
                     class="form-control"
                     id="email"
-                    name="email-username"
+                    name="mem_id"
                     placeholder=""
                     autofocus
                   />
@@ -113,7 +123,7 @@
                       type="password"
                       id="password"
                       class="form-control"
-                      name="password"
+                      name="mem_pw"
                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                       aria-describedby="password"
                     />
@@ -143,7 +153,7 @@
               <div class="card">
                 <h5 class="card-header d-flex justify-content-between align-items-center"><strong>공지사항</strong>
                 
-                <button type="button" class="btn btn-sm btn-outline-primary ms-auto">더보기</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto">더보기</button>
                 </h5>
                 <div class="table-responsive text-nowrap">
                   <table class="table table-hover">
