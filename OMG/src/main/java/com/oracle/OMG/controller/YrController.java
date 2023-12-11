@@ -11,10 +11,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class YrController {
 	
-	@RequestMapping(value = "itemList")
+	@RequestMapping("/item/list")
 	public String itemList() {
 		
 		
-		return "yr/itemList";
+		return "yr/item/itemList";
+	}
+
+	// ajax로 구현할 예정
+	@RequestMapping("/item/detail")
+	public String itemDetail() {
+		
+		return "yr/item/itemDetail";
+	}
+	
+	@RequestMapping("/item/create")
+	public String itemCreate() {
+		
+		return "yr/item/itemCreate";
 	}
 }
