@@ -5,39 +5,57 @@
 <head>
 <meta charset="UTF-8">
 <title>상품관리</title>
-<style type="text/css">
-	.linkText { color:#697a8d; }
-</style>
+<script type="text/javascript">
+	
+</script>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
-<h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">제품 관리 /</span> 제품 조회</h4>
-<!-- Basic Bootstrap Table -->
-<div class="card">
-  <h5 class="card-header">제품 목록</h5>
-  <div class="table-responsive text-nowrap">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>제품코드</th>
-          <th>제품명</th>
-          <th>카테고리</th>
-        </tr>
-      </thead>
-      <tbody class="table-border-bottom-0">
-        <tr>
-          <td>0000</td>
-          <td>
-          	<a href="/item/detail"><strong class="linkText">모니터</strong></a>
-          </td>
-          <td>모니터</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<!--/ Basic Bootstrap Table -->
+	<h4 class="fw-bold py-3 mb-4">
+		<span class="text-muted fw-light">제품 관리 / </span>
+		<a href="/item/list" class="linkText">
+			제품 조회
+		</a>
+	</h4>
+	
+	<!-- 제품 조회 -->
+	<div class="card">
+	  <div class="card overflow-hidden" style="height: 700px">
+	  
+	  	<!-- 제품 리스트 -->
+	  	<div class="p-0 card-body table-responsive text-nowrap tableFixed col-5" id="both-scrollbars-example">
+		    <table class="table table-hover table-bordered fixedHeader">
+		      <thead>
+		        <tr class="table-primary">
+		          <th class="stiky text-center">제품코드</th>
+		          <th class="stiky">제품명</th>
+		          <th class="stiky text-center">카테고리</th>
+		        </tr>
+		      </thead>
+		      <tbody class="table-border-bottom-0">
+		      	<c:forEach items="${itemList }" var="itemList">
+			        <tr>
+			          <td class="text-center">${itemList.code }</td>
+			          <td>
+			          	<a onclick="showDetail(${itemList.code })"><strong class="linkText">${itemList.name }</strong></a>
+			          </td>
+			          <td class="text-center">${itemList.com_cn }</td>
+			        </tr>
+		      	</c:forEach>
+		      </tbody>
+		    </table>
+	    </div>
+	    <!-- / 제품 리스트 -->
+	    
+	    <!-- 제품 상세정보 -->
+	    <div id="itemDetail">
+	    </div>
+	    <!-- 제품 상세정보 -->
+	    
+	  </div>
+	</div>
+	<!--/ 제품 조회 -->
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
