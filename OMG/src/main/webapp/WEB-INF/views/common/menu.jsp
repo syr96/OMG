@@ -149,39 +149,23 @@
               </ul>
             </li>
             <!-- WareHouse -->
+            <!--Customer  -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">거래처 관리</span></li>
-            <!-- Cards -->
-            <li class="menu-item">
-              <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Cards</div>
-              </a>
-            </li>
             <!-- User interface -->
             <li class="menu-item">
-              <a href="javascript:void(0)" class="menu-link menu-toggle">
+              <a href="/customerList" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="User interface">User interface</div>
+                <div data-i18n="User interface">거래처조회</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="ui-accordion.html" class="menu-link">
-                    <div data-i18n="Accordion">Accordion</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="ui-alerts.html" class="menu-link">
-                    <div data-i18n="Alerts">Alerts</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="ui-badges.html" class="menu-link">
-                    <div data-i18n="Badges">Badges</div>
-                  </a>
-                </li>
-              </ul>
             </li>
-
+            
+            <!-- Extended components -->
+            <li class="menu-item">
+              <a href="customer.jsp" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-box"></i>
+                <div data-i18n="Extended UI">거래처별실적조회</div>
+              </a>
+            </li>
             <!-- Extended components -->
             <li class="menu-item">
               <a href="javascript:void(0)" class="menu-link menu-toggle">
@@ -260,7 +244,7 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">재고 관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
+               <a href="invRegister" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Form Elements</div>
               </a>
@@ -305,7 +289,19 @@
             
             <!-- Misc -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">고객 지원</span></li>
-            <li class="menu-item">
+				<li class="menu-item">
+					<a href="/notice" target="_blank" class="menu-link">
+						<i class="menu-icon tf-icons bx bx-support"></i>
+						공지사항
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="/qna" class="menu-link">
+						<i class="menu-icon tf-icons bx bx-support"></i>
+						문의
+					</a>
+				</li>
+				<li class="menu-item">
               <a
                 href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
                 target="_blank"
@@ -333,7 +329,7 @@
         <div class="layout-page">
           <!-- Navbar -->
           
-          <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     
@@ -422,5 +418,4 @@
           <div class="content-wrapper">
           
           	<div class="container-xxl flex-grow-1 container-p-y">
-          		<div class="row">
-          		<div class="card">
+

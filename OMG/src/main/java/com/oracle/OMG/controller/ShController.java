@@ -21,6 +21,16 @@ public class ShController {
 		return "sh/memberRegistration";
 	}
 	
+	@RequestMapping(value = "memberU")
+	public String memberUpdate() {
+		return "sh/memberUpdate";
+	}
+	
+	@RequestMapping(value = "memberL")
+	public String memberList() {
+		return "sh/memberList";
+	}
+	
 	@RequestMapping(value = "example")
 	public String example() {
 		return "example";

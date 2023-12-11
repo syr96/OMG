@@ -9,4 +9,9 @@ public class PurDetail {
     private int 	code;
     private int 	qty;
     private int 	price;
+    
+    
+    // 조회용
+    private String	item_name;
+    private int		price_sum;
 }
