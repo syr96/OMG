@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="js/jquery.js"></script>
 <script>
     function sample6_execDaumPostcode() {
         new daum.Postcode({
@@ -190,6 +192,7 @@
                                 name="mem_phone"
                                 class="form-control"
                                 placeholder="010-1111-1111"
+                                maxlength="13"
                               />
                         	</div>
                      	</div>
@@ -269,27 +272,28 @@
                            
                            <div class="mb-2 col-md-4">
 	                          <div class="form-password-toggle">
-	                        	<label class="form-label" for="basic-default-password12">비밀번호</label>
+	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
 	                       		<div class="input-group">
 	                          	<input
 		                            type="password"
 		                            class="form-control"
-		                            id="basic-default-password12"
-		                            aria-describedby="basic-default-password2"
+		                            id="basic-default-password1"
+		                            aria-describedby="basic-default-password1"
+		                            oninput="checkPwd()"
 		                          />
-		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 	                       		</div>
 	                       	  </div>
                        	 
 	                        <div class="form-password-toggle">
-		                        <label class="form-label" for="basic-default-password12">비밀번호 재확인</label>
+		                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
 		                        <div class="input-group">
 		                          <input
 		                            type="password"
 		                            class="form-control"
-		                            id="basic-default-password12"
+		                            id="basic-default-password2"
 		                            aria-describedby="basic-default-password2"
 		                          />
 		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
@@ -313,5 +317,8 @@
             <!-- / Content -->
 		
 <%@ include file="../common/footer.jsp" %>
+<script type="text/javascript">
+	function checkPd
+</script>
 </body>
 </html>
