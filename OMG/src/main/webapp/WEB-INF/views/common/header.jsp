@@ -52,8 +52,5 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
     
-    <!--  jquery.js-->
-    <script src="../js/jquery.js"></script>
-    
     <!-- Yr CSS -->
     <link rel="stylesheet" href="../css/yr.css">

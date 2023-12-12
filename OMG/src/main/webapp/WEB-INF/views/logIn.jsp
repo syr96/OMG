@@ -175,7 +175,7 @@
 			</ul>
               
               
-		              <form id="hr_manager" class="mb-3" action="/api/login" method="POST">
+		              <form id="hr_manager" class="mb-3" action="/loginManager" method="POST">
 		                <div class="mb-3">
 		                  <label for="email" class="form-label">아이디</label>
 		                  <input

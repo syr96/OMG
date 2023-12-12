@@ -18,4 +18,7 @@ public class Item {
     
     // comm 명칭 가져오기
     private String	com_cn;
+    
+    // company 명칭 가져오기
+    private String 	company;
 }
