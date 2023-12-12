@@ -29,7 +29,16 @@
 					 	ORDER BY 	brd_id DESC) a
 			) b
 		WHERE rn BETWEEN #{start} AND #{end}
-		
+	</select>
+	
+	<select id="ThSelectQnADetail" parameterType="Board" resultType="Board">
+		SELECT 	b.*, (
+                    SELECT  mem_name
+                    FROM    member m
+                    WHERE   m.mem_id = b.mem_id
+                   ) AS mem_name
+		FROM	board b
+		WHERE	b.brd_id = ${brd_id}
 	</select>
 	
 	

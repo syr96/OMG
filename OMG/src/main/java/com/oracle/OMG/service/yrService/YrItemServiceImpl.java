@@ -22,4 +22,11 @@ public class YrItemServiceImpl implements YrItemService {
 		return itemList;
 	}
 
+	@Override
+	public Item selectItem(int code) {
+		System.out.println("YrItemServiceImpl itemDetail start");
+		Item itemDetail = yid.selectItem(code);
+		return itemDetail;
+	}
+
 }

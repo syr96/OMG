@@ -13,6 +13,12 @@ import com.oracle.OMG.service.bkService.BkMemberService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+
+
+
+
+
+
 @Controller
 @Data
 @Slf4j
@@ -23,6 +29,22 @@ public class BkController {
 	
 	@RequestMapping(value = "logIn")
 	public String logIn() {
+		
+		System.out.println("BkController logIn Start...");
+		
+		return "logIn";
+	}
+	
+	
+	
+	@RequestMapping(value = "/logOut")
+	public String logOut(Member member, HttpSession session) {
+		
+		System.out.println("BkController logOut Start...");
+		System.out.println("BkController logOut session -> " + session);
+		session.invalidate();
+		System.out.println("BkController logOut session -> " + session);
+		
 		return "logIn";
 	}
 	
@@ -70,7 +92,9 @@ public class BkController {
 				session.setAttribute("mem_name", loginResult.getMem_name());
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
+
 				
+				System.out.println("BkController login session -> " + session);
 				// 메인 페이지로 
 				return "/main";
 				
@@ -91,6 +115,10 @@ public class BkController {
 			
 		}
 	}
+	
+	
+	
+	
 	
 	
 

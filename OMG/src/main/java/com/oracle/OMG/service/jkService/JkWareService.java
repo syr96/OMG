@@ -9,5 +9,9 @@ import com.oracle.OMG.dto.Warehouse;
 public interface JkWareService {
 
 	List<Warehouse> monthData(Map<String, String> params);
+	List<Warehouse> getPurchaseData(Map<String, String> params);
+	List<Warehouse> getSalesData(String monthIOData);
+	List<Warehouse> getIOData(String monthIOData);
+	List<Warehouse> getPurchaseDataResultMap(String month, String string);
 	
 }

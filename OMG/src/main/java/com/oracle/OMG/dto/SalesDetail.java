@@ -10,15 +10,31 @@ public class SalesDetail {
     private int 	qty;
     private int 	price;
     
+    
 	// Sales
     private int 	sales_status;
     private String 	title;
     private String	ref;
     
-    // join
+    
+    // Join(SalesInquiry)
     private String company_name;
     private String item_name;
     private String total_price;
+        
+    private String company;
+    private String name;
     
     
+    // Search
+    private String search;
+    private String keyword;
+    
+    
+    // Paging
+    private String pageNum;
+	private int    start;
+	private int    end;
+	
+	
 }
