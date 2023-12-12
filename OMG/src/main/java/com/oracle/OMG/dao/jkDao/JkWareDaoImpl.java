@@ -55,19 +55,20 @@ public class JkWareDaoImpl implements JkWareDao {
 
 
 	@Override
-	public List<Warehouse> getPurchaseData(String monthIOData) {
-		System.out.println("JkWareDaoImpl getPurchaseData start...");
-		List<Warehouse> getPurchaseData = null;
-		
-		try {
-			getPurchaseData = session.selectList("getPurchaseData", monthIOData);
-			System.out.println("monthDatalistsize"+getPurchaseData);
-			 System.out.println("monthIOData: " + monthIOData);
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("JkWareDaoImpl getPurchaseData error?"+ e.getMessage());
-		}
-		return getPurchaseData;
+	public List<Warehouse> getPurchaseData(Map<String, String> params) {
+	    System.out.println("JkWareDaoImpl getPurchaseData start...");
+	    
+	    List<Warehouse> getPurchaseData = null;
+	    
+	    try {
+	        getPurchaseData = session.selectList("getPurchaseData", params);
+	        System.out.println("monthDatalistsize: " + getPurchaseData.size());
+	        System.out.println("params: " + params);
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        System.out.println("JkWareDaoImpl getPurchaseData error: " + e.getMessage());
+	    }
+	    return getPurchaseData;
 	}
 
 
@@ -85,6 +86,23 @@ public class JkWareDaoImpl implements JkWareDao {
 			System.out.println("JkWareDaoImpl getSalesData error?"+ e.getMessage());
 		}
 		return getSalesData;
+	}
+
+
+	@Override
+	public List<Warehouse> getPurchaseDataResultMap(String month, String string) {
+		System.out.println("JkWareDaoImpl getPurchaseDataResultMap start...");
+		List<Warehouse> getPurchaseDataResultMap = null;
+		
+		try {
+			getPurchaseDataResultMap = session.selectList("resultmap01", getPurchaseDataResultMap);
+			System.out.println("getPurchaseDataResultMaptsize"+getPurchaseDataResultMap);
+			 System.out.println("getPurchaseDataResultMap: " + getPurchaseDataResultMap);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("JkWareDaoImpl getSalesData error?"+ e.getMessage());
+		}
+		return getPurchaseDataResultMap;
 	}
 
 
