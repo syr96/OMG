@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <h6 class="fw-bold py-3 mb-4">
 	<span class="text-muted fw-light">제품명: </span>${i.name }
 </h6>
+<fmt:formatNumber value="${i.input_price }" pattern="#,###" var="input_price"/>
+<fmt:formatNumber value="${i.output_price }" pattern="#,###" var="output_price"/>
 <!-- input X (물류팀 제외한 다른 팀 view) -->
 <table class="table table-bordered mb-4">
 
@@ -23,9 +26,9 @@
     
     <tr>
       <th class="table-primary">매입가격</th>
-      <td>${i.input_price }</td>
+      <td>${input_price }원</td>
       <th class="table-primary">매출가격</th>
-      <td>${i.output_price }</td>
+      <td>${output_price }원</td>
     </tr>
     
     <tr>
