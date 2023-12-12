@@ -12,8 +12,10 @@ public interface JkWareDao {
 
 	List<Warehouse> getIOData(String monthIOData);
 
-	List<Warehouse> getPurchaseData(String monthIOData);
+	List<Warehouse> getPurchaseData(Map<String, String> params);
 
 	List<Warehouse> getSalesData(String monthIOData);
+
+	List<Warehouse> getPurchaseDataResultMap(String month, String string);
 	
 }

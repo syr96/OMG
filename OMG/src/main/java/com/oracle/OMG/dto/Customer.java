@@ -19,8 +19,17 @@ public class Customer {
     
     
     //참조용
-    private String mem_name;
-    private String mem_dept;
+    private String mem_name;	//직원이름
+    private String mem_dept;	//직원부서
+    
+    //거래처 실적 join
+    private String purDate;	//매출입일자
+    private int purCode;		//매출입제품코드
+    private int purQty; 		//매출입수량
+    private int purPrice; 		//매출입 단가
+    private String itemName; 	//매출입제품이름
+    private int purAmount; 		//매입총가격
+    private int salesAmount; 	//매출총가격
     
     
 	// 페이징 조회용    //검색타입		//검색 내용
