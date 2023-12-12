@@ -19,4 +19,9 @@ public class Purchase {
     private int 	totalType;	// 상품수(발주서 내 제품 종류의 수)
     private int 	totalQty;	// 발주서 내 총 수량
     private int 	totalPrice;	// 발주서 내 총 결제액
+    //paging
+    private int 	start;	// 발주서 내 총 결제액
+    private int 	end;	// 발주서 내 총 결제액
+    private String	pageNum;
+    private String 	keyword;
 }

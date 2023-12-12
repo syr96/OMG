@@ -7,8 +7,11 @@ import com.oracle.OMG.dto.Purchase;
 
 public interface ChPurService {
 
-	List<Purchase> 	purList();
+	List<Purchase> 	purList(Purchase purchase);
 	List<PurDetail> purDList(Purchase p);
 	Purchase 		onePur(Purchase purchase);
+	int 			totalPur();
+	int 			insertDetail(PurDetail pd);
+	int 			countDitem(PurDetail purDetail);
 	
 }

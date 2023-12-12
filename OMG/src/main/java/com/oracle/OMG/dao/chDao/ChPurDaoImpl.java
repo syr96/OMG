@@ -3,6 +3,7 @@ package com.oracle.OMG.dao.chDao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 import com.oracle.OMG.dto.PurDetail;
@@ -17,12 +18,12 @@ public class ChPurDaoImpl implements ChPurDao {
 	private final SqlSession session;
 	// 발주서 리스트 조회
 	@Override
-	public List<Purchase> purList() {
+	public List<Purchase> purList(Purchase purchase) {
 		System.out.println("ChPurDaoImpl purList start...");
 		List<Purchase> purList = null;
 		
 		try {
-			purList = session.selectList("chPurList");
+			purList = session.selectList("chPurList",purchase);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,6 +62,48 @@ public class ChPurDaoImpl implements ChPurDao {
 			System.out.println("ChPurDaoImpl purchase e.getMessage()" + e.getMessage());
 		}
 		return pc;
+	}
+	@Override
+	public int totalPur() {
+		System.out.println("ChPurDaoImpl totalPur start...");
+		
+		int total = 0;
+		try {
+			total = session.selectOne("chTotalPur");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl totalPur e.getMessage()" + e.getMessage());
+		}
+		return total;
+	}
+	@Override
+	public int insertDetail(PurDetail pd) {
+		System.out.println("ChPurDaoImpl insertDetail start...");
+		
+		int result = 0;
+		try {
+			result = session.insert("chInsertDetail", pd);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl insertDetail e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int countDitem(PurDetail purDetail) {
+		System.out.println("ChPurDaoImpl countDitem start...");
+		
+		int result = 0;
+		try {
+			result = session.selectOne("chCountDitem", purDetail);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl countDitem e.getMessage()" + e.getMessage());
+		}
+		return result;
 	}
 
 	

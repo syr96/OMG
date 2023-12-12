@@ -209,7 +209,6 @@ $(document).ready(function () {
             searchWithPage(1);
         });
     	
-        // 페이지 번호 클릭 시 해당 페이지로 검색 요청
         function searchWithPage(pageNumber) {
             var keyword = $("#keyword").val();   
             $.ajax({
@@ -296,6 +295,7 @@ $(document).ready(function () {
                 return false;
             }
         });
+        
     });
 </script>
  
@@ -336,8 +336,9 @@ $(document).ready(function () {
                         <td>${customer.email}</td>
                         <td>${customer.mem_name}</td> --%>
                         <td><button class="btn btn-xs  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
-                          			data-custcode="${customer.custcode}" aria-controls="offcanvasScroll">상세 </button></td>                       
-                      	<td><button class="btn btn-xs btn-primary" type="button"  onclick="location.href='/deleteCustomer?custcode=${customer.custcode}'">삭제</button></td>
+                          			data-custcode="${customer.custcode}" aria-controls="offcanvasScroll">상세 </button></td>                      
+                         <td><button class="btn btn-xs btn-primary" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button>  		</td>	 
+    <%--                   	<td><button class="btn btn-xs btn-primary" type="button"  onclick="location.href='/deleteCustomer?custcode=${customer.custcode}'">삭제</button></td> --%>
                       </tr>
                 </c:forEach>
                 </tbody>
@@ -366,10 +367,8 @@ $(document).ready(function () {
     });
 });
 
-  document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.btn-show-detail').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var selectedCustCode = button.getAttribute('data-custcode');
+$(document).on('click', '.btn-show-detail', function () {
+    var selectedCustCode = $(this).data('custcode');
 
         $.ajax({
           url: '/customerDetail',
@@ -397,8 +396,19 @@ $(document).ready(function () {
           }
         });
       });
-    });
-  });  
+
+
+function confirmDelete(custcode) {
+  var result = confirm("삭제하시겠습니까?");
+  if (result) {
+    // 사용자가 확인을 클릭하면 deleteCustomer 엔드포인트로 리디렉션
+    location.href = '/deleteCustomer?custcode=' + custcode;
+  } else {
+    // 사용자가 취소를 클릭하면 아무 작업도 수행하지 않음
+  }
+}
+
+
 
 </script>
 

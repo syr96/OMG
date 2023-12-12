@@ -97,6 +97,13 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		System.out.println("YaCustomerServiceImpl  totalSearch start....");
 		return  totalSearch;
 	}
+
+	@Override
+	public List<Customer> customerSalesList(Customer customer) {
+		System.out.println("YaCustomerService customerSalesList start....");
+		List<Customer> customerSalesList = ycd.customerSalesList(customer);
+		return customerSalesList;
+	}
 		
 		
 }
