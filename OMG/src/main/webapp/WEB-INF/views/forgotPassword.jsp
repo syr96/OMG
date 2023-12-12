@@ -91,23 +91,23 @@
               <p class="mb-4">입력한 모바일 번호와 ID에 등록된 모바일 번호가 일치할 경우, <br>[SMS 인증번호]가 발송됩니다. 10분 내에 입력바랍니다.</p>
               <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
                 <div class="mb-3">
-                  <label for="email" class="form-label">성명</label>
+                  <label for="name" class="form-label">성명</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="email"
-                    name="email"
+                    id="name"
+                    name="name"
                     placeholder=""
                     autofocus
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">모바일 번호</label>
+                  <label for="number" class="form-label">모바일 번호</label>
                   <input
                     type="text"
                     class="form-control"
-                    id="email"
-                    name="email"
+                    id="number"
+                    name="number"
                     placeholder=""
                     autofocus
                   />
