@@ -56,44 +56,51 @@
                 document.getElementById("sample6_detailAddress").focus();
             }
         }).open();
-    }
+    };
+</script>
+<script type="text/javascript">
+function createMember(){
+	//등록 확인 시 함수
+	var requestData = {
+			hiredate : $('#mem_hiredate').val(),
+			right : $('#mem_right').val(),
+			name : $('#mem_name').val(),
+			birthday : $('#mem_bd').val(),
+			sex : $('input[name="mem_sex"]:checked').val(),
+			email : $('#mem_email1').val() + "@" + $('#mem_email2').val()
+			phone : $('#mem_phone').val(),
+			dept : $('#mem_dept').val(),
+			posi : $('#mem_posi').val(),
+			duty : $('#mem_duty').val(),
+			address : $('#mem_address').val(),
+			password : $('#mem_pw').val(),
+		};
+		
+	//이미지 데이터 수집
+	var image = $('#upload')[0].files[0];
+	var formData = new FormData();
+	formData.append("img",image);
 	
-	function createMember(){
-		var fileInput = document.getElementById("mem_image");
-		var file	  = fileInput.files[0];
-		
-		var rightCheck = document.getElementById("mem_right");
-		var right ="";
-		if(rightCheck.checked){
-			console.log("권한을 부여하였습니다.");
-			right = "1";
-		} else {
-			console.log("권한이 없습니다.");
-			right = "2";
-		}
-		
-		var mem_hiredate = document.getElementById("mem_hiredate");
-		var mem_hiredate = document.getElementById("mem_name");
-		var mem_hiredate = document.getElementById("mem_bd");
-		var mem_hiredate = document.getElementById("mem_email");
-		var mem_hiredate = document.getElementById("mem_phone");
-		var mem_hiredate = document.getElementById("mem_dept_md");
-		var mem_hiredate = document.getElementById("mem_posi_md");
-		var mem_hiredate = document.getElementById("mem_duty_md");
-		var mem_hiredate = document.getElementById("mem_addree");
-		var mem_hiredate = document.getElementById("mem_pw");
-		var dataObject = {
-			right		 : "right",
-			mem_hiredate : "mem_hiredate",
-			
-				
-		}
-	}
+	//JSOON 데이터를 Blob으로 변환하여 FormData에 추가
+	var jsonBlob = new Blob([JSON.stringify(requestData)], {type:"application/json"});
+	formData.append("request",jsonBlob);
 	
-	function func(dept){
-		document.dept.mem_dept_md.value = dept;
-		
-	}
+	if(confirm("등록을 완료하시겠습니까?")){
+		console.log("등록 확인");
+		$.ajax({
+			type: "GET",
+			url : "createMem",
+			data : formData,
+			//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
+			contentType : false,		
+			processData : false,
+			success : function(result){
+					console.log("success 도착");					
+					}
+			});
+	}else{
+		console.log("등록 거절");
+	};
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -106,31 +113,22 @@
                   <div class="card mb-4">
                     <h5 class="card-header">
                       <i class="bx bx-user me-1"></i> Account</h5>
+                      <form id="formAccountSettings" enctype="multipart/form-data" onsubmit="return createMember()">
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img
-                          class="d-block rounded"
-                          height="100"
-                          width="100"
-                          id="image"
-                        />
+                        <img id="img" class="d-block rounded" style="height: 150px; width: 150px; display: none"/>
                         <div class="button-wrapper">
                           <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
-                            <input
-                              type="file"
-                              id="upload"
-                              class="account-file-input"
-                              hidden
-                              accept="image/png, image/jpeg"
-                            />
+                            <input type="file" id="upload" name="mem_img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
                           </label>
-                          <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                          <button type="button" id="reset" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Reset</span>
                           </button>
+                          <!-- mem_right -->
                           <div class="form-check form-switch mb-2">
 		                       <input class="form-check-input" type="checkbox" id="mem_right" />
 		                       <label class="form-check-label" for="mem_right">권한 부여</label>
@@ -139,75 +137,83 @@
                       </div>
                     </div>
                     <hr class="my-0" />
+                    
                     <div class="card-body">
-                      <form id="formAccountSettings" method="POST" onsubmit="return false">
+                      
                         <div class="row">
                         
+                          <!-- mem_id -->
                           <div class="mb-3 col-md-6">
                             <label for="mem_id" class="form-label">사원번호</label>
                             <input
                               class="form-control"
                               type="text"
                               id="mem_id"
-                              name="mem_id"
                               readonly="readonly"
                               autofocus
                             />
                           </div>
                           
+                          <!-- mem_hiredate -->
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" id="mem_hiredate"/>
+	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate"/>
 	                        </div>
-	                      </div>
-                      
-                           <div class="mb-3 col-md-6">
-                             <label for="mem_name" class="form-label">성명</label>
-                             <input
-                               class="form-control"
-                               type="text"
-                               id="mem_name"
-                               name="mem_name"
-                             />
-                           </div>
+	                    </div>
+                       
+                       	<!-- mem_duty -->
+                        <div class="mb-3 col-md-6">
+                          <label for="mem_name" class="form-label">성명</label>
+                          <input
+                           class="form-control"
+                           type="text"
+                           id="mem_name"
+                           name="mem_name"
+                          />
+                        </div>
                            
-                           
+                      <!-- mem_duty -->
+	                  <div class="mb-3 col-md-6">
+	                        <label for="mem_bd" class="form-label">생년월일</label>
+	                       	<div class="input-group">
+		              	     	<input
+			                     type="text"
+			                     class="form-control"
+			                     id="mem_bd"
+			                     name="mem_bd"
+			                     placeholder="yyyyMMdd"
+			                     aria-label="Recipient's username with two button addons"
+			                     maxlength="8"
+			                     min="19000101"
+			                     pattern="\d*"
+			                   />
+			                <div class="col-md-3" style="margin: 5px 100px 0 50px;">
+		                	    <input
+		                         name="mem_sex"
+		                         class="form-check-input"
+		                         type="radio"
+		                         value="1"
+		                         id="mem_sex"
+		                        />남
+		                       <input
+		                         name="mem_sex"
+		                         class="form-check-input"
+		                         type="radio"
+		                         value="2"
+		                         id="mem_sex"
+		                       />여
+	                        	</div>
+			               </div>
+			         </div>
                       
-                      	<div class="mb-3 col-md-6">
-                            <label for="mem_bd" class="form-label">생년월일</label>
-                           	<div class="input-group">
-	                        	<input
-		                          type="text"
-		                          class="form-control"
-		                          id="mem_bd"
-		                          name="mem_bd"
-		                          placeholder="yyyyMMdd"
-		                          aria-label="Recipient's username with two button addons"
-		                          maxlength="8"
-		                          min="19000101"
-		                        />
-		                        <button class="btn btn-outline-primary" type="button" value="0">남</button>
-		                        <button class="btn btn-outline-primary" type="button" value="1">녀</button>
-		                	</div>  
-	                  	</div>
-                      
-                       	<div class="mb-3 col-md-6" id="mem_email">
-                            <label for="mem_email" class="form-label">이메일</label>
-                            <div class="input-group">
-	                            <input
-	                              class="form-control"
-	                              type="text"
-	                              id="mem_email1"
-	                              name="mem_email1"
-	                            />
+                      <!-- mem_email -->
+                      <div class="mb-3 col-md-6" id="mem_email">
+                        <label for="mem_email" class="form-label">이메일</label>
+                        <div class="input-group">
+	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"/>
 	                            <span class="input-group-text">@</span>
-	                            <input
-	                              class="form-control"
-	                              type="text"
-	                              id="mem_email2"
-	                              name="mem_email2"
-	                            />
+	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2"/>
 	                            <select id="mem_email3" class="select2 form-select">
 		                            <option value="" >직접입력</option>
 		                            <option value="naver.com">네이버</option>
@@ -217,7 +223,8 @@
 		                        </select>
                             </div>
                        	</div>
-                          
+                         
+                        <!-- mem_phone -->  
                      	<div class="mb-3 col-md-6">
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
@@ -227,12 +234,13 @@
                                 id="mem_phone"
                                 name="mem_phone"
                                 class="form-control"
-                                placeholder="010-1111-1111"
-                                maxlength="13"
+                                placeholder="휴대폰 번호(-제외)"
+                                maxlength="11"
                               />
                         	</div>
                      	</div>
-                          
+                        
+                        <!-- mem_dept -->  
                      	<div class="mb-3 col-md-6" >
                             <label class="form-label" for="mem_dept_md">부서</label>
                             <div class="input-group">
@@ -251,6 +259,7 @@
 	                          </div>
                           </div>
                           
+                          <!-- mem_posi -->
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="mem_posi_md">직위</label>
                             <div class="input-group">
@@ -267,6 +276,7 @@
 	                          </div>
                           </div>
                           
+                          <!-- mem_duty -->
                           <div class="mb-3 col-md-12">
                             <label for="mem_duty_md" class="form-label">직책</label>
                             <div class="col-md-6">
@@ -285,6 +295,7 @@
 	                      	</div>
                           </div>
                           
+                          <!-- mem_address -->
                           <div class="mb-3 col-md-6" id="mem_address">
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
@@ -305,7 +316,7 @@
                           </div>
                           
                           
-                           
+                           <!-- mem_pw -->
                            <div class="mb-2 col-md-4">
 	                          <div class="form-password-toggle">
 	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
@@ -345,19 +356,61 @@
 	                      
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2" onsubmit="createMember()">Create</button>
-                          <button type="reset" class="btn btn-outline-secondary" onreset="resetMember()">Cancel</button>
+                          <button type="submit" class="btn btn-primary me-2" >Create</button>
+                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
-                      </form>
                     </div>
                     <!-- /Account -->
+                    </form>
                   </div>
                 </div>
               </div>
             <!-- / Content -->
 		
 <%@ include file="../common/footer.jsp" %>
+
 <script type="text/javascript">
+	//input type=file upload 함수
+	$(document).ready(function(){
+		$('#upload').on('change',function(e){
+			var files = e.target.files;
+			var reader = new FileReader();
+			//파일을 읽으면 함수 호출
+			reader.onload = function(e){
+				$('#img').attr("src", e.target.result);
+				$('#img').css("display","block");
+			}
+			//파일을 데이터 URL로 읽어오기
+			reader.readAsDataURL(files[0]);
+		});
+	});
+	
+	//input type=file reset 함수
+	$(document).ready(function(){
+		$("#reset").on('click',function(){
+			//img 초기화
+			$('#img').css("block","none");
+			$('#img').attr("src","");
+			//input type=file  초기화
+			$('#upload').val('');
+			});
+	});
+	//생년월일 input 숫자만 입력 가능하게 하는 함수
+	$(document).ready(function(){
+		$('#mem_bd').on('input',function(){
+			//숫자 이외의 문자 제거
+			var sanitizedValue = $(this).val().replace(/[^0-9]/g, '');
+			$(this).val(sanitizedValue);
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#mem_phone').on('input',function(){
+			var sanitizedValue = $(this).val().replace(/[^0-9]/g,'');
+			$(this).val(sanitizedValue);
+		});
+	});
+	
 	$(document).ready(function(){
 		$('#mem_email3').on('change',function(){
 			var selected = $(this).val();
@@ -385,6 +438,7 @@
 			$('#mem_duty').val(selected);
 		});
 	});
+	
 </script>
 </body>
 </html>
