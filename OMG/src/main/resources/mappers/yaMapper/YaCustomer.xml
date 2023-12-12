@@ -55,4 +55,31 @@
 				#{businum}, #{busitype}, #{busiitems}, #{tel}, #{email}) 	
 	</insert>
 	
+	<delete id="deleteCustomer"  parameterType="int">
+		DELETE FROM customer WHERE custcode = #{custcode}
+	</delete>
+	
+	<select id="searchCustomer" parameterType="map" resultType="customer">
+ 		 SELECT *
+ 		 FROM (
+ 		 		SELECT  ROWNUM AS rn, a.* 
+ 		 		FROM (
+		 		 		SELECT  c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, c.mem_id, m.mem_name
+		 		 		FROM   customer c
+		 		 		INNER JOIN member m ON c.mem_id = m.mem_id
+		 		 	    WHERE c.mem_id = m.mem_id
+		 		 	    AND (c.custcode LIKE '%' || #{keyword} || '%' OR c.company LIKE '%' || #{keyword} || '%' OR  c.businum LIKE '%' || #{keyword} || '%')
+		      		    ORDER BY 	c.custcode DESC) a
+ 		 )
+ 		 WHERE rn BETWEEN #{start} AND #{end}  
+	</select>
+	
+	
+	<select id="totalSearch" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM customer c, member m
+		WHERE c.mem_id = m.mem_id
+		AND (c.custcode LIKE '%' || #{keyword} || '%' OR c.company LIKE '%' || #{keyword} || '%' OR  c.businum LIKE '%' || #{keyword} || '%')
+	</select>
+	
 </mapper>

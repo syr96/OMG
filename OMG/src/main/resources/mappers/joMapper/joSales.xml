@@ -12,4 +12,70 @@
 	</select>
 	
 	
+	<select id="joGetTotalSalesInquiry" resultType="int">
+		SELECT count(*) 
+        FROM   sales s
+	</select>
+	
+	
+	<select id="joSearchSalesInquiry" parameterType="SalesDetail" resultType="SalesDetail">
+		SELECT sd.*, s.title, s.sales_status, c.company, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
+		FROM   sales_detail sd, sales s, customer c, item i
+		WHERE  sd.custcode = c.custcode
+		AND    sd.custcode = i.custcode
+		AND    sd.sales_date = s.sales_date
+		<choose>
+			<when test="search == 's_company'">
+				AND c.company like '%' || #{keyword} || '%'
+			</when>
+			<when test="search == 's_item'">
+				AND i.name like '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				AND c.company like '%'
+			</otherwise>		
+		</choose>
+	</select>
+	
+	
+	<select id="joGetSearchTotalSalesInquiry" resultType="int">
+		SELECT count(*)
+		FROM   sales_detail sd, sales s, customer c, item i
+		WHERE  sd.custcode = c.custcode
+		AND    sd.custcode = i.custcode
+		AND    sd.sales_date = s.sales_date
+		<choose>
+			<when test="search == 's_company'">
+				AND c.company like '%' || #{keyword} || '%'
+			</when>
+			<when test="search == 's_item'">
+				AND i.name like '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				AND c.company like '%'
+			</otherwise>		
+		</choose>
+	 </select>
+	
+	
+	 <select id="joGetSortTotalSalesInquiry" resultType="int">
+		SELECT count(*)
+		FROM   sales_detail sd, sales s, customer c, item i
+		WHERE  sd.custcode = c.custcode
+		AND    sd.custcode = i.custcode
+		AND    sd.sales_date = s.sales_date
+		AND    sd.sales_status = #{sales_status}
+	  </select>
+	
+		
+	<select id="joSortSalesInquiry" parameterType="int" resultType="SalesDetail">
+		SELECT sd.*, s.title, s.sales_status, c.company, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
+		FROM   sales_detail sd, sales s, customer c, item i
+		WHERE  sd.custcode = c.custcode
+		AND    sd.custcode = i.custcode
+		AND    sd.sales_date = s.sales_date
+		AND    s.sales_status = #{sales_status}
+	</select>
+		
+	
 </mapper>

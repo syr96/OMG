@@ -69,6 +69,34 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		return customer;
 		
 	}
+	
+	//거래처 삭제
+	@Override
+	public int deleteCustomer(int custcode) {
+		System.out.println("YaCustomerService deleteCustomer start...");
+		int deleteResult=0;
+		System.out.println("YaCustomerServiceImpl delete Start...");
+		deleteResult = ycd.deleteCustomer(custcode);
+		return  deleteResult;
+	}
+	//거래처검색
+	@Override
+	public List<Customer> customerSearch(String keyword, int start, int end) {
+		List<Customer> customerSearch = null;
+		System.out.println("YaCustomerServiceImpl search start...");
+		customerSearch = ycd.customerSearch(keyword, start, end);
+		System.out.println("YaCustomerServiceImpl serach start....");
+		
+		return customerSearch;
+	}
+
+	@Override
+	public int totalSearch(String keyword) {
+		System.out.println("YaCustomerService totalSearch start....");
+		int totalSearch = ycd.totalSearch( keyword);
+		System.out.println("YaCustomerServiceImpl  totalSearch start....");
+		return  totalSearch;
+	}
 		
 		
 }

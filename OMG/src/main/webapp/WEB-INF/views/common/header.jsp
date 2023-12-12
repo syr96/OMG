@@ -26,6 +26,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+	<style>
+		body { font-family: 'Noto Sans KR', sans-serif;	}
+	</style>
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
@@ -38,9 +41,9 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-    <!-- Page CSS -->
+    <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
     <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
@@ -48,8 +51,9 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
-<style>
-	body {
-		font-family: 'Noto Sans KR', sans-serif;
-	}
-</style>
+    
+    <!--  jquery.js-->
+    <script src="../js/jquery.js"></script>
+    
+    <!-- Yr CSS -->
+    <link rel="stylesheet" href="../css/yr.css">
