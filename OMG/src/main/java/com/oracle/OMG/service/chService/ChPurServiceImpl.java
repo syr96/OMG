@@ -17,10 +17,10 @@ public class ChPurServiceImpl implements ChPurService {
 	private final ChPurDao cpd;
 
 	@Override
-	public List<Purchase> purList() {
+	public List<Purchase> purList(Purchase purchase) {
 		System.out.println("ChPurServiceImpl purList Start...");
 		
-		List<Purchase> purList = cpd.purList();
+		List<Purchase> purList = cpd.purList(purchase);
 		
 		return purList;
 	}
@@ -43,6 +43,39 @@ public class ChPurServiceImpl implements ChPurService {
 		pc = cpd.onePur(purchase);
 		
 		return pc;
+	}
+
+	@Override
+	public int totalPur() {
+		System.out.println("ChPurServiceImpl totalPur Start...");
+		int total = 0;
+		
+		total = cpd.totalPur();
+		
+		
+		return total;
+	}
+
+	@Override
+	public int insertDetail(PurDetail pd) {
+		System.out.println("ChPurServiceImpl insertDetail Start...");
+		int result = 0;
+		
+		result = cpd.insertDetail(pd);
+		
+		
+		return result;
+	}
+
+	@Override
+	public int countDitem(PurDetail purDetail) {
+		System.out.println("ChPurServiceImpl countDitem Start...");
+		int result = 0;
+		
+		result = cpd.countDitem(purDetail);
+		
+		
+		return result;
 	}
 
 }
