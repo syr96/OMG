@@ -1,6 +1,8 @@
 package com.oracle.OMG.dao.yaDao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -77,6 +79,62 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 			System.out.println("YaCustomerDaoImpl customerDetail e.getMessage()?"+e.getMessage());
 		}
 		return customer;
+	}
+	
+	@Override
+	//거래처등록
+	public Customer insertCustomer(Customer customer) {
+		System.out.println("YaCustomerDao insertCustomer start...");
+		try {
+			session.insert("insertCustomer", customer);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl insertCustomer e.getMessage()?"+e.getMessage());
+		}
+		
+		return customer;
+	}
+	
+	//거래처 삭제
+	@Override
+	public int deleteCustomer(int custcode) {
+		int deleteResult=0;
+		System.out.println("YaCustomerDao deleteCustomer start...");
+		try {
+			deleteResult = session.delete("deleteCustomer", custcode);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl deleteCustomer  e.getMessage()?"+e.getMessage());
+		}
+		return deleteResult;
+	}
+	
+	//거래처 검색
+	@Override
+	public List<Customer> customerSearch(String keyword, int start, int end) {
+		List<Customer> customerSearch=null;
+		System.out.println("YaCustomerDao  customerSearch start...");
+		try {
+			
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("keyword", keyword);
+	        parameters.put("start", start);
+	        parameters.put("end", end);
+			customerSearch= session.selectList("searchCustomer",parameters);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl customerSearch  e.getMessage()?"+e.getMessage());
+		}
+		return  customerSearch;
+	}
+
+	@Override
+	public int totalSearch(String keyword) {
+		int totalSearch = 0;
+		System.out.println("YaCustomerDao  totalSearch start.. ");
+	    try {
+	        totalSearch = session.selectOne("totalSearch", keyword);
+	    } catch (Exception e) {
+	        System.out.println("YaCustomerDaoImpltotalSearch e.getMessage? " + e.getMessage());
+	    }
+		return totalSearch;
 	}
 
 

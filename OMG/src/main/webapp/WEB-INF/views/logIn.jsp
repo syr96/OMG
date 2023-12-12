@@ -29,7 +29,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>OMG</title>
+    <title>logIn</title>
 
     <meta name="description" content="" />
 
@@ -61,12 +61,64 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+	<style>
+	
+	
+		body {
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+		
+		
+	</style>
+	<script type="text/javascript">
+	
+	
+	
+		// 모델에 추가한 메시지 가져오기
+		var message = "${message}";
+		
+		
+		
+		// 메시지가 비어있지 않으면 알림창 띄우기
+		if (message && message.trim() !== "") {
+			alert(message);
+		}
+		
+		
+		
+		document.addEventListener("DOMContentLoaded", function () {
+		      const managerBtn = document.getElementById("manager-btn");
+		      const employeeBtn = document.getElementById("employee-btn");
+		      const managerForm = document.getElementById("hr_manager");
+		      const employeeForm = document.getElementById("employee");
+
+		      // 초기 로딩 시에 employee 폼을 숨기고 hr_manager 폼을 표시
+		      managerForm.classList.add("d-none");
+		      employeeForm.classList.remove("d-none");
+
+		      function toggleForms(activeForm, inactiveForm, activeBtn, inactiveBtn) {
+		        activeForm.classList.remove("d-none");
+		        inactiveForm.classList.add("d-none");
+
+		        activeBtn.classList.add("active");
+		        activeBtn.setAttribute("aria-selected", "true");
+
+		        inactiveBtn.classList.remove("active");
+		        inactiveBtn.setAttribute("aria-selected", "false");
+		      }
+
+		      managerBtn.addEventListener("click", function () {
+		        toggleForms(managerForm, employeeForm, managerBtn, employeeBtn);
+		      });
+
+		      employeeBtn.addEventListener("click", function () {
+		        toggleForms(employeeForm, managerForm, employeeBtn, managerBtn);
+		      });
+		    });
+		
+	</script>
   </head>
-  <style>
-  	body {
-		font-family: 'Noto Sans KR', sans-serif;
-	}
-  </style>
+
 
   <body>
     <!-- Content -->
@@ -89,47 +141,127 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
-                <div class="mb-3">
-                  <label for="email" class="form-label">아이디</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email-username"
-                    placeholder=""
-                    autofocus
-                  />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">비밀번호</label>
-                    <a href="/forgotPassword">
-                      <small>비밀번호를 잊으셨나요?</small>
-                    </a>
-                  </div>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password"
-                    />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me"> 저장 [ID] </label>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">로그인</button>
-                </div>
-              </form>
+              
+              
+              
+			<ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+              	<li class="nav-item">
+					<button
+						 id="manager-btn"
+	                     type="button"
+	                     class="nav-link"
+	                     role="tab"
+	                     data-bs-toggle="tab"
+	                     aria-controls="hr_manager"
+	                     aria-selected="false"
+	                     
+                   >
+                     <i class="tf-icons bx bx-home"></i> 관리자
+                     <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger">3</span>
+                   </button>
+				</li>
+				<li class="nav-item">
+                   <button
+                   	 id="employee-btn"
+                     type="button"
+                     class="nav-link active"
+                     role="tab"
+                     aria-controls="employee"
+                     aria-selected="true"
+                   >
+                     <i class="tf-icons bx bx-user"></i> 사원
+                   </button>
+                 </li>
+			</ul>
+              
+              
+		              <form id="hr_manager" class="mb-3" action="/api/login" method="POST">
+		                <div class="mb-3">
+		                  <label for="email" class="form-label">아이디</label>
+		                  <input
+		                    type="text"
+		                    class="form-control"
+		                    id="mem_id-hr_manager"
+		                    name="mem_id"
+		                    placeholder="관리자 아이디를 입력해주세요"
+		                    autofocus
+		                  />
+		                </div>
+		                <div class="mb-3 form-password-toggle">
+		                  <div class="d-flex justify-content-between">
+		                    <label class="form-label" for="password">비밀번호</label>
+		                    <a href="/forgotPassword">
+		                      <small>비밀번호를 잊으셨나요?</small>
+		                    </a>
+		                  </div>
+		                  <div class="input-group input-group-merge">
+		                    <input
+		                      type="password"
+		                      id="password-hr_manager"
+		                      class="form-control"
+		                      name="mem_pw"
+		                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+		                      aria-describedby="password"
+		                    />
+		                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+		                  </div>
+		                </div>
+		                <div class="mb-3">
+		                  <div class="form-check">
+		                    <input class="form-check-input" type="checkbox" id="remember-me-hr_manager" />
+		                    <label class="form-check-label" for="remember-me"> 저장 [ID] </label>
+		                  </div>
+		                </div>
+		                <div class="mb-3">
+		                  <button class="btn btn-primary d-grid w-100" type="submit">로그인</button>
+		                </div>
+		              </form>
+		              
+		              
+		              <form id="employee" class="mb-3" action="/login" method="POST">
+		                <div class="mb-3">
+		                  <label for="email" class="form-label">아이디</label>
+		                  <input
+		                    type="text"
+		                    class="form-control"
+		                    id="mem_id-employee"
+		                    name="mem_id"
+		                    placeholder="사원 아이디를 입력해주세요"
+		                    autofocus
+		                  />
+		                </div>
+		                <div class="mb-3 form-password-toggle">
+		                  <div class="d-flex justify-content-between">
+		                    <label class="form-label" for="password">비밀번호</label>
+		                    <a href="/forgotPassword">
+		                      <small>비밀번호를 잊으셨나요?</small>
+		                    </a>
+		                  </div>
+		                  <div class="input-group input-group-merge">
+		                    <input
+		                      type="password"
+		                      id="password-employee"
+		                      class="form-control"
+		                      name="mem_pw"
+		                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+		                      aria-describedby="password"
+		                    />
+		                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+		                  </div>
+		                </div>
+		                <div class="mb-3">
+		                  <div class="form-check">
+		                    <input class="form-check-input" type="checkbox" id="remember-me-employee" />
+		                    <label class="form-check-label" for="remember-me"> 저장 [ID] </label>
+		                  </div>
+		                </div>
+		                <div class="mb-3">
+		                  <button class="btn btn-primary d-grid w-100" type="submit">로그인</button>
+		                </div>
+		              </form>
+
+              
+              
 
             </div>
           </div>
@@ -143,7 +275,7 @@
               <div class="card">
                 <h5 class="card-header d-flex justify-content-between align-items-center"><strong>공지사항</strong>
                 
-                <button type="button" class="btn btn-sm btn-outline-primary ms-auto">더보기</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto">더보기</button>
                 </h5>
                 <div class="table-responsive text-nowrap">
                   <table class="table table-hover">

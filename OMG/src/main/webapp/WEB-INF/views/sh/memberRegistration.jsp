@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -6,7 +7,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="js/jquery.js"></script>
 <script>
+	//주소 API
     function sample6_execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -54,6 +57,43 @@
             }
         }).open();
     }
+	
+	function createMember(){
+		var fileInput = document.getElementById("mem_image");
+		var file	  = fileInput.files[0];
+		
+		var rightCheck = document.getElementById("mem_right");
+		var right ="";
+		if(rightCheck.checked){
+			console.log("권한을 부여하였습니다.");
+			right = "1";
+		} else {
+			console.log("권한이 없습니다.");
+			right = "2";
+		}
+		
+		var mem_hiredate = document.getElementById("mem_hiredate");
+		var mem_hiredate = document.getElementById("mem_name");
+		var mem_hiredate = document.getElementById("mem_bd");
+		var mem_hiredate = document.getElementById("mem_email");
+		var mem_hiredate = document.getElementById("mem_phone");
+		var mem_hiredate = document.getElementById("mem_dept_md");
+		var mem_hiredate = document.getElementById("mem_posi_md");
+		var mem_hiredate = document.getElementById("mem_duty_md");
+		var mem_hiredate = document.getElementById("mem_addree");
+		var mem_hiredate = document.getElementById("mem_pw");
+		var dataObject = {
+			right		 : "right",
+			mem_hiredate : "mem_hiredate",
+			
+				
+		}
+	}
+	
+	function func(dept){
+		document.dept.mem_dept_md.value = dept;
+		
+	}
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -70,12 +110,10 @@
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
                         <img
-                          src="../assets/img/avatars/1.png"
-                          alt="user-avatar"
                           class="d-block rounded"
                           height="100"
                           width="100"
-                          id="uploadedAvatar"
+                          id="image"
                         />
                         <div class="button-wrapper">
                           <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
@@ -96,7 +134,7 @@
                           <div class="form-check form-switch mb-2">
 		                       <input class="form-check-input" type="checkbox" id="mem_right" />
 		                       <label class="form-check-label" for="mem_right">권한 부여</label>
-                      		</div>
+                      	  </div>
                         </div>
                       </div>
                     </div>
@@ -154,28 +192,28 @@
 		                	</div>  
 	                  	</div>
                       
-                       	<div class="mb-3 col-md-6">
+                       	<div class="mb-3 col-md-6" id="mem_email">
                             <label for="mem_email" class="form-label">이메일</label>
                             <div class="input-group">
 	                            <input
 	                              class="form-control"
 	                              type="text"
-	                              id="mem_email"
-	                              name="mem_email"
+	                              id="mem_email1"
+	                              name="mem_email1"
 	                            />
 	                            <span class="input-group-text">@</span>
 	                            <input
 	                              class="form-control"
 	                              type="text"
-	                              id="mem_email"
-	                              name="mem_email"
+	                              id="mem_email2"
+	                              name="mem_email2"
 	                            />
-	                            <select id="memb_email" class="select2 form-select">
-		                            <option value="">직접입력</option>
-		                            <option value="100">naver.com</option>
-		                            <option value="101">gmail.com</option>
-		                            <option value="102">daum.net</option>
-		                        	<option value="103">hotmail.com</option>
+	                            <select id="mem_email3" class="select2 form-select">
+		                            <option value="" >직접입력</option>
+		                            <option value="naver.com">네이버</option>
+		                            <option value="gmail.com">지메일</option>
+		                            <option value="daum.net">다음</option>
+		                        	<option value="hotmail.com">핫메일</option>
 		                        </select>
                             </div>
                        	</div>
@@ -190,14 +228,15 @@
                                 name="mem_phone"
                                 class="form-control"
                                 placeholder="010-1111-1111"
+                                maxlength="13"
                               />
                         	</div>
                      	</div>
                           
-                     	<div class="mb-3 col-md-6">
-                            <label class="form-label" for="memb_dept_md">부서</label>
+                     	<div class="mb-3 col-md-6" >
+                            <label class="form-label" for="mem_dept_md">부서</label>
                             <div class="input-group">
-	                            <select id="memb_dept_md" class="select2 form-select">
+	                            <select id="mem_dept_md" class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">회계팀</option>
 	                              <option value="101">인사팀</option>
@@ -208,14 +247,14 @@
 	                              <option value="106">인사팀</option>
 	                              <option value="107">CS1팀</option>
 	                            </select>
-                            <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+                            <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" readonly="readonly"/>
 	                          </div>
                           </div>
                           
                           <div class="mb-3 col-md-6">
-                            <label class="form-label" for="memb_posi_md">직위</label>
+                            <label class="form-label" for="mem_posi_md">직위</label>
                             <div class="input-group">
-                            <select id="memb_posi_md" class="select2 form-select">
+                            <select id="mem_posi_md" class="select2 form-select">
                               <option value="">Select</option>
                               <option value="100">대표이사</option>
                               <option value="101">상무</option>
@@ -224,15 +263,15 @@
                               <option value="104">대리</option>
                               <option value="105">사원</option>
                             </select>
-                            <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+                            <input type="text" class="form-control" id="mem_posi" aria-label="Text input with dropdown button" readonly="readonly" />
 	                          </div>
                           </div>
                           
                           <div class="mb-3 col-md-12">
-                            <label for="memb_duty_md" class="form-label">직책</label>
+                            <label for="mem_duty_md" class="form-label">직책</label>
                             <div class="col-md-6">
 	                            <div class="input-group">
-	                            <select id="memb_duty_md" class="select2 form-select">
+	                            <select id="mem_duty_md" class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">CEO</option>
 	                              <option value="101">CFO</option>
@@ -241,12 +280,12 @@
 	                              <option value="104">팀장</option>
 	                              <option value="105">팀원</option>
 	                            </select>
-	                            <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+	                            <input type="text" class="form-control" id="mem_duty" aria-label="Text input with dropdown button" readonly="readonly" />
 		                      	</div>
 	                      	</div>
                           </div>
                           
-                          <div class="mb-3 col-md-6">
+                          <div class="mb-3 col-md-6" id="mem_address">
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-3 col-md-4">
@@ -260,8 +299,8 @@
 								<input type="text" class="form-control" id="sample6_address" placeholder="주소"><br>
 							</div>
 							<div class="col-md-6">
-								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소"><br>
-								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목">
+								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목"><br>
+								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소">
 							</div>
                           </div>
                           
@@ -269,27 +308,32 @@
                            
                            <div class="mb-2 col-md-4">
 	                          <div class="form-password-toggle">
-	                        	<label class="form-label" for="basic-default-password12">비밀번호</label>
+	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
 	                       		<div class="input-group">
+	                       		<span class="ps_box int_pass"></span>
 	                          	<input
 		                            type="password"
 		                            class="form-control"
-		                            id="basic-default-password12"
-		                            aria-describedby="basic-default-password2"
+		                            name="mem_pw"
+		                            id="basic-default-password1"
+		                            aria-describedby="basic-default-password1"
+		                            oninput="checkPwd()"
 		                          />
-		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
+		                          <span id="pswd1Msg" style="display: none" aria-live="assertice">8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.</span>
 	                       		</div>
 	                       	  </div>
                        	 
 	                        <div class="form-password-toggle">
-		                        <label class="form-label" for="basic-default-password12">비밀번호 재확인</label>
+		                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
 		                        <div class="input-group">
 		                          <input
 		                            type="password"
 		                            class="form-control"
-		                            id="basic-default-password12"
+		                            name="mem_pw_check"
+		                            id="basic-default-password2"
 		                            aria-describedby="basic-default-password2"
 		                          />
 		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
@@ -301,8 +345,8 @@
 	                      
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">Create</button>
-                          <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                          <button type="submit" class="btn btn-primary me-2" onsubmit="createMember()">Create</button>
+                          <button type="reset" class="btn btn-outline-secondary" onreset="resetMember()">Cancel</button>
                         </div>
                       </form>
                     </div>
@@ -313,5 +357,34 @@
             <!-- / Content -->
 		
 <%@ include file="../common/footer.jsp" %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#mem_email3').on('change',function(){
+			var selected = $(this).val();
+			$('#mem_email2').val(selected);
+		});
+	});
+
+	$(document).ready(function(){
+		$('#mem_dept_md').on('change',function(){
+			var selected = $(this).val();
+			$('#mem_dept').val(selected);
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#mem_posi_md').on('change',function(){
+			var selected = $(this).val();
+			$('#mem_posi').val(selected);
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#mem_duty_md').on('change',function(){
+			var selected = $(this).val();
+			$('#mem_duty').val(selected);
+		});
+	});
+</script>
 </body>
 </html>

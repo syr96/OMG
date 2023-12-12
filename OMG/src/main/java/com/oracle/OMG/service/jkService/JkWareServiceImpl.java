@@ -27,4 +27,26 @@ public class JkWareServiceImpl implements JkWareService {
 		return monthData;
 	}
 
+	@Override
+	public List<Warehouse> getPurchaseData(String monthIOData) {
+		System.out.println("JkWareServiceImpl getPurchaseData Start...");
+		List<Warehouse> getPurchaseData = jwd.getPurchaseData(monthIOData);
+		return getPurchaseData;
+	}
+
+	@Override
+	public List<Warehouse> getSalesData(String monthIOData) {
+		System.out.println("JkWareServiceImpl getIOData Start...");
+		List<Warehouse> getSalesData = jwd.getSalesData(monthIOData);
+		return getSalesData;
+	}
+
+	@Override
+	public List<Warehouse> getIOData(String monthIOData) {
+		System.out.println("JkWareServiceImpl getIOData Start...");
+		List<Warehouse> getIOData = jwd.getIOData(monthIOData);
+		return getIOData;
+	}
+
+
 }

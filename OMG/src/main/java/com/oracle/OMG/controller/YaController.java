@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,23 +50,14 @@ public class YaController {
 		model.addAttribute("totalCustomer", totalCustomer);
 		model.addAttribute("custPage", custPage);
 		model.addAttribute("customerList", customerList);
-	
-	return "ya/customer";
 		
+		
+	return "ya/customer";	
 	}
 	
 	//거래처 상세보기
 	@GetMapping(value="/customerDetail")
 	@ResponseBody
-/*	public String customerDetail(@RequestParam("custcode")int custcode, Model model) {
-		System.out.println("YaController Start customerDetail start...");
-		
-		Customer customer = ycs.customerDetail(custcode);
-		model.addAttribute("customer", customer);
-		System.out.println("YaConroller detailCustomer custcode:"+customer.getCustcode());
-		System.out.println("YaConroller detailCustomer company:"+customer.getCompany());		
-		
-		return "ya/customer";*/
 	public Map<String, Object> customerDetail(@RequestParam("custcode")int custcode) {
 		System.out.println("YaController Start customerDetail start...");
 		
@@ -78,14 +71,17 @@ public class YaController {
 		return result;
 	}
 	
-	//직원 전체조회
-	@GetMapping(value="/memeberList")
+	//직원 전체조회 ( 거래처수정용) 미완 
+	@PostMapping(value="/memberList")
 	@ResponseBody
-	public List<Member> memberList(Member member, Model model){
-		List<Member> memberList = ycs.memberList(member);
+	public Map<String, Object> memberList(@RequestBody Member member){
+		Map<String, Object> result = new HashMap<>();
 		
-		model.addAttribute("member", member);
-		return memberList;
+		List<Member> memberList = null;
+		memberList = ycs.memberList(member);
+		result.put("memberList", memberList);
+	
+		return result;
 	}
 	
 	
@@ -102,6 +98,53 @@ public class YaController {
 				
 	}
 	
+	//거래처 등록
+	@RequestMapping(value="/insertCustomer")
+	@ResponseBody
+	public Map<String, Object> insertCustomer(@RequestBody Customer customer){
+		 Map<String, Object> result = new HashMap<>();
+		 
+		 customer = ycs.insertCustomer(customer);
+		 result.put("success", true);
+		 
+		 
+		return result;
+		 
+	}
 	
+	//거래처삭제
+	@GetMapping(value="/deleteCustomer")
+	public String deleteCustomer(int custcode, Model model) {
+		int deleteResult = ycs.deleteCustomer(custcode);
+		System.out.println("YaController ycs.deleteCustomer start...");
+		
+		return "redirect:customerList";
+	}
+	
+	//거래처 검색
+	@GetMapping(value="/customerSearch")
+	@ResponseBody
+	public Map<String, Object> customerSearch(HttpServletRequest request){
+		System.out.println("YaController ycs.customerSearch Start...");
+		String keyword=request.getParameter("keyword");
+		String currentPage = request.getParameter("currentPage");
+		
+		System.out.println("kewyord?:"+keyword);
+		
+		
+		int totalSearch = ycs.totalSearch(keyword);
+		System.out.println("YaController totalSearch(keyword):"+totalSearch);
+		
+		
+		
+		Paging paging = new Paging(totalSearch, currentPage);
+		List<Customer> customerSearchList = ycs.customerSearch(keyword,paging.getStart(), paging.getEnd());
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("customerSearchList", customerSearchList);
+		result.put("paging",paging);
+		
+		return result;
+	}
 	
 }
