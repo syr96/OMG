@@ -12,7 +12,7 @@ W<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 		<span class="text-muted fw-light">고객지원/</span> 문의사항
 	</h4>
 	<div class="d-flex justify-content-end flex-wrap gap-3 mb-2">
-		<button type="button" class="btn btn-secondary">목록</button>
+		<button type="button" class="btn btn-secondary" onclick="location.href='../qna?currentPage=${pageNum}'">목록</button>
 	</div>
 
 	<div class="card g-3 mt-1 mb-2">
@@ -20,15 +20,15 @@ W<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 			<div class="col-lg-12">
 				<div class="d-flex justify-content-between align-items-center flex-wrap gap-1 border-bottom">
 					<div class="me-1">
-						<h5 class="mb-1">문의사항 제목 들어갈 곳</h5>
+						<h5 class="mb-1">${QnA.title }</h5>
 						<p class="mb-1">
-							<span class="fw-medium">작성자 아이콘과 이름</span>
+							<span class="fw-medium">${QnA.mem_name }</span>
 						</p>
 					</div>
 					<div class="me-1">
 						<p></p>
 						<p class="mb-1">
-							<span class="fw-medium">작성일자</span>
+							<span class="fw-medium">${QnA.reg_date }</span>
 						</p>
 					</div>
 				</div>
@@ -51,7 +51,7 @@ W<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="U
 						</div>
 					</div>
 					<div class="card-body">
-						<p>내용을 매우 길게</p>
+						<p>${QnA.brd_cn }</p>
 
 					</div>
 				</div>

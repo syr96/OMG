@@ -82,4 +82,28 @@
 		AND (c.custcode LIKE '%' || #{keyword} || '%' OR c.company LIKE '%' || #{keyword} || '%' OR  c.businum LIKE '%' || #{keyword} || '%')
 	</select>
 	
+    <select id="customerSalesList" resultType="customer">
+        SELECT pur_date AS purDate,
+               code AS purCode,
+               qty AS purQty,
+               price AS purPrice,
+               item_name AS itemName,
+               company,
+               custStyle
+        FROM (
+            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle
+            FROM pur_detail p
+            JOIN customer c ON c.custcode = p.custcode
+            JOIN item i ON i.code = p.code
+
+            UNION
+
+            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle
+            FROM sales_detail s
+            JOIN customer c ON c.custcode = s.custcode
+            JOIN item i ON i.code = s.code
+        ) combined_result
+    </select>
+
+	
 </mapper>

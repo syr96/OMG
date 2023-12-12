@@ -6,12 +6,19 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.oracle.OMG.dto.Comm;
+import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.PurDetail;
 import com.oracle.OMG.dto.Purchase;
+import com.oracle.OMG.service.chService.ChItemService;
 import com.oracle.OMG.service.chService.ChPurService;
+import com.oracle.OMG.service.chService.Paging;
+import com.oracle.OMG.service.yrService.YrItemService;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +27,29 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class ChController {
+	
 	private final ChPurService chPurService;
+	private final ChItemService chItemService;
+	private final YrItemService itemService;
 	
 	
 	@RequestMapping("purList")
-	public String purList(Model model) {
-		
-		System.out.println("ChController purList Start...");
+	public String purList(Model model, String currentPage, Purchase purchase) {
+		int totalPur = 0;
 		List<Purchase> purList = null;
+		Paging page = null;
+		System.out.println("ChController purList Start...");
+		
+		totalPur = chPurService.totalPur();
+		
+		
+		page = new Paging(totalPur, currentPage);
+		
+		purchase.setStart(page.getStart());
+		purchase.setEnd(page.getEnd());
+		
 		//발주서 전체 리스트
-		purList = chPurService.purList();
+		purList = chPurService.purList(purchase);
 		// 발주서 리스트 소환 성공시 
 		if(purList != null) {
 			// purList 조회 성공 시
@@ -77,8 +97,9 @@ public class ChController {
 		Purchase pc = chPurService.onePur(purchase);
 		// 해당 발주서의 상세 항목 출력 
 		List<PurDetail> pdList = chPurService.purDList(pc);
+		// 해당 회사의 item List
+		List<Item> itemList = chItemService.cItemList(purchase.getCustcode());
 		// 람다 이용 총 합계 구하기 
-//		int totalPrice = pdList.stream().map(m->m.getPrice() * m.getQty()).collect(Collectors.summarizingInt(m))
 		int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
 		int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
 		
@@ -89,8 +110,50 @@ public class ChController {
 		model.addAttribute("pdList",pdList);
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("totalQty", totalQty);
+		model.addAttribute("itemList", itemList);
 		
 		return "ch/purDtailPage";
+	}
+	
+	@ResponseBody
+	@PostMapping("insertDetail")
+	public ModelAndView insertDetail(PurDetail pd,ModelAndView mav) {
+		int result = 0;
+		System.out.println("ChController insertDetail Start...");
+		// custcode와 price를 가져오기 위한 조회
+		Item item = itemService.selectItem(pd.getCode());
+		pd.setCustcode(item.getCustcode());
+		pd.setPrice(item.getInput_price());
+		System.out.println("pd.getPur_date" + pd.getPur_date());
+		result = chPurService.insertDetail(pd);
+		if(result > 0) {
+			// PK를 이용한 단일 발주서 확인
+			Purchase pc = new Purchase();
+			pc.setCustcode(pd.getCustcode());
+			pc.setPur_date(pd.getPur_date());
+			// 해당 발주서의 상세 항목 출력 
+			List<PurDetail> pdList = chPurService.purDList(pc);
+			// 람다 이용 총 합계 구하기 
+			int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
+			int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
+			mav.addObject("pdList",pdList);
+			mav.addObject("totalPrice", totalPrice);
+			mav.addObject("totalQty", totalQty);
+			
+			mav.setViewName("ch/purDtable");
+		}
+		
+		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping("chkDItem")
+	public int chkDItem(PurDetail purDetail) {
+		int result = 0;
+		System.out.println("ChController chkDItem Start..............");
+		result = chPurService.countDitem(purDetail);
+		
+		return result; 
 	}
 	
 }

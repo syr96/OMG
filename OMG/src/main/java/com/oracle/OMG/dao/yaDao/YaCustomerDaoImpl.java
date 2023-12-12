@@ -37,7 +37,7 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		System.out.println("YaCustomerDao totalCustomer start...");
 		int totalCustomer = 0;
 		try {
-			totalCustomer = session.selectOne("totalCustomer", totalCustomer);
+			totalCustomer = session.selectOne("totalCustomer", customer);
 		} catch (Exception e) {
 			System.out.println("YaCustomerDaoImpl totalCustomer e.getMessage()?"+e.getMessage());
 		}
@@ -124,7 +124,7 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		}
 		return  customerSearch;
 	}
-
+	//검색 해당 거래처 수 
 	@Override
 	public int totalSearch(String keyword) {
 		int totalSearch = 0;
@@ -135,6 +135,18 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 	        System.out.println("YaCustomerDaoImpltotalSearch e.getMessage? " + e.getMessage());
 	    }
 		return totalSearch;
+	}
+
+	@Override
+	public List<Customer> customerSalesList(Customer customer) {
+		System.out.println("YaCustomerDao  customerSalesList start.. ");
+		List<Customer> customerSalesList = null;
+		try {
+			customerSalesList = session.selectList("customerSalesList", customer);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl customerSalesList e.getMessage? " + e.getMessage());
+		}
+		return customerSalesList;
 	}
 
 

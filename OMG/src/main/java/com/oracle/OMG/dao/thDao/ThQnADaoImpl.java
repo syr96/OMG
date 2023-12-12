@@ -41,4 +41,16 @@ public class ThQnADaoImpl implements ThQnADao {
 		return QnAList;
 	}
 
+	@Override
+	public Board selectQnADetail(Board board) {
+		System.out.println("ThQnADaoImpl selectQnADetail Start");
+		Board boardResult = null;
+		try {
+			boardResult = session.selectOne("ThSelectQnADetail", board);
+		} catch (Exception e) {
+			System.out.println("ThQnADaoImpl selectQnADetail Exception --> " + e.getMessage());
+		}
+		return boardResult;
+	}
+
 }

@@ -56,9 +56,9 @@
             
             <!-- Extended components -->
             <li class="menu-item">
-              <a href="customer.jsp" class="menu-link menu-toggle">
+              <a href="/customerSales" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Extended UI">거래처별실적조회</div>
+                <div data-i18n="Extended UI">거래처별판매실적조회</div>
               </a>
             </li>
             <!-- Extended components -->
@@ -175,7 +175,7 @@
             <!-- Misc -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">고객 지원</span></li>
 				<li class="menu-item">
-					<a href="/notice" target="_blank" class="menu-link">
+					<a href="/notice/list" target="_blank" class="menu-link">
 						<i class="menu-icon tf-icons bx bx-support"></i>
 						공지사항
 					</a>

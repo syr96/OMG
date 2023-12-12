@@ -28,9 +28,12 @@ public class JkWareServiceImpl implements JkWareService {
 	}
 
 	@Override
-	public List<Warehouse> getPurchaseData(String monthIOData) {
+	public List<Warehouse> getPurchaseData(Map<String, String> params) {
 		System.out.println("JkWareServiceImpl getPurchaseData Start...");
-		List<Warehouse> getPurchaseData = jwd.getPurchaseData(monthIOData);
+		
+		List<Warehouse> getPurchaseData = jwd.getPurchaseData(params);
+		
+		
 		return getPurchaseData;
 	}
 
@@ -46,6 +49,13 @@ public class JkWareServiceImpl implements JkWareService {
 		System.out.println("JkWareServiceImpl getIOData Start...");
 		List<Warehouse> getIOData = jwd.getIOData(monthIOData);
 		return getIOData;
+	}
+
+	@Override
+	public List<Warehouse> getPurchaseDataResultMap(String month, String string) {
+		System.out.println("JkWareServiceImpl getPurchaseDataResultMap Start...");
+		List<Warehouse> getPurchaseDataResultMap = jwd.getPurchaseDataResultMap(month, string);
+		return getPurchaseDataResultMap;
 	}
 
 

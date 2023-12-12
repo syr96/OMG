@@ -8,5 +8,6 @@ public interface ThQnADao {
 
 	int 				totalQnA();
 	List<Board> 		selectQnAList(Board board);
+	Board 				selectQnADetail(Board board);
 
 }

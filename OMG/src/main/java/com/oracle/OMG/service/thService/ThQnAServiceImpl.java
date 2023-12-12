@@ -30,5 +30,12 @@ public class ThQnAServiceImpl implements ThQnAService {
 		return QnAList;
 	}
 
+	@Override
+	public Board selectQnADetail(Board board) {
+		System.out.println("ThQnAServiceImpl selectQnADetail Start");
+		Board boardResult = qd.selectQnADetail(board);
+		return boardResult;
+	}
+
 	
 }
