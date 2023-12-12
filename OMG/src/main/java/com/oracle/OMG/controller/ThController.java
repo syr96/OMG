@@ -23,33 +23,6 @@ public class ThController {
 	
 	private final ThQnAService qs;
 	
-	@GetMapping("/notice")
-	public String noticeList(Board board, String currentPage, Model model, HttpSession session){
-		System.out.println("ThController noticeList Start...");
-		
-		return "th/noticeList";
-	}
-	
-	@GetMapping("/notice/write")
-	public String noticeWriteForm(){
-		System.out.println("ThController noticeWriteForm Start...");
-		return "th/noticeWriteForm";
-	}
-	
-	// URI 변경 예정
-	@GetMapping("/notice/detail")
-	public String noticeDetail(){
-		System.out.println("ThController noticeDetail Start...");
-		return "th/noticeDetail";
-	}
-
-	// URI 변경 예정
-	@GetMapping("/notice/update")
-	public String noticeUpdateForm(){
-		System.out.println("ThController noticeUpdateForm Start...");
-		return "th/noticeUpdateForm";
-	}
-	
 	@GetMapping("/qna")
 	public String QnAList(Board board, String currentPage, Model model, HttpSession session){
 		System.out.println("ThController QnAList Start...");
