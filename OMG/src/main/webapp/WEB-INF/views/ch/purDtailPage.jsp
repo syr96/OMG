@@ -120,7 +120,7 @@
 									<input type="number" name="qty${status.index }" value="${pdList.qty }" id="qty${status.index }" disabled="disabled">
 									<input type="hidden" name="code${status.index }" value="${pdList.code }" id="code${status.index }" disabled="disabled">
 									<button type="button" onclick="changeQty">완료</button>
-									<button type="button" onclick="chagneQtyBtn(${status.index })">취소</button>
+									<button type="button" onclick="changeQtyBtn(${status.index })">취소</button>
 								</form>
 							</td>
 							<td class="text-end"><fmt:formatNumber value="${pdList.price_sum }" pattern="#,###"/>원</td>
