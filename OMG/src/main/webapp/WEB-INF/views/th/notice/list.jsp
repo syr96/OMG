@@ -25,7 +25,7 @@
 				</div>
 				<div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
 					<div class="dt-buttons">
-						<button class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button" onclick="location.href='/notice/write'">
+						<button id="regBtn" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
 							<span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">공지글 작성</span></span>
 						</button>
 					</div>
@@ -48,29 +48,40 @@
 						<th>조회수</th>
 					</tr>
 				</thead>
-				
+
 				<c:forEach var="notice" items="${noticeList }">
 					<tbody>
-						<tr style="cursor: pointer;">
-							<td class="col-md-2">
-								${notice.brd_id }
-							</td>
-							<td class="col-md-3">
-								${notice.title }
-							</td>
-							<td class="col-md-3">
-								${notice.mem_name }
-							</td>
-							<td class="col-md-3">
-								${notice.reg_date }
-							</td>
-							<td class="col-md-1">
-								${notice.view_cnt }
-							</td>
+						<tr onclick="readNotice(${notice.brd_id})" style="cursor: pointer;"">
+							<td class="col-md-2">${notice.brd_id }</td>
+							<td class="col-md-3">${notice.title }</td>
+							<td class="col-md-3">${notice.mem_name }</td>
+							<td class="col-md-3">${notice.reg_date }</td>
+							<td class="col-md-1">${notice.view_cnt }</td>
 						</tr>
 					</tbody>
 				</c:forEach>
 			</table>
+
+
+
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">결과창</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">처리가 완료되었습니다</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
 		</div>
 
 		<!-- 페이지 네이션 -->
@@ -105,9 +116,42 @@
 			</div>
 		</div>
 	</div>
+	
+
 
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
+	<!-- JS: body 태그 닫히기 바로전에 두는게 좋음 jQuery 라이브러리도 마찬가지-->
+	<script type="text/javascript">
+		function readNotice(brd_id){
+			window.location.href = "/notice/get?brd_id=" + brd_id
+		}
+		$(document).ready(function() {
+			
+			var result = '${result}';
+			checkModal(result);
+			
+			function checkModal(result) {
+				
+				if (result ==='') {
+					return;
+				}
+				
+				if (parseInt(result) > 0){
+					$(".modal-body").html("게시글 " + parseInt(result) + " 번이 등록되었습니다.");
+				}
+				
+				$("#exampleModal").modal("show");
+			}
+			
+			$("#regBtn").on("click", function() {
+				window.location.href = "/notice/register";
+			});
+
+		});
+	</script>
+
 </body>
 
 </html>

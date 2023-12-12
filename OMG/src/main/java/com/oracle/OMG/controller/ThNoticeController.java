@@ -64,8 +64,9 @@ public class ThNoticeController {
 		
 		// 새로 등록된 게시물 번호 전달하기 위해 사용
 		rttr.addFlashAttribute("result", board.getBrd_id());
+		log.info("board.getBrd_id(): " + board.getBrd_id());
 		
-		return "redirect:/board/list";
+		return "redirect:/notice/list";
 	}
 
 	// RequestParam 생략 가능하다는데 한번해보기 
@@ -88,7 +89,7 @@ public class ThNoticeController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/board/list";
+		return "redirect:/notice/list";
 	}
 	
 	@PostMapping("/remove")
@@ -100,6 +101,6 @@ public class ThNoticeController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/board/list";
+		return "redirect:/notice/list";
 	}
 }

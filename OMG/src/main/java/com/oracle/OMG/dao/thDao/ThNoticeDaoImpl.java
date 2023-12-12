@@ -60,7 +60,7 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 		int insertResult = 0;
 		log.info("board: {}", board);
 		try {
-			insertResult = session.insert("insertNotice", board);
+			insertResult = session.insert("insertSelectKeyNotice", board);
 			
 		} catch (Exception e) {
 			log.info(e.getMessage());
@@ -72,7 +72,7 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	public Board readNotice(int brd_id) {
 		Board notice = null;
 		try {
-			notice= session.selectOne("insertNotice", brd_id);
+			notice= session.selectOne("readNotice", brd_id);
 			log.info("notice: {}", notice);
 		} catch (Exception e) {
 			log.info(e.getMessage());

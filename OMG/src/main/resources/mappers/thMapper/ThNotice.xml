@@ -41,7 +41,7 @@
 			SELECT brd_id_seq.nextval FROM dual
 		</selectKey>		
 		INSERT INTO board( brd_id,    mem_id , brd_lg, brd_md,   title ,   brd_cn ,   view_cnt , reg_date, brd_group, brd_step)
-			   VALUES(   #{brd_id}, #{mem_id}, 700   , 100   , #{title}, #{brd_cn}, #{view_cnt}, SYSDATE , #{brd_id},    0    )
+			   VALUES(   #{brd_id}, #{mem_id}, 700   , 100   , #{title}, #{brd_cn},  	0      , SYSDATE , #{brd_id},    0    )
 	</insert>
 	
 	<select id="readNotice" parameterType="int" resultType="Board">

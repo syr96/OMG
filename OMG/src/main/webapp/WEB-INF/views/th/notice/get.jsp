@@ -11,61 +11,58 @@
 	<h4 class="fw-bold py-3 mb-4">
 		<span class="text-muted fw-light">고객지원/</span> 공지사항
 	</h4>
-	<div class="d-flex justify-content-end flex-wrap gap-3 mb-3">
-		<button type="button" class="btn btn-secondary">목록</button>
-	</div>
+	<form role="form" action="/notice/register" method="post">
+		<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
 
-	<div class="card g-3 mt-1 mb-3">
-		<div class="card-body row g-3">
-			<div class="col-lg-12">
-				<div class="d-flex justify-content-between align-items-center flex-wrap gap-1 border-bottom">
-					<div class="me-1">
-						<h5 class="mb-1">공지사항 제목 들어갈 곳</h5>
-						<p class="mb-1">
-							<span class="fw-medium">작성자 아이콘과 이름</span>
-						</p>
-					</div>
-					<div class="me-1">
-						<p></p>
-						<p class="mb-1">
-							<span class="fw-medium">작성일자</span>
-						</p>
-					</div>
-				</div>
+			<div class="d-flex flex-column justify-content-center">
+				<h4 class="mb-1 mt-3">공지사항 작성</h4>
+				<p class="text-muted">아래에 내용을 적어주세요</p>
+			</div>
+			<div class="d-flex align-content-center flex-wrap gap-3">
+				<button type="submit" class="btn btn-primary" onclick="location.href='/notice/modify?brd_id=${notice.brd_id}'">수정하기</button>
+				<button type="button" class="btn btn-secondary" onclick="location.href='/notice/list'">목록</button>
+			</div>
 
-				<div class="card academy-content shadow-none">
-					<div class="p-2">
-						<div class="d-flex justify-content-end align-items-center flex-wrap mb-4 gap-1 ">
-							<i class="bx bx-share-alt bx-sm mx-2"></i> <i class="bx bx-bookmarks bx-sm"></i>
+
+			<div class="col-12">
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label" for="ecommerce-product-name">게시글 번호</label>
+							<input type="number" name="brd_id" value="${notice.brd_id }" readonly class="form-control" id="ecommerce-product-name" placeholder="제목을 입력해주세요" aria-label="Product title">
 						</div>
-						<div class="cursor-pointer">
-							<div class="plyr plyr--full-ui plyr--video plyr--html5 plyr--fullscreen-enabled plyr--paused plyr--stopped plyr--pip-supported plyr__poster-enabled" style="border-radius: 7px;">
-								<div class="plyr__video-wrapper">
-									<video class="w-100" poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="plyr-video-player" playsinline="" data-poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg">
-										<source src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" type="video/mp4">
-									</video>
-									<div class="plyr__poster" style="display: none; background-image: url(&quot;https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg&quot;);"></div>
-								</div>
-								<div class="plyr__captions" dir="auto"></div>
+						<div class="mb-3">
+							<label class="form-label" for="ecommerce-product-name">제목</label>
+							<input type="text" name="title" value="${notice.title }" readonly class="form-control" id="ecommerce-product-title" placeholder="제목을 입력해주세요" aria-label="Product title">
+						</div>
+						<div class="row mb-3">
+							<div class="col-6">
+								<label class="form-label" for="ecommerce-product-sku">작성자</label>
+								<input type="text" name="mem_name" readonly value="${notice.mem_name }"  class="form-control" id="ecommerce-product-sku" aria-label="Product SKU" >
+							</div>
+							<div class="col-6">
+								<label class="form-label" for="ecommerce-product-sku">작성일</label>
+								<input type="text" name="mem_name" readonly value="${notice.reg_date }"  class="form-control" id="ecommerce-product-reg_date" aria-label="Product SKU" >
 							</div>
 						</div>
-					</div>
-					<div class="card-body">
-						<p>내용을 매우 길게</p>
+
+						<!-- Description -->
+						<div class="mb-3">
+							<label class="form-label">내용 </label>
+							<textarea class="form-control" name="brd_cn" readonly id="exampleFormControlTextarea1" rows="15">${notice.brd_cn }</textarea>
+						</div>
+
+						<div class="mb-3">
+							<label for="formFile" class="form-label">첨부파일</label>
+							<input class="form-control" type="file" id="formFile">
+						</div>
 
 					</div>
 				</div>
 			</div>
 
 		</div>
-	</div>
-
-
-	<div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
-		<button type="submit" class="btn btn-primary">수정</button>
-
-		<button type="button" class="btn btn-warning">삭제</button>
-	</div>
+	</form>
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
