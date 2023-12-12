@@ -5,6 +5,44 @@
 <head>
 <meta charset="UTF-8">
 <title>문의</title>
+<script type="text/javascript">
+	
+	// 다른 페이지로 이동
+	function movePage(pageNum) {
+		location.href	= 'qna?currentPage='+pageNum
+	}
+
+	// 이전 페이지블럭 이동
+	function movePrevBlock() {
+		var pageNum		= ${page.startPage - page.pageBlock }
+		location.href	= 'qna?currentPage='+pageNum
+	}
+	
+	// 다음 페이집블럭 이동
+	function moveNextBlock() {
+		var pageNum		= ${page.startPage + page.pageBlock }
+		location.href	= 'qna?currentPage='+pageNum
+	}
+	
+	// 1페이지로 이동(10페이지 이하일때)
+	function movePageOne() {
+		location.href	= 'qna?currentPage='+1
+	}
+	
+	// 끝 페이지로 이동(10페이지 이하일때)
+	function movePageEnd() {
+		location.href	= 'qna?currentPage='+${page.endPage}
+	}
+	
+	
+	// 상세 페이지 이동
+	function moveQnADetail(brd_id) {
+		var pageNum		= ${page.currentPage}
+		location.href 	= 'qna/detail?brd_id=' +brd_id
+								   +'&pageNum='+pageNum	
+	}
+	
+</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/menu.jsp"%>
@@ -50,7 +88,6 @@
 			</div>
 		</div>
 		<div class="table-responsive mt-2 mb-3">
-			<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 			<table class="table table-hover border-top">
 				<thead>
 					<tr>
@@ -64,19 +101,13 @@
 				</thead>
 				<tbody>
 					<c:forEach var="QnA" items="${QnAList }" varStatus="QnAStts">
-						<tr>
+						<c:set var="num" value="${page.total-page.start+1 }"></c:set>
+						<tr onclick="moveQnADetail(${QnA.brd_id})" style="cursor: pointer;">
 							<td>
-								<!-- 							<i class="fab fa-angular fa-lg text-danger me-3"></i> <span class="fw-medium">Angular Project</span> -->
 								${QnA.brd_id }
 							</td>
 							<td>${QnA.title }</td>
-							<td>${QnA.mem_name }
-								<!-- 							<ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center"> -->
-								<!-- 								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller"><img src="assets/img/avatars/5.png" alt="Avatar" class="rounded-circle"></li> -->
-								<!-- 								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson"><img src="assets/img/avatars/6.png" alt="Avatar" class="rounded-circle"></li> -->
-								<!-- 								<li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker"><img src="assets/img/avatars/7.png" alt="Avatar" class="rounded-circle"></li> -->
-								<!-- 							</ul> -->
-							</td>
+							<td>${QnA.mem_name }</td>
 							<td>
 								<c:if test="${QnA.qna_stts == 0 }">
 									<span class="badge bg-label-warning me-1">답변대기</span>
@@ -102,13 +133,30 @@
 			<div class="col-sm-12 col-md-6 d-flex justify-content-end">
 				<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
 					<ul class="pagination">
-						<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"><<</a></li>
-						<li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">1</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="1" tabindex="0" class="page-link">2</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="2" tabindex="0" class="page-link">3</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="3" tabindex="0" class="page-link">4</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="4" tabindex="0" class="page-link">5</a></li>
-						<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">>></a></li>
+						<!-- 이전 블럭 이동 -->
+						<c:if test="${page.currentPage >= 1 && page.currentPage <= 10 }">
+							<li class="paginate_button page-item"><a href="#movePageOne" onclick="movePageOne(); return false;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> << </a></li>
+						</c:if>
+						<c:if test="${page.startPage > page.pageBlock }">
+							<li class="paginate_button page-item"><a href="#movePrevBlock" onclick="movePrevBlock(); return false;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> << </a></li>
+						</c:if>
+
+						<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }" varStatus="status">
+							<c:if test="${i == page.currentPage }">
+								<li class="paginate_button page-item active"><a href="#movePage" onclick="movePage(${i}); return false;" onkeypress="this.onclick;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> ${i} </a></li>
+							</c:if>
+							<c:if test="${i != page.currentPage }">
+								<li class="paginate_button page-item"><a href="#movePage" onclick="movePage(${i}); return false;" onkeypress="this.onclick;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> ${i} </a></li>
+							</c:if>
+						</c:forEach>
+
+						<!-- 다음 블럭 이동 -->
+						<c:if test="${page.endPage < page.totalPage }">
+							<li class="paginate_button page-item"><a href="#moveNextBlock" onclick="moveNextBlock(); return false;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> >> </a></li>
+						</c:if>
+						<c:if test="${page.currentPage >= 1 && page.currentPage <= 10 }">
+							<li class="paginate_button page-item"><a href="#movePageEnd" onclick="movePageEnd(); return false;" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> >> </a></li>
+						</c:if>
 					</ul>
 				</div>
 			</div>

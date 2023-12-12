@@ -58,7 +58,7 @@ public class ThController {
 		totalQnA = qs.totalQnA();
 		
 		// Pagination								페이지당 가져올 게시글수
-		Paging page = new Paging(totalQnA, currentPage, 10);
+		Paging page = new Paging(totalQnA, currentPage, 3);
 		System.out.println("page --> " + page);
 		
 		// board DTO에 담음(조회용변수 start, end 존재)
@@ -70,6 +70,8 @@ public class ThController {
 		
 		// model에 저장
 		model.addAttribute("QnAList", QnAList);
+		model.addAttribute("page", page);
+		
 		return "th/QnAList";
 	}	
 	
@@ -81,8 +83,15 @@ public class ThController {
 	
 	// URI 변경 예정
 	@GetMapping("/qna/detail")
-	public String QnADetail(){
+	public String QnADetail(Board board, Model model){
 		System.out.println("ThController QnADetail Start...");
+		System.out.println("ThController QnADetail brd_id -->" + board.getBrd_id());
+		System.out.println("ThController QnADetail pageNum -->" + board.getPageNum());
+		Board boardResult = qs.selectQnADetail(board);
+		
+		model.addAttribute("QnA", boardResult);
+		model.addAttribute("pageNum", board.getPageNum());
+		
 		return "th/QnADetail";
 	}
 	

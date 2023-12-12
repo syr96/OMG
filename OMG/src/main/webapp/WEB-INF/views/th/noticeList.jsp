@@ -185,18 +185,32 @@
 			<div class="col-sm-12 col-md-6 d-flex justify-content-end">
 				<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
 					<ul class="pagination">
-						<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"><<</a></li>
-						<li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">1</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="1" tabindex="0" class="page-link">2</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="2" tabindex="0" class="page-link">3</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="3" tabindex="0" class="page-link">4</a></li>
-						<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0" role="link" data-dt-idx="4" tabindex="0" class="page-link">5</a></li>
-						<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">>></a></li>
+						<!-- 이전 블럭 이동 -->
+						<c:if test="${page.startPage > page.pageBlock }">
+							<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> << </a></li>
+						</c:if>
+
+						<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }" varStatus="status">
+							<li class="paginate_button page-item"><c:if test="${i == page.currentPage }">
+									<a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">
+										<b class="text-primary">${i}</b>
+									</a>
+								</c:if> <c:if test="${i != page.currentPage }">
+									<a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> ${i} </a>
+								</c:if></li>
+						</c:forEach>
+
+						<!-- 다음 블럭 이동 -->
+						<c:if test="${page.endPage < page.totalPage }">
+							<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> >> </a></li>
+						</c:if>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
+
+
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 
