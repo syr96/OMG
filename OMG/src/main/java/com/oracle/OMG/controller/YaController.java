@@ -56,7 +56,7 @@ public class YaController {
 	}
 	
 	//거래처 상세보기
-	@GetMapping(value="/customerDetail")
+	@GetMapping("/customerDetail")
 	@ResponseBody
 	public Map<String, Object> customerDetail(@RequestParam("custcode")int custcode) {
 		System.out.println("YaController Start customerDetail start...");
@@ -72,7 +72,7 @@ public class YaController {
 	}
 	
 	//직원 전체조회 ( 거래처수정용) 미완 
-	@PostMapping(value="/memberList")
+	@PostMapping("/memberList")
 	@ResponseBody
 	public Map<String, Object> memberList(@RequestBody Member member){
 		Map<String, Object> result = new HashMap<>();
@@ -86,7 +86,7 @@ public class YaController {
 	
 	
 	//거래처 정보수정
-	@PostMapping(value="/updateCustomer")
+	@PostMapping("/updateCustomer")
 	@ResponseBody
 	public Map<String,Object> updateCustomer(@RequestBody Customer customer){
 		 Map<String, Object> result = new HashMap<>();
@@ -113,7 +113,7 @@ public class YaController {
 	}
 	
 	//거래처삭제
-	@GetMapping(value="/deleteCustomer")
+	@GetMapping("/deleteCustomer")
 	public String deleteCustomer(int custcode, Model model) {
 		int deleteResult = ycs.deleteCustomer(custcode);
 		System.out.println("YaController ycs.deleteCustomer start...");
@@ -122,7 +122,7 @@ public class YaController {
 	}
 	
 	//거래처 검색
-	@GetMapping(value="/customerSearch")
+	@GetMapping("/customerSearch")
 	@ResponseBody
 	public Map<String, Object> customerSearch(HttpServletRequest request){
 		System.out.println("YaController ycs.customerSearch Start...");
@@ -134,9 +134,7 @@ public class YaController {
 		
 		int totalSearch = ycs.totalSearch(keyword);
 		System.out.println("YaController totalSearch(keyword):"+totalSearch);
-		
-		
-		
+					
 		Paging paging = new Paging(totalSearch, currentPage);
 		List<Customer> customerSearchList = ycs.customerSearch(keyword,paging.getStart(), paging.getEnd());
 		
@@ -147,4 +145,15 @@ public class YaController {
 		return result;
 	}
 	
+	//거래처판매실적 조회
+	@GetMapping("/customerSales")
+	@ResponseBody
+	public Map<String, Object> customerSalesList (Customer customer ){
+		System.out.println("YaController ycs.custoemrSales start...");
+		List<Customer> customerSalesList = ycs.customerSalesList(customer);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("customerSalesList", customerSalesList);
+		return result;
+	}
 }
