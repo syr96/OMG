@@ -27,12 +27,12 @@
 												<option value="${pur_custList.custcode }" data-name=${pur_custList.company } data-mgr_name=${pur_custList.mem_name }>${pur_custList.company }</option>
 											</c:forEach>
 										</select>
-									<button onclick="saveCustcode()">확인</button>
+									<button type="button" onclick="saveCustcode()">확인</button>
 								</td>
 								<td id="inputCustCode" style="display: none;">
-									회사명:<input type="hidden" id="inputCode" name="custcode" disabled="disabled">
+									회사명:<input type="hidden" id="inputCode" name="custcode" disabled="disabled" value="">
 									<span id="company_name"></span>
-									<button onclick="saveCustcode()">취소</button>
+									<button type="button" onclick="saveCustcode()">취소</button>
 								</td>
 							</tr>
 							<tr style="display: none;" id="mgr_row">
@@ -124,6 +124,7 @@
 		if($("#inputCustCode").css("display") == "none"){
 			$("#inputCustCode").show();
 			$("#inputCode").prop("disabled",false);
+			$("#inputCode").val()
 			$("#mgr_row").show();
 			$("#company_name").html(company_name);
 			$("#mgr_name").html(mgr_name);

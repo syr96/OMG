@@ -135,7 +135,7 @@ public class ChController {
 	public String writePurchase(Purchase purchase, Map<String, Object> detailMap) {
 		System.out.println("ChController writePurchase Start...");
 		
-		System.out.println(purchase.getCustcode());
+		System.out.println("custcode->"+purchase.getCustcode());
 		
 		return "redirect:purList";
 	}
