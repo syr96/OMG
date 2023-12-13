@@ -5,13 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>제품 등록</title>
+<script type="text/javascript">
+     // msg 값이 존재하면 alert 띄우기
+     var msg = "${msg}";
+     if(msg.length > 0)	alert(msg);
+</script>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<script type="text/javascript">
-     var msg = "${msg}";
-     // msg 값이 존재하면 alert 띄우기
-     if(msg.length > 0)	alert("msg -> " + msg);
-</script>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
 	<h4 class="fw-bold py-3 mb-4">

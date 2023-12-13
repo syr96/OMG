@@ -17,6 +17,10 @@
 			}
 		)
 	};
+	
+	// msg 값이 존재하면 alert 띄우기
+	var msg = "${msg}";
+	if(msg.length > 0)	alert(msg);
 </script>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>

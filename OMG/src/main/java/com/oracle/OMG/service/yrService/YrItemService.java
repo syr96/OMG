@@ -9,5 +9,6 @@ public interface YrItemService {
 	List<Item> 	itemList();
 	Item 		selectItem(int code);
 	int 		insertItem(Item item);
+	int 		updateItem(Item item);
 
 }

@@ -36,4 +36,11 @@ public class YrItemServiceImpl implements YrItemService {
 		return result;
 	}
 
+	@Override
+	public int updateItem(Item item) {
+		System.out.println("YrItemServiceImpl updateItem start");
+		int result = yid.updateItem(item);
+		return result;
+	}
+
 }

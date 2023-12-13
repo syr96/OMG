@@ -5,8 +5,6 @@
 <h6 class="fw-bold py-3 mb-4">
 	<span class="text-muted fw-light">제품명: </span>${i.name }
 </h6>
-<fmt:formatNumber value="${i.input_price }" pattern="#,###" var="input_price"/>
-<fmt:formatNumber value="${i.output_price }" pattern="#,###" var="output_price"/>
 <!-- input X (물류팀 제외한 다른 팀 view) -->
 <table class="table table-bordered mb-4">
 
@@ -26,8 +24,10 @@
     
     <tr>
       <th class="table-primary">매입가격</th>
+      <fmt:formatNumber value="${i.input_price }" pattern="#,###" var="input_price"/>
       <td>${input_price }원</td>
       <th class="table-primary">매출가격</th>
+	  <fmt:formatNumber value="${i.output_price }" pattern="#,###" var="output_price"/>
       <td>${output_price }원</td>
     </tr>
     
@@ -52,20 +52,27 @@
       <td>${i.reg_date }</td>
     </tr>
     
+    <c:if test="${i.deleted == '1' }">
+	    <tr>
+	    	<th class="table-primary">판매종료일</th>
+	    	<td colspan="3">${i.delete_date }</td>
+	    </tr>
+    </c:if>
+    
 </table>
 <!-- / input X (물류팀 제외한 다른 팀 view) -->
 
 
 <!-- input O (물류팀 view) -->
 <form method="post" action="/item/update">
-	<input type="hidden" name="code" value="${i.code }" id="code">
+	<input type="hidden" name="code" value="${i.code }">
 	<table class="table table-bordered mb-4">
 	    <tr>
 	      <th class="table-primary">제품코드</th>
 	      <td>${i.code }</td>
 	      <th class="table-primary">거래처</th>
 	      <td>
-	      	<select class="form-select" name="custcode" id="custcode">
+	      	<select class="form-select" name="custcode">
               <option selected value="${i.custcode }">${i.company }</option>
               <c:forEach items="${cs }" var="cs">
 	              <option value="${cs.custcode }">${cs.company }</option>              
@@ -77,11 +84,11 @@
 	    <tr>
 	      <th class="table-primary">제품명</th>
 	      <td>
-	      	<input type="text" class="form-control" value="${i.name }" name="name" id="name"/> 
+	      	<input type="text" class="form-control" value="${i.name }" name="name"/> 
 	      </td>
 	      <th class="table-primary">카테고리</th>
 	      <td>
-	      	<select class="form-select" name="cate_md" id="cate_md">
+	      	<select class="form-select" name="cate_md">
               <option selected value="${i.cate_md }">${i.com_cn }</option>
               <c:forEach items="${cm }" var="cm">
 	              <option value="${cm.ct_md }">${cm.com_cn }</option>
@@ -93,25 +100,25 @@
 	    <tr>
 	      <th class="table-primary">매입가격</th>
 	      <td>
-	      	<input type="number" class="form-control" value="${i.input_price }" name="input_price" id="input_price"/>
+	      	<input type="number" class="form-control" value="${i.input_price }" name="input_price"/>
 	      </td>
 	      <th class="table-primary">매출가격</th>
 	      <td>
-	      	<input type="number" class="form-control" value="${i.output_price }" name="output_price" id="output_price"/>
+	      	<input type="number" class="form-control" value="${i.output_price }" name="output_price"/>
 	      </td>
 	    </tr>
 	    
 	    <tr>
 	      <th class="table-primary">제품내용</th>
 	      <td colspan="3">
-	      	<textarea class="form-control" rows="3" name="item_cn" id="item_cn">${i.item_cn }</textarea>
+	      	<textarea class="form-control" rows="3" name="item_cn">${i.item_cn }</textarea>
 	      </td>
 	    </tr>
 	    
 	    <tr>
 	      <th class="table-primary">판매여부</th>
 	      <td>
-	      	<select class="form-select" name="deleted" id="deleted">
+	      	<select class="form-select" name="deleted">
 	      		<c:choose>
 	      			<c:when test="${i.deleted == '0'}">
 	      				<!-- 판매여부 = 정상 -->
@@ -128,8 +135,15 @@
             </select>
 	      </td>
 	      <th class="table-primary">등록일</th>
-	      <td><input type="date" class="form-control" name="reg_date" id="reg_date" value="${i.reg_date }"/></td>
+	      <td><input type="date" class="form-control" name="reg_date" value="${i.reg_date }"/></td>
 	    </tr>
+	    
+	    <c:if test="${i.deleted == '1' }">
+		    <tr>
+		    	<th class="table-primary">판매종료일</th>
+		    	<td colspan="3"><input type="date" class="form-control" name="delete_date" value="${i.delete_date }"/></td>
+		    </tr>
+	    </c:if>
 	    
 	</table>
 	

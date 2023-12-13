@@ -52,4 +52,16 @@ public class YrItemDaoImpl implements YrItemDao {
 		return result;
 	}
 
+	@Override
+	public int updateItem(Item item) {
+		System.out.println("YrItemDaoImpl insertItem start");
+		int result = 0;
+		try {
+			result = session.update("yrUpdateItem", item);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+
 }
