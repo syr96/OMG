@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,62 +7,6 @@
 <title>Insert title here</title>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/menu.jsp" %>
-<script type="text/javascript">
-	function item_chk(){
-		var code = $("#code").val();
-		var i_date = $("#pur_date").val();
-		$.ajax({
-			data:{code : code, pur_date : i_date},
-			url: "chkDItem",
-			success: function(data){
-				if(data > 0){
-					$("#insertBtn").prop("disabled", true);
-				} else{
-					$("#insertBtn").prop("disabled", false);
-				}
-			}
-			
-		});
-		
-	}
-	
-	function inSertDetail(){
-		var i_qty = $("#qty").val();
-		
-		if(i_qty <= 0 || i_qty == null){
-			alert("수량을 선택하세요.");
-		} else {
-			var i_code = $("#code").val();
-			var i_date = $("#pur_date").val();	
-			
-			$.ajax({
-				type: "POST",
-				data: {pur_date :i_date, code : i_code, qty : i_qty},
-				url: "insertDetail",
-				dataType: "html",
-				success:function(data){
-					$("#d_tble").html(data);
-					$("#qty").val('');
-				}
-			
-			});
-		}
-	}
-	
-	function chageQtyBtn(index){
-		if($("#td"+index).css("display") == "none"){
-			$("#inputTd"+index).hide();
-			$("#qty"+index).prop("disabled", true);
-			$("#code"+index).prop("disabled", true);
-			$("#td"+index).show();
-		} else{
-			$("#td"+index).hide();
-			$("#inputTd"+index).show();
-			$("#qty"+index).prop("disabled", false);
-			$("#code"+index).prop("disabled", false);
-		}
-	}
-</script>
 </head>
 <body onload="item_chk()">
 	<div class="conatiner">
@@ -74,7 +16,7 @@
 			</div>
 			<div class="col-12">
 				<div class="row text-center bg-white">
-					<div class="col-6">날짜 : ${pc.pur_date }</div><input type="hidden" value="${pc.pur_date }">
+					<div class="col-6">날짜 : ${pc.pur_date }</div>
 					<div class="col-6">회사명 : ${pc.company }</div>
 					<div class="col-6">발주자 : ${pc.appli_name }</div>
 					<div class="col-6">담당자 : ${pc.mgr_name }</div>
@@ -137,5 +79,62 @@
 			
 		</div>
 	</div>
+<%@ include file="../common/footer.jsp" %>	
+<script type="text/javascript">
+	function item_chk(){
+		var code = $("#code").val();
+		var i_date = $("#pur_date").val();
+		$.ajax({
+			data:{code : code, pur_date : i_date},
+			url: "chkDItem",
+			success: function(data){
+				if(data > 0){
+					$("#insertBtn").prop("disabled", true);
+				} else{
+					$("#insertBtn").prop("disabled", false);
+				}
+			}
+			
+		});
+		
+	}
+	
+	function inSertDetail(){
+		var i_qty = $("#qty").val();
+		
+		if(i_qty <= 0 || i_qty == null){
+			alert("수량을 선택하세요.");
+		} else {
+			var i_code = $("#code").val();
+			var i_date = $("#pur_date").val();	
+			
+			$.ajax({
+				type: "POST",
+				data: {pur_date :i_date, code : i_code, qty : i_qty},
+				url: "insertDetail",
+				dataType: "html",
+				success:function(data){
+					$("#d_tble").html(data);
+					$("#qty").val('');
+				}
+			
+			});
+		}
+	}
+	
+	function changeQtyBtn(index){
+		if($("#td"+index).css("display") == "none"){
+			$("#inputTd"+index).hide();
+			$("#qty"+index).prop("disabled", true);
+			$("#code"+index).prop("disabled", true);
+			$("#td"+index).show();
+		} else{
+			$("#td"+index).hide();
+			$("#inputTd"+index).show();
+			$("#qty"+index).prop("disabled", false);
+			$("#code"+index).prop("disabled", false);
+		}
+	}
+</script>	
 </body>
 </html>
