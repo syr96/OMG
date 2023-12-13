@@ -7,18 +7,24 @@
 <title>제품 등록</title>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<c:if test="${not empty alert }">
+	<script type="text/javascript">
+		alert('${msg}');
+	</script>
+</c:if>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
 	<h4 class="fw-bold py-3 mb-4">
 		<span class="text-muted fw-light">제품 관리 / </span>
-		<a href="/item/create" class="linkText">제품 등록</a>
+		<a href="/item/create" class="linkText">제품 등록 ${msg }</a>
 	</h4>
 	
 	<div class="card">
 	  <div class="card overflow-hidden" style="height: 700px">
 	  
-			<!-- 제품 등록 -->
 			<div class="card-body table-responsive text-nowrap">
+			
+				<!-- 제품 등록 -->
 				<form method="post" action="/item/createPro">
 					<table class="table table-bordered mb-4">
 						<tr>

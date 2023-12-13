@@ -44,7 +44,7 @@ public class YrItemController {
 
 	// 아이템 상세보기
 	@GetMapping("/detail")
-	public String itemDetail(@RequestParam("code") int code, Model model) {
+	public String itemDetail(@RequestParam("code") int code, Model model, HttpSession session) {
 		System.out.println("YrItemController itemDetail start");
 		
 		// 제품 상세정보
@@ -64,15 +64,17 @@ public class YrItemController {
 	}
 	
 	@PostMapping("/update")
-	public String itemUpdate(Item item, Model model) {
+	public String itemUpdate(Item item, Model model, HttpSession session) {
 		System.out.println("YrItemController itemUpdate start");
 		
 		
 		return null;
 	}
 	
-	@GetMapping("/create")
-	public String itemCreate(Model model) {
+	@RequestMapping("/create") // GetMapping -> RequestMapping 으로 바꿈
+	public String itemCreate(Model model, HttpSession session) {
+		System.out.println("YrItemController itemCreate start");
+		
 		// 거래처 전체 리스트
 		List<Customer> customer = ycss.customerList();
 		
@@ -85,9 +87,16 @@ public class YrItemController {
 		return "yr/item/itemCreate";
 	}
 	
-	@PostMapping("/createPro")
-	public String itemCreatePro() {
+	@RequestMapping("/createPro") // PostMapping -> RequestMapping 으로 바꿈
+	public String itemCreatePro(Model model, Item item) {
+		System.out.println("YrItemController itemCreatePro start");
 		
-		return "yr/item/itemCreate";
+		int result = yis.insertItem(item);
+		
+		System.out.println("YrItemController itemCreatePro result -> " + result);
+		if(result > 0) model.addAttribute("msg", "등록 완료");
+		else 		   model.addAttribute("msg", "등록 실패");
+		
+		return "forward:create"; // forward:yr/item/itemCreate 에서 수정함
 	}
 }

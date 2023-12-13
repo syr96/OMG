@@ -30,7 +30,7 @@ public class YrItemDaoImpl implements YrItemDao {
 
 	@Override
 	public Item selectItem(int code) {
-		System.out.println("YrItemDaoImpl itemList start");
+		System.out.println("YrItemDaoImpl selectItem start");
 		Item itemDetail = null;
 		try {
 			itemDetail = session.selectOne("yrSelectItem", code);
@@ -38,6 +38,18 @@ public class YrItemDaoImpl implements YrItemDao {
 			System.out.println(e.getMessage());
 		}
 		return itemDetail;
+	}
+
+	@Override
+	public int insertItem(Item item) {
+		System.out.println("YrItemDaoImpl insertItem start");
+		int result = 0;
+		try {
+			result = session.insert("yrInsertItem", item);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
 	}
 
 }
