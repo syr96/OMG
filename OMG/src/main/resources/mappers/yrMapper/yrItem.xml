@@ -19,4 +19,9 @@
 		and i.cate_lg = cm.ct_lg
 		and i.cate_md = cm.ct_md
 	</select>
+	
+	<select id="yrInsertItem" parameterType="Item" resultType="Item">
+		INSERT INTO item(code, custcode, cate_md, name, item_cn, input_price, output_price, reg_date, deleted)
+		VALUES(ITEM_CODE_SEQ.nextval, #{custcode}, #{cate_md}, #{name}, #{item_cn}, #{input_price}, #{output_price}, #{reg_date}, #{deleted})
+	</select>
 </mapper>

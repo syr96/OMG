@@ -24,9 +24,16 @@ public class YrItemServiceImpl implements YrItemService {
 
 	@Override
 	public Item selectItem(int code) {
-		System.out.println("YrItemServiceImpl itemDetail start");
+		System.out.println("YrItemServiceImpl selectItem start");
 		Item itemDetail = yid.selectItem(code);
 		return itemDetail;
+	}
+
+	@Override
+	public int insertItem(Item item) {
+		System.out.println("YrItemServiceImpl insertItem start");
+		int result = yid.insertItem(item);
+		return result;
 	}
 
 }
