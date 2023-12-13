@@ -8,7 +8,7 @@
           <div class="app-brand demo">
             <a href="/" class="app-brand-link">
               <span class="app-brand-logo demo">
-                <img src="assets/img/logo2.png" alt="logo">
+                <img src="../assets/img/logo2.png" alt="logo">
               </span>
             </a>
 

@@ -71,7 +71,7 @@ public class YrItemController {
 		return null;
 	}
 	
-	@RequestMapping("/create") // GetMapping -> RequestMapping 으로 바꿈
+	@GetMapping("/create") // GetMapping -> RequestMapping 으로 바꿈
 	public String itemCreate(Model model, HttpSession session) {
 		System.out.println("YrItemController itemCreate start");
 		
@@ -87,7 +87,7 @@ public class YrItemController {
 		return "yr/item/itemCreate";
 	}
 	
-	@RequestMapping("/createPro") // PostMapping -> RequestMapping 으로 바꿈
+	@PostMapping("/createPro") // PostMapping -> RequestMapping 으로 바꿈
 	public String itemCreatePro(Model model, Item item) {
 		System.out.println("YrItemController itemCreatePro start");
 		
