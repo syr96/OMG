@@ -7,16 +7,16 @@
 <title>제품 등록</title>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<c:if test="${not empty alert }">
-	<script type="text/javascript">
-		alert('${msg}');
-	</script>
-</c:if>
+<script type="text/javascript">
+     var msg = "${msg}";
+     // msg 값이 존재하면 alert 띄우기
+     if(msg.length > 0)	alert("msg -> " + msg);
+</script>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
 	<h4 class="fw-bold py-3 mb-4">
 		<span class="text-muted fw-light">제품 관리 / </span>
-		<a href="/item/create" class="linkText">제품 등록 ${msg }</a>
+		<a href="/item/create" class="linkText">제품 등록</a>
 	</h4>
 	
 	<div class="card">

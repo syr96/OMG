@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문발주 프로그램</title>
+<title>OMG</title>
 </head>
 <%@ include file="common/header.jsp" %>
 <body>
