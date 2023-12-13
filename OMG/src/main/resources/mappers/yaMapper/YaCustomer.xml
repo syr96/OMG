@@ -89,16 +89,18 @@
                price AS purPrice,
                item_name AS itemName,
                company,
-               custStyle
+               custStyle,
+               businum,
+               custcode
         FROM (
-            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle
+            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
             FROM pur_detail p
             JOIN customer c ON c.custcode = p.custcode
             JOIN item i ON i.code = p.code
 
             UNION
 
-            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle
+            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
             FROM sales_detail s
             JOIN customer c ON c.custcode = s.custcode
             JOIN item i ON i.code = s.code
