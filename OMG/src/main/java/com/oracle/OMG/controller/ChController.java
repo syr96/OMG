@@ -1,16 +1,24 @@
 package com.oracle.OMG.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,8 +53,19 @@ public class ChController {
 		List<Purchase> purList = null;
 		Paging page = null;
 		System.out.println("ChController purList Start...");
+		// 검색(custcode가 있을 때 )
+		if(purchase.getCustcode() >0) {
+			model.addAttribute("srchCompany", purchase.getCustcode());
+		}
+		//검색(날짜가 있을 때)
+		if(purchase.getPur_date() != null) {
+			String purDate = purchase.getPur_date();
+			DateTimeFormatter formmater = DateTimeFormatter.ofPattern("yy/MM/dd");
+			LocalDate ldt = LocalDate.parse(purDate, formmater);
+			model.addAttribute("srchDate", ldt);
+		}
 		
-		totalPur = chPurService.totalPur();
+		totalPur = chPurService.totalPur(purchase);
 		
 		
 		page = new Paging(totalPur, currentPage);
@@ -76,9 +95,12 @@ public class ChController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
+		List<Customer> pur_custList = chCustService.custList();
 		
+		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
+		model.addAttribute("page",page);
 		
 		return "ch/purList";
 	}
@@ -132,10 +154,37 @@ public class ChController {
 	
 	
 	@PostMapping("writePurchase")
-	public String writePurchase(Purchase purchase, Map<String, Object> detailMap) {
+	public String writePurchase(@ModelAttribute Purchase purchase, @RequestParam Map<String, Object> detailMap, int rownum) {
 		System.out.println("ChController writePurchase Start...");
 		
-		System.out.println("custcode->"+purchase.getCustcode());
+		int resultPur = 0;
+		int resultDetail = 0;
+		// Purchase 테이블 작성
+		resultPur = chPurService.writePur(purchase);
+		// 성공시 detail 작성 (fk 때문)
+		if(resultPur>0) {
+			List<PurDetail> detailList = new ArrayList<PurDetail>();
+			for(String key : detailMap.keySet()) {
+				for(int i = 0; i<=rownum; i++) {
+					if(key.contentEquals("code"+i)) {
+						int code = Integer.parseInt((String) detailMap.get("code"+i));
+						int qty = Integer.parseInt((String) detailMap.get("qty"+i));
+						int price = Integer.parseInt((String) detailMap.get("price"+i));
+						
+						PurDetail purDetail = new PurDetail();
+						purDetail.setCode(code);
+						purDetail.setQty(qty);
+						purDetail.setPrice(price);
+						purDetail.setCustcode(purchase.getCustcode());
+						detailList.add(purDetail);
+					}
+				}
+			}
+			if(detailList.size() > 0) {
+				resultDetail = chPurService.detailWrite(detailList);
+			}
+			
+		}
 		
 		return "redirect:purList";
 	}
