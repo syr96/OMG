@@ -80,7 +80,7 @@
 										<c:when test="${purList.pur_status == 0}">진행중</c:when>
 										<c:when test="${purList.pur_status == 1}">완료</c:when>
 										<c:when test="${purList.pur_status == 2}">취소</c:when>
-										<c:when test="${purList.pur_status == 3}">완료</c:when>
+										<c:when test="${purList.pur_status == 3}">입고완료</c:when>
 									</c:choose>
 								</td>
 							</tr>
@@ -88,15 +88,17 @@
 						</c:forEach>
 				    </tbody>
 				  </table>
-					<c:if test="${page.startPage > page.pageBlock }">
-						<a href="javascript:void(0);" onclick="paging(${page.startPage - page.pageBlock })">[이전]</a>		
-					</c:if>
-					<c:forEach var="i" begin="${page.startPage }" end="${page.endPage}">
-						<a href="javascript:void(0);" onclick="paging(${i})">[${i }]</a><!-- 바꾸고 싶다면 currentPage와 keyword를 가져가는 알고리즘을 짜면 될 듯  -->
-					</c:forEach>
-					<c:if test="${page.endPage < page.totalPage }">
-						<a href="javascript:void(0);" onclick="paging(${page.startPage+page.pageBlock })">[다음]</a>
-					</c:if>
+					<div class="text-center">
+						<c:if test="${page.startPage > page.pageBlock }">
+							<a href="javascript:void(0);" onclick="paging(${page.startPage - page.pageBlock })">[이전]</a>		
+						</c:if>
+						<c:forEach var="i" begin="${page.startPage }" end="${page.endPage}">
+							<a href="javascript:void(0);" onclick="paging(${i})">[${i }]</a><!-- 바꾸고 싶다면 currentPage와 keyword를 가져가는 알고리즘을 짜면 될 듯  -->
+						</c:forEach>
+						<c:if test="${page.endPage < page.totalPage }">
+							<a href="javascript:void(0);" onclick="paging(${page.startPage+page.pageBlock })">[다음]</a>
+						</c:if>
+					</div>
 				</div>
 			</div>
 			

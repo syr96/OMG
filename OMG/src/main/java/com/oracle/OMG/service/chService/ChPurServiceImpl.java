@@ -98,4 +98,14 @@ public class ChPurServiceImpl implements ChPurService {
 		return result;
 	}
 
+	@Override
+	public int qtyUpdate(PurDetail pd) {
+		System.out.println("ChPurServiceImpl qtyUdate Start...");
+		int result = 0;
+		
+		result = chPurDao.qtyUpdate(pd);
+		
+		return result;
+	}
+
 }

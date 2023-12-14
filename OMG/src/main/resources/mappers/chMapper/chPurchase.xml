@@ -76,4 +76,11 @@
 			values(sysdate, #{dList.custcode}, #{dList.code}, #{dList.qty}, #{dList.price})
 		</foreach>
 	</insert>
+	
+	<update id="chQtyUpdate" parameterType="Purchase">
+		Update pur_detail
+		Set qty = #{qty}
+		Where pur_date = #{pur_date}
+		and code = #{code}
+	</update>
 </mapper>

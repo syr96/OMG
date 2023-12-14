@@ -122,11 +122,24 @@ public class ChPurDaoImpl implements ChPurDao {
 	@Override
 	public int detailWrite(List<PurDetail> detailList) {
 		System.out.println("ChPurDaoImpl detailWrite start...");
-		System.out.println("detailList----------"+ detailList.size());
 		
 		int result = 0;
 		try {
 			result = session.insert("detailWrite", detailList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int qtyUpdate(PurDetail pd) {
+		System.out.println("ChPurDaoImpl detailWrite start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chQtyUpdate", pd);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

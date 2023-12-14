@@ -107,19 +107,23 @@ public class ChController {
 	// 발주신청 페이지로 이동
 	@RequestMapping("purWriteForm")
 	public String purWriteForm(Model model, HttpSession session) {
-		List<Customer> pur_custList = null; // 매입처 List 
-		
+		List<Customer> pur_custList = null; // 매입처 List
 		System.out.println("ChController purWriteForm Start...");
-		//회원 정보 조회 넣기, 로그인 여부 확인하기 
-		int mem_id = 1001;
+		if(session.getAttribute("mem_id") != null) {
+			
+			//회원 정보 조회 넣기, 로그인 여부 확인하기 
+			int mem_id = 1001;
+			
+			pur_custList = chCustService.custList();
+			
+			model.addAttribute("pur_custList", pur_custList);
+			model.addAttribute("mem_id", mem_id);
+			
+			
+			return "ch/purWriteForm";
+		}
 		
-		pur_custList = chCustService.custList();
-		
-		model.addAttribute("pur_custList", pur_custList);
-		model.addAttribute("mem_id", mem_id);
-		
-		
-		return "ch/purWriteForm";
+		return "redirect:logOut";
 	}
 	
 	@GetMapping("purDtail")
@@ -198,7 +202,6 @@ public class ChController {
 		Item item = itemService.selectItem(pd.getCode());
 		pd.setCustcode(item.getCustcode());
 		pd.setPrice(item.getInput_price());
-		System.out.println("pd.getPur_date" + pd.getPur_date());
 		result = chPurService.insertDetail(pd);
 		if(result > 0) {
 			// PK를 이용한 단일 발주서 확인
@@ -217,6 +220,35 @@ public class ChController {
 			mav.setViewName("ch/purDtable");
 		}
 		
+		return mav;
+	}
+	
+	@ResponseBody
+	@PostMapping("qtyUpdate")
+	public ModelAndView qtyUpdate(PurDetail pd, ModelAndView mav) {
+		System.out.println("ChController qtyUdate Start...");
+		Item item = itemService.selectItem(pd.getCode());
+		pd.setCustcode(item.getCustcode());
+		int result = chPurService.qtyUpdate(pd);
+		if(result > 0) {
+			// PK를 이용한 단일 발주서 확인
+			Purchase pc = new Purchase();
+			pc.setCustcode(pd.getCustcode());
+			pc.setPur_date(pd.getPur_date());
+			// 해당 발주서의 상세 항목 출력 
+			List<PurDetail> pdList = chPurService.purDList(pc);
+			// 람다 이용 총 합계 구하기 
+			int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
+			int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
+			mav.addObject("pdList",pdList);
+			mav.addObject("totalPrice", totalPrice);
+			mav.addObject("totalQty", totalQty);
+			
+			Purchase purchase = chPurService.onePur(pc);
+			mav.addObject("pc", purchase);
+			mav.setViewName("ch/purDtable");
+		}
+		mav.setViewName("ch/purDtable");
 		return mav;
 	}
 	
