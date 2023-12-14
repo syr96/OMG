@@ -8,4 +8,7 @@ public interface MainMemberService {
 
 	Member memSelectByMem(Member member);
 
+	int getLoggedInId();
+	
+	Member getLoggedInMember();
 }

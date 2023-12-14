@@ -1,5 +1,7 @@
 package com.oracle.OMG.service.main;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.mainDao.MainMemberDao;
@@ -13,8 +15,10 @@ public class MainMemberServiceImpl implements MainMemberService {
 	
 	private final MainMemberDao MMemberD;
 	
+	
+	
 	// 노보경
-	// 유저 정보 불러오는 메소드
+	// 사원 정보 불러오는 메소드
 	@Override
 	public Member memSelectById(int mem_id) {
 		
@@ -26,8 +30,10 @@ public class MainMemberServiceImpl implements MainMemberService {
 		
 	}
 	
+	
+	
 	// 노보경
-	// 유저 정보 불러오는 메소드
+	// 사원 정보 불러오는 메소드
 	@Override
 	public Member memSelectByMem(Member member) {
 		
@@ -37,6 +43,31 @@ public class MainMemberServiceImpl implements MainMemberService {
 		
 		return memResult;
 		
+	}
+
+	
+	
+	// 노보경
+	// 관리자 정보 불러오는 메소드
+	@Override
+	public int getLoggedInId() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(authentication.getName());
+		return Integer.parseInt(authentication.getName());
+	}
+	
+	
+	
+	// 노보경
+	// 관리자 정보 불러오는 메소드
+	@Override
+	public Member getLoggedInMember() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && !authentication.getName().equals("anonymousUser") ){
+			Member member = this.memSelectById(Integer.parseInt(authentication.getName()) );
+			return member;
+		}
+		return null;
 	}
 	
 

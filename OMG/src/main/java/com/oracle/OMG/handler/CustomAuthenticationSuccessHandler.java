@@ -21,7 +21,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 										Authentication authentication) throws IOException, ServletException {
 	
 		System.out.println("CustomAuthenticationSuccessHandler onAuthenticationSuccess Start...");
-		response.sendRedirect(request.getContextPath() + "/main");
+		response.sendRedirect(request.getContextPath() + "/");
 	}
+	
+	
 		
 }

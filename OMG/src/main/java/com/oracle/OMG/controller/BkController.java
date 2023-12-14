@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.service.bkService.BkMemberService;
+import com.oracle.OMG.service.main.MainMemberService;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,13 @@ import lombok.extern.slf4j.Slf4j;
 public class BkController {
 	
 	private final BkMemberService bMemberS;
+	private final MainMemberService		MMemberS;
 	
 	
 	@RequestMapping(value = "logIn")
 	public String logIn() {
+		
+		MMemberS.getLoggedInId();
 		
 		System.out.println("BkController logIn Start...");
 		
@@ -112,7 +116,6 @@ public class BkController {
 			
 		}
 	}
-	
 	
 
 

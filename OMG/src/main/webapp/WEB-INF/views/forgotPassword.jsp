@@ -72,7 +72,17 @@
   	
   		function sendCode() {
   			
-  			let tel = $('#')
+  			
+  			var formData = {
+  				 name:		$('#name').val()
+  				,number:	$('#number').val()
+  			};
+  			
+  			$.ajax({
+  				 type:	'POST'
+  				,url:	''
+  			})
+  			
   		}
   	
   	
@@ -101,7 +111,7 @@
               <!-- /Logo -->
               <h4 class="mb-2">비밀번호 찾기</h4>
               <p class="mb-4">입력한 모바일 번호와 ID에 등록된 모바일 번호가 일치할 경우, <br>[SMS 인증번호]가 발송됩니다. 10분 내에 입력바랍니다.</p>
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <form id="formAuthentication" class="mb-3" method="POST">
               	<div class="row">
 	                <div class="mb-3 col-md-6">
 	                  <label for="name" class="form-label">성명</label>
@@ -138,7 +148,7 @@
 		                    id="number"
 		                    name="number"
 		                    placeholder=""
-		                    autofocus
+		                    autofocus 
 		                  />
 	                  		<button type="button" class="btn btn-primary">확인</button>
                   	</div>
