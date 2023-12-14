@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.thDao.ThNoticeDao;
 import com.oracle.OMG.dto.Board;
+import com.oracle.OMG.dto.Criteria;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +24,18 @@ public class ThNoticeServiceImpl implements ThNoticeService {
 		return nd.getTotNotice();
 	}
 
+//	@Override
+//	public List<Board> getNoticeList(Board board) {
+//		log.info("getList....");
+//		return nd.getNoticeList(board);
+//	}
+	
 	@Override
-	public List<Board> getNoticeList(Board board) {
-		log.info("getList....");
-		return nd.getNoticeList(board);
+	public List<Board> getNoticeList(Criteria cri) {
+		log.info("get List with criteria: " + cri);
+		return nd.getListWithPaging(cri);
 	}
+	
 
 	@Override
 	public int registerNotice(Board board) {
@@ -52,7 +60,8 @@ public class ThNoticeServiceImpl implements ThNoticeService {
 		log.info("modify board: " + board);
 		return nd.updateNotice(board);
 	}
-	
+
+
 
 	
 }

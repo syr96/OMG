@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oracle.OMG.dto.Board;
-import com.oracle.OMG.service.thService.Paging;
 import com.oracle.OMG.service.thService.ThQnAService;
+import com.oracle.OMG.service.yaService.Paging;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oracle.OMG.dto.Board;
-import com.oracle.OMG.service.thService.Paging;
+import com.oracle.OMG.dto.Criteria;
+import com.oracle.OMG.dto.PageDTO;
 import com.oracle.OMG.service.thService.ThNoticeService;
 
 import lombok.Data;
@@ -27,30 +28,38 @@ public class ThNoticeController {
 	
 	private final ThNoticeService ns;
 	
+//	@GetMapping("/list")
+//	public void list(Board board, Model model, String currentPage, HttpSession session ) {
+//		log.info("list");
+//		
+//		// 공지사항 게시글 수
+//		int totNotice = 0;
+//		totNotice = ns.getNoticeTot();
+//		
+//		// Pagination
+//		Paging page = new Paging(totNotice, currentPage, 10);
+//		log.info("page --> " + page);
+//		board.setStart(page.getStart());
+//		board.setEnd(page.getEnd());
+//		
+//		// 공지사항 게시글 10개 가져와서 model 에저장
+//		model.addAttribute("noticeList", ns.getNoticeList(board));
+//		
+//	}
+	
 	@GetMapping("/list")
-	public String list(Board board, Model model, String currentPage, HttpSession session ) {
-		log.info("list");
+	public void list(Criteria cri, Model model) {
+		int total = ns.getNoticeTot();
+		log.info("list: " + cri);
+		model.addAttribute("noticeList", ns.getNoticeList(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, total));
 		
-		// 공지사항 게시글 수
-		int totNotice = 0;
-		totNotice = ns.getNoticeTot();
 		
-		// Pagination
-		Paging page = new Paging(totNotice, currentPage, 10);
-		log.info("page --> " + page);
-		board.setStart(page.getStart());
-		board.setEnd(page.getEnd());
-		
-		// 공지사항 게시글 10개 가져와서 model 에저장
-		model.addAttribute("noticeList", ns.getNoticeList(board));
-		
-		return "th/notice/list";
 	}
 	
 	@GetMapping("/register")
-	public String register() {
+	public void register() {	
 		
-		return "th/notice/register";
 	}
 	
 	@PostMapping("/register")
@@ -69,16 +78,14 @@ public class ThNoticeController {
 		return "redirect:/notice/list";
 	}
 
-	// RequestParam 생략 가능하다는데 한번해보기 
-	@GetMapping("/get")
-	public String get(@RequestParam("brd_id") int brd_id, Model model) {
+	// RequestParam 생략 가능하다는데 한번해보기  --> @RequestParam("brd_id") 생략 가능 / 명시적 느낌에서 선언한 듯?
+	@GetMapping({"/get", "/modify"})
+	public void get(int brd_id, Model model) {
 		
-		log.info("/get");
-		
+		log.info("/get or modify");
 		model.addAttribute("notice", ns.getNotice(brd_id));
-		
-		return "th/notice/get";
 	}
+
 	
 	@PostMapping("/modify")
 	public String modify(Board board, RedirectAttributes rttr) {
