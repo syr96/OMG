@@ -14,11 +14,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 
-
-
-
-
-
 @Controller
 @Data
 @Slf4j
@@ -60,12 +55,12 @@ public class BkController {
 	
 	
 	
-	@RequestMapping(value = "/errorPage")
+	@RequestMapping(value = "/403forbidden")
 	public String errorPage() {
 		
-		System.out.println("BkController errorPage Start...");
+		System.out.println("BkController 403forbidden Start...");
 		
-		return "errorPage";
+		return "bk/403forbidden";
 	}
 	
 	
@@ -89,6 +84,8 @@ public class BkController {
 				// ?: 인터셉터가 아니라 일반 로그인이면 여기서 세션 담아야 
 				session = request.getSession();
 				session.setAttribute("mem_id", loginResult.getMem_id());
+				session.setAttribute("mem_name", loginResult.getMem_name());
+				session.setAttribute("mem_name", loginResult.getMem_name());
 				session.setAttribute("mem_name", loginResult.getMem_name());
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
@@ -115,10 +112,6 @@ public class BkController {
 			
 		}
 	}
-	
-	
-	
-	
 	
 	
 

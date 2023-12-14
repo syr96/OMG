@@ -1,28 +1,33 @@
 package com.oracle.OMG.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oracle.OMG.dto.Comm;
 import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Item;
+import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.dto.PurDetail;
 import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.service.chService.ChCustService;
 import com.oracle.OMG.service.chService.ChItemService;
 import com.oracle.OMG.service.chService.ChPurService;
 import com.oracle.OMG.service.chService.Paging;
+import com.oracle.OMG.service.main.MainMemberService;
 import com.oracle.OMG.service.yrService.YrItemService;
 
 import lombok.Data;
@@ -37,6 +42,7 @@ public class ChController {
 	private final ChItemService chItemService;
 	private final ChCustService	chCustService;
 	private final YrItemService itemService;
+	private final MainMemberService mainMemberService;
 	
 	
 	@RequestMapping("purList")
@@ -45,8 +51,19 @@ public class ChController {
 		List<Purchase> purList = null;
 		Paging page = null;
 		System.out.println("ChController purList Start...");
+		// 검색(custcode가 있을 때 )
+		if(purchase.getCustcode() >0) {
+			model.addAttribute("srchCompany", purchase.getCustcode());
+		}
+		//검색(날짜가 있을 때)
+		if(purchase.getPur_date() != null) {
+			String purDate = purchase.getPur_date();
+			DateTimeFormatter formmater = DateTimeFormatter.ofPattern("yy/MM/dd");
+			LocalDate ldt = LocalDate.parse(purDate, formmater);
+			model.addAttribute("srchDate", ldt);
+		}
 		
-		totalPur = chPurService.totalPur();
+		totalPur = chPurService.totalPur(purchase);
 		
 		
 		page = new Paging(totalPur, currentPage);
@@ -76,28 +93,35 @@ public class ChController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
+		List<Customer> pur_custList = chCustService.custList();
 		
+		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
+		model.addAttribute("page",page);
 		
 		return "ch/purList";
 	}
 	// 발주신청 페이지로 이동
 	@RequestMapping("purWriteForm")
 	public String purWriteForm(Model model, HttpSession session) {
-		List<Customer> pur_custList = null; // 매입처 List 
-		
+		List<Customer> pur_custList = null; // 매입처 List
 		System.out.println("ChController purWriteForm Start...");
-		//회원 정보 조회 넣기, 로그인 여부 확인하기 
-		int mem_id = 1001;
+		if(session.getAttribute("mem_id") != null) {
+			
+			//회원 정보 조회 넣기, 로그인 여부 확인하기 
+			int mem_id = (int) session.getAttribute("mem_id");
+			Member member = mainMemberService.memSelectById(mem_id);
+			pur_custList = chCustService.custList();
+			
+			model.addAttribute("pur_custList", pur_custList);
+			model.addAttribute("member", member);
+			
+			
+			return "ch/purWriteForm";
+		}
 		
-		pur_custList = chCustService.custList();
-		
-		model.addAttribute("pur_custList", pur_custList);
-		model.addAttribute("mem_id", mem_id);
-		
-		
-		return "ch/purWriteForm";
+		return "redirect:logOut";
 	}
 	
 	@GetMapping("purDtail")
@@ -132,10 +156,37 @@ public class ChController {
 	
 	
 	@PostMapping("writePurchase")
-	public String writePurchase(Purchase purchase, Map<String, Object> detailMap) {
+	public String writePurchase(@ModelAttribute Purchase purchase, @RequestParam Map<String, Object> detailMap, int rownum) {
 		System.out.println("ChController writePurchase Start...");
 		
-		System.out.println("custcode->"+purchase.getCustcode());
+		int resultPur = 0;
+		int resultDetail = 0;
+		// Purchase 테이블 작성
+		resultPur = chPurService.writePur(purchase);
+		// 성공시 detail 작성 (fk 때문)
+		if(resultPur>0) {
+			List<PurDetail> detailList = new ArrayList<PurDetail>();
+			for(String key : detailMap.keySet()) {
+				for(int i = 0; i<=rownum; i++) {
+					if(key.contentEquals("code"+i)) {
+						int code = Integer.parseInt((String) detailMap.get("code"+i));
+						int qty = Integer.parseInt((String) detailMap.get("qty"+i));
+						int price = Integer.parseInt((String) detailMap.get("price"+i));
+						
+						PurDetail purDetail = new PurDetail();
+						purDetail.setCode(code);
+						purDetail.setQty(qty);
+						purDetail.setPrice(price);
+						purDetail.setCustcode(purchase.getCustcode());
+						detailList.add(purDetail);
+					}
+				}
+			}
+			if(detailList.size() > 0) {
+				resultDetail = chPurService.detailWrite(detailList);
+			}
+			
+		}
 		
 		return "redirect:purList";
 	}
@@ -149,7 +200,6 @@ public class ChController {
 		Item item = itemService.selectItem(pd.getCode());
 		pd.setCustcode(item.getCustcode());
 		pd.setPrice(item.getInput_price());
-		System.out.println("pd.getPur_date" + pd.getPur_date());
 		result = chPurService.insertDetail(pd);
 		if(result > 0) {
 			// PK를 이용한 단일 발주서 확인
@@ -168,6 +218,35 @@ public class ChController {
 			mav.setViewName("ch/purDtable");
 		}
 		
+		return mav;
+	}
+	
+	@ResponseBody
+	@PostMapping("qtyUpdate")
+	public ModelAndView qtyUpdate(PurDetail pd, ModelAndView mav) {
+		System.out.println("ChController qtyUdate Start...");
+		Item item = itemService.selectItem(pd.getCode());
+		pd.setCustcode(item.getCustcode());
+		int result = chPurService.qtyUpdate(pd);
+		if(result > 0) {
+			// PK를 이용한 단일 발주서 확인
+			Purchase pc = new Purchase();
+			pc.setCustcode(pd.getCustcode());
+			pc.setPur_date(pd.getPur_date());
+			// 해당 발주서의 상세 항목 출력 
+			List<PurDetail> pdList = chPurService.purDList(pc);
+			// 람다 이용 총 합계 구하기 
+			int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
+			int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
+			mav.addObject("pdList",pdList);
+			mav.addObject("totalPrice", totalPrice);
+			mav.addObject("totalQty", totalQty);
+			
+			Purchase purchase = chPurService.onePur(pc);
+			mav.addObject("pc", purchase);
+			mav.setViewName("ch/purDtable");
+		}
+		mav.setViewName("ch/purDtable");
 		return mav;
 	}
 	

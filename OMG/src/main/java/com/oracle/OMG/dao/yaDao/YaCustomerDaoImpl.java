@@ -149,5 +149,34 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		return customerSalesList;
 	}
 
+	@Override
+	public List<Customer> customerListSelect(Customer customer) {
+		System.out.println("YaCustomerDao customerListSelect start....");
+		List<Customer> customerListSelect = null;
+		try {
+			customerListSelect = session.selectList("customerListSelect", customer);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl  customerListSelect e.getMessage? " + e.getMessage());
+		}
+		return customerListSelect;
+	}
+
+	@Override
+	public List<Customer> customerSalesSearch(int custcode, String month, String custstyle, String purDate) {
+		System.out.println("YaCustomerDao customerSalesSearch start....");
+		List<Customer> customerSalesSearch=null;
+		try {
+		     Map<String, Object> parameters = new HashMap<>();
+		        parameters.put("custcode", custcode);
+		        parameters.put("month", month);
+		        parameters.put("custstyle", custstyle);
+		        parameters.put("purDate",purDate);       
+			 customerSalesSearch = session.selectList("customerSalesSearch", parameters);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl  customerSalesSearch e.getMessage? " + e.getMessage());
+		}
+		return customerSalesSearch;
+	}
+
 
 }

@@ -61,13 +61,25 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
-  </head>
-  
     <style>
   	body {
 		font-family: 'Noto Sans KR', sans-serif;
 	}
   </style>
+  	<script type="text/javascript">
+  	
+  	
+  	
+  		function sendCode() {
+  			
+  			let tel = $('#')
+  		}
+  	
+  	
+  	
+  	</script>
+  </head>
+  
 
   <body>
     <!-- Content -->
@@ -90,29 +102,47 @@
               <h4 class="mb-2">비밀번호 찾기</h4>
               <p class="mb-4">입력한 모바일 번호와 ID에 등록된 모바일 번호가 일치할 경우, <br>[SMS 인증번호]가 발송됩니다. 10분 내에 입력바랍니다.</p>
               <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
-                <div class="mb-3">
-                  <label for="name" class="form-label">성명</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    placeholder=""
-                    autofocus
-                  />
+              	<div class="row">
+	                <div class="mb-3 col-md-6">
+	                  <label for="name" class="form-label">성명</label>
+	                  <input
+	                    type="text"
+	                    class="form-control"
+	                    id="name"
+	                    name="name"
+	                    placeholder=""
+	                    autofocus
+	                  />
+	                </div>
+	                <div class="mb-3 col-md-6">
+	                  <label for="number" class="form-label">모바일 번호</label>
+	                  <input
+	                    type="text"
+	                    class="form-control"
+	                    id="number"
+	                    name="number"
+	                    placeholder=""
+	                    autofocus
+	                  />
+	                </div>
                 </div>
                 <div class="mb-3">
-                  <label for="number" class="form-label">모바일 번호</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="number"
-                    name="number"
-                    placeholder=""
-                    autofocus
-                  />
+                	<button class="btn btn-primary d-grid w-100" onclick="sendCode()">인증번호 발송</button>
                 </div>
-                <button class="btn btn-primary d-grid w-100">인증번호 발송</button>
+                <div class="mb-3">
+	                  <label for="number" class="form-label">인증 번호</label>
+	                  <div class="input-group">
+		                  <input
+		                    type="text"
+		                    class="form-control"
+		                    id="number"
+		                    name="number"
+		                    placeholder=""
+		                    autofocus
+		                  />
+	                  		<button type="button" class="btn btn-primary">확인</button>
+                  	</div>
+                </div>
               </form>
               <div class="text-center">
                 <a href="/logIn" class="d-flex align-items-center justify-content-center">

@@ -9,7 +9,7 @@
         .table-container {
             overflow-x: auto; /*좌우스크롤  */
             overflow-y: auto; /* 세로 스크롤 추가 */
-            max-height: 500px; 
+            max-height: 600px; 
             position: relative; 
         }
         
@@ -62,25 +62,116 @@
 <div class="col-lg">
 <div class="card">
   <h5 class="card-header">거래처별실적조회</h5>
-
-   <div class="row mx-3" style="font-size: 13px;">	   
+   <div class="row mx-3" >	   
 		<div class="col-12 mb-3 d-flex justify-content-center justify-content-md-between">	  		   
 		    <label for="selectOption">조회기간: </label>
-		    <label for="year"><input type="text"  class="form-control" id="datepicker" style="height:30px;" ></label>
-		    <label>구분: </label>
-		    <select class="form-control" style="width: 100px; height:30px; font-size: 12px ;">
-		    	<option>전체</option>
+		    <label for="month">
+		    <input class="form-control" type="month" id="monthSelect" name="month">
+		    </label>
+		
+		    <label>구분: </label>		    
+		    <select class="form-select" style="width: 100px;">
+		    	<option value=" ">전체</option>
 		    	<option value="0">매입</option>
 		    	<option value="1">매출</option>
 		    </select>
+			
 			<label for="searchSelect">거래처명: </label>
-				<!-- <input type="search" class="form-control" placeholder="" a> -->
-				<select id="searchSelect"class="form-control" name="searchSelect" style="width: 200px; height:30px;">
-	
-				</select>
+				<select class="form-select" id="in_custcode" style="width: 200px; " ></select>
 			<button class="btn btn-sm btn-outline-primary" id="searchButton" type="button" onclick="search()" style="height:30px;">검색</button>
 		</div>	
     </div>
+
+ <script>
+
+	    
+$(document).ready(function () {
+	
+	
+	//거래처리스트 
+    $.ajax({
+        url: '/customerListSelect',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+        	custcode: $('#in_custcode').val(),
+        }),
+        success: function (response) {
+        	var customerListSelect = response.customerListSelect;
+        	
+        	  // "전체" 옵션 추가
+            $('#in_custcode').append('<option value=" ">전체</option>');
+            for (var i = 0; i < customerListSelect.length; i++) {
+            	$('#in_custcode').append('<option value="' +  customerListSelect[i].custcode + '">' +  customerListSelect[i].custcode + 
+            			'  ' +  customerListSelect[i].company + '</option>');
+            }
+        },
+        error: function () {
+            console.error('서버 오류');
+        }
+    });
+});
+
+
+function search() {
+   
+	// 선택한 월을 추출
+    var selectedMonth = document.getElementById("monthSelect").value;
+    var month = selectedMonth.split("-")[1];
+    var selectedCustcodes = $('#in_custcode').val();
+    // 선택한 구분을 추출
+    var selectedType = $('.form-select').val();
+    console.log("Selected Month:", month);
+    
+    // 월을 선택하지 않았을 경우
+    if (selectedMonth === "") {
+        month = "all";
+    }
+
+    // 구분을 선택하지 않았을 경우
+    if (selectedType === "") {
+        selectedType = "all";
+    }
+    // Ajax 요청
+    $.ajax({
+        url: '/customerSalesSearch',
+        type: 'GET',
+        data: {
+	            custcode: selectedCustcodes,
+	            month:  month,
+	            custstyle: selectedType,
+            	//purDate:  
+        },
+        success: function (data) {
+            // 서버 응답에 대한 처리
+            console.log("Search successful:", data);
+            var customerSalesSearch = data.customerSalesSearch;
+
+            // 기존 결과를 모두 지우고 새로운 결과 추가
+            $("#searchResultsTable tbody").empty();
+            $.each(customerSalesSearch, function (index, customer) {
+                var row = "<tr>" +
+                    "<td>" + customer.month + "</td>" +
+                    "<td>" + customer.purDate + "</td>" +
+                    "<td>" + (customer.custstyle == 0 ? '매입' : '매출') + "</td>" +
+                    "<td>" + customer.custcode + "</td>" +
+                    "<td>" + customer.company + "</td>" +
+                    "<td>" + customer.purCode + "</td>" +
+                    "<td>" + customer.itemName + "</td>" +
+                    "<td>" + customer.purQty + "</td>" +
+                    "<td>" + customer.purPrice.toLocaleString()  + "</td>" +
+                    "</tr>";
+                $("#searchResultsTable tbody").append(row);
+            });
+        },
+        error: function () {
+            console.error('서버 오류');
+        }
+    });
+}
+
+</script>
+  
     		
   <div class="table-responsive text-nowrap mx-3 ">
   <div class="table-container">
@@ -105,12 +196,11 @@
                <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
                <c:forEach var="customer" items="${customerSalesList}">
                     <tr>
-                     <td><fmt:formatDate value="${customer.date}" pattern="MM" />
-                     <td><fmt:formatDate value="${customer.date}" pattern="yy/MM/dd" /></td>
+                     <td>${customer.month}</td>
+                     <td>${customer.purDate}</td>
                   	 <td>${customer.custstyle == 0 ? '매입' : '매출'}</td>
                   	 <td>${customer.custcode }</td>
                      <td>${customer.company}</td>
-                     <%-- <td>${customer.businum }</td> --%>
                      <td>${customer.purCode}</td>
                      <td>${customer.itemName }</td>
                      <td>${customer.purQty}</td>
@@ -138,7 +228,7 @@
 					<c:forEach var="customer" items="${customerSalesList}">
 					    <c:choose>
 					        <c:when test="${customer.custstyle == 0}">
-					            <c:set var="totalPurchaseAmount" value="${totalPurchaseAmount + (customer.purQty * customer.purPrice)}" />
+					            <c:set var="totalPurchaseAmount" value="${totalPurchaseAmount + (customer.purQty * customer.purPrice)}"/>
 					        </c:when>
 					        <c:when test="${customer.custstyle == 1}">
 					            <c:set var="totalSalesAmount" value="${totalSalesAmount + (customer.purQty * customer.purPrice)}" />
@@ -148,7 +238,7 @@
 					
 					<tr>
 						<td colspan="6"></td>
-						<th colspan="3">소 계</th>
+						<th colspan="3">누          계</th>
 					    <th><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>
 					    <th><fmt:formatNumber value="${totalSalesAmount}" pattern="#,##0" /></th>
 					</tr>

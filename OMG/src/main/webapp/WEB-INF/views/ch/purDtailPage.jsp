@@ -14,12 +14,19 @@
 			<div class="col-12">
 				<h2>발주 상세</h2>
 			</div>
+			<div class="col-12 text-end">
+				<button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button>
+			</div>
 			<div class="col-12">
 				<div class="row text-center bg-white">
 					<div class="col-6">날짜 : ${pc.pur_date }</div>
 					<div class="col-6">회사명 : ${pc.company }</div>
 					<div class="col-6">발주자 : ${pc.appli_name }</div>
 					<div class="col-6">담당자 : ${pc.mgr_name }</div>
+					<div class="col-12 text-center">비고</div>
+					<div class="container">
+						${pc.ref }
+					</div>
 				</div>
 			</div>
 			
@@ -34,7 +41,7 @@
 					
 					수량: <input type="number" id="qty">
 					
-					<button type="button" onclick="inSertDetail()" id="insertBtn">추가</button>
+					<button type="button" onclick="inSertDetail()" id="insertBtn" class="btn btn-outline-primary">추가</button>
 					
 				</form>	
 			</div>
@@ -55,15 +62,15 @@
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 							<td id="td${status.index }">
 								${pdList.qty }개
-								<button type="button" onclick="chageQtyBtn(${status.index})" id="btn${status.index }">변경</button>
+								<c:if test="${pc.pur_status == 0 }">
+									<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
+								</c:if>
 							</td>
 							<td id="inputTd${status.index }" style="display: none;">
-								<form action="updateDetail">
 									<input type="number" name="qty${status.index }" value="${pdList.qty }" id="qty${status.index }" disabled="disabled">
 									<input type="hidden" name="code${status.index }" value="${pdList.code }" id="code${status.index }" disabled="disabled">
-									<button type="button" onclick="changeQty">완료</button>
-									<button type="button" onclick="changeQtyBtn(${status.index })">취소</button>
-								</form>
+									<button type="button" onclick="changeQty(${status.index })" class="btn btn-outline-primary">완료</button>
+									<button type="button" onclick="changeQtyBtn(${status.index })" class="btn btn-outline-primary">취소</button>
 							</td>
 							<td class="text-end"><fmt:formatNumber value="${pdList.price_sum }" pattern="#,###"/>원</td>
 						</tr>					
@@ -134,6 +141,22 @@
 			$("#qty"+index).prop("disabled", false);
 			$("#code"+index).prop("disabled", false);
 		}
+	}
+	
+	function changeQty(index){
+		var i_date = $("#pur_date").val();
+		var i_code = $("#code"+index).val();
+		var i_qty = $("#qty"+index).val();
+		$.ajax(
+			{
+				type:"POST",
+				data:{pur_date : i_date, code : i_code, qty : i_qty},
+				url: "qtyUpdate",
+				success:function(data){
+					$("#d_tble").html(data);
+				}
+			}
+		);
 	}
 </script>	
 </body>
