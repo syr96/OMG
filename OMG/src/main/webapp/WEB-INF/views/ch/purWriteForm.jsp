@@ -24,7 +24,7 @@
 								<td colspan="2" width="40%">제목: <input type="text" name="title" placeholder="발주전표_YYYYMMDD_회사명" style="width: 30%;" required="required"></td>
 							</tr>
 							<tr>
-								<td>발주자 : ${mem_id }<input type="hidden" name="mem_id" value="${mem_id }"></td>
+								<td>발주자 : ${member.mem_name }<input type="hidden" name="mem_id" value="${member.mem_id }"></td>
 								<td id="selectCustcode">
 									회사명:<select id="custcode">
 											<c:forEach items="${pur_custList }" var="pur_custList">

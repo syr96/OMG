@@ -1,17 +1,13 @@
 package com.oracle.OMG.controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oracle.OMG.dto.Comm;
 import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Item;
+import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.dto.PurDetail;
 import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.service.chService.ChCustService;
 import com.oracle.OMG.service.chService.ChItemService;
 import com.oracle.OMG.service.chService.ChPurService;
 import com.oracle.OMG.service.chService.Paging;
+import com.oracle.OMG.service.main.MainMemberService;
 import com.oracle.OMG.service.yrService.YrItemService;
 
 import lombok.Data;
@@ -45,6 +42,7 @@ public class ChController {
 	private final ChItemService chItemService;
 	private final ChCustService	chCustService;
 	private final YrItemService itemService;
+	private final MainMemberService mainMemberService;
 	
 	
 	@RequestMapping("purList")
@@ -112,12 +110,12 @@ public class ChController {
 		if(session.getAttribute("mem_id") != null) {
 			
 			//회원 정보 조회 넣기, 로그인 여부 확인하기 
-			int mem_id = 1001;
-			
+			int mem_id = (int) session.getAttribute("mem_id");
+			Member member = mainMemberService.memSelectById(mem_id);
 			pur_custList = chCustService.custList();
 			
 			model.addAttribute("pur_custList", pur_custList);
-			model.addAttribute("mem_id", mem_id);
+			model.addAttribute("member", member);
 			
 			
 			return "ch/purWriteForm";
