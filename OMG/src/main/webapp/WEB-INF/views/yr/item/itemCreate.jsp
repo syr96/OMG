@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>제품 등록</title>
+<script type="text/javascript">
+     // msg 값이 존재하면 alert 띄우기
+     var msg = "${msg}";
+     if(msg.length > 0)	alert(msg);
+</script>
 </head>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <body>
@@ -17,8 +22,9 @@
 	<div class="card">
 	  <div class="card overflow-hidden" style="height: 700px">
 	  
-			<!-- 제품 등록 -->
 			<div class="card-body table-responsive text-nowrap">
+			
+				<!-- 제품 등록 -->
 				<form method="post" action="/item/createPro">
 					<table class="table table-bordered mb-4">
 						<tr>

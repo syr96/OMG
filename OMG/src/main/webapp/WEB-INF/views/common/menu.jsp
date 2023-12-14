@@ -8,7 +8,7 @@
           <div class="app-brand demo">
             <a href="/" class="app-brand-link">
               <span class="app-brand-logo demo">
-                <img src="assets/img/logo2.png" alt="logo">
+                <img src="../assets/img/logo2.png" alt="logo">
               </span>
             </a>
 
@@ -94,17 +94,17 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">Form Elements</div>
+                <div data-i18n="Form Elements">매입</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="forms-basic-inputs.html" class="menu-link">
-                    <div data-i18n="Basic Inputs">Basic Inputs</div>
+                  <a href="purWriteForm" class="menu-link">
+                    <div data-i18n="Basic Inputs">발주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="forms-input-groups.html" class="menu-link">
-                    <div data-i18n="Input groups">Input groups</div>
+                  <a href="purList" class="menu-link">
+                    <div data-i18n="Input groups">발주서 리스트</div>
                   </a>
                 </li>
               </ul>
@@ -175,7 +175,7 @@
             <!-- Misc -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">고객 지원</span></li>
 				<li class="menu-item">
-					<a href="/notice/list" target="_blank" class="menu-link">
+					<a href="/notice/list" class="menu-link">
 						<i class="menu-icon tf-icons bx bx-support"></i>
 						공지사항
 					</a>

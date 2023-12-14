@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.oracle.OMG.dto.Board;
+import com.oracle.OMG.dto.Criteria;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,10 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	
 	@Override
 	public int getTotNotice() {
-		System.out.println("Dao getTotNotice");
 		int totNotice = 0;
 		try {			
 			totNotice = session.selectOne("getTotNotice");
-			System.out.println("totNotice --> " + totNotice);
+			log.info("totNotice --> " + totNotice);
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
@@ -36,13 +36,29 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 		List<Board> noticeList = null;
 		try {
 			noticeList = session.selectList("getNoticeList", board);
-			System.out.println("noticeList.size() --> " + noticeList.size());
+			log.info("noticeList.size() --> " + noticeList.size());
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
 		return noticeList;
 	}
 
+
+
+	@Override
+	public List<Board> getListWithPaging(Criteria cri) {
+		List<Board> noticeList = null;
+		try {
+			noticeList = session.selectList("getListWithPaging", cri);
+			log.info("noticeList.size() --> " + noticeList.size());
+		} catch (Exception e) {
+			log.info(e.getMessage());
+		}
+		
+		return noticeList;
+	}
+	
+	
 	@Override
 	public int insertNotice(Board board) {
 		int insertResult = 0;
@@ -60,7 +76,7 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 		int insertResult = 0;
 		log.info("board: {}", board);
 		try {
-			insertResult = session.insert("insertNotice", board);
+			insertResult = session.insert("insertSelectKeyNotice", board);
 			
 		} catch (Exception e) {
 			log.info(e.getMessage());
@@ -72,7 +88,7 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	public Board readNotice(int brd_id) {
 		Board notice = null;
 		try {
-			notice= session.selectOne("insertNotice", brd_id);
+			notice= session.selectOne("readNotice", brd_id);
 			log.info("notice: {}", notice);
 		} catch (Exception e) {
 			log.info(e.getMessage());
@@ -85,7 +101,7 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 		int deleteResult = 0;
 		try {
 			deleteResult= session.delete("deleteNotice", brd_id);
-			System.out.println("deleteResult --> " + deleteResult);
+			log.info("deleteResult --> " + deleteResult);
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
@@ -96,13 +112,14 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	public int updateNotice(Board board) {
 		int updateResult = 0;
 		try {
-			updateResult = session.update("deleteNotice", board);
-			System.out.println("updateResult --> " + updateResult );
+			updateResult = session.update("updateNotice", board);
+			log.info("updateResult --> " + updateResult );
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
 		return updateResult;
 	}
+
 
 
 }

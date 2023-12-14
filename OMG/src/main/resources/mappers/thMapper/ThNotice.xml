@@ -31,6 +31,24 @@
 		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 	
+	<select id="getListWithPaging" resultType="Board">
+		<![CDATA[
+			SELECT b.*, (
+		                    SELECT  mem_name
+		                    FROM    member m
+		                    WHERE   m.mem_id = b.mem_id
+                    	) AS mem_name
+			FROM    (
+			            SELECT      /*+ INDEX_DESC(board pk_board) */
+			                        rownum rn , board.*
+			            FROM        board
+			            WHERE       rownum <= #{pageNum} * #{amount}
+			        ) b
+			WHERE   rn > (#{pageNum} -1) * #{amount}        
+
+		]]>
+	</select>
+	
 	<insert id="insertNotice" parameterType="Board">
 		INSERT INTO board(brd_id		,   mem_id , brd_lg, brd_md,   title ,   brd_cn ,   view_cnt , reg_date, brd_group         , brd_step)
 			   VALUES(brd_id_seq.nextval, #{mem_id}, 700   , 100   , #{title}, #{brd_cn}, #{view_cnt}, SYSDATE , brd_id_seq.nextval,    0    )
@@ -41,7 +59,7 @@
 			SELECT brd_id_seq.nextval FROM dual
 		</selectKey>		
 		INSERT INTO board( brd_id,    mem_id , brd_lg, brd_md,   title ,   brd_cn ,   view_cnt , reg_date, brd_group, brd_step)
-			   VALUES(   #{brd_id}, #{mem_id}, 700   , 100   , #{title}, #{brd_cn}, #{view_cnt}, SYSDATE , #{brd_id},    0    )
+			   VALUES(   #{brd_id}, #{mem_id}, 700   , 100   , #{title}, #{brd_cn},  	0      , SYSDATE , #{brd_id},    0    )
 	</insert>
 	
 	<select id="readNotice" parameterType="int" resultType="Board">
@@ -64,7 +82,7 @@
 		UPDATE	board
 		SET		title    = #{title},
 				brd_cn   = #{brd_cn},
-				mod_date = #{mod_date},
+				mod_date = SYSDATE
 		WHERE	brd_id   = #{brd_id}		
 	</update>
 	
