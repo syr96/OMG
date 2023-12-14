@@ -6,6 +6,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+ 	   .fixed-thead {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 1;
+             white-space: nowrap;
+        }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <meta charset="UTF-8">
 <title>거래처관리</title>
@@ -13,7 +22,7 @@
 </head>
 <body>
 <div class="container">
-<div class="col-lg-10">
+<div class="col-lg-12">
 <div class="card">
      <h5 class="card-header" >거래처조회</h5>
      		<div class="text-end mx-5" >
@@ -184,7 +193,7 @@ $(document).ready(function () {
 </script>
 <!-----------------검색--------------------------------------------------------->     
 		<div class="row mx-3">
-		    <div class="d-flex">
+		    <div class="col-12 mb-3 d-flex">
 		        <div class="col-4">
 		            <input class="form-control" id="keyword"  type="search" placeholder="거래처검색" aria-label="Search"  value="${keyword}"/>
 		        </div>
@@ -304,11 +313,11 @@ $(document).ready(function () {
          <div class="table-responsive text-nowrap mx-3">
            <c:set var="num" value="${custPage.total - custPage.start+1 }"></c:set> 
              <table id="searchResultsTable"class="table table-hover">
-              <thead>
+              <thead class="fixed-thead">
                    <tr>
                      <th>거래처코드</th>
 <!--                      <th>유형</th> -->
-                     <th>구분</th>
+                     <th style="width: 100px;">구분</th>
                      <th>상호명</th>
                      <th>대표자</th>
                      <th>사업자번호</th>
@@ -317,11 +326,11 @@ $(document).ready(function () {
 <!--                      <th>전화번호</th>
                      <th>이메일</th>
                      <th>담당직원</th> -->
-                     <th>상세</th>
-                     <th>삭제</th>
+                     <th style="width: 90px;">상세</th>
+                     <th style="width: 90px;">삭제</th>
                     </tr>
                </thead>
-               <tbody class="table-border-bottom-0">
+               <tbody class="table-border-bottom-0" style="font-size: 12px;">
                <c:forEach var="customer" items="${customerList}">
                     <tr>
                       <td><strong>${customer.custcode}</strong></td>

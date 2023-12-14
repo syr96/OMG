@@ -1,7 +1,10 @@
 package com.oracle.OMG.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.oracle.OMG.dto.Comm;
+import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.PurDetail;
 import com.oracle.OMG.dto.Purchase;
+import com.oracle.OMG.service.chService.ChCustService;
 import com.oracle.OMG.service.chService.ChItemService;
 import com.oracle.OMG.service.chService.ChPurService;
 import com.oracle.OMG.service.chService.Paging;
@@ -28,8 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChController {
 	
-	private final ChPurService chPurService;
+	private final ChPurService 	chPurService;
 	private final ChItemService chItemService;
+	private final ChCustService	chCustService;
 	private final YrItemService itemService;
 	
 	
@@ -72,15 +78,24 @@ public class ChController {
 		}
 		
 		model.addAttribute("purList",purList);
+		model.addAttribute("totalPur",totalPur);
 		
 		return "ch/purList";
 	}
 	// 발주신청 페이지로 이동
-	@RequestMapping("/purWriteForm")
-	public String purWriteForm(Model model) {
+	@RequestMapping("purWriteForm")
+	public String purWriteForm(Model model, HttpSession session) {
+		List<Customer> pur_custList = null; // 매입처 List 
+		
 		System.out.println("ChController purWriteForm Start...");
 		//회원 정보 조회 넣기, 로그인 여부 확인하기 
 		int mem_id = 1001;
+		
+		pur_custList = chCustService.custList();
+		
+		model.addAttribute("pur_custList", pur_custList);
+		model.addAttribute("mem_id", mem_id);
+		
 		
 		return "ch/purWriteForm";
 	}
@@ -113,6 +128,16 @@ public class ChController {
 		model.addAttribute("itemList", itemList);
 		
 		return "ch/purDtailPage";
+	}
+	
+	
+	@PostMapping("writePurchase")
+	public String writePurchase(Purchase purchase, Map<String, Object> detailMap) {
+		System.out.println("ChController writePurchase Start...");
+		
+		System.out.println("custcode->"+purchase.getCustcode());
+		
+		return "redirect:purList";
 	}
 	
 	@ResponseBody
@@ -156,4 +181,31 @@ public class ChController {
 		return result; 
 	}
 	
+	@ResponseBody
+	@RequestMapping("getItems")
+	public ModelAndView getItems(int custcode, ModelAndView mav) {
+		List<Item> itemList= null;
+		System.out.println("ChController getItems Start..............");
+		itemList = chItemService.cItemList(custcode);
+		
+		mav.addObject("itemList",itemList);
+		
+		mav.setViewName("ch/pur_selectItems");
+		
+		return mav; 
+	}
+	
+	@ResponseBody
+	@RequestMapping("wirteDetail")
+	public ModelAndView itemDetail(PurDetail purDetail,String rownum ,ModelAndView mav) {
+		System.out.println("itemDetail Start...");
+		Item item = itemService.selectItem(purDetail.getCode());
+		
+		mav.addObject("item",item);
+		mav.addObject("qty",purDetail.getQty());
+		mav.addObject("rownum",rownum);
+		mav.setViewName("ch/wirteBodyRow");
+		
+		return mav;
+	}
 }

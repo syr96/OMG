@@ -33,5 +33,6 @@
 		<td class="text-end"><fmt:formatNumber value="${totalPrice }" pattern="#,###"/>원</td>
 	</tr>
 </table>
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

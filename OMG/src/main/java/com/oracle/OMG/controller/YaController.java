@@ -1,5 +1,8 @@
 package com.oracle.OMG.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.service.thService.Paging;
 import com.oracle.OMG.service.yaService.YaCustomerService;
+
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -147,13 +151,27 @@ public class YaController {
 	
 	//거래처판매실적 조회
 	@GetMapping("/customerSales")
-	@ResponseBody
-	public Map<String, Object> customerSalesList (Customer customer ){
+	/* @ResponseBody */
+	/*public Map<String, Object> customerSalesList (Customer customer ){*/
+	public String customerSalesList(Customer customer, Model model) {
 		System.out.println("YaController ycs.custoemrSales start...");
 		List<Customer> customerSalesList = ycs.customerSalesList(customer);
+		model.addAttribute("customerSalesList", customerSalesList);
+		/*
+		 * Map<String, Object> result = new HashMap<>(); result.put("customerSalesList",
+		 * customerSalesList); return result;
+		 */
+		//날짜변환		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		for (Customer c : customerSalesList) {
+		    try {
+		        Date date = sdf.parse(c.getPurDate());
+		        c.setDate(date);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		}
 		
-		Map<String, Object> result = new HashMap<>();
-		result.put("customerSalesList", customerSalesList);
-		return result;
+		 return "ya/salesByCustomer";
 	}
 }
