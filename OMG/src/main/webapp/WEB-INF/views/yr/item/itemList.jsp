@@ -35,20 +35,22 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <body>
 <%@ include file="/WEB-INF/views/common/menu.jsp" %>
-	<h4 class="fw-bold py-3 mb-4">
-		<span class="text-muted fw-light">제품 관리 / </span>
-		<a href="/item/list" class="linkText">제품 조회</a>
-	</h4>
-	<form class="d-flex" onsubmit="return false">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-      <button class="btn btn-outline-primary" type="submit">Search</button>
-    </form>
+	<div class="d-flex justify-content-between align-items-center">
+		<h4 class="fw-bold py-3 mb-4">
+			<span class="text-muted fw-light">제품 관리 / </span>
+			<a href="/item/list" class="linkText">제품 조회</a>
+		</h4>
+		<form class="d-flex" onsubmit="return false">
+	      <input class="form-control me-2" type="search" placeholder="제품코드 / 제품명 / 거래처명 / 거래처코드" />
+	      <button class="btn btn-outline-primary" type="submit">검색</button>
+	    </form>
+	</div>
 	<!-- 제품 조회 -->
 	<div class="card">
 	  <div class="card overflow-hidden row" style="height: 700px">
 	  
 	  	<!-- 제품 리스트 -->
-	  	<div class="p-0 card-body table-responsive text-nowrap tableFixed" id="both-scrollbars-example">
+	  	<div class="p-0 card-body table-responsive text-nowrap tableFixed col-4" id="both-scrollbars-example">
 		    <table class="table table-hover fixedHeader">
 		      <thead>
 		        <tr class="table-primary">
