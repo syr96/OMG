@@ -2,11 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oracle.OMG.YrItem">
-	<select id="yrItemList" resultType="Item">
-		SELECT i.*, c.com_cn
-		FROM item i, comm c
-		where i.cate_lg = c.ct_lg
-		and i.cate_md = c.ct_md
+	<select id="yrItemList" parameterType="Item" resultType="Item">
+		SELECT i.*, cm.com_cn, cs.company
+		FROM item i, comm cm, customer cs
+		where i.custcode = cs.custcode
+		and i.cate_lg = cm.ct_lg
+		and i.cate_md = cm.ct_md
+		<choose>
+			<when test="deleted == 0">
+				and i.deleted = 0
+			</when>
+			<when test="deleted == 1">
+				and i.deleted = 1
+			</when>
+			<when test="deleted == 100"> </when>
+		</choose>
+		
+		<choose>
+			<when test="cate_md == 999"> </when>
+			<when test="cate_md == ''"> </when>
+			<otherwise>
+				and i.cate_md = ${cate_md}
+			</otherwise>
+		</choose>
 		ORDER BY i.code
 	</select>
 	
@@ -36,7 +54,10 @@
 		    output_price = #{output_price},
 		    item_cn = #{item_cn},
 		    deleted = #{deleted},
-		    reg_date = #{reg_date}    
+		    reg_date = #{reg_date}
+		    <if test="deleted == 1">
+		    	, delete_date = #{delete_date}
+		    </if>    
 		WHERE code = #{code}
 	</update>
 </mapper>

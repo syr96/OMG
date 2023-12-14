@@ -2,6 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<script>
+	// 삭제 기능은 일단 보류
+	/* 
+	function deleteItem(p_index) {
+		var returnValue = confirm("해당 제품을 삭제하시겠습니까?");
+		if(returnValue == true) location.href = "/item/delete?code=" + p_index;
+		else 					alert("취소되었습니다");
+	 }
+	 */
+</script>
 <h6 class="fw-bold py-3 mb-4">
 	<span class="text-muted fw-light">제품명: </span>${i.name }
 </h6>
@@ -90,9 +100,9 @@
 	      <td>
 	      	<select class="form-select" name="cate_md">
               <option selected value="${i.cate_md }">${i.com_cn }</option>
-              <c:forEach items="${cm }" var="cm">
-	              <option value="${cm.ct_md }">${cm.com_cn }</option>
-              </c:forEach>
+	              <c:forEach items="${cm }" var="cm">
+		              <option value="${cm.ct_md }">${cm.com_cn }</option>
+	              </c:forEach>
             </select>
 	      </td>
 	    </tr>
@@ -138,16 +148,14 @@
 	      <td><input type="date" class="form-control" name="reg_date" value="${i.reg_date }"/></td>
 	    </tr>
 	    
-	    <c:if test="${i.deleted == '1' }">
-		    <tr>
-		    	<th class="table-primary">판매종료일</th>
-		    	<td colspan="3"><input type="date" class="form-control" name="delete_date" value="${i.delete_date }"/></td>
-		    </tr>
-	    </c:if>
-	    
+	    <tr>
+	    	<th class="table-primary">판매종료일</th>
+	    	<td colspan="3"><input type="date" class="form-control" name="delete_date" value="${i.delete_date }"/></td>
+	    </tr>
 	</table>
 	
 	<div class="d-flex justify-content-end">
+		<%-- <button type="button" onclick="deleteItem(${i.code})" class="btn btn-outline-secondary" style="margin-right: 10px;">삭제</button> --%>
 		<button type="submit" class="btn btn-outline-primary">저장</button>
 	</div>
 </form>
