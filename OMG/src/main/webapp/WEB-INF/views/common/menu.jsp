@@ -94,17 +94,17 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">Form Elements</div>
+                <div data-i18n="Form Elements">매입</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="forms-basic-inputs.html" class="menu-link">
-                    <div data-i18n="Basic Inputs">Basic Inputs</div>
+                  <a href="purWriteForm" class="menu-link">
+                    <div data-i18n="Basic Inputs">발주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="forms-input-groups.html" class="menu-link">
-                    <div data-i18n="Input groups">Input groups</div>
+                  <a href="purList" class="menu-link">
+                    <div data-i18n="Input groups">발주서 리스트</div>
                   </a>
                 </li>
               </ul>

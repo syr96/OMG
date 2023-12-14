@@ -30,7 +30,7 @@
 									<button type="button" onclick="saveCustcode()">확인</button>
 								</td>
 								<td id="inputCustCode" style="display: none;">
-									회사명:<input type="hidden" id="inputCode" name="custcode" disabled="disabled" value="">
+									회사명:<input type="hidden" id="inputCode" name="custcode" disabled="disabled">
 									<span id="company_name"></span>
 									<button type="button" onclick="saveCustcode()">취소</button>
 								</td>
@@ -121,10 +121,11 @@
 	function saveCustcode(){
 		var company_name = $("#custcode option:selected").data("name");
 		var mgr_name = $("#custcode option:selected").data("mgr_name");
+		var custcode = $("#custcode").val();
 		if($("#inputCustCode").css("display") == "none"){
 			$("#inputCustCode").show();
 			$("#inputCode").prop("disabled",false);
-			$("#inputCode").val()
+			$("#inputCode").val(custcode);
 			$("#mgr_row").show();
 			$("#company_name").html(company_name);
 			$("#mgr_name").html(mgr_name);
