@@ -17,6 +17,8 @@ public interface YaCustomerService {
 	List<Customer> customerSearch(String keyword, int start, int end);
 	int            totalSearch(String keyword);
 	List<Customer> customerSalesList(Customer customer);
+	List<Customer> customerListSelect(Customer customer);
+	List<Customer> customerSalesSearch(int custcode, String month, String custstyle, String purDate);
 	
 
 

@@ -16,9 +16,9 @@ public class YrItemServiceImpl implements YrItemService {
 	private final YrItemDao yid;
 	
 	@Override
-	public List<Item> itemList() {
+	public List<Item> itemList(Item item) {
 		System.out.println("YrItemServiceImpl itemList start");
-		List<Item> itemList = yid.itemList();
+		List<Item> itemList = yid.itemList(item);
 		return itemList;
 	}
 
@@ -35,5 +35,20 @@ public class YrItemServiceImpl implements YrItemService {
 		int result = yid.insertItem(item);
 		return result;
 	}
+
+	@Override
+	public int updateItem(Item item) {
+		System.out.println("YrItemServiceImpl updateItem start");
+		int result = yid.updateItem(item);
+		return result;
+	}
+
+	// 삭제 기능은 일단 보류
+//	@Override
+//	public int deleteItem(int code) {
+//		System.out.println("YrItemServiceImpl deleteItem start");
+//		int result = yid.deleteItem(code);
+//		return result;
+//	}
 
 }

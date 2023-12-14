@@ -10,8 +10,11 @@ public interface ChPurService {
 	List<Purchase> 	purList(Purchase purchase);
 	List<PurDetail> purDList(Purchase p);
 	Purchase 		onePur(Purchase purchase);
-	int 			totalPur();
+	int 			totalPur(Purchase purchase);
 	int 			insertDetail(PurDetail pd);
 	int 			countDitem(PurDetail purDetail);
+	int 			writePur(Purchase purchase);
+	int 			detailWrite(List<PurDetail> detailList);
+	int 			qtyUpdate(PurDetail pd);
 	
 }

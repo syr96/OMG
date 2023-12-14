@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import com.oracle.OMG.dao.jkDao.JkWareDao;
-
+import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.Warehouse;
 
 import lombok.Data;
@@ -56,6 +56,22 @@ public class JkWareServiceImpl implements JkWareService {
 		System.out.println("JkWareServiceImpl getPurchaseDataResultMap Start...");
 		List<Warehouse> getPurchaseDataResultMap = jwd.getPurchaseDataResultMap(month, string);
 		return getPurchaseDataResultMap;
+	}
+
+	@Override
+	public Map<String, String> selectItem(int code) {
+		System.out.println("JkWareServiceImpl selectItem Start...");
+		
+		Map<String, String> selectItem= jwd.selectItem(code);
+		
+		return selectItem;
+	}
+
+	@Override
+	public int insertInv(Warehouse warehouse) {
+		System.out.println("JkWareServiceImpl insertInv start");
+		int result = jwd.insertInv(warehouse);
+		return result;
 	}
 
 

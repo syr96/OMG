@@ -64,12 +64,12 @@ public class ChPurDaoImpl implements ChPurDao {
 		return pc;
 	}
 	@Override
-	public int totalPur() {
+	public int totalPur(Purchase purchase) {
 		System.out.println("ChPurDaoImpl totalPur start...");
 		
 		int total = 0;
 		try {
-			total = session.selectOne("chTotalPur");
+			total = session.selectOne("chTotalPur",purchase);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,6 +102,48 @@ public class ChPurDaoImpl implements ChPurDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ChPurDaoImpl countDitem e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int writePur(Purchase purchase) {
+		System.out.println("ChPurDaoImpl writePur start...");
+		
+		int result = 0;
+		try {
+			result = session.insert("chPurWrite", purchase);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl writePur e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int detailWrite(List<PurDetail> detailList) {
+		System.out.println("ChPurDaoImpl detailWrite start...");
+		
+		int result = 0;
+		try {
+			result = session.insert("detailWrite", detailList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int qtyUpdate(PurDetail pd) {
+		System.out.println("ChPurDaoImpl detailWrite start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chQtyUpdate", pd);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
 		}
 		return result;
 	}

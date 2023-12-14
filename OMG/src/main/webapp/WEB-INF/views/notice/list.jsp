@@ -85,6 +85,10 @@
 		</div>
 
 		<!-- 페이지 네이션 -->
+		<form id='actionForm' action="/board/list" method="get">
+			<input type="hidden" name='pageNum' value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+			<input type="hidden" name='amount' value='<c:out value="${pageMaker.cri.amount }"></c:out>'>
+		</form>
 		<div class="row mx-2">
 			<div class="col-sm-12 col-md-6">
 				<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 50 entries</div>
@@ -92,24 +96,30 @@
 			<div class="col-sm-12 col-md-6 d-flex justify-content-end">
 				<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
 					<ul class="pagination">
-						<!-- 이전 블럭 이동 -->
-						<c:if test="${page.startPage > page.pageBlock }">
-							<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> << </a></li>
+						<!-- 이전 이동 -->
+						<c:if test="${pageMaker.prev }">
+							<li class="paginate_button page-item">
+								<a href="${pageMaker.startPage - 1}" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> 
+									이전 
+								</a>
+							</li>
 						</c:if>
 
-						<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }" varStatus="status">
-							<li class="paginate_button page-item"><c:if test="${i == page.currentPage }">
-									<a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">
-										<b class="text-primary">${i}</b>
-									</a>
-								</c:if> <c:if test="${i != page.currentPage }">
-									<a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> ${i} </a>
-								</c:if></li>
+						<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }" varStatus="status">
+							<li class='paginate_button page-item ${pageMaker.cri.pageNum == num ? "active" : ""} '>
+								<a href="<c:out value="${num}"/>" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link">
+									<c:out value="${num}"/>
+								</a>
+							</li>
 						</c:forEach>
 
-						<!-- 다음 블럭 이동 -->
-						<c:if test="${page.endPage < page.totalPage }">
-							<li class="paginate_button page-item"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> >> </a></li>
+						<!-- 다음 이동 -->
+						<c:if test="${pageMaker.next }">
+							<li class="paginate_button page-item">
+								<a href="${pageMaker.endPage + 1}" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabindex="0" class="page-link"> 
+									다음 
+								</a>
+							</li>
 						</c:if>
 					</ul>
 				</div>
@@ -129,7 +139,7 @@
 		}
 		$(document).ready(function() {
 			
-			var result = '${result}';
+			var result = '<c:out value="${result}"/>';
 			checkModal(result);
 			
 			function checkModal(result) {
@@ -148,7 +158,22 @@
 			$("#regBtn").on("click", function() {
 				window.location.href = "/notice/register";
 			});
-
+			
+			
+			// Pagination Form
+			var actionForm = $('#actionForm');
+			
+			$(".paginate_button page-item a").on("click", function(e){
+				
+				e.preventDefault();
+				
+				console.log('click');
+				
+				actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+				actionForm.submit();
+			});
+			
+			
 		});
 	</script>
 

@@ -29,7 +29,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Error - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>403 Forbidden</title>
 
     <meta name="description" content="" />
 
@@ -61,36 +61,42 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../assets/js/config.js"></script>
+    <style>
+	
+	
+		body {
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+		
+		
+	</style>
   </head>
-  
-  <style>
-  	body {
-		font-family: 'Noto Sans KR', sans-serif;
-	}
-  </style>
 
   <body>
     <!-- Content -->
 
-    <!-- Error -->
+    <!--Under Maintenance -->
     <div class="container-xxl container-p-y">
       <div class="misc-wrapper">
-        <h2 class="mb-2 mx-2">Page Not Found :(</h2>
-        <p class="mb-4 mx-2">Oops! 😖 The requested URL was not found on this server.</p>
-        <a href="index.html" class="btn btn-primary">Back to home</a>
-        <div class="mt-3">
+        <h2 class="mb-2 mx-2">접근 권한이 없습니다</h2>
+        <p class="mb-4 mx-2">관리자에게 문의 바랍니다</p>
+        <a href="/" class="btn btn-primary">메인으로</a>
+        <div class="mt-4">
           <img
-            src="../assets/img/illustrations/page-misc-error-light.png"
-            alt="page-misc-error-light"
+            src="../assets/img/illustrations/girl-doing-yoga-light.png"
+            alt="girl-doing-yoga-light"
             width="500"
             class="img-fluid"
-            data-app-dark-img="illustrations/page-misc-error-dark.png"
-            data-app-light-img="illustrations/page-misc-error-light.png"
+            data-app-dark-img="illustrations/girl-doing-yoga-dark.png"
+            data-app-light-img="illustrations/girl-doing-yoga-light.png"
           />
         </div>
       </div>
     </div>
-    <!-- /Error -->
+    <!-- /Under Maintenance -->
+
+    <!-- / Content -->
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

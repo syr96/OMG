@@ -23,6 +23,7 @@ public class ChitemDaoImpl implements ChItemDao {
 		
 		try {
 			cItemList = session.selectList("cItemList",custcode);
+			System.out.println(cItemList.size());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

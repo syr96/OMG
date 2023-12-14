@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.Warehouse;
 
 import lombok.Data;
@@ -103,6 +105,33 @@ public class JkWareDaoImpl implements JkWareDao {
 			System.out.println("JkWareDaoImpl getSalesData error?"+ e.getMessage());
 		}
 		return getPurchaseDataResultMap;
+	}
+
+
+	@Override
+	public Map<String, String> selectItem(int code) {
+	    System.out.println("JkWareDaoImpl selectItemByCode start");
+	    Map<String, String> itemDetails = null;
+	    try {
+	        // 매퍼 메서드에 파라미터를 전달하도록 수정
+	        itemDetails = session.selectOne("selectItem", code);
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	    }
+	    return itemDetails;
+	}
+
+
+	@Override
+	public int insertInv(Warehouse warehouse) {
+		System.out.println("JkWareDaoImpl insertInv start");
+		int result = 0;
+		try {
+			result = session.insert("insertInv", warehouse);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
 	}
 
 

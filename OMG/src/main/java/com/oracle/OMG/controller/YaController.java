@@ -1,11 +1,15 @@
 package com.oracle.OMG.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,7 @@ import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.service.thService.Paging;
 import com.oracle.OMG.service.yaService.YaCustomerService;
+
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -71,7 +76,7 @@ public class YaController {
 		return result;
 	}
 	
-	//직원 전체조회 ( 거래처수정용) 미완 
+	//직원 전체조회 ( 거래처수정용) 
 	@PostMapping("/memberList")
 	@ResponseBody
 	public Map<String, Object> memberList(@RequestBody Member member){
@@ -84,7 +89,18 @@ public class YaController {
 		return result;
 	}
 	
+	//거래처 전체조회 
+	@PostMapping("/customerListSelect")
+	@ResponseBody
+	public Map<String, Object> customerListSelect(@RequestBody Customer customer){
+		Map<String, Object> result = new HashMap<>();
+		
+		List<Customer> customerListSelect = null;
+		customerListSelect = ycs.customerListSelect(customer);
+		result.put("customerListSelect", customerListSelect);
 	
+		return result;
+	}	
 	//거래처 정보수정
 	@PostMapping("/updateCustomer")
 	@ResponseBody
@@ -145,15 +161,57 @@ public class YaController {
 		return result;
 	}
 	
-	//거래처판매실적 조회
+	//거래처판매실적 전체조회
 	@GetMapping("/customerSales")
-	@ResponseBody
-	public Map<String, Object> customerSalesList (Customer customer ){
+	/* @ResponseBody */
+	/*public Map<String, Object> customerSalesList (Customer customer ){*/
+	public String customerSalesList(Customer customer, Model model) {
 		System.out.println("YaController ycs.custoemrSales start...");
 		List<Customer> customerSalesList = ycs.customerSalesList(customer);
+		model.addAttribute("customerSalesList", customerSalesList);
+		/*
+		 * Map<String, Object> result = new HashMap<>(); result.put("customerSalesList",
+		 * customerSalesList); return result;
+		 */
+		//날짜변환		
+		/*
+		 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd"); for (Customer c :
+		 * customerSalesList) { try { Date date = sdf.parse(c.getPurDate());
+		 * c.setDate(date); } catch (Exception e) { e.printStackTrace(); } }
+		 */
+		 return "ya/salesByCustomer";
+	}
+	
+	//거래처,월별,유형별 판매실적 검색
+
+	@GetMapping("/customerSalesSearch")
+	@ResponseBody
+	public Map<String, Object> customerSalesSearch(HttpServletRequest request){
+		System.out.println("YaController ycs.customerSearch Start...");
+		int custcode =Integer.parseInt(request.getParameter("custcode"));
+		String month = request.getParameter("month");
+		String purDate = request.getParameter("purDate");
+		String custstyle = request.getParameter("custstyle");
+		
+		/*
+		 * // custcode가 0이면 거래처 전체조회하기 if (custcode == 0) { custcode = 0; }
+		 * 
+		 * // 월이 "all"로 전달된 경우 거래일자 전체조회하기 if ("all".equals(month)) { month = null; }
+		 * 
+		 * // 구분이 "전체"일 경우 매입0 매출1 전체조회하기 if ("all".equals(custstyle)) { custstyle =
+		 * null; }
+		 */
+
+			
+		List<Customer> customerSalesSearch = ycs.customerSalesSearch(custcode, month,custstyle,purDate);
 		
 		Map<String, Object> result = new HashMap<>();
-		result.put("customerSalesList", customerSalesList);
+		result.put("customerSalesSearch", customerSalesSearch);
+		System.out.println("customerSalesSearch size:"+ customerSalesSearch.size());
+		System.out.println("customerSalesSearch custcode:"+custcode);
+		System.out.println("customerSalesSearch  month:"+ month);
+		System.out.println("customerSalesSearch  custstyle:"+ custstyle);
+		
 		return result;
 	}
 }

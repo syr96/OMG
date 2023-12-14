@@ -3,6 +3,7 @@ package com.oracle.OMG.service.jkService;
 import java.util.List;
 import java.util.Map;
 
+import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 
@@ -13,5 +14,12 @@ public interface JkWareService {
 	List<Warehouse> getSalesData(String monthIOData);
 	List<Warehouse> getIOData(String monthIOData);
 	List<Warehouse> getPurchaseDataResultMap(String month, String string);
+	
+	// 제품조회
+	Map<String, String> 		selectItem(int code);
+	// 기초재고등록
+	int 			insertInv(Warehouse warehouse);
+
+	
 	
 }

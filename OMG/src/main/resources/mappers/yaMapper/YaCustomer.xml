@@ -33,6 +33,12 @@
 		FROM   member 
 	</select>
 	
+	<select id="customerListSelect" parameterType="customer" resultType="customer">
+		SELECT 		company, custcode
+		FROM 		customer
+		ORDER BY 	custcode DESC
+	</select> 
+	
 	<update id="updateCustomer" parameterType="customer">
 		  UPDATE customer
 		  SET
@@ -84,25 +90,66 @@
 	
     <select id="customerSalesList" resultType="customer">
         SELECT pur_date AS purDate,
+               SUBSTR(pur_date, 4, 2) AS month,
                code AS purCode,
                qty AS purQty,
                price AS purPrice,
                item_name AS itemName,
                company,
-               custStyle
+               custStyle,
+               businum,
+               custcode
         FROM (
-            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle
+            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
             FROM pur_detail p
             JOIN customer c ON c.custcode = p.custcode
             JOIN item i ON i.code = p.code
 
             UNION
 
-            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle
+            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
             FROM sales_detail s
             JOIN customer c ON c.custcode = s.custcode
             JOIN item i ON i.code = s.code
         ) combined_result
+
+    </select>
+
+
+	
+    <select id="customerSalesSearch" resultType="customer">
+        SELECT
+            pur_date AS purDate,
+            SUBSTR(pur_date, 4, 2) AS month,
+            code AS purCode,
+            qty AS purQty,
+            price AS purPrice,
+            item_name AS itemName,
+            company,
+            custStyle,
+            businum,
+            custcode
+
+        FROM (
+            SELECT p.pur_date, p.code, p.qty, p.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
+            FROM pur_detail p
+            JOIN customer c ON c.custcode = p.custcode
+            JOIN item i ON i.code = p.code
+
+            UNION
+
+            SELECT s.sales_date AS pur_date, s.code, s.qty, s.price, i.name AS item_name, c.company, c.custStyle, c.businum, c.custcode
+            FROM sales_detail s
+            JOIN customer c ON c.custcode = s.custcode
+            JOIN item i ON i.code = s.code
+        ) combined_result
+
+        WHERE
+            custcode = #{custcode}
+            AND SUBSTR(pur_date, 4, 2) = #{month}
+            AND custStyle = #{custstyle}
+        
+
     </select>
 
 	
