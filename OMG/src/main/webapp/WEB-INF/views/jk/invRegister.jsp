@@ -22,14 +22,14 @@
     function fetchDataAndRenderList() {
     	var selectedMonth = $('#monthSelect').val().replace('-', '');
     	var selectedType = $('#invType option:selected').val();
-
+		    	
       console.log('Selected Month:', selectedMonth);
       console.log('Selected Type:', selectedType);
       // Ajax 요청을 통해 서버에서 데이터를 가져옵니다.
       $.ajax({
         url: '/monthData',
         method: 'GET',
-        data: { month: selectedMonth, invType: selectedType },
+        data: { month: selectedMonth, invType: selectedType},
         success: function(response) {
         	console.log('Received data from server:', response);
         	  updateInventoryList(response);
@@ -45,22 +45,84 @@
     	  tbody.empty(); // 테이블 초기화
 
     	  for (var i = 0; i < data.length; i++) {
+    		var regDate = new Date(data[i].reg_date);
+    		var formattedDate = regDate.toLocaleString('ko-KR', {
+    			year: 'numeric',
+    		      month: 'numeric',
+    		      day: 'numeric',
+    		      hour: 'numeric',
+    		      minute: 'numeric',
+    		      second: 'numeric'
+    		    });
+    		
     	    var row = '<tr>' +
     	 	  '<td style="width: 3px;">' + (i + 1) + '</td>' + 
     	      '<td>' + data[i].ym + '</td>' +
     	      '<td>' + (data[i].inven === 0 ? '기초' : '기말') + '</td>' +
     	      '<td>' + data[i].code + '</td>' +
-    	      '<td>' +  + '</td>' +
+    	      '<td>' + data[i].name + '</td>' +
     	      '<td>' + data[i].cnt + '</td>' +
-    	      '<td>' +  + '</td>' +
-    	      '<td>' +  + '</td>' +
-    	      '<td>' + data[i].reg_date + '</td>' +
+    	      '<td>' + '-' + '</td>' +
+    	      '<td>' + data[i].mem_name + '</td>' +
+    	      '<td>' + formattedDate + '</td>' + // 변경된 날짜 포맷 적용
     	      '</tr>';
     	    tbody.append(row);
     	  }
     	}
 
   });
+  
+  $(document).ready(function() {
+	    var timeout;
+
+	    $("#productCodeInput").on("input", function() {
+	        var code = $(this).val();
+	        console.log("code: " + code);
+
+	        clearTimeout(timeout);
+
+	        timeout = setTimeout(function() {
+	            if (code.trim() !== "") {
+	                $.ajax({
+	                    type: "GET",
+	                    url: "/getItemDetails",
+	                    data: {
+	                        code: code
+	                    },
+	                    dataType: 'json',
+	                    success: function(response) {
+	                        var memName = response.MEM_NAME;
+	                        var productName = response.NAME;
+
+	                        $("#memNameInput").val(memName);
+	                        $("#productNameInput").val(productName);
+
+	                        // 성공적으로 정보를 가져왔을 때 기존 오류 메시지를 지웁니다.
+	                        $("#errorMessage").text("");
+	                    },
+	                    error: function(xhr, status, error) {
+	                        // 에러가 발생했을 때
+	                        alert("에러가 발생했습니다: " + error);
+	                        console.error("에러가 발생했습니다: " + error);
+	                    }
+	                });
+	            }
+	        }, 500);
+	    });
+	});
+
+  $(document).ready(function() {
+	    // 기초재고등록 폼이 제출될 때의 이벤트 처리
+	    $('#invRegisterForm').submit(function(event) {
+	        // input type="month"에서 선택된 날짜를 'YYYYMM' 형식으로 변환
+	        var selectedMonth = $('#ym').val().replace('-', '');
+	        console.log('Form submitted. Selected Month:', selectedMonth);
+
+	        // 변환된 값을 다시 input에 설정
+	        $('#ym').val(selectedMonth);
+	    });
+	});
+
 </script>
 
 
@@ -86,8 +148,11 @@
                          </select>
                          </div>
                       </div>
- 					</div>
 
+                     <div class="row">
+                     
+                     </div>
+ 					</div>
 		<!-- 재고리스트 -->
  			<div class="card">
                 <h5 class="card-header">재고리스트</h5>
@@ -116,51 +181,95 @@
  			</div>
  			
  			<!-- 재고리스트 -->
- 		
+ 			
         		 <div class="demo-inline-spacing mt-3">
                         <div class="list-group list-group-horizontal-md text-md-center">
                           <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">기초재고등록</a>
                           <a class="list-group-item list-group-item-action" id="profile-list-item" data-bs-toggle="list" href="#horizontal-profile">기초재고조정</a>
-                          <a class="list-group-item list-group-item-action" id="messages-list-item" data-bs-toggle="list" href="#horizontal-messages">입고조정</a>
-                          <a class="list-group-item list-group-item-action " id="settings-list-item" data-bs-toggle="list" href="#horizontal-settings">출고조정</a>
+
                         </div>
-                        <div class="tab-content px-0 mt-0">
+                        <div class="card">
+                         <h5 class="card-header">기초재고등록</h5>
+               <form action="invRegister" method="post">
                           <div class="tab-pane fade  active show" id="horizontal-home">
-		 				기초재고등록폼
 		 				 <div class="card-body">
 							<div class="row">
 								<div class="mb-3 col-md-6">
 		                        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-		                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect">
+		                          <input class="form-control" type="month" id="ym" name="ym" >
 		                        </div>
 		                         <div class="mb-3 col-md-6">
-		                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
-		                         <select id="invType" class="select2 form-select">
-		                              <option value="">전체</option>
-		                              <option value="Opening">기초</option>
-		                              <option value="Closing">기말</option>
-		                         </select>
 		                         </div>
 		                      </div>
-		 					</div>                            	
+		               <div class="row"> 
+		               <div class="mb-3 col-md-6">      
+		               <label class="form-label">제품코드</label>
+                        <input type="number" class="form-control" id="productCodeInput" placeholder="예시)1101" name="code" aria-describedby="defaultFormControlHelp"/>
+	                       <div id="defaultFormControlHelp" class="form-text">
+                          	제품 코드를 입력하시면 제품명이 출력됩니다.
+                        	</div>
+                        	</div>
+                        	<div class="mb-3 col-md-6">     
+                        <label class="form-label">제품명</label>
+                        <input type="text" class="form-control" id="productNameInput" placeholder="" aria-describedby="defaultFormControlHelp" readonly/>
+	                    
+                       </div> 
+                       </div>
+                        <div class="row"> 
+		               <div class="mb-3 col-md-6">      
+		               <label class="form-label">수량</label>
+                        <input type="number" class="form-control" id="cnt" placeholder="" name="cnt" aria-describedby="defaultFormControlHelp"/>
+                        	</div>
+                        	<div class="mb-3 col-md-6">     
+                        <label class="form-label">담당자</label>
+                        <input type="text" class="form-control" id="memNameInput" placeholder="" aria-describedby="defaultFormControlHelp" readonly/>
+	                    
+                       </div> 
+                       </div>
+                      <div class="dt-buttons text-end">
+					    <button id="beginningInvReg" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="submit">
+					        <span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">등록</span></span>
+					    </button>
+					</div>
+					
+			 					</div>
+		 					                            	
                           </div>
-                          <div class="tab-pane fade" id="horizontal-profile">
-                      			기초재고조정폼
-                    
-                  
-                          </div>
-                          <div class="tab-pane fade" id="horizontal-messages">
-                          		입고조정폼
-                          </div>
-                          <div class="tab-pane fade" id="horizontal-settings">
-                            	출고조정폼
-                          </div>
-                        </div>
+                        </form>
                       </div>
 					</div>
-              
+              </div>
 
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="errorModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">에러 메시지</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
+<script>
+//모달 창 열기
+function openErrorModal(errorMessage) {
+    $('#errorMessage').text(errorMessage);
+    $('#errorModal').modal('show');
+}
+
+// 모달 창 닫기
+function closeErrorModal() {
+    $('#errorModal').modal('hide');
+}
+</script>
 <%@ include file="../common/footer.jsp" %>
 </html>
