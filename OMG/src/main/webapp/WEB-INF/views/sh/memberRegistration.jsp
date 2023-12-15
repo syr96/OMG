@@ -59,55 +59,7 @@
     };
 </script>
 <script type="text/javascript">
-//유효성 체크
-function checkValidation(){
-	//비밀번호 유효성 검사
-	var pw = $('#mem_pw').val();
-	
-	var pwRegex = /^[a-zA-Z0-9._-]{8,20}/
-	if(pwRegex.test(pw))
-	//등록 확인 시 함수
-	var requestData = {
-			right	:  $('#mem_right').val(),
-			hiredate : $('#mem_hiredate').val(),
-			name	:  $('#mem_name').val(),
-			birthday : $('#mem_bd').val(),
-			sex		:  $('input[name="mem_sex"]:checked').val(),
-			email	:  $('#mem_email1').val() + "@" + $('#mem_email2').val()
-			phone	:  $('#mem_phone').val(),
-			dept	:  $('#mem_dept').val(),
-			posi	:  $('#mem_posi').val(),
-			duty	:  $('#mem_duty').val(),
-			mailcode : $('#mem_mailcode').val(),
-			address :  $('#mem_address1').val()+"/"+$('#mem_address2').val()+"/"+$('#mem_address3').val(),
-			password : $('#mem_pw').val(),
-		};
-		
-	//이미지 데이터 수집
-	var image = $('#upload')[0].files[0];
-	var formData = new FormData();
-	formData.append("img",image);
-	
-	//JSOON 데이터를 Blob으로 변환하여 FormData에 추가
-	var jsonBlob = new Blob([JSON.stringify(requestData)], {type:"application/json"});
-	formData.append("request",jsonBlob);
-	
-	if(confirm("등록을 완료하시겠습니까?")){
-		console.log("등록 확인");
-		$.ajax({
-			type: "GET",
-			url : "createMem",
-			data : formData,
-			//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
-			contentType : false,		
-			processData : false,
-			success : function(result){
-					console.log("success 도착");					
-					}
-			});
-	}else{
-		console.log("등록 거절");
-	};
+
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -120,7 +72,7 @@ function checkValidation(){
                   <div class="card mb-4">
                     <h5 class="card-header">
                       <i class="bx bx-user me-1"></i> Account</h5>
-                      <form id="formAccountSettings" enctype="multipart/form-data" onsubmit="return checkValidation()">
+                      <form id="formAccountSettings" enctype="multipart/form-data">
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -165,7 +117,7 @@ function checkValidation(){
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" required/>
+	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" />
 	                        </div>
 	                    </div>
                        
@@ -177,7 +129,7 @@ function checkValidation(){
                            type="text"
                            id="mem_name"
                            name="mem_name"
-                           required
+                           
                           />
                         </div>
                            
@@ -195,7 +147,7 @@ function checkValidation(){
 			                     maxlength="8"
 			                     min="19000101"
 			                     pattern="\d*"
-			                     required
+			                     
 			                   />
 			                <div class="col-md-3" style="margin: 5px 100px 0 50px;">
 		                	    <input
@@ -211,7 +163,7 @@ function checkValidation(){
 		                         type="radio"
 		                         value="F"
 		                         id="mem_sex"
-		                         required
+		                         
 		                       />여
 	                        	</div>
 			               </div>
@@ -221,9 +173,9 @@ function checkValidation(){
                       <div class="mb-3 col-md-6" id="mem_email">
                         <label for="mem_email" class="form-label">이메일</label>
                         <div class="input-group">
-	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1" required="required"/>
+	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"/>
 	                            <span class="input-group-text">@</span>
-	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2" required="required"/>
+	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2"/>
 	                            <select id="mem_email3" class="select2 form-select">
 		                            <option value="" >직접입력</option>
 		                            <option value="naver.com">네이버</option>
@@ -239,7 +191,7 @@ function checkValidation(){
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text">KR (+82)</span>
-                              <input type="text" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11" required/>
+                              <input type="text" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11"/>
                         	</div>
                      	</div>
                         
@@ -303,14 +255,14 @@ function checkValidation(){
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-3 col-md-4">
-						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" placeholder="우편번호" required="required">
+						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" placeholder="우편번호">
 						        </div>
 						        <div class="col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
 						        </div>
 						    </div>
 	                        <div class="col-md-8">
-								<input type="text" class="form-control" name="mem_address1" id="sample6_address" placeholder="주소" required="required"><br>
+								<input type="text" class="form-control" name="mem_address1" id="sample6_address" placeholder="주소"><br>
 							</div>
 							<div class="col-md-6">
 								<input type="text"class="form-control" name="mem_address2" id="sample6_extraAddress" placeholder="참고항목"><br>
@@ -325,7 +277,7 @@ function checkValidation(){
 	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>
-	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1" required="required"/>
+	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1"/>
 		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
@@ -337,7 +289,7 @@ function checkValidation(){
 		                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
 		                        <div class="input-group">
 		                        <span class="ps_box int_pass"></span>
-		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;" required="required"/>
+		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;"/>
 		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
@@ -466,6 +418,92 @@ function checkValidation(){
 		});
 	});
 	
+	$(document).ready(function(){
+		$('#basic-default-password1').on('change',function(){
+			var pw1 = $('#basic-default-password1').val();
+			var pw2 = $('#basic-default-password2').val();
+			
+			if(isNaN(pw2) || pw2 != null){
+				if(pw1 == pw2){
+					$('#pswd2Msg1').css('display','block');
+					$('#pswd2Msg2').css('display','none');
+				} else {
+					$('#pswd2Msg1').css('display','none');
+					$('#pswd2Msg2').css('display','block');
+				}
+			} else {
+			return false;
+			}			
+		});
+	});
+	
+	//유효성 체크
+	function checkValidation(){
+		alert("함수 실행");
+		//비밀번호 유효성 검사
+		var pw1 = $('#basic-default-password1').val();
+		var pwMessage = $('#basic-default-password2').css('display');
+		//체크박스여서 checked 되면 값 지정
+		var memRightValue = $('#mem_right').prop('checked') ? 1 : 0;
+		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/
+		if (pwMessage === 'block'){
+			alert("비밀번호 일치");
+		//등록 확인 시 함수
+		var requestData = {
+				right	:  memRightValue,
+				hiredate : $('#mem_hiredate').val(),
+				name	:  $('#mem_name').val(),
+				birthday : $('#mem_bd').val(),
+				sex		:  $('input[name="mem_sex"]:checked').val(),
+				email	:  $('#mem_email1').val() + "@" + $('#mem_email2').val(),
+				phone	:  $('#mem_phone').val(),
+				dept	:  $('#mem_dept_md').val(),
+				posi	:  $('#mem_posi_md').val(),
+				duty	:  $('#mem_duty_md').val(),
+				mailcode : $('#mem_mailcode').val(),
+				address :  $('#mem_address1').val()+"/"+$('#mem_address2').val()+"/"+$('#mem_address3').val(),
+				password : $('#basic-default-password1').val(),
+			};
+		
+		var requestDataString = JSON.stringify(requestData);
+		
+		alert("requestData->"+requestDataString);
+			
+		//이미지 데이터 수집
+		var image = $('#upload')[0].files[0];
+		var formData = new FormData();
+		formData.append("img",image);
+		
+		//JSOON 데이터를 Blob으로 변환하여 FormData에 추가
+		var jsonBlob = new Blob([JSON.stringify(requestData)], {type:"application/json"});
+		formData.append("request",jsonBlob);
+		
+		if(confirm("등록을 완료하시겠습니까?")){
+			console.log("등록 확인");
+			$.ajax({
+				type: "GET",
+				url : "createMember",
+				data : formData,
+				//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
+				contentType : false,		
+				processData : false,
+				success : function(result){
+						console.log("success 도착");					
+						}
+				});
+		}else{
+			console.log("등록 거절");
+		};
+		
+		} else {
+			alert("비밀번호 ")}
+		}
+	
+	$('#formAccountSettings').on('submit', function(event) {
+        event.preventDefault(); // 다른 이벤트 방지
+        console.log('Form submitted');
+        return checkValidation();
+	});
 </script>
 </body>
 </html>

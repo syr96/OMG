@@ -1,10 +1,18 @@
 package com.oracle.OMG.controller;
 
-import org.apache.jasper.tagplugins.jstl.core.Out;
+import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.oracle.OMG.dto.Member;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -57,4 +65,42 @@ public class ShController {
 		}
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "createMember")
+	public String createMember(@RequestParam("right") int right,
+							   @RequestParam("hiredate") Date hiredate,
+							   @RequestParam("name") String name,
+							   @RequestParam("birthday") String birthday,
+							   @RequestParam("sex") String sex,
+							   @RequestParam("email") String email,
+							   @RequestParam("phone") String phone,
+							   @RequestParam("dept") int dept,
+							   @RequestParam("posi") int posi,
+							   @RequestParam("duty") int duty,
+							   @RequestParam("mailcode") int mailcode,
+							   @RequestParam("address") String address,
+							   @RequestParam("password") String paasword,
+							   @RequestParam("img") MultipartFile img,
+							   HttpServletRequest request,
+							   Model model) throws IOException {
+		String result = null;
+		
+		Member member = new Member();
+		member.setMem_right(right);
+		member.setMem_hiredate(hiredate);
+		member.setMem_name(name);
+		member.setMem_bd(birthday);
+		member.setMem_sex(sex);
+		member.setMem_email(email);
+		member.setMem_phone(phone);
+		member.setMem_dept_md(dept);
+		member.setMem_posi_md(posi);
+		member.setMem_duty_md(duty);
+		member.setMem_mailcode(mailcode);
+		member.setMem_address(address);
+		member.setMem_pw(paasword);
+		
+		return result;
+ 	}
 }
