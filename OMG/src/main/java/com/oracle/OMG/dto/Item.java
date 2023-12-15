@@ -21,4 +21,7 @@ public class Item {
     
     // company 명칭 가져오기
     private String 	company;
+    
+    // 검색 키워드
+    private String keyword;
 }

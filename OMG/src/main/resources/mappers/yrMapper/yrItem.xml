@@ -25,6 +25,13 @@
 				and i.cate_md = ${cate_md}
 			</otherwise>
 		</choose>
+		
+		<if test="keyword != null and keyword != ''">
+			AND (i.code       LIKE '%' || #{keyword} || '%'
+			    OR i.name     LIKE '%' || #{keyword} || '%'
+			    OR i.custcode LIKE '%' || #{keyword} || '%'
+			    OR cs.company LIKE '%' || #{keyword} || '%')		
+		</if>
 		ORDER BY i.code
 	</select>
 	

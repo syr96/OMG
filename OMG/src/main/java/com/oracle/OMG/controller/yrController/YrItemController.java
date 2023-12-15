@@ -33,6 +33,7 @@ public class YrItemController {
 	public String itemList(Model model
 			            , @RequestParam(value = "deleted", required = false) String deleted
 			            , @RequestParam(value = "cate_md", required = false) String cate_md
+			            , @RequestParam(value = "keyword", required = false) String keyword
 			               ) {
 		System.out.println("YrItemController itemList start");
 		
@@ -45,6 +46,9 @@ public class YrItemController {
 		if(cate_md != null ) {
 			cate_md_int = Integer.parseInt(cate_md);
 			item.setCate_md(cate_md_int);
+		}
+		if(keyword != null) {
+			item.setKeyword(keyword);
 		}
 		
 		// 제품 전체 리스트 가져오기

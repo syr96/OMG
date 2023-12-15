@@ -14,8 +14,13 @@
 	function filter() {
 		var cate_md = $('#cate_md').val();
 		var deleted = $('#deleted').val();
-		
 		location.href = "/item/list?cate_md="+cate_md + "&deleted=" + deleted;	
+	}
+	
+	// 검색
+	function searchButton() {
+		var keyword = $('#keyword').val();		
+		location.href = "/item/list?keyword=" + keyword;
 	}
 	
 	// 제품 상세 정보
@@ -40,10 +45,10 @@
 			<span class="text-muted fw-light">제품 관리 / </span>
 			<a href="/item/list" class="linkText">제품 조회</a>
 		</h4>
-		<form class="d-flex" onsubmit="return false">
-	      <input class="form-control me-2" type="search" placeholder="제품코드 / 제품명 / 거래처명 / 거래처코드" />
-	      <button class="btn btn-outline-primary" type="submit">검색</button>
-	    </form>
+		<div class="d-flex">
+	      <input class="form-control me-2" type="search" placeholder="제품 / 거래처" id="keyword" onkeypress="if(event.keyCode == 13){searchButton();}" />
+	      <button class="btn btn-outline-primary" type="button" onclick="searchButton()"  style="width: 100px;">검색</button>
+	    </div>
 	</div>
 	<!-- 제품 조회 -->
 	<div class="card">
