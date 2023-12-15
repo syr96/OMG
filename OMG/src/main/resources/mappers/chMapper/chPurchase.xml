@@ -70,11 +70,9 @@
 		Values(sysdate, #{custcode}, 0, #{title}, #{mem_id}<if test="ref != null">, #{ref}</if>)
 	</insert>
 	
-	<insert id="detailWrite" parameterType="List">
-		<foreach collection="list" item="dList" separator=";">
+	<insert id="detailWrite" parameterType="PurDetail">
 			Insert into pur_detail(pur_date, custcode, code, qty, price) 
-			values(sysdate, #{dList.custcode}, #{dList.code}, #{dList.qty}, #{dList.price})
-		</foreach>
+			values(sysdate, #{custcode}, #{code}, #{qty}, #{price})
 	</insert>
 	
 	<update id="chQtyUpdate" parameterType="Purchase">
@@ -90,4 +88,10 @@
 		Where pur_date = #{pur_date}
 		and custcode = #{custcode}
 	</update>
+	
+	<delete id="chdeletePur" parameterType="Purchase">
+		Delete Purchase
+		Where pur_date = #{pur_date}
+		and custcode = #{custcode} 
+	</delete>
 </mapper>

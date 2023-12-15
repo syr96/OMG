@@ -187,18 +187,20 @@ public class ChController {
 						detailList.add(purDetail);
 					}
 				}
-			}
+			} 
 			if(detailList.size() > 0) {
 				resultDetail = chPurService.detailWrite(detailList);
 			}
 			
+		} else if( resultPur == -1) {
+			return "";
 		}
 		
 		return "redirect:purList";
 	}
-	
+	// 발주 완료 
 	@PostMapping("completePur")
-	public String completePur(Purchase purchase) {
+	public String completePur(Purchase purchase, HttpSession session) {
 		System.out.println("ChController writePurchase Start");
 		
 		int result = 0;
@@ -212,6 +214,18 @@ public class ChController {
 		return "redirect:purDtail";
 	}
 	
+	// 발주 삭제 
+	@PostMapping("deletePur")
+	public String deletePur(Purchase purchase, HttpSession session ) {
+		System.out.println("ChController writePurchase Start");
+		
+		int result = 0;
+		
+		result = chPurService.deletePur(purchase);
+		
+		
+		return "redirect:purList";
+	}
 	
 	
 	@ResponseBody

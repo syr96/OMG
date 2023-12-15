@@ -79,8 +79,7 @@
 									<c:choose>
 										<c:when test="${purList.pur_status == 0}">진행중</c:when>
 										<c:when test="${purList.pur_status == 1}">완료</c:when>
-										<c:when test="${purList.pur_status == 2}">취소</c:when>
-										<c:when test="${purList.pur_status == 3}">입고완료</c:when>
+										<c:when test="${purList.pur_status == 2}">입고완료</c:when>
 									</c:choose>
 								</td>
 							</tr>

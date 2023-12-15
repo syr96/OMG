@@ -118,4 +118,14 @@ public class ChPurServiceImpl implements ChPurService {
 		return result;
 	}
 
+	@Override
+	public int deletePur(Purchase purchase) {
+		System.out.println("ChPurServiceImpl deletePur Start...");
+		int result = 0;
+		
+		result = chPurDao.deletePur(purchase);
+		
+		return result;
+	}
+
 }

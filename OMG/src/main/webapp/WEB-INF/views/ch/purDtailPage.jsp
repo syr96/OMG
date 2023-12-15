@@ -26,8 +26,13 @@
 							</form>
 						</c:if>
 						<div class="col-6">
-							<c:if test="${mem_id == pc.mem_id || mem_id == pc.mgr_id }">
-								<button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">발주 취소</button>
+							<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
+								<form action="deletePur" class="col-6" method="POST">
+									<input type="hidden" name="pur_date" value="${pc.pur_date }">
+									<input type="hidden" name="custcode" value="${pc.custcode }">
+									<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+									<button class="btn btn-outline-primary">발주 취소</button>
+								</form>
 							</c:if>
 						</div>
 					</td>
@@ -41,8 +46,7 @@
 					<div class="col-6">상태 : <c:choose>
 												<c:when test="${pc.pur_status == 0}">진행중</c:when>
 												<c:when test="${pc.pur_status == 1}">완료</c:when>
-												<c:when test="${pc.pur_status == 2}">취소</c:when>
-												<c:when test="${pc.pur_status == 3}">입고완료</c:when>
+												<c:when test="${pc.pur_status == 2}">입고완료</c:when>
 											</c:choose>
 					</div>
 					<div class="col-6">날짜 : ${pc.pur_date }</div>
