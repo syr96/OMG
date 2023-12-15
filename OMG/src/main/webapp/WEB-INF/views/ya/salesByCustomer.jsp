@@ -147,7 +147,8 @@ function search() {
             console.log("Search successful:", data);
             var customerSalesSearch = data.customerSalesSearch;
 
-            // 기존 결과를 모두 지우고 새로운 결과 추가
+
+            // 검색결과 
             $("#searchResultsTable tbody").empty();
             $.each(customerSalesSearch, function (index, customer) {
                 var row = "<tr>" +
@@ -160,9 +161,15 @@ function search() {
                     "<td>" + customer.itemName + "</td>" +
                     "<td>" + customer.purQty + "</td>" +
                     "<td>" + customer.purPrice.toLocaleString()  + "</td>" +
+                    "<td>" + (customer.custstyle == 0 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
+                    "<td>" + (customer.custstyle == 1 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
                     "</tr>";
+                    
+                    
                 $("#searchResultsTable tbody").append(row);
             });
+            
+            
         },
         error: function () {
             console.error('서버 오류');
@@ -194,8 +201,9 @@ function search() {
                     </tr>
                </thead>
                <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
-               <c:forEach var="customer" items="${customerSalesList}">
-                    <tr>
+      			<!--전체거래처실적조회 -->
+                <c:forEach var="customer" items="${customerSalesList}">    
+					 <tr>
                      <td>${customer.month}</td>
                      <td>${customer.purDate}</td>
                   	 <td>${customer.custstyle == 0 ? '매입' : '매출'}</td>
@@ -205,7 +213,7 @@ function search() {
                      <td>${customer.itemName }</td>
                      <td>${customer.purQty}</td>
                      <td><fmt:formatNumber value="${customer.purPrice}" pattern="#,##0" /></td>
-			            <!-- customer.custstyle에 따라 매입액 또는 매출액 표시 -->
+			        <!-- customer.custstyle에 따라 총 매입액(0) 또는 총 매출액(1) 표시 -->
 			        <td><c:choose>
 			            <c:when test="${customer.custstyle == 0}">
 			                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
@@ -219,7 +227,9 @@ function search() {
 			            <c:otherwise>-</c:otherwise>
 			        </c:choose></td>
                     </tr>
-                </c:forEach>
+
+               </c:forEach>
+
                 </tbody>
                 <tfoot class="fixed-tfoot">			
 					<c:set var="totalPurchaseAmount" value="0" />
@@ -235,8 +245,9 @@ function search() {
 					        </c:when>
 					    </c:choose>
 					</c:forEach>
-					
-					<tr>
+	
+				    	 <!-- 누계 행 추가 -->			
+						<tr>
 						<td colspan="6"></td>
 						<th colspan="3">누          계</th>
 					    <th><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>

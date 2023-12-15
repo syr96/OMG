@@ -118,6 +118,20 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		
 		return customerSalesSearch;
 	}
+
+	@Override
+	public String salesMonths(String sales_date) {
+		System.out.println("YaCustomerService salesMonths  start...");
+		String salesMonths = ycd.salesMonths(sales_date);
+		return salesMonths;
+	}
+
+	@Override
+	public String purMonths(String pur_date) {
+		System.out.println("YaCustomerService  purMonths  start...");
+		String purMonths = ycd.purMonths(pur_date);
+		return  purMonths;
+	}
 		
 		
 }
