@@ -124,12 +124,15 @@ public class ChPurDaoImpl implements ChPurDao {
 		System.out.println("ChPurDaoImpl detailWrite start...");
 		
 		int result = 0;
-		try {
-			result = session.insert("detailWrite", detailList);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
+		for(PurDetail pd : detailList) {
+			try {
+				System.out.println("detailWrite count---------->" + result);
+				result += session.insert("detailWrite", pd);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
+			}
 		}
 		return result;
 	}
@@ -144,6 +147,34 @@ public class ChPurDaoImpl implements ChPurDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("ChPurDaoImpl detailWrite e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int completePur(Purchase purchase) {
+		System.out.println("ChPurDaoImpl completePur start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chcompletePur", purchase);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl completePur e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int deletePur(Purchase purchase) {
+		System.out.println("ChPurDaoImpl deletePur start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chdeletePur", purchase);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl deletePur e.getMessage()" + e.getMessage());
 		}
 		return result;
 	}

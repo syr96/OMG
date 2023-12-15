@@ -19,7 +19,7 @@
 	<select id="chPurList" parameterType="Purchase" resultType="Purchase">
 		Select *
 		From (Select ROWNUM rn, a.*
-				From(Select p.*, m.mem_name appli_name, c.company
+				From(Select p.*, m.mem_name appli_name, c.company, c.mem_id mgr_id
 				    From purchase p, member m, customer c
 				    Where p.mem_id = m.mem_id
 	                <if test="custcode > 0">
@@ -44,7 +44,7 @@
 	</select>
 	
 	<select id="chPurOne" parameterType="Purchase" resultType="Purchase">
-		Select p.*,c.company, m.mem_name appli_name, mgr.mem_name mgr_name
+		Select p.*,c.company,c.mem_id mgr_id, m.mem_name appli_name, mgr.mem_name mgr_name
 		From purchase p, customer c, member m, member mgr
 		Where 	p.pur_date = #{pur_date}
 		and		p.custcode = #{custcode}
@@ -70,11 +70,9 @@
 		Values(sysdate, #{custcode}, 0, #{title}, #{mem_id}<if test="ref != null">, #{ref}</if>)
 	</insert>
 	
-	<insert id="detailWrite" parameterType="List">
-		<foreach collection="list" item="dList" separator=";">
+	<insert id="detailWrite" parameterType="PurDetail">
 			Insert into pur_detail(pur_date, custcode, code, qty, price) 
-			values(sysdate, #{dList.custcode}, #{dList.code}, #{dList.qty}, #{dList.price})
-		</foreach>
+			values(sysdate, #{custcode}, #{code}, #{qty}, #{price})
 	</insert>
 	
 	<update id="chQtyUpdate" parameterType="Purchase">
@@ -83,4 +81,17 @@
 		Where pur_date = #{pur_date}
 		and code = #{code}
 	</update>
+	
+	<update id="chcompletePur" parameterType="Purchase">
+		Update Purchase
+		Set pur_status = 1
+		Where pur_date = #{pur_date}
+		and custcode = #{custcode}
+	</update>
+	
+	<delete id="chdeletePur" parameterType="Purchase">
+		Delete Purchase
+		Where pur_date = #{pur_date}
+		and custcode = #{custcode} 
+	</delete>
 </mapper>

@@ -14,15 +14,45 @@
 			<div class="col-12">
 				<h2>발주 상세</h2>
 			</div>
-			<div class="col-12 text-end">
-				<button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button>
-			</div>
+			<table class="col-12">
+				<tr>
+					<td class="col-6 text-start">
+						<c:if test="${mem_id == pc.mgr_id && pc.pur_status == 0}">
+							<form action="completePur" class="col-6" method="POST">
+								<input type="hidden" name="pur_date" value="${pc.pur_date }">
+								<input type="hidden" name="custcode" value="${pc.custcode }">
+								<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+								<button class="btn btn-outline-primary">발주 완료</button>
+							</form>
+						</c:if>
+						<div class="col-6">
+							<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
+								<form action="deletePur" class="col-6" method="POST">
+									<input type="hidden" name="pur_date" value="${pc.pur_date }">
+									<input type="hidden" name="custcode" value="${pc.custcode }">
+									<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+									<button class="btn btn-outline-primary">발주 취소</button>
+								</form>
+							</c:if>
+						</div>
+					</td>
+					<td class="col-6 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></td>
+				</tr>
+			</table>
+			
 			<div class="col-12">
 				<div class="row text-center bg-white">
+					<div class="col-6">제목 : ${pc.title}</div>
+					<div class="col-6">상태 : <c:choose>
+												<c:when test="${pc.pur_status == 0}">진행중</c:when>
+												<c:when test="${pc.pur_status == 1}">완료</c:when>
+												<c:when test="${pc.pur_status == 2}">입고완료</c:when>
+											</c:choose>
+					</div>
 					<div class="col-6">날짜 : ${pc.pur_date }</div>
 					<div class="col-6">회사명 : ${pc.company }</div>
-					<div class="col-6">발주자 : ${pc.appli_name }</div>
-					<div class="col-6">담당자 : ${pc.mgr_name }</div>
+					<div class="col-6">발주자 : ${pc.appli_name }(${pc.mem_id })</div>
+					<div class="col-6">담당자 : ${pc.mgr_name } (${pc.mgr_id })</div>
 					<div class="col-12 text-center">비고</div>
 					<div class="container">
 						${pc.ref }
@@ -31,19 +61,19 @@
 			</div>
 			
 			<div class="col-12 text-center">
-				<form id="inDetail">
-					<input type="hidden" id="pur_date" value="${pc.pur_date }">
-					제품:<select id="code" onchange="item_chk()">
-							<c:forEach items="${itemList }" var="itemList">
-								<option value="${itemList.code }">${itemList.name }</option>
-							</c:forEach>
-					</select>
-					
-					수량: <input type="number" id="qty">
-					
-					<button type="button" onclick="inSertDetail()" id="insertBtn" class="btn btn-outline-primary">추가</button>
-					
-				</form>	
+				<input type="hidden" id="pur_date" value="${pc.pur_date }">
+				<c:if test="${mem_id == pc.mem_id}">
+						<input type="hidden" id="pur_date" value="${pc.pur_date }">
+						제품:<select id="code" onchange="item_chk()">
+								<c:forEach items="${itemList }" var="itemList">
+									<option value="${itemList.code }">${itemList.name }</option>
+								</c:forEach>
+						</select>
+						
+						수량: <input type="number" id="qty">
+						
+						<button type="button" onclick="inSertDetail()" id="insertBtn" class="btn btn-outline-primary">추가</button>
+				</c:if>
 			</div>
 			
 			<div class="col-12" id="d_tble">
@@ -62,7 +92,7 @@
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 							<td id="td${status.index }">
 								${pdList.qty }개
-								<c:if test="${pc.pur_status == 0 }">
+								<c:if test="${pc.pur_status == 0 && mem_id == pc.mem_id}">
 									<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 								</c:if>
 							</td>

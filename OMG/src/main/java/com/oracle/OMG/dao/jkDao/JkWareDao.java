@@ -20,6 +20,6 @@ public interface JkWareDao {
 
 	int insertInv(Warehouse warehouse);
 
-	Map<String, String> 		selectItem(int code);
+	Map<String, String> 		selectItem(int code, String ym);
 	
 }

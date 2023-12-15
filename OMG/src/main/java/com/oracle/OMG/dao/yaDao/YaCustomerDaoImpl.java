@@ -177,6 +177,33 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		}
 		return customerSalesSearch;
 	}
+	
+	
+	//월검색(판매)
+	@Override
+	public String salesMonths(String sales_date) {
+		System.out.println("YaCustomerDao salesMonths start....");
+		String	salesMonths=null;
+		try {
+		 salesMonths = session.selectOne( "salesMonths",sales_date);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl salesMonths e.getMessage? " + e.getMessage());
+		}
+		return  salesMonths;
+	}
+	
+	//월검색(주문)
+	@Override
+	public String purMonths(String pur_date) {
+		System.out.println("YaCustomerDao  purMonthss start....");
+		String purMonths=null;
+		try {
+			purMonths=session.selectOne("purMonths", pur_date);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl purMonths e.getMessage? " + e.getMessage());
+		}
+		return purMonths;
+	}
 
 
 }

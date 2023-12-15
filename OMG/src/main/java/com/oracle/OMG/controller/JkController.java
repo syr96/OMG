@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,34 +61,35 @@ public class JkController {
 	        return "jk/invRegister";
 	    } catch (DuplicateKeyException e) {
 	        // 중복 등록 오류가 발생한 경우
-	        throw e;
+	        String errorMessage = "재고 등록에 실패했습니다. 이미 등록된 기초재고가 있습니다.";
+	        model.addAttribute("errorMessage", errorMessage);
+	        e.printStackTrace();
+	        // 사용자에게 오류 메시지를 보여줄 수 있는 페이지로 이동
+	        return "errorPage";
 	    } catch (Exception e) {
 	        // 기타 오류 처리
 	        throw new RuntimeException("서버 오류가 발생했습니다.", e);
 	    }
-
 	}
-
+	
 	@ControllerAdvice
 	public class GlobalExceptionHandler {
-
-		  @ExceptionHandler(DuplicateKeyException.class)
-		    public ResponseEntity<String> handleDuplicateKeyException(DuplicateKeyException ex) {
-		        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 등록된 재고입니다.");
+	  // 예외 처리 핸들러
+		 @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+		    public ResponseEntity<String> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+		        String errorMessage = "재고 등록에 실패했습니다. 이미 등록된 기초재고가 있습니다.";
+		        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT); // 409 Conflict 상태 코드 사용
 		    }
-
-
-	    // 다른 예외에 대한 핸들러 추가 가능
 	}
-
+		
 	// 제품정보 조회
 	@GetMapping("/getItemDetails")
 	@ResponseBody
-	public Map<String, String> getItemDetails(@RequestParam("code") int code) {
-	    logger.info("Fetching item details for product code: {}", code);
+	public Map<String, String> getItemDetails(@RequestParam("code") int code, @RequestParam("ym") String ym ) {
+	    logger.info("Fetching item details for product code: {}", code, "ym",ym);
 
-	    Map<String, String> response = jws.selectItem(code);
-
+	    Map<String, String> response = jws.selectItem(code, ym);
+	    
 	    logger.info("Response: {}", response);
 	    return response;
 	}

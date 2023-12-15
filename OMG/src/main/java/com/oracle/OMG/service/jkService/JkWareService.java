@@ -16,7 +16,7 @@ public interface JkWareService {
 	List<Warehouse> getPurchaseDataResultMap(String month, String string);
 	
 	// 제품조회
-	Map<String, String> 		selectItem(int code);
+	Map<String, String> 		selectItem(int code, String ym);
 	// 기초재고등록
 	int 			insertInv(Warehouse warehouse);
 

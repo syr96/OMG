@@ -16,5 +16,7 @@ public interface ChPurDao {
 	int 			writePur(Purchase purchase);
 	int 			detailWrite(List<PurDetail> detailList);
 	int 			qtyUpdate(PurDetail pd);
+	int 			completePur(Purchase purchase);
+	int 			deletePur(Purchase purchase);
 
 }

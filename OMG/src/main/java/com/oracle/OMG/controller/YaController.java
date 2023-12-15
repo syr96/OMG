@@ -164,26 +164,33 @@ public class YaController {
 	//거래처판매실적 전체조회
 	@GetMapping("/customerSales")
 	/* @ResponseBody */
-	/*public Map<String, Object> customerSalesList (Customer customer ){*/
 	public String customerSalesList(Customer customer, Model model) {
 		System.out.println("YaController ycs.custoemrSales start...");
 		List<Customer> customerSalesList = ycs.customerSalesList(customer);
 		model.addAttribute("customerSalesList", customerSalesList);
-		/*
-		 * Map<String, Object> result = new HashMap<>(); result.put("customerSalesList",
-		 * customerSalesList); return result;
-		 */
-		//날짜변환		
-		/*
-		 * SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd"); for (Customer c :
-		 * customerSalesList) { try { Date date = sdf.parse(c.getPurDate());
-		 * c.setDate(date); } catch (Exception e) { e.printStackTrace(); } }
-		 */
+
 		 return "ya/salesByCustomer";
 	}
 	
-	//거래처,월별,유형별 판매실적 검색
+	//판매상세테이블 월별 매출액
+	@RequestMapping("/salesMonths")
+	public String salesMonths(Model model,String sales_date) {
+	    String salesMonths =ycs.salesMonths(sales_date); 
+	    model.addAttribute("salesMonths", salesMonths);
+		//주문상세테이블 월	
+	    return"ya/salesByCustomer";
+	}
 
+	//주문상세테이블 월별 매입액
+	@RequestMapping("/purMonths")
+	public String purMonths(Model model,String pur_date) {
+	    String purMonths =ycs.purMonths(pur_date); 
+	    model.addAttribute("purMonths", purMonths);
+		//주문상세테이블 월	
+	    return"ya/salesByCustomer";
+	}	
+
+	//거래처,월별,유형별 판매실적 검색
 	@GetMapping("/customerSalesSearch")
 	@ResponseBody
 	public Map<String, Object> customerSalesSearch(HttpServletRequest request){
@@ -201,17 +208,26 @@ public class YaController {
 		 * // 구분이 "전체"일 경우 매입0 매출1 전체조회하기 if ("all".equals(custstyle)) { custstyle =
 		 * null; }
 		 */
-
-			
-		List<Customer> customerSalesSearch = ycs.customerSalesSearch(custcode, month,custstyle,purDate);
+	
+		List<Customer> customerSalesSearch = ycs.customerSalesSearch(custcode,month,custstyle,purDate);
+		
+	
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("customerSalesSearch", customerSalesSearch);
+		/*
+		 * result.put("monthlyPurchaseTotals", monthlyPurchaseTotals);
+		 * result.put("monthlySalesTotals", monthlySalesTotals);
+		 */
+
 		System.out.println("customerSalesSearch size:"+ customerSalesSearch.size());
 		System.out.println("customerSalesSearch custcode:"+custcode);
 		System.out.println("customerSalesSearch  month:"+ month);
 		System.out.println("customerSalesSearch  custstyle:"+ custstyle);
+		/* System.out.println("monthlySalesTotals:"+monthlySalesTotals); */
 		
 		return result;
+		
 	}
+
 }
