@@ -207,8 +207,8 @@
 	                              <option value="103">영업2팀</option>
 	                              <option value="104">물류1팀</option>
 	                              <option value="105">물류2팀</option>
-	                              <option value="106">인사팀</option>
-	                              <option value="107">CS1팀</option>
+	                              <option value="106">CS1팀</option>
+	                              <option value="107">CS2팀</option>
 	                            </select>
                             <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" readonly="readonly"/>
 	                          </div>
@@ -444,24 +444,24 @@
 		var pw1 = $('#basic-default-password1').val();
 		var pwMessage = $('#basic-default-password2').css('display');
 		//체크박스여서 checked 되면 값 지정
-		var memRightValue = $('#mem_right').prop('checked') ? 1 : 0;
+		var memRightValue = $('#mem_right').prop('checked') ? '1' : '0';
 		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/
 		if (pwMessage === 'block'){
 			alert("비밀번호 일치");
 		//등록 확인 시 함수
 		var requestData = {
-				right	:  memRightValue,
+				right	 : memRightValue,
 				hiredate : $('#mem_hiredate').val(),
-				name	:  $('#mem_name').val(),
+				name	 : $('#mem_name').val(),
 				birthday : $('#mem_bd').val(),
-				sex		:  $('input[name="mem_sex"]:checked').val(),
-				email	:  $('#mem_email1').val() + "@" + $('#mem_email2').val(),
-				phone	:  $('#mem_phone').val(),
-				dept	:  $('#mem_dept_md').val(),
-				posi	:  $('#mem_posi_md').val(),
-				duty	:  $('#mem_duty_md').val(),
-				mailcode : $('#mem_mailcode').val(),
-				address :  $('#mem_address1').val()+"/"+$('#mem_address2').val()+"/"+$('#mem_address3').val(),
+				sex		 : $('input[name="mem_sex"]:checked').val(),
+				email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
+				phone	 : $('#mem_phone').val(),
+				dept	 : $('#mem_dept_md').val(),
+				posi	 : $('#mem_posi_md').val(),
+				duty	 : $('#mem_duty_md').val(),
+				mailcode : $('#sample6_postcode').val(),
+				address  : $('#sample6_address').val()+"/"+$('#sample6_extraAddress').val()+"/"+$('#sample6_detailAddress').val(),
 				password : $('#basic-default-password1').val(),
 			};
 		
@@ -474,14 +474,15 @@
 		var formData = new FormData();
 		formData.append("img",image);
 		
-		//JSOON 데이터를 Blob으로 변환하여 FormData에 추가
-		var jsonBlob = new Blob([JSON.stringify(requestData)], {type:"application/json"});
+		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
+		var jsonBlob = new Blob(requestDataString, {type:"application/json"});
 		formData.append("request",jsonBlob);
+		
 		
 		if(confirm("등록을 완료하시겠습니까?")){
 			console.log("등록 확인");
 			$.ajax({
-				type: "GET",
+				type: "POST",
 				url : "createMember",
 				data : formData,
 				//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
@@ -493,11 +494,8 @@
 				});
 		}else{
 			console.log("등록 거절");
-		};
-		
-		} else {
-			alert("비밀번호 ")}
 		}
+	};
 	
 	$('#formAccountSettings').on('submit', function(event) {
         event.preventDefault(); // 다른 이벤트 방지
