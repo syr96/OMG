@@ -147,6 +147,20 @@ public class ChPurDaoImpl implements ChPurDao {
 		}
 		return result;
 	}
+	@Override
+	public int completePur(Purchase purchase) {
+		System.out.println("ChPurDaoImpl completePur start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chcompletePur", purchase);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl completePur e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
 
 	
 }

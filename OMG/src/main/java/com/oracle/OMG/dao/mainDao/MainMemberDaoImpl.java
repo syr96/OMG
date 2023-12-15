@@ -20,7 +20,7 @@ public class MainMemberDaoImpl implements MainMemberDao {
 		
 		try {
 			System.out.println("MainMemberDaoImpl memSelectById mem_id -> " + mem_id);
-			mem = session.selectOne("mem_id", mem_id);
+			mem = session.selectOne("memSelectById", mem_id);
 			System.out.println("mem -> " + mem);
 		} catch (Exception e) {
 			System.out.println("MainMemberDaoImpl memSelectById Exception -> " + e.getMessage());

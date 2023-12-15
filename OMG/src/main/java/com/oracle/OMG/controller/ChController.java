@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -125,9 +127,12 @@ public class ChController {
 	}
 	
 	@GetMapping("purDtail")
-	public String purDtail(Model model,Purchase purchase) {
+	public String purDtail(Model model,Purchase purchase, HttpSession session) {
+		int mem_id = 0;
 		//회원 정보 조회 넣기, 로그인 여부 확인하기 담당자 or 신청자가 아니라면 수정 불가 
-		int mem_id = 1001;
+		if(session.getAttribute("mem_id") != null) {
+			mem_id = (int) session.getAttribute("mem_id");
+		}
 		
 		System.out.println("purchase.getPur_date()->" + purchase.getPur_date());
 		System.out.println("purchase.getCustcode()->" + purchase.getCustcode());
@@ -150,11 +155,12 @@ public class ChController {
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("totalQty", totalQty);
 		model.addAttribute("itemList", itemList);
+		model.addAttribute("mem_id", mem_id);
 		
 		return "ch/purDtailPage";
 	}
 	
-	
+	// 발주서 작성 
 	@PostMapping("writePurchase")
 	public String writePurchase(@ModelAttribute Purchase purchase, @RequestParam Map<String, Object> detailMap, int rownum) {
 		System.out.println("ChController writePurchase Start...");
@@ -190,6 +196,23 @@ public class ChController {
 		
 		return "redirect:purList";
 	}
+	
+	@PostMapping("completePur")
+	public String completePur(Purchase purchase) {
+		System.out.println("ChController writePurchase Start");
+		
+		int result = 0;
+		
+		result = chPurService.completePur(purchase);
+		
+		if(result > 0) {
+			return "redirect:purDtail?pur_date="+purchase.getPur_date() + "&custcode="+purchase.getCustcode();
+		}
+		
+		return "redirect:purDtail";
+	}
+	
+	
 	
 	@ResponseBody
 	@PostMapping("insertDetail")
@@ -244,7 +267,6 @@ public class ChController {
 			
 			Purchase purchase = chPurService.onePur(pc);
 			mav.addObject("pc", purchase);
-			mav.setViewName("ch/purDtable");
 		}
 		mav.setViewName("ch/purDtable");
 		return mav;
@@ -277,7 +299,7 @@ public class ChController {
 	@ResponseBody
 	@RequestMapping("wirteDetail")
 	public ModelAndView itemDetail(PurDetail purDetail,String rownum ,ModelAndView mav) {
-		System.out.println("itemDetail Start...");
+		System.out.println("ChController itemDetail Start...");
 		Item item = itemService.selectItem(purDetail.getCode());
 		
 		mav.addObject("item",item);
