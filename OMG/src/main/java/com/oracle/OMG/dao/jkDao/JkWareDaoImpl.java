@@ -1,8 +1,10 @@
 package com.oracle.OMG.dao.jkDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -109,12 +111,16 @@ public class JkWareDaoImpl implements JkWareDao {
 
 
 	@Override
-	public Map<String, String> selectItem(int code) {
+	public Map<String, String> selectItem(@Param("code") int code, @Param("ym") String ym) {
 	    System.out.println("JkWareDaoImpl selectItemByCode start");
 	    Map<String, String> itemDetails = null;
 	    try {
 	        // 매퍼 메서드에 파라미터를 전달하도록 수정
-	        itemDetails = session.selectOne("selectItem", code);
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("code", code);
+	        parameters.put("ym", ym);
+	        
+	        itemDetails = session.selectOne("selectItem", parameters);
 	    } catch (Exception e) {
 	        System.out.println(e.getMessage());
 	    }
@@ -126,10 +132,12 @@ public class JkWareDaoImpl implements JkWareDao {
 	public int insertInv(Warehouse warehouse) {
 		System.out.println("JkWareDaoImpl insertInv start");
 		int result = 0;
+	
 		try {
 			result = session.insert("insertInv", warehouse);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		
 		}
 		return result;
 	}
