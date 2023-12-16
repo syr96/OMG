@@ -75,7 +75,9 @@ $(document).ready(function() {
 
     $("#productCodeInput").on("input", function() {
         var code = $(this).val();
+        var selectedMonth = $('#monthSelect').val().replace('-', '');
         console.log("code: " + code);
+        console.log("Ajax request data:", { code: code, ym: selectedMonth });
 
         clearTimeout(timeout);
 
@@ -83,8 +85,8 @@ $(document).ready(function() {
             if (code.trim() !== "") {
                 $.ajax({
                     type: "GET",
-                    url: "/getItemDetails",
-                    data: { code: code },
+                    url: "/getItemDetails2",
+                    data: { code: code, ym: selectedMonth },
                     dataType: 'json',
                     success: function(response) {
                         var memName = response.MEM_NAME;
@@ -104,16 +106,16 @@ $(document).ready(function() {
                 });
             }
         }, 500);
-    });
+    }); 
 
     // 기초재고등록 폼이 제출될 때의 이벤트 처리
     $('#invRegisterForm').submit(function(event) {
         // input type="month"에서 선택된 날짜를 'YYYYMM' 형식으로 변환
-        var selectedMonth = $('#ym').val().replace('-', '');
+        var selectedMonth = $('#monthSelect').val().replace('-', '');
         console.log('Form submitted. Selected Month:', selectedMonth);
 
         // 변환된 값을 다시 input에 설정
-        $('#ym').val(selectedMonth);
+        $('#monthSelect').val(selectedMonth);
     });
 
     $("#productCodeInput2").on("input", function() {
@@ -230,7 +232,7 @@ $(document).ready(function() {
 							<div class="row">
 								<div class="mb-3 col-md-6">
 		                        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-		                          <input class="form-control" type="month" id="ym" name="ym" >
+		                          <input class="form-control" type="month" id="monthSelect" name="monthSelect" >
 		                        </div>
 		                         <div class="mb-3 col-md-6">
 		                         </div>
@@ -309,7 +311,7 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <div class="dt-buttons text-end">
-                    <button id="beginningInvReg" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="submit">
+                    <button id="updateInv" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="submit">
                         <span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">수정완료</span></span>
                     </button>
                 </div>

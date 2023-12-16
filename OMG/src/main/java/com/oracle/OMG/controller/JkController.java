@@ -82,19 +82,29 @@ public class JkController {
 		    }
 	}
 		
-	// 제품정보 조회
+	// 제품정보 조회(업데이트용)
 	@GetMapping("/getItemDetails")
 	@ResponseBody
-	public Map<String, String> getItemDetails(@RequestParam("code") int code, @RequestParam("ym") String ym ) {
+	public Map<String, Object> getItemDetails(@RequestParam("code") int code, @RequestParam("ym") String ym ) {
 	    logger.info("Fetching item details for product code: {}", code, "ym",ym);
 
-	    Map<String, String> response = jws.selectItem(code, ym);
+	    Map<String, Object> response = jws.selectItem(code, ym);
 	    
 	    logger.info("Response: {}", response);
 	    return response;
 	}
 
+	// 제품정보 조회(등록용)
+	@GetMapping("/getItemDetails2")
+	@ResponseBody
+	public Map<String, Object> getItemDetails2(@RequestParam("code") int code ) {
+	    logger.info("Fetching item details for product code: {}", code);
 
+	    Map<String, Object> response = jws.selectItem2(code);
+	    
+	    logger.info("Response: {}", response);
+	    return response;
+	}
 
 	
 	

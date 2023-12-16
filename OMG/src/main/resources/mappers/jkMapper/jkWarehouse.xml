@@ -57,6 +57,14 @@
 		</select>
 
 		
+		<select id="selectItem2" resultType="map">
+		 	SELECT i.name, m.mem_name
+		    FROM item i
+		    INNER JOIN customer c ON i.custcode = c.custcode
+		    INNER JOIN member m ON c.mem_id = m.mem_id
+		    WHERE i.code = #{code}
+		</select>
+		
 		<insert id="insertInv" parameterType="Warehouse">
 		    <!-- 이전에 가져온 Item 테이블의 code 값 사용 -->
 		    <selectKey keyProperty="code" resultType="int" order="BEFORE">

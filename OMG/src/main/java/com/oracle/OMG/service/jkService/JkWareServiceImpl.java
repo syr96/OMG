@@ -59,10 +59,10 @@ public class JkWareServiceImpl implements JkWareService {
 	}
 
 	@Override
-	public Map<String, String> selectItem(int code, String ym) {
+	public Map<String, Object> selectItem(int code, String ym) {
 		System.out.println("JkWareServiceImpl selectItem Start...");
 		
-		Map<String, String> selectItem= jwd.selectItem(code, ym);
+		Map<String, Object> selectItem= jwd.selectItem(code, ym);
 		
 		return selectItem;
 	}
@@ -73,6 +73,15 @@ public class JkWareServiceImpl implements JkWareService {
 		int result = jwd.insertInv(warehouse);
 
 		return result;
+	}
+
+	@Override
+	public Map<String, Object> selectItem2(int code) {
+		System.out.println("JkWareServiceImpl selectItem2 Start...");
+		
+		Map<String, Object> selectItem2= jwd.selectItem2(code);
+		
+		return selectItem2;
 	}
 
 

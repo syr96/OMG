@@ -111,9 +111,9 @@ public class JkWareDaoImpl implements JkWareDao {
 
 
 	@Override
-	public Map<String, String> selectItem(@Param("code") int code, @Param("ym") String ym) {
+	public Map<String, Object> selectItem(@Param("code") int code, @Param("ym") String ym) {
 	    System.out.println("JkWareDaoImpl selectItemByCode start");
-	    Map<String, String> itemDetails = null;
+	    Map<String, Object> itemDetails = null;
 	    try {
 	        // 매퍼 메서드에 파라미터를 전달하도록 수정
 	        Map<String, Object> parameters = new HashMap<>();
@@ -140,6 +140,23 @@ public class JkWareDaoImpl implements JkWareDao {
 		
 		}
 		return result;
+	}
+
+
+	@Override
+	public Map<String, Object> selectItem2(int code) {
+		 System.out.println("JkWareDaoImpl selectItemByCode start");
+		    Map<String, Object> itemDetails = null;
+		    try {
+		      
+		        Map<String, Object> parameters = new HashMap<>();
+		        parameters.put("code", code);
+		       		        
+		        itemDetails = session.selectOne("selectItem2", parameters);
+		    } catch (Exception e) {
+		        System.out.println(e.getMessage());
+		    }
+		    return itemDetails;
 	}
 
 
