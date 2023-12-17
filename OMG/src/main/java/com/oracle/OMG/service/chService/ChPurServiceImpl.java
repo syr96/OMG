@@ -14,13 +14,13 @@ import lombok.Data;
 @Data
 public class ChPurServiceImpl implements ChPurService {
 	
-	private final ChPurDao cpd;
+	private final ChPurDao chPurDao;
 
 	@Override
 	public List<Purchase> purList(Purchase purchase) {
 		System.out.println("ChPurServiceImpl purList Start...");
 		
-		List<Purchase> purList = cpd.purList(purchase);
+		List<Purchase> purList = chPurDao.purList(purchase);
 		
 		return purList;
 	}
@@ -29,7 +29,7 @@ public class ChPurServiceImpl implements ChPurService {
 	public List<PurDetail> purDList(Purchase p) {
 		System.out.println("ChPurServiceImpl purDList Start...");
 		
-		List<PurDetail> purDList = cpd.purDList(p);
+		List<PurDetail> purDList = chPurDao.purDList(p);
 		
 		return purDList;
 	}
@@ -40,17 +40,17 @@ public class ChPurServiceImpl implements ChPurService {
 		
 		Purchase pc = null;
 		
-		pc = cpd.onePur(purchase);
+		pc = chPurDao.onePur(purchase);
 		
 		return pc;
 	}
 
 	@Override
-	public int totalPur() {
+	public int totalPur(Purchase purchase) {
 		System.out.println("ChPurServiceImpl totalPur Start...");
 		int total = 0;
 		
-		total = cpd.totalPur();
+		total = chPurDao.totalPur(purchase);
 		
 		
 		return total;
@@ -61,7 +61,7 @@ public class ChPurServiceImpl implements ChPurService {
 		System.out.println("ChPurServiceImpl insertDetail Start...");
 		int result = 0;
 		
-		result = cpd.insertDetail(pd);
+		result = chPurDao.insertDetail(pd);
 		
 		
 		return result;
@@ -72,8 +72,58 @@ public class ChPurServiceImpl implements ChPurService {
 		System.out.println("ChPurServiceImpl countDitem Start...");
 		int result = 0;
 		
-		result = cpd.countDitem(purDetail);
+		result = chPurDao.countDitem(purDetail);
 		
+		
+		return result;
+	}
+
+	@Override
+	public int writePur(Purchase purchase) {
+		System.out.println("ChPurServiceImpl writePur Start...");
+		int result = 0;
+		
+		result = chPurDao.writePur(purchase);
+		
+		return result;
+	}
+
+	@Override
+	public int detailWrite(List<PurDetail> detailList) {
+		System.out.println("ChPurServiceImpl detailWrite Start...");
+		int result = 0;
+		
+		result = chPurDao.detailWrite(detailList);
+		
+		return result;
+	}
+
+	@Override
+	public int qtyUpdate(PurDetail pd) {
+		System.out.println("ChPurServiceImpl qtyUdate Start...");
+		int result = 0;
+		
+		result = chPurDao.qtyUpdate(pd);
+		
+		return result;
+	}
+
+	@Override
+	public int completePur(Purchase purchase) {
+		System.out.println("ChPurServiceImpl completePur Start...");
+		int result = 0;
+		
+		result = chPurDao.completePur(purchase);
+		
+		return result;
+	}
+
+	@Override
+	public int deletePur(Purchase purchase) {
+		System.out.println("ChPurServiceImpl deletePur Start...");
+		int result = 0;
+		
+		result = chPurDao.deletePur(purchase);
 		
 		return result;
 	}

@@ -20,7 +20,7 @@
 	</h4>
 	
 	<div class="card">
-	  <div class="card overflow-hidden" style="height: 700px">
+	  <div class="card overflow-hidden">
 	  
 			<div class="card-body table-responsive text-nowrap">
 			

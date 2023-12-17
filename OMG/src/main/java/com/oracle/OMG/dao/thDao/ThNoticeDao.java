@@ -6,7 +6,7 @@ import com.oracle.OMG.dto.Board;
 import com.oracle.OMG.dto.Criteria;
 
 public interface ThNoticeDao {
-	int					getTotNotice();
+	int					getTotNotice(Criteria cri);
 	List<Board> 		getNoticeList(Board board);
 	List<Board>			getListWithPaging(Criteria cri);
 	int					insertNotice(Board board);

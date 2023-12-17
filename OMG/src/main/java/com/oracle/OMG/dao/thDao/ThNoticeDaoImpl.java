@@ -19,10 +19,10 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	private final SqlSession session;
 	
 	@Override
-	public int getTotNotice() {
+	public int getTotNotice(Criteria cri) {
 		int totNotice = 0;
 		try {			
-			totNotice = session.selectOne("getTotNotice");
+			totNotice = session.selectOne("getTotNotice", cri);
 			log.info("totNotice --> " + totNotice);
 		} catch (Exception e) {
 			log.info(e.getMessage());

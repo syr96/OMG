@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -149,5 +150,34 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		return customerSalesList;
 	}
 
+	@Override
+	public List<Customer> customerListSelect(Customer customer) {
+		System.out.println("YaCustomerDao customerListSelect start....");
+		List<Customer> customerListSelect = null;
+		try {
+			customerListSelect = session.selectList("customerListSelect", customer);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl  customerListSelect e.getMessage? " + e.getMessage());
+		}
+		return customerListSelect;
+	}
+
+	@Override
+	public List<Customer> customerSalesSearch(int custcode, String month,  String purDate) {
+		System.out.println("YaCustomerDao customerSalesSearch start....");
+		List<Customer> customerSalesSearch=null;
+		try {
+		     Map<String, Object> parameters = new HashMap<>();
+		        parameters.put("custcode", custcode);
+		        parameters.put("month", month);
+		        parameters.put("purDate",purDate);       
+			 customerSalesSearch = session.selectList("customerSalesSearch", parameters);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl  customerSalesSearch e.getMessage? " + e.getMessage());
+		}
+		return customerSalesSearch;
+	}
+
 
 }
+

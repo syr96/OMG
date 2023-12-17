@@ -12,10 +12,15 @@
 		<span class="text-muted fw-light">고객지원/</span> 공지사항
 	</h4>
 	<form role="form" action="/notice/modify" method="post">
+		<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
+		<input type="hidden" name="amount"  value='<c:out value="${cri.amount }"/>'>
+		<input type="hidden" name='type' 	value='<c:out value="${cri.type }"></c:out>'>
+		<input type="hidden" name='keyword' value='<c:out value="${cri.keyword }"></c:out>'>
+		
 		<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
 
 			<div class="d-flex flex-column justify-content-center">
-				<h4 class="mb-1 mt-3">공지사항 작성</h4>
+				<h4 class="mb-1 mt-3">공지사항 수정</h4>
 				<p class="text-muted">아래에 내용을 적어주세요</p>
 			</div>
 			
@@ -84,7 +89,16 @@
 				} else if (operation === 'list'){
 					// move to list
 					formObj.attr("action", "/notice/list").attr("method","get");
+					var pageNumTag = $("input[name='pageNum']").clone();
+					var amountTage = $("input[name='amount']").clone();
+					var keywordTag = $("input[name='keyword']").clone();
+					var typeTag	   = $("input[name='type']").clone();
+					
 					formObj.empty();
+					formObj.append(pageNumTag);
+					formObj.append(amountTage);
+					formObj.append(keywordTag);
+					formObj.append(typeTag);
 				}
 
 				formObj.submit();

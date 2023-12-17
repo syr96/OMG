@@ -59,48 +59,7 @@
     };
 </script>
 <script type="text/javascript">
-function createMember(){
-	//등록 확인 시 함수
-	var requestData = {
-			hiredate : $('#mem_hiredate').val(),
-			right : $('#mem_right').val(),
-			name : $('#mem_name').val(),
-			birthday : $('#mem_bd').val(),
-			sex : $('input[name="mem_sex"]:checked').val(),
-			email : $('#mem_email1').val() + "@" + $('#mem_email2').val()
-			phone : $('#mem_phone').val(),
-			dept : $('#mem_dept').val(),
-			posi : $('#mem_posi').val(),
-			duty : $('#mem_duty').val(),
-			address : $('#mem_address').val(),
-			password : $('#mem_pw').val(),
-		};
-		
-	//이미지 데이터 수집
-	var image = $('#upload')[0].files[0];
-	var formData = new FormData();
-	formData.append("img",image);
-	
-	//JSOON 데이터를 Blob으로 변환하여 FormData에 추가
-	var jsonBlob = new Blob([JSON.stringify(requestData)], {type:"application/json"});
-	formData.append("request",jsonBlob);
-	
-	if(confirm("등록을 완료하시겠습니까?")){
-		console.log("등록 확인");
-		$.ajax({
-			type: "GET",
-			url : "createMem",
-			data : formData,
-			//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
-			contentType : false,		
-			processData : false,
-			success : function(result){
-					console.log("success 도착");					
-					}
-			});
-	}else{
-		console.log("등록 거절");
-	};
+
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -113,7 +72,7 @@ function createMember(){
                   <div class="card mb-4">
                     <h5 class="card-header">
                       <i class="bx bx-user me-1"></i> Account</h5>
-                      <form id="formAccountSettings" enctype="multipart/form-data" onsubmit="return createMember()">
+                      <form id="formAccountSettings" enctype="multipart/form-data">
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -130,7 +89,7 @@ function createMember(){
                           </button>
                           <!-- mem_right -->
                           <div class="form-check form-switch mb-2">
-		                       <input class="form-check-input" type="checkbox" id="mem_right" />
+		                       <input class="form-check-input" type="checkbox" name="mem_right" id="mem_right" />
 		                       <label class="form-check-label" for="mem_right">권한 부여</label>
                       	  </div>
                         </div>
@@ -158,7 +117,7 @@ function createMember(){
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate"/>
+	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" />
 	                        </div>
 	                    </div>
                        
@@ -170,6 +129,7 @@ function createMember(){
                            type="text"
                            id="mem_name"
                            name="mem_name"
+                           
                           />
                         </div>
                            
@@ -187,21 +147,23 @@ function createMember(){
 			                     maxlength="8"
 			                     min="19000101"
 			                     pattern="\d*"
+			                     
 			                   />
 			                <div class="col-md-3" style="margin: 5px 100px 0 50px;">
 		                	    <input
 		                         name="mem_sex"
 		                         class="form-check-input"
 		                         type="radio"
-		                         value="1"
+		                         value="M"
 		                         id="mem_sex"
 		                        />남
 		                       <input
 		                         name="mem_sex"
 		                         class="form-check-input"
 		                         type="radio"
-		                         value="2"
+		                         value="F"
 		                         id="mem_sex"
+		                         
 		                       />여
 	                        	</div>
 			               </div>
@@ -229,14 +191,7 @@ function createMember(){
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text">KR (+82)</span>
-                              <input
-                                type="text"
-                                id="mem_phone"
-                                name="mem_phone"
-                                class="form-control"
-                                placeholder="휴대폰 번호(-제외)"
-                                maxlength="11"
-                              />
+                              <input type="text" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11"/>
                         	</div>
                      	</div>
                         
@@ -244,7 +199,7 @@ function createMember(){
                      	<div class="mb-3 col-md-6" >
                             <label class="form-label" for="mem_dept_md">부서</label>
                             <div class="input-group">
-	                            <select id="mem_dept_md" class="select2 form-select">
+	                            <select id="mem_dept_md" name="mem_dept_md" class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">회계팀</option>
 	                              <option value="101">인사팀</option>
@@ -252,8 +207,8 @@ function createMember(){
 	                              <option value="103">영업2팀</option>
 	                              <option value="104">물류1팀</option>
 	                              <option value="105">물류2팀</option>
-	                              <option value="106">인사팀</option>
-	                              <option value="107">CS1팀</option>
+	                              <option value="106">CS1팀</option>
+	                              <option value="107">CS2팀</option>
 	                            </select>
                             <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" readonly="readonly"/>
 	                          </div>
@@ -263,7 +218,7 @@ function createMember(){
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="mem_posi_md">직위</label>
                             <div class="input-group">
-                            <select id="mem_posi_md" class="select2 form-select">
+                            <select id="mem_posi_md" name="mem_posi_md" class="select2 form-select">
                               <option value="">Select</option>
                               <option value="100">대표이사</option>
                               <option value="101">상무</option>
@@ -281,7 +236,7 @@ function createMember(){
                             <label for="mem_duty_md" class="form-label">직책</label>
                             <div class="col-md-6">
 	                            <div class="input-group">
-	                            <select id="mem_duty_md" class="select2 form-select">
+	                            <select id="mem_duty_md" name="mem_duty_md" class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">CEO</option>
 	                              <option value="101">CFO</option>
@@ -296,22 +251,22 @@ function createMember(){
                           </div>
                           
                           <!-- mem_address -->
-                          <div class="mb-3 col-md-6" id="mem_address">
+                          <div class="mb-3 col-md-6"  id="mem_address">
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-3 col-md-4">
-						            <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호">
+						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" placeholder="우편번호">
 						        </div>
 						        <div class="col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
 						        </div>
 						    </div>
 	                        <div class="col-md-8">
-								<input type="text" class="form-control" id="sample6_address" placeholder="주소"><br>
+								<input type="text" class="form-control" name="mem_address1" id="sample6_address" placeholder="주소"><br>
 							</div>
 							<div class="col-md-6">
-								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목"><br>
-								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소">
+								<input type="text"class="form-control" name="mem_address2" id="sample6_extraAddress" placeholder="참고항목"><br>
+								<input type="text" class="form-control" name="mem_address3" id="sample6_detailAddress" placeholder="상세주소">
 							</div>
                           </div>
                           
@@ -322,14 +277,7 @@ function createMember(){
 	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>
-	                          	<input
-		                            type="password"
-		                            class="form-control"
-		                            name="mem_pw"
-		                            id="basic-default-password1"
-		                            aria-describedby="basic-default-password1"
-		                            oninput="checkPwd()"
-		                          />
+	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1"/>
 		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
@@ -340,17 +288,14 @@ function createMember(){
 	                        <div class="form-password-toggle">
 		                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
 		                        <div class="input-group">
-		                          <input
-		                            type="password"
-		                            class="form-control"
-		                            name="mem_pw_check"
-		                            id="basic-default-password2"
-		                            aria-describedby="basic-default-password2"
-		                          />
+		                        <span class="ps_box int_pass"></span>
+		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;"/>
 		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 		                        </div>
+		                         <span id="pswd2Msg1"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: green; font-weight: bold; width: 140px;">비밀번호가 일치합니다.</span>
+			                     <span id="pswd2Msg2"  aria-live="assertice" style="display: none; font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;">비밀번호가 일치하지 않습니다.</span>
 		                      </div>
 	                      </div>
 	                      
@@ -382,6 +327,21 @@ function createMember(){
 			}
 			//파일을 데이터 URL로 읽어오기
 			reader.readAsDataURL(files[0]);
+		});
+	});
+	
+	//이메일 도메인 유효성 검사 //create 버튼 클릭시 체크 할 메소드 추가 예정
+	$(document).ready(function(){
+		$('#mem_email2').on('change',function(){
+			//이메일 값
+			var email = $('#mem_email1').val() + '@' + $('#mem_email2').val();	
+			//이메일 유효성 검사할 변수 생성
+			var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+			if(!emailRegex.test(email)){
+				alert('유효한 이메일 주소를 입력해주세요.');
+				return false;
+			}
+			return true;
 		});
 	});
 	
@@ -439,6 +399,109 @@ function createMember(){
 		});
 	});
 	
+	$(document).ready(function(){
+		$('#basic-default-password2').on('change',function(){
+			var pw1 = $('#basic-default-password1').val();
+			var pw2 = $('#basic-default-password2').val();
+			
+			if(isNaN(pw1) || pw1 != null){
+				if(pw1 == pw2){
+					$('#pswd2Msg1').css('display','block');
+					$('#pswd2Msg2').css('display','none');
+				} else {
+					$('#pswd2Msg1').css('display','none');
+					$('#pswd2Msg2').css('display','block');
+				}
+			} else {
+			return false;
+			}			
+		});
+	});
+	
+	$(document).ready(function(){
+		$('#basic-default-password1').on('change',function(){
+			var pw1 = $('#basic-default-password1').val();
+			var pw2 = $('#basic-default-password2').val();
+			
+			if(isNaN(pw2) || pw2 != null){
+				if(pw1 == pw2){
+					$('#pswd2Msg1').css('display','block');
+					$('#pswd2Msg2').css('display','none');
+				} else {
+					$('#pswd2Msg1').css('display','none');
+					$('#pswd2Msg2').css('display','block');
+				}
+			} else {
+			return false;
+			}			
+		});
+	});
+	
+	//유효성 체크
+	function checkValidation(){
+		alert("함수 실행");
+		//비밀번호 유효성 검사
+		var pw1 = $('#basic-default-password1').val();
+		var pwMessage = $('#basic-default-password2').css('display');
+		//체크박스여서 checked 되면 값 지정
+		var memRightValue = $('#mem_right').prop('checked') ? '1' : '0';
+		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/
+		if (pwMessage === 'block'){
+			alert("비밀번호 일치");
+		//등록 확인 시 함수
+		var requestData = {
+				right	 : memRightValue,
+				hiredate : $('#mem_hiredate').val(),
+				name	 : $('#mem_name').val(),
+				birthday : $('#mem_bd').val(),
+				sex		 : $('input[name="mem_sex"]:checked').val(),
+				email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
+				phone	 : $('#mem_phone').val(),
+				dept	 : $('#mem_dept_md').val(),
+				posi	 : $('#mem_posi_md').val(),
+				duty	 : $('#mem_duty_md').val(),
+				mailcode : $('#sample6_postcode').val(),
+				address  : $('#sample6_address').val()+"/"+$('#sample6_extraAddress').val()+"/"+$('#sample6_detailAddress').val(),
+				password : $('#basic-default-password1').val(),
+			};
+		
+		var requestDataString = JSON.stringify(requestData);
+		
+		alert("requestData->"+requestDataString);
+			
+		//이미지 데이터 수집
+		var image = $('#upload')[0].files[0];
+		var formData = new FormData();
+		formData.append("img",image);
+		
+		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
+		var jsonBlob = new Blob(requestDataString, {type:"application/json"});
+		formData.append("request",jsonBlob);
+		
+		
+		if(confirm("등록을 완료하시겠습니까?")){
+			console.log("등록 확인");
+			$.ajax({
+				type: "POST",
+				url : "createMember",
+				data : formData,
+				//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
+				contentType : false,		
+				processData : false,
+				success : function(result){
+						console.log("success 도착");					
+						}
+				});
+		}else{
+			console.log("등록 거절");
+		}
+	};
+	
+	$('#formAccountSettings').on('submit', function(event) {
+        event.preventDefault(); // 다른 이벤트 방지
+        console.log('Form submitted');
+        return checkValidation();
+	});
 </script>
 </body>
 </html>
