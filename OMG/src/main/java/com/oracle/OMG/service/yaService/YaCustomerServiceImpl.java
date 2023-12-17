@@ -2,6 +2,7 @@ package com.oracle.OMG.service.yaService;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.yaDao.YaCustomerDao;
@@ -111,27 +112,14 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 	}
 
 	@Override
-	public List<Customer> customerSalesSearch(int custcode, String month, String custstyle, String purDate) {
+	public List<Customer> customerSalesSearch(int custcode, String month, String purDate) {
 		System.out.println("YaCustomerService ustomerSalesSearch start...");
 		List<Customer> customerSalesSearch = null;
-		customerSalesSearch = ycd.customerSalesSearch(custcode, month, custstyle, purDate);
+		customerSalesSearch = ycd.customerSalesSearch(custcode, month, purDate);
 		
 		return customerSalesSearch;
 	}
 
-	@Override
-	public String salesMonths(String sales_date) {
-		System.out.println("YaCustomerService salesMonths  start...");
-		String salesMonths = ycd.salesMonths(sales_date);
-		return salesMonths;
-	}
 
-	@Override
-	public String purMonths(String pur_date) {
-		System.out.println("YaCustomerService  purMonths  start...");
-		String purMonths = ycd.purMonths(pur_date);
-		return  purMonths;
-	}
-		
-		
+
 }

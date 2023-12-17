@@ -47,10 +47,10 @@
 <%@ include file="/WEB-INF/views/common/menu.jsp"%>    
 </head>
 
-    <!-- 스크롤 이벤트 처리를 위한 JavaScript 코드 -->
+    <!-- 스크롤  JavaScript 코드 -->
     <script>
         $(document).ready(function () {
-            // 스크롤 이벤트 발생 시 고정 THEAD 업데이트
+            // 스크롤 이벤트 발생 시 고정 THEAD 
             $(".table-container").scroll(function () {
                 $(".fixed-thead").css("left", -$(".table-container").scrollLeft());
             });
@@ -68,14 +68,7 @@
 		    <label for="month">
 		    <input class="form-control" type="month" id="monthSelect" name="month">
 		    </label>
-		
-		    <label>구분: </label>		    
-		    <select class="form-select" style="width: 100px;">
-		    	<option value=" ">전체</option>
-		    	<option value="0">매입</option>
-		    	<option value="1">매출</option>
-		    </select>
-			
+					
 			<label for="searchSelect">거래처명: </label>
 				<select class="form-select" id="in_custcode" style="width: 200px; " ></select>
 			<button class="btn btn-sm btn-outline-primary" id="searchButton" type="button" onclick="search()" style="height:30px;">검색</button>
@@ -100,7 +93,7 @@ $(document).ready(function () {
         	var customerListSelect = response.customerListSelect;
         	
         	  // "전체" 옵션 추가
-            $('#in_custcode').append('<option value=" ">전체</option>');
+            $('#in_custcode').append('<option value="all">전체</option>');
             for (var i = 0; i < customerListSelect.length; i++) {
             	$('#in_custcode').append('<option value="' +  customerListSelect[i].custcode + '">' +  customerListSelect[i].custcode + 
             			'  ' +  customerListSelect[i].company + '</option>');
@@ -119,8 +112,6 @@ function search() {
     var selectedMonth = document.getElementById("monthSelect").value;
     var month = selectedMonth.split("-")[1];
     var selectedCustcodes = $('#in_custcode').val();
-    // 선택한 구분을 추출
-    var selectedType = $('.form-select').val();
     console.log("Selected Month:", month);
     
     // 월을 선택하지 않았을 경우
@@ -128,10 +119,11 @@ function search() {
         month = "all";
     }
 
-    // 구분을 선택하지 않았을 경우
-    if (selectedType === "") {
-        selectedType = "all";
+    // 거래처를 선택하지 않았을 경우
+    if (selectedCustcodes === null) {
+        selectedCustcodes = "all";
     }
+
     // Ajax 요청
     $.ajax({
         url: '/customerSalesSearch',
@@ -139,16 +131,12 @@ function search() {
         data: {
 	            custcode: selectedCustcodes,
 	            month:  month,
-	            custstyle: selectedType,
-            	//purDate:  
         },
         success: function (data) {
             // 서버 응답에 대한 처리
             console.log("Search successful:", data);
             var customerSalesSearch = data.customerSalesSearch;
-
-
-            // 검색결과 
+        // 검색결과 
             $("#searchResultsTable tbody").empty();
             $.each(customerSalesSearch, function (index, customer) {
                 var row = "<tr>" +
@@ -168,7 +156,7 @@ function search() {
                     
                 $("#searchResultsTable tbody").append(row);
             });
-            
+			
             
         },
         error: function () {
@@ -201,8 +189,24 @@ function search() {
                     </tr>
                </thead>
                <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
-      			<!--전체거래처실적조회 -->
-                <c:forEach var="customer" items="${customerSalesList}">    
+               <!-- 월별 소계 -->
+		        <c:set var="currentMonth" value="" />
+		        <c:set var="monthlyPurTotal" value="0" />
+		        <c:set var="monthlySalesTotal" value="0" />
+		        <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
+		            <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
+		                <tr>
+		              	    <td colspan="6"></td>
+		                    <th colspan="3">${currentMonth}월 소 계</th>
+			           		<th ><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
+				            <th ><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+		                </tr>
+		        <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
+                <c:set var="monthlyPurTotal" value="0" />
+                <c:set var="monthlySalesTotal" value="0" />
+                <c:set var="currentMonth" value="${customer.month}" />
+          	    </c:if>
+      			<!--전체거래처실적조회 -->        
 					 <tr>
                      <td>${customer.month}</td>
                      <td>${customer.purDate}</td>
@@ -227,9 +231,24 @@ function search() {
 			            <c:otherwise>-</c:otherwise>
 			        </c:choose></td>
                     </tr>
-
-               </c:forEach>
-
+                
+              <c:choose>
+                <c:when test="${customer.custstyle == 0}">
+                    <c:set var="monthlyPurTotal" value="${monthlyPurTotal + (customer.purQty * customer.purPrice)}" />
+                </c:when>
+                <c:when test="${customer.custstyle == 1}">
+                    <c:set var="monthlySalesTotal" value="${monthlySalesTotal + (customer.purQty * customer.purPrice)}" />
+                </c:when>
+            </c:choose>                        	
+			</c:forEach>
+			           <!-- 마지막 월에 대한 소계 행 표시 -->
+	        <tr>
+		        <td colspan="6"></td>
+		        <th colspan="3">${currentMonth}월 소 계</th>
+			    <th ><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
+				<th ><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+	        </tr>
+    		
                 </tbody>
                 <tfoot class="fixed-tfoot">			
 					<c:set var="totalPurchaseAmount" value="0" />
@@ -247,12 +266,13 @@ function search() {
 					</c:forEach>
 	
 				    	 <!-- 누계 행 추가 -->			
-						<tr>
+					<tr>
 						<td colspan="6"></td>
 						<th colspan="3">누          계</th>
 					    <th><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>
 					    <th><fmt:formatNumber value="${totalSalesAmount}" pattern="#,##0" /></th>
 					</tr>
+				
         	  </tfoot>
               </table>
               </div>

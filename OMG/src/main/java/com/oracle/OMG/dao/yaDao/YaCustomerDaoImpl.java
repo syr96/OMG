@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -162,14 +163,13 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 	}
 
 	@Override
-	public List<Customer> customerSalesSearch(int custcode, String month, String custstyle, String purDate) {
+	public List<Customer> customerSalesSearch(int custcode, String month,  String purDate) {
 		System.out.println("YaCustomerDao customerSalesSearch start....");
 		List<Customer> customerSalesSearch=null;
 		try {
 		     Map<String, Object> parameters = new HashMap<>();
 		        parameters.put("custcode", custcode);
 		        parameters.put("month", month);
-		        parameters.put("custstyle", custstyle);
 		        parameters.put("purDate",purDate);       
 			 customerSalesSearch = session.selectList("customerSalesSearch", parameters);
 		} catch (Exception e) {
@@ -177,33 +177,7 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		}
 		return customerSalesSearch;
 	}
-	
-	
-	//월검색(판매)
-	@Override
-	public String salesMonths(String sales_date) {
-		System.out.println("YaCustomerDao salesMonths start....");
-		String	salesMonths=null;
-		try {
-		 salesMonths = session.selectOne( "salesMonths",sales_date);
-		} catch (Exception e) {
-			System.out.println("YaCustomerDaoImpl salesMonths e.getMessage? " + e.getMessage());
-		}
-		return  salesMonths;
-	}
-	
-	//월검색(주문)
-	@Override
-	public String purMonths(String pur_date) {
-		System.out.println("YaCustomerDao  purMonthss start....");
-		String purMonths=null;
-		try {
-			purMonths=session.selectOne("purMonths", pur_date);
-		} catch (Exception e) {
-			System.out.println("YaCustomerDaoImpl purMonths e.getMessage? " + e.getMessage());
-		}
-		return purMonths;
-	}
 
 
 }
+

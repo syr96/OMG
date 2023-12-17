@@ -145,19 +145,9 @@
         WHERE
             custcode = #{custcode}
             AND SUBSTR(pur_date, 4, 2) = #{month}
-            AND custStyle = #{custstyle}
-
     </select>
 	
-	<select id="salesMonths" parameterType="String">
-		SELECT  DISTINCT REGEXP_SUBSTR(sales_date, '\d+', 1, 2) AS month 
-		FROM sales_detail;	
-		
-	</select>
-	
-	<select id="purMonths" parameterType="String">
-		SELECT  DISTINCT REGEXP_SUBSTR(pur_date, '\d+', 1, 2) AS month 
-		FROM pur_detail;		
-	</select>	
+
+
 	
 </mapper>
