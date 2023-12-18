@@ -52,8 +52,11 @@ public class MainMemberServiceImpl implements MainMemberService {
 	@Override
 	public int getLoggedInId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(authentication.getName());
-		return Integer.parseInt(authentication.getName());
+		if (authentication != null && !authentication.getName().equals("anonymousUser") ){
+			Member member = this.memSelectById(Integer.parseInt(authentication.getName()) );
+			return member.getMem_id();
+		}
+		return 0;
 	}
 	
 	

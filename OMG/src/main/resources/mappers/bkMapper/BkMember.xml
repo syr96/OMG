@@ -11,4 +11,12 @@
 		And     mem_pw  = #{mem_pw}
 	</select>
 	
+	
+	
+	<select id="bkcheckNameAndTel" parameterType="Member" resultType="Member">
+		Select  *
+		From    member
+		WHERE   mem_name  = #{mem_name}
+	</select>
+	
 </mapper>

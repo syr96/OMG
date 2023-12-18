@@ -22,6 +22,19 @@ public class BkMemberServiceImpl implements BkMemberService {
 		
 		return loginUser;
 	}
+
+	
+	
+	@Override
+	public Member checkNameAndTel(Member member) {
+		
+		System.out.println("BkMemberServiceImpl checkNameAndTel Start...");
+		Member checkResult = bMemberD.checkNameAndTel(member);
+		System.out.println("BkMemberServiceImpl checkNameAndTel checkResult -> " + checkResult);
+		
+		
+		return checkResult;
+	}
 	
 	
 

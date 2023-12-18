@@ -34,6 +34,7 @@ public class BkJpaController {
 		System.out.println("BkJpaRestApiController loginManager Start...");
 		System.out.println("BkJpaRestApiController loginManager member.getMem_id() -> " + member.getMem_id());
 		
+		
 		// 사용자 검증 로직 수행 (아이디, 비밀번호 확인)
 		Member foundMember = BMemberJpaS.login(member);
 		
