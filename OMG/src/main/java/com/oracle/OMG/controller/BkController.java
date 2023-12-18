@@ -143,8 +143,8 @@ public class BkController {
 				session = request.getSession();
 				session.setAttribute("mem_id", loginResult.getMem_id());
 				session.setAttribute("mem_name", loginResult.getMem_name());
-				session.setAttribute("Mem_dept_lg -> ", loginResult.getMem_dept_lg());
-				session.setAttribute("Mem_dept_md -> ", loginResult.getMem_dept_md());
+				session.setAttribute("Mem_dept_lg", loginResult.getMem_dept_lg());
+				session.setAttribute("Mem_dept_md", loginResult.getMem_dept_md());
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
 
