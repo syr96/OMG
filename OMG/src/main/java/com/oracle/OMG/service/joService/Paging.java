@@ -1,13 +1,15 @@
 package com.oracle.OMG.service.joService;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+@Data
 @Getter
 @Setter
 public class Paging {
 	private int currentPage = 1;	// 현재 페이지 번호	
-	private int rowPage     = 9;	// 한 페이지 당 나오는 컨텐츠 개수
+	private int rowPage     = 10;	// 한 페이지 당 나오는 컨텐츠 개수
 	private int pageBlock   = 10;	// 페이지 번호 블록 개수
 	private int start;				// 페이지 시작 컨텐츠 번호(rownum)		
 	private int end;				// 페이지 마지막 컨텐츠 번호(rownum)
