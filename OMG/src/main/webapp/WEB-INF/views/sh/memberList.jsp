@@ -9,10 +9,10 @@
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회 ${memberTotal }</h4>
               <!-- Basic Bootstrap Table -->
               <div class="card">
-                <h5 class="card-header">인사 카드</h5>
+                <h5 class="card-header">사원 명단</h5>
                 <!-- Search -->
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
@@ -22,6 +22,7 @@
                     class="form-control border-0 shadow-none"
                     placeholder="Search..."
                     aria-label="Search..."
+                    id="searchMember"
                   />
                 </div>
               </div>
@@ -35,115 +36,131 @@
                         <th>사원번호</th>
                         <th>성명</th>
                         <th>부서명</th>
-                        <th>직급</th>
+                        <th>직위</th>
                         <th>이메일</th>
                         <th>상세정보</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-1"></i> <strong>1</strong></td>
-                        <td>2023.12.08</td>
-                        <td><a href="memberU?mem_id="+mem_id>1001</a></td>
-                        <td>김태현</td>
-                        <td>인사부</td>
-                        <td>직급</td>
-                        <td>이메일</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-1"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><i class="fab fa-react fa-lg text-info me-1"></i> <strong>2</strong></td>
-                        <td>2023.12.08</td>
-                        <td><a href="memberU?mem_id="+mem_id>1002</a></td>
-                        <td>김아무개</td>
-                        <td>영업부</td>
-                        <td>직급</td>
-                        <td>이메일</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-2"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-2"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><i class="fab fa-vuejs fa-lg text-success me-1"></i> <strong>3</strong></td>
-                        <td>2023.12.08</td>
-                        <td><a href="memberU?mem_id="+mem_id>1003</a></td>
-                        <td>홍길동</td>
-                        <td>인사부</td>
-                        <td>직급</td>
-                        <td>이메일</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-2"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-2"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary me-1"></i> <strong>4</strong>
-                        </td>
-                        <td>2023.12.08</td>
-                        <td><a href="memberU?mem_id="+mem_id>1004</a></td>
-                        <td>김태현</td>
-                        <td>인사부</td>
-                        <td>직급</td>
-                        <td>이메일</td>
-                        <td>
-                          <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                              <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-edit-alt me-2"></i> Edit</a
-                              >
-                              <a class="dropdown-item" href="javascript:void(0);"
-                                ><i class="bx bx-trash me-2"></i> Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+	                    <c:forEach var="list" items="${memberList }">
+	                    	<tr>
+	                    		<td><i class="fab fa-angular fa-lg text-danger me-1"></i><strong>${list.rn}</strong></td>
+	                    		<td>${list.mem_hiredate}</td>
+	                    		<td><a href="memberU?mem_id="+${list.mem_id}>${list.mem_id}</a></td>
+	                    		<td>${list.mem_name}</td>
+	                    		<td>
+	                    			<c:choose>
+	                    				<c:when test="${list.mem_dept_md == 100}"> 회계팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 101}"> 인사팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 102}"> 영업1팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 103}"> 영업2팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 104}"> 물류1팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 105}"> 물류2팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 106}"> CS1팀</c:when>
+	                    				<c:when test="${list.mem_dept_md == 107}"> CS2팀</c:when>
+	                    				<c:otherwise>미배치</c:otherwise>
+	                    			</c:choose>
+	                    		</td>
+	                    		<td>
+	                    			<c:choose>
+	                    				<c:when test="${list.mem_posi_md == 100}"> 대표이사</c:when>
+	                    				<c:when test="${list.mem_posi_md == 101}"> 상무</c:when>
+	                    				<c:when test="${list.mem_posi_md == 102}"> 차장</c:when>
+	                    				<c:when test="${list.mem_posi_md == 103}"> 과장</c:when>
+	                    				<c:when test="${list.mem_posi_md == 104}"> 대리</c:when>
+	                    				<c:when test="${list.mem_posi_md == 105}"> 사원</c:when>
+	                    				<c:otherwise>인턴</c:otherwise>
+	                    			</c:choose>
+	                    		</td>
+	                    		<td>${list.mem_email}</td>
+	                    		<td>
+		                          <div class="dropdown">
+		                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+		                              <i class="bx bx-dots-vertical-rounded"></i>
+		                            </button>
+		                            <div class="dropdown-menu">
+		                              <a class="dropdown-item" href="/memberU"
+		                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
+		                              >
+		                              <c:choose>
+		                              	<c:when test="${list.mem_leave == null and list.mem_resi == null }">
+			                              <a class="dropdown-item" href="/memberU"
+			                                ><i class="bx bx-edit-alt me-1"></i> 휴직</a
+			                              >
+			                              <a class="dropdown-item" href="/memberD;"
+			                               ><i class="bx bx-trash me-1"></i> 퇴사</a
+			                               >
+		                              	</c:when>
+		                              	<c:when test="${list.mem_leave != null and list.mem_resi == null }">
+			                              <a class="dropdown-item" href="/memberU"
+			                                ><i class="bx bx-edit-alt me-1"></i> 복직</a
+			                              >
+			                              <a class="dropdown-item" href="/memberD;"
+			                               ><i class="bx bx-trash me-1"></i> 퇴사</a
+			                               >
+		                                </c:when>
+		                              </c:choose>
+		                            </div>
+		                          </div>
+		                        </td>
+	                    	</tr>
+	                    </c:forEach>
                     </tbody>
                   </table>
                 </div>
+              	
+              	<!-- 페이징 -->
+                <!-- Basic Pagination -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <div class="demo-inline-spacing d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                          <ul class="pagination">
+                            <c:if test="${page.startPage > page.pageBlock }">
+	                            <li class="page-item prev">
+	                              <a class="page-link" href="memberL?currentPage=${page.startPage - page.pageBlock }"
+	                                ><i class="tf-icon bx bx-chevron-left"></i
+	                              ></a>
+	                            </li>
+                            </c:if>
+                            <c:forEach var="i" begin="${page.startPage }" end="${page.endPage}">
+	                            <li class="page-item">
+	                              <a class="page-link" href="memberL?currentPage=${i}">${i }</a>
+	                            </li>
+                            </c:forEach>
+                            <c:if test="${page.endPage < page.totalPage }">
+	                            <li class="page-item next">
+	                              <a class="page-link" href="memberL?currentPage=${page.startPage + page.pageBlock }"
+	                                ><i class="tf-icon bx bx-chevron-right"></i
+	                              ></a>
+	                            </li>
+                            </c:if>
+                          </ul>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             	<!-- Basic Pagination -->
+              
               </div>
               <!--/ Basic Bootstrap Table -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ <script type="text/javascript">
+ 	$(document).ready(function(){
+ 		$('#searchMember').on('change',function(e){
+ 			$.ajax({
+ 				url  : "memberRequirement",
+ 				data : {keyword : e.target.value},
+ 				type : "GET",
+ 				success : function(response){
+					console.log(response);
+ 				}
+ 			});
+ 		});
+ 	});
+ </script>
 <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

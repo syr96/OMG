@@ -88,9 +88,30 @@
                             <span class="d-none d-sm-block">Reset</span>
                           </button>
                           <!-- mem_right -->
-                          <div class="form-check form-switch mb-2">
-		                       <input class="form-check-input" type="checkbox" name="mem_right" id="mem_right" />
-		                       <label class="form-check-label" for="mem_right">권한 부여</label>
+                          <div class="form-check col-mb-2">
+                        	  <div class="form-check mt-3">
+		                            <input
+		                              name="default-radio-1"
+		                              class="form-check-input"
+		                              type="radio"
+		                              value=0
+		                              id="mem_right_employee"
+		                              name="mem_right"
+		                              checked
+		                            />
+		                            <label class="form-check-label" for="mem_right_employee"> 사원 권한</label>
+		                          </div>
+		                          <div class="form-check">
+		                            <input
+		                              name="default-radio-1"
+		                              class="form-check-input"
+		                              type="radio"
+		                              value=1
+		                              id="mem_right_manager"
+		                              name="mem_right"
+		                            />
+		                            <label class="form-check-label" for="mem_right_manager"> 관리자 권한</label>
+		                          </div>
                       	  </div>
                         </div>
                       </div>
@@ -437,20 +458,43 @@
 		});
 	});
 	
+	function checkMember(formData){
+		$.ajax({
+			type: "POST",
+			url : "createMember",
+			data : formData,
+			//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
+			contentType : false,		
+			processData : false,
+			success : function(result){
+				alert("ajax 성공");			
+				},
+			error : function(request, status, error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	}
+	
+	$('#formAccountSettings').on('submit', function(event) {
+        event.preventDefault(); // 다른 이벤트 방지
+        console.log('Form submitted');
+        return checkValidation();
+	});	
+	
+	
 	//유효성 체크
 	function checkValidation(){
 		alert("함수 실행");
 		//비밀번호 유효성 검사
 		var pw1 = $('#basic-default-password1').val();
 		var pwMessage = $('#basic-default-password2').css('display');
-		//체크박스여서 checked 되면 값 지정
-		var memRightValue = $('#mem_right').prop('checked') ? '1' : '0';
-		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/
+		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/;
 		if (pwMessage === 'block'){
 			alert("비밀번호 일치");
 		//등록 확인 시 함수
 		var requestData = {
-				right	 : memRightValue,
+				//체크박스여서 checked 되면 값 지정
+				right	 : $('input[name="mem_right"]:checked').val(),
 				hiredate : $('#mem_hiredate').val(),
 				name	 : $('#mem_name').val(),
 				birthday : $('#mem_bd').val(),
@@ -473,35 +517,26 @@
 		var image = $('#upload')[0].files[0];
 		var formData = new FormData();
 		formData.append("img",image);
+		alert("img");
 		
 		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
-		var jsonBlob = new Blob(requestDataString, {type:"application/json"});
+		var jsonBlob = new Blob([requestDataString], {type:"application/json"});
 		formData.append("request",jsonBlob);
-		
-		
+		alert("request");
+
 		if(confirm("등록을 완료하시겠습니까?")){
-			console.log("등록 확인");
-			$.ajax({
-				type: "POST",
-				url : "createMember",
-				data : formData,
-				//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
-				contentType : false,		
-				processData : false,
-				success : function(result){
-						console.log("success 도착");					
-						}
-				});
-		}else{
-			console.log("등록 거절");
+			alert("ajax 실행");
+			// 추가된 부분: 'right' 파라미터를 AJAX 요청에 추가
+		    checkMember(formData);
+			}else{
+				alert("등록 취소");
+			}
+		} else {
+			alert("비밀번호 ");
 		}
-	};
+	}
 	
-	$('#formAccountSettings').on('submit', function(event) {
-        event.preventDefault(); // 다른 이벤트 방지
-        console.log('Form submitted');
-        return checkValidation();
-	});
+
 </script>
 </body>
 </html>
