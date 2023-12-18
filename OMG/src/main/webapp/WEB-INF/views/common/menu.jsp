@@ -28,6 +28,22 @@
               </a>
             </li>
 
+			<li class="menu-header small text-uppercase">
+              <span class="menu-header-text">사원 관리</span>
+            </li>
+            <li class="menu-item">
+              <a href="/memberL" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">사원 조회</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/memberR" class="menu-link">
+              	<i class="menu-icon tf-icons bx bx-detail"></i>
+                <div data-i18n="Form Elements">사원 등록</div>
+              </a>
+            </li>
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">제품 관리</span>
             </li>
@@ -58,33 +74,7 @@
             <li class="menu-item">
               <a href="/customerSales" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Extended UI">거래처별판매실적조회</div>
-              </a>
-            </li>
-            <!-- Extended components -->
-            <li class="menu-item">
-              <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Extended UI</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="extended-ui-perfect-scrollbar.html" class="menu-link">
-                    <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="extended-ui-text-divider.html" class="menu-link">
-                    <div data-i18n="Text Divider">Text Divider</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="menu-item">
-              <a href="icons-boxicons.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-crown"></i>
-                <div data-i18n="Boxicons">Boxicons</div>
+                <div data-i18n="Extended UI">월별실적조회</div>
               </a>
             </li>
 
@@ -213,91 +203,84 @@
         <!-- Layout container -->
         <div class="layout-page">
           <!-- Navbar -->
-          
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    
-                      <ul class="navbar-nav flex-row align-items-center ms-auto">
-                   <!-- Place this tag where you want the button to render. -->
-                   <li class="nav-item lh-1 me-3">
-                     <a
-                       class="github-button"
-                       href="https://github.com/themeselection/sneat-html-admin-template-free"
-                       data-icon="octicon-star"
-                       data-size="large"
-                       data-show-count="true"
-                       aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                       >Star</a
-                     >
-                   </li>
-   
-                   <!-- User -->
-                   <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                       <div class="avatar avatar-online">
-                         <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                       </div>
-                     </a>
-                     <ul class="dropdown-menu dropdown-menu-end">
-                       <li>
-                         <a class="dropdown-item" href="#">
-                           <div class="d-flex">
-                             <div class="flex-shrink-0 me-3">
-                               <div class="avatar avatar-online">
-                                 <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                               </div>
-                             </div>
-                             <div class="flex-grow-1">
-                               <span class="fw-semibold d-block">${sessionScope.mem_name }</span>
-                               <small class="text-muted">Admin</small>
-                             </div>
-                           </div>
-                         </a>
-                       </li>
-                       <li>
-                         <div class="dropdown-divider"></div>
-                       </li>
-                       <li>
-                         <a class="dropdown-item" href="#">
-                           <i class="bx bx-user me-2"></i>
-                           <span class="align-middle">My Profile</span>
-                         </a>
-                       </li>
-                       <li>
-                         <a class="dropdown-item" href="#">
-                           <i class="bx bx-cog me-2"></i>
-                           <span class="align-middle">Settings</span>
-                         </a>
-                       </li>
-                       <li>
-                         <a class="dropdown-item" href="#">
-                           <span class="d-flex align-items-center align-middle">
-                             <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                             <span class="flex-grow-1 align-middle">로그인 관리</span>
-                             <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                           </span>
-                         </a>
-                       </li>
-                       <li>
-                         <div class="dropdown-divider"></div>
-                       </li>
-                       <li>
-                         <a class="dropdown-item" href="/logOut">
-                           <i class="bx bx-power-off me-2"></i>
-                           <span class="align-middle">Log Out</span>
-                         </a>
-                       </li>
-                     </ul>
-                   </li>
-                   <!--/ User -->
-                 </ul>
-                 
-                  </div>
-                </div>
-              </nav>
 
-          <!-- / Navbar -->
+			<nav
+            class="layout-navbar navbar navbar-expand-xl align-items-center bg-light"
+            id="layout-navbar"
+            >
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+              <a class="nav-item nav-link mx-3" href="javascript:void(0)">
+                <i class="bx bx-menu bx-sm"></i>
+              </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center mx-3" id="navbar-collapse">
+
+              <ul class="navbar-nav flex-row align-items-center ms-auto">
+
+                <!-- User -->
+                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                      <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <div class="d-flex">
+                          <div class="flex-shrink-0 me-3">
+                            <div class="avatar avatar-online">
+                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                            </div>
+                          </div>
+                          <div class="flex-grow-1">
+                            <span class="fw-semibold d-block">${sessionScope.mem_name }</span>
+                            <small class="text-muted">Admin</small>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-user me-2"></i>
+                        <span class="align-middle">My Profile</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <i class="bx bx-cog me-2"></i>
+                        <span class="align-middle">Settings</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        <span class="d-flex align-items-center align-middle">
+                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                          <span class="flex-grow-1 align-middle">로그인 관리</span>
+                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/logOut">
+                        <i class="bx bx-power-off me-2"></i>
+                        <span class="align-middle">Log Out</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <!--/ User -->
+              </ul>
+            </div>
+          </nav>
+			<!-- / Navbar -->
 
           <!-- Content wrapper -->
           <div class="content-wrapper">

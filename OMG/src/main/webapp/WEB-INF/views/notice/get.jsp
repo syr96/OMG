@@ -122,8 +122,8 @@
 					</div>
 					<div class="form-group my-1">
 						<label class="form-label">작성자</label>
-						<input type="text" 	 class="form-control" name="mem_name" value='<c:out value="${sessionScope.mem_name }"/>' readonly="readonly">
-						<input type="hidden" class="form-control" name="mem_id"   value='<c:out value="${sessionScope.mem_id }"/>'>
+						<input type="text" 	 class="form-control" name="mem_name" value='<c:out value="${reply.mem_name }"/>' readonly="readonly">
+						<input type="hidden" class="form-control" name="mem_id"   value='<c:out value="${reply.mem_id }"/>'>
 					</div>
 					<div class="form-group my-1">
 						<label class="form-label">작성일</label>
@@ -181,7 +181,7 @@
 			     for (var i = 0, len = list.length || 0; i < len; i++) {
 			       str +="<li class='list-group-item' data-rep_id='"+list[i].rep_id+"'>";
 			       str +="<div class='d-flex justify-content-between'>";
-			       str +="<h5 class='card-title'>" + list[i].mem_id + "</h5>";
+			       str +="<h5 class='card-title'>" + list[i].mem_name + "</h5>";
 			       str +="<h6 class='card-title text-muted'>" + replyService.displayTime(list[i].rep_date) + "</h6>";
 			       str += "</div>";
 			       str += "<p class='card-text'>" + list[i].rep_cn + "</p>"

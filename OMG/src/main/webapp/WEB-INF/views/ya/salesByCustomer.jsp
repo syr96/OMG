@@ -38,11 +38,17 @@
         .fixed-thead th {
             background-color: #f8f9fa;
              position: sticky;
+              background-color:#e1e2ff;
         }
+       
+    .hidden-row {
+        display: none;
+    }
+
     </style>
 
 <meta charset="UTF-8">
-<title>거래처실적조회</title>
+<title>거래처별판매실적조회</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <%@ include file="/WEB-INF/views/common/menu.jsp"%>    
 </head>
@@ -61,17 +67,17 @@
 <div class="container">
 <div class="col-lg">
 <div class="card">
-  <h5 class="card-header">거래처별실적조회</h5>
+ <h5 class="card-header">월별실적조회</h5>
    <div class="row mx-3" >	   
-		<div class="col-12 mb-3 d-flex justify-content-center justify-content-md-between">	  		   
-		    <label for="selectOption">조회기간: </label>
+		<div class="col-12 mb-3 d-flex ">	  		   
+		   <!--  <label for="selectOption">조회기간: </label> -->
 		    <label for="month">
 		    <input class="form-control" type="month" id="monthSelect" name="month">
 		    </label>
 					
-			<label for="searchSelect">거래처명: </label>
+			<!-- <label for="searchSelect">거래처명: </label> -->
 				<select class="form-select" id="in_custcode" style="width: 200px; " ></select>
-			<button class="btn btn-sm btn-outline-primary" id="searchButton" type="button" onclick="search()" style="height:30px;">검색</button>
+			<button class="btn btn-outline-primary" id="searchButton" type="button" onclick="search()" >검색</button>
 		</div>	
     </div>
 
@@ -93,7 +99,7 @@ $(document).ready(function () {
         	var customerListSelect = response.customerListSelect;
         	
         	  // "전체" 옵션 추가
-            $('#in_custcode').append('<option value="all">전체</option>');
+            $('#in_custcode').append('<option value="0">전체</option>');
             for (var i = 0; i < customerListSelect.length; i++) {
             	$('#in_custcode').append('<option value="' +  customerListSelect[i].custcode + '">' +  customerListSelect[i].custcode + 
             			'  ' +  customerListSelect[i].company + '</option>');
@@ -110,20 +116,11 @@ function search() {
    
 	// 선택한 월을 추출
     var selectedMonth = document.getElementById("monthSelect").value;
-    var month = selectedMonth.split("-")[1];
-    var selectedCustcodes = $('#in_custcode').val();
+    var month = selectedMonth ? selectedMonth.split("-")[1] : "0"; 
+    var selectedCustcodes = parseInt($('#in_custcode').val());
     console.log("Selected Month:", month);
+    console.log("SelectedselectedCustcodes:", selectedCustcodes);
     
-    // 월을 선택하지 않았을 경우
-    if (selectedMonth === "") {
-        month = "all";
-    }
-
-    // 거래처를 선택하지 않았을 경우
-    if (selectedCustcodes === null) {
-        selectedCustcodes = "all";
-    }
-
     // Ajax 요청
     $.ajax({
         url: '/customerSalesSearch',
@@ -133,9 +130,8 @@ function search() {
 	            month:  month,
         },
         success: function (data) {
-            // 서버 응답에 대한 처리
-            console.log("Search successful:", data);
             var customerSalesSearch = data.customerSalesSearch;
+
         // 검색결과 
             $("#searchResultsTable tbody").empty();
             $.each(customerSalesSearch, function (index, customer) {
@@ -148,22 +144,46 @@ function search() {
                     "<td>" + customer.purCode + "</td>" +
                     "<td>" + customer.itemName + "</td>" +
                     "<td>" + customer.purQty + "</td>" +
-                    "<td>" + customer.purPrice.toLocaleString()  + "</td>" +
-                    "<td>" + (customer.custstyle == 0 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
-                    "<td>" + (customer.custstyle == 1 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
+                    "<td style='text-align: right;'>" + customer.purPrice.toLocaleString()  + "</td>" +
+                    "<td style='text-align: right;'>" + (customer.custstyle == 0 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
+                    "<td style='text-align: right;'>" + (customer.custstyle == 1 ? (customer.purQty * customer.purPrice).toLocaleString() : '-') + "</td>" +
                     "</tr>";
-                    
-                    
+
+                // 월별 소계 행 추가
+                if (index === customerSalesSearch.length - 1) {
+                    var monthlyPurTotal = 0;
+                    var monthlySalesTotal = 0;
+
+                    $.each(customerSalesSearch, function (innerIndex, innerCustomer) {
+                        if (innerCustomer.custstyle == 0) {
+                            monthlyPurTotal += innerCustomer.purQty * innerCustomer.purPrice;
+                        } else if (innerCustomer.custstyle == 1) {
+                            monthlySalesTotal += innerCustomer.purQty * innerCustomer.purPrice;
+                        }
+                    });
+
+                    row += "<tr style='background-color: #f2f2f2;'>" +
+                        "<td colspan='6'></td>" +
+                        "<th colspan='3'>" +  "소 계</th>" +
+                        "<th style='text-align: right;'>" + formatAmount(monthlyPurTotal) + "</th>" +
+                        "<th style='text-align: right;'>" + formatAmount(monthlySalesTotal) + "</th>" +
+                        "</tr>";
+                }
+
                 $("#searchResultsTable tbody").append(row);
             });
-			
-            
         },
         error: function () {
             console.error('서버 오류');
         }
     });
 }
+
+function formatAmount(amount) {
+    return amount !== 0 ? amount.toLocaleString() : '-';
+}
+
+
 
 </script>
   
@@ -190,22 +210,42 @@ function search() {
                </thead>
                <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
                <!-- 월별 소계 -->
-		        <c:set var="currentMonth" value="" />
+		        <c:set var="currentMonth" value=" " />
 		        <c:set var="monthlyPurTotal" value="0" />
 		        <c:set var="monthlySalesTotal" value="0" />
-		        <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
-		            <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
-		                <tr>
-		              	    <td colspan="6"></td>
-		                    <th colspan="3">${currentMonth}월 소 계</th>
-			           		<th ><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
-				            <th ><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
-		                </tr>
-		        <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
-                <c:set var="monthlyPurTotal" value="0" />
-                <c:set var="monthlySalesTotal" value="0" />
-                <c:set var="currentMonth" value="${customer.month}" />
-          	    </c:if>
+	    <c:set var="firstMonth" value="true" />
+
+    <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
+        <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
+            <tr class="${firstMonth ? 'hidden-row' : ''}"  style="background-color: #f2f2f2;"> <!-- 첫 번째 월 소계 행에 hidden-row 클래스 추가 -->
+                <td colspan="6"></td>
+                <th colspan="3">${currentMonth}월 소 계</th>
+					<c:choose>
+					    <c:when test="${monthlyPurTotal != 0}">
+					        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
+					    </c:when>
+					    <c:otherwise>
+					        <th>-</th>
+					    </c:otherwise>
+					</c:choose>
+					
+					<c:choose>
+					    <c:when test="${monthlySalesTotal != 0}">
+					        <th style="text-align: right;"><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+					    </c:when>
+					    <c:otherwise>
+					        <th>-</th>
+					    </c:otherwise>
+					</c:choose>
+            </tr>
+   
+            <c:set var="firstMonth" value="false" />
+
+            <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
+            <c:set var="monthlyPurTotal" value="0" />
+            <c:set var="monthlySalesTotal" value="0" />
+            <c:set var="currentMonth" value="${customer.month}" />
+        </c:if>
       			<!--전체거래처실적조회 -->        
 					 <tr>
                      <td>${customer.month}</td>
@@ -216,15 +256,15 @@ function search() {
                      <td>${customer.purCode}</td>
                      <td>${customer.itemName }</td>
                      <td>${customer.purQty}</td>
-                     <td><fmt:formatNumber value="${customer.purPrice}" pattern="#,##0" /></td>
+                     <td style="text-align: right;"><fmt:formatNumber value="${customer.purPrice}" pattern="#,##0" /></td>
 			        <!-- customer.custstyle에 따라 총 매입액(0) 또는 총 매출액(1) 표시 -->
-			        <td><c:choose>
+			        <td style="text-align: right;"><c:choose>
 			            <c:when test="${customer.custstyle == 0}">
 			                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
 			            </c:when>
 			            <c:otherwise>-</c:otherwise>
 			        </c:choose></td>
-			        <td><c:choose>
+			        <td style="text-align: right;"><c:choose>
 			            <c:when test="${customer.custstyle == 1}">
 			                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
 			            </c:when>
@@ -241,12 +281,28 @@ function search() {
                 </c:when>
             </c:choose>                        	
 			</c:forEach>
-			           <!-- 마지막 월에 대한 소계 행 표시 -->
-	        <tr>
+		
+			<!-- 마지막 월에 대한 소계 행 표시 -->
+	        <tr style="background-color: #f2f2f2;">
 		        <td colspan="6"></td>
 		        <th colspan="3">${currentMonth}월 소 계</th>
-			    <th ><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
-				<th ><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+					<c:choose>
+					    <c:when test="${monthlyPurTotal != 0}">
+					        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
+					    </c:when>
+					    <c:otherwise>
+					        <th>-</th>
+					    </c:otherwise>
+					</c:choose>
+					
+					<c:choose>
+					    <c:when test="${monthlySalesTotal != 0}">
+					        <th style="text-align: right;"><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+					    </c:when>
+					    <c:otherwise>
+					        <th>-</th>
+					    </c:otherwise>
+					</c:choose>
 	        </tr>
     		
                 </tbody>
@@ -266,11 +322,11 @@ function search() {
 					</c:forEach>
 	
 				    	 <!-- 누계 행 추가 -->			
-					<tr>
+					<tr style="background-color: #f2f2f2;">
 						<td colspan="6"></td>
 						<th colspan="3">누          계</th>
-					    <th><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>
-					    <th><fmt:formatNumber value="${totalSalesAmount}" pattern="#,##0" /></th>
+					    <th style="text-align: right;"><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>
+					    <th style="text-align: right;"><fmt:formatNumber value="${totalSalesAmount}" pattern="#,##0" /></th>
 					</tr>
 				
         	  </tfoot>

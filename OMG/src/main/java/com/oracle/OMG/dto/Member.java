@@ -15,7 +15,7 @@ public class Member {
     private String 	mem_email;
     private int 	mem_mailcode;
     private String 	mem_address;
-    private Date 	mem_hiredate; // Date를 String으로 변경
+    private String 	mem_hiredate; // Date를 String으로 변경
     private int 	mem_dept_lg;
     private int 	mem_posi_lg;
     private int 	mem_duty_lg;
@@ -33,4 +33,12 @@ public class Member {
     private String  mem_dept;
     private String  mem_position1;
     private String  mem_position2;
+    
+    //리스트용
+    private int rn;
+    private int start;
+    private int end;
+    private String keyword;
+    //join
+    private String com_cn;     //분류 내용
 }

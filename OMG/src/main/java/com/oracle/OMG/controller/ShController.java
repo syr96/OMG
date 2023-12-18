@@ -3,6 +3,7 @@ package com.oracle.OMG.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Paging;
 import com.oracle.OMG.service.shService.ShMemberService;
 
 import lombok.Data;
@@ -43,9 +45,53 @@ public class ShController {
 		return "sh/memberUpdate";
 	}
 	
+	//사원 목록
 	@RequestMapping(value = "memberL")
-	public String memberList() {
+	public String memberList(String currentPage, Model model) {
+		System.out.println("shController memberList() Start");
+		Member member = new Member();
+		//사원 총 인원수
+		int memberTotal = ms.memberTotal();
+		
+		//리스트 페이지 세팅
+		Paging page = new Paging(memberTotal, currentPage);
+		int start = page.getStart();
+		int end   = page.getEnd();
+		member.setStart(start);
+		member.setEnd(end);
+		
+		//사원 리스트 조회용
+		List<Member> memberList = ms.memberList(member);
+		
+		model.addAttribute("memberTotal", memberTotal);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("page",page);
 		return "sh/memberList";
+	}
+	
+	//사원 목록 검색창
+	@RequestMapping(value = "memberRequirement")
+	public List<Member> searchMemberRequirement(@RequestParam("require") String require, String currentPage, Model model) {
+		System.out.println("shController searchMemberRequirement() Start");
+		Member member = new Member();
+		
+		//사원 총 인원수
+		int memberTotal = ms.memberTotal();
+				
+		//리스트 페이지 세팅
+		Paging page = new Paging(memberTotal, currentPage);
+		int start = page.getStart();
+		int end   = page.getEnd();
+		member.setStart(start);
+		member.setEnd(end);
+		
+		member.setKeyword(require);
+		List<Member> memberList = ms.memberSearchList(member);
+		model.addAttribute("memberList",memberList);
+		model.addAttribute("page",page);
+		model.addAttribute("memberTotal", memberTotal);
+
+		return memberList;
 	}
 	
 	@RequestMapping(value = "example")
@@ -75,7 +121,7 @@ public class ShController {
 	@ResponseBody
 	@RequestMapping(value = "createMember", method = RequestMethod.POST)
 	public int createMember(   @RequestParam("right") 	 int right,
-							   @RequestParam("hiredate") Date hiredate,
+							   @RequestParam("hiredate") String hiredate,
 							   @RequestParam("name") 	 String name,
 							   @RequestParam("birthday") String birthday,
 							   @RequestParam("sex") 	 String sex,
@@ -91,10 +137,11 @@ public class ShController {
 							   HttpServletRequest 		 request,
 							   Model 					 model) throws IOException {
 		System.out.println("shController createMember() Start");
-				int result = 0;
+		int result = 0;
 		
 		Member member = new Member();
 		member.setMem_right(right);
+		//Date를 String으로 바꾸기
 		member.setMem_hiredate(hiredate);
 		member.setMem_name(name);
 		member.setMem_bd(birthday);

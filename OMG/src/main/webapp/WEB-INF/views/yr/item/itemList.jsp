@@ -46,8 +46,8 @@
 			<a href="/item/list" class="linkText">제품 조회</a>
 		</h4>
 		<div class="d-flex">
-	      <input class="form-control me-2" type="search" placeholder="제품 / 거래처" id="keyword" onkeypress="if(event.keyCode == 13){searchButton();}" />
-	      <button class="btn btn-outline-primary" type="button" onclick="searchButton()"  style="width: 100px;">검색</button>
+	      <input class="form-control me-2" type="search" placeholder="제품 / 거래처 검색" id="keyword" onkeypress="if(event.keyCode == 13){searchButton();}" />
+	      <button class="btn btn-outline-primary fixedCol40" type="button" onclick="searchButton()">검색</button>
 	    </div>
 	</div>
 	<!-- 제품 조회 -->
@@ -55,21 +55,21 @@
 	  <div class="card overflow-hidden row" style="height: 700px">
 	  
 	  	<!-- 제품 리스트 -->
-	  	<div class="p-0 card-body table-responsive text-nowrap tableFixed col-4" id="both-scrollbars-example">
-		    <table class="table table-hover fixedHeader">
+	  	<div class="p-0 card-body table-responsive text-nowrap tableFixed col-5" id="both-scrollbars-example">
+		    <table class="table table-hover fixedHeader fixedTable">
 		      <thead>
 		        <tr class="table-primary">
-		          <th class="stiky">제품코드</th>
-		          <th class="stiky">제품명</th>
-		          <th class="stiky">
-		          	<select class="form-select" id="cate_md" onchange="filter()">
+		          <th class="stiky text-center fixedCol15">제품코드</th>
+		          <th class="stiky fixedCol35">제품명</th>
+		          <th class="stiky fixedCol25">
+		          	<select class="form-select form-select-sm" id="cate_md" onchange="filter()">
 	          			<c:forEach items="${cm }" var="cm">
 			          		<option value="${cm.ct_md }" <c:if test="${cate_md eq cm.ct_md }"> selected = "selected"</c:if>>${cm.com_cn }</option>
 	          			</c:forEach>
 		          	</select>
 		          </th>
-		          <th class="stiky">
-		          	<select class="form-select" id="deleted" onchange="filter()">
+		          <th class="stiky fixedCol25">
+		          	<select class="form-select form-select-sm" id="deleted" onchange="filter()">
 		          		<option value="100" <c:if test="${deleted eq '100' }"> selected = "selected"</c:if>>판매여부</option>
 		          		<option value="0"	<c:if test="${deleted eq '0' }">   selected = "selected"</c:if>>정상</option>
 		          		<option value="1"	<c:if test="${deleted eq '1' }">   selected = "selected"</c:if>>판매종료</option>
@@ -83,7 +83,7 @@
 			          <td class="text-center">
 			          	<a onclick="showItemDetail(${itemList.code })">${itemList.code }</a>
 			          </td>
-			          <td>
+			          <td class="fixedCol45 ellipsis">
 			          	<a onclick="showItemDetail(${itemList.code })"><strong>${itemList.name }</strong></a>
 			          </td>
 			          <td class="text-center">
@@ -109,7 +109,7 @@
 	    <!-- / 제품 리스트 -->
 	    
 	    <!-- 제품 상세정보 -->
-	    <div id="itemDetail" class="card-body table-responsive text-nowrap col-8">
+	    <div id="itemDetail" class="card-body table-responsive text-nowrap col-7">
 	    </div>
 	    <!-- / 제품 상세정보 -->
 	    

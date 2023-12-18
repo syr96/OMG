@@ -73,7 +73,7 @@
 							<td class="col-md-2">${notice.brd_id }</td>
 							<td class="col-md-3">
 								<a class='move' href='<c:out value="${notice.brd_id }"></c:out>'>
-									<c:out value="${notice.title }"></c:out>
+									<c:out value="${notice.title }"/>  <b> [<c:out value="${notice.replyCnt }"/>]</b>
 								</a> 
 							</td>
 							<td class="col-md-3">${notice.mem_name }</td>

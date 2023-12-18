@@ -41,8 +41,6 @@
 						</tr>
 	
 						<tr>
-							<th class="table-primary">제품명</th>
-							<td><input type="text" class="form-control" name="name" id="name" /></td>
 							<th class="table-primary">카테고리</th>
 							<td>
 								<select class="form-select" name="cate_md" id="cate_md">
@@ -51,34 +49,40 @@
 									</c:forEach>
 								</select>
 							</td>
+							
+							<jsp:useBean id="javaDate" class="java.util.Date"/>
+							<fmt:formatDate value="${javaDate }" var="now" pattern="yyyy-MM-dd"/>
+							<th class="table-primary">등록일</th>
+							<td><input type="date" class="form-control" name="reg_date" id="reg_date" value="${now }"/></td>
+						</tr>
+						
+						<tr>
+							<th class="table-primary">판매여부</th>
+							<td colspan="3">
+								<select class="form-select" name="deleted" id="deleted">
+									<option value="0">정상</option>
+									<option value="1">판매종료</option>
+								</select>
+							</td>
 						</tr>
 	
 						<tr>
-							<th class="table-primary">매입가격</th>
-							<td><input type="number" class="form-control" name="input_price" id="input_price" /></td>
-							<th class="table-primary">매출가격</th>
-							<td><input type="number" class="form-control" name="output_price" id="output_price" /></td>
+							<th class="table-primary">제품명</th>
+							<td colspan="3"><input type="text" class="form-control" name="name" id="name" /></td>
 						</tr>
-	
+						
 						<tr>
 							<th class="table-primary">제품내용</th>
 							<td colspan="3">
 								<textarea class="form-control" rows="3" name="item_cn" id="item_cn"></textarea>
 							</td>
 						</tr>
-	
+						
 						<tr>
-							<th class="table-primary">판매여부</th>
-							<td>
-								<select class="form-select" name="deleted" id="deleted">
-									<option value="0">정상</option>
-									<option value="1">판매종료</option>
-								</select>
-							</td>
-							<jsp:useBean id="javaDate" class="java.util.Date"/>
-							<fmt:formatDate value="${javaDate }" var="now" pattern="yyyy-MM-dd"/>
-							<th class="table-primary">등록일</th>
-							<td><input type="date" class="form-control" name="reg_date" id="reg_date" value="${now }"/></td>
+							<th class="table-primary">매입가격</th>
+							<td><input type="number" class="form-control" name="input_price" id="input_price" /></td>
+							<th class="table-primary">매출가격</th>
+							<td><input type="number" class="form-control" name="output_price" id="output_price" /></td>
 						</tr>
 	
 					</table>

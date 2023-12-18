@@ -19,6 +19,9 @@ public interface YaCustomerDao {
 	List<Customer> customerSalesList(Customer customer);
 	List<Customer> customerListSelect(Customer customer);
 	List<Customer> customerSalesSearch(int custcode, String month, String purDate);
+	List<Customer> SearchAllCustomer(String month);
+	List<Customer> SearchForAllMonths(int custcode);
+	List<Customer> SearchForAll(int custcode, String month);
 
 
 }
