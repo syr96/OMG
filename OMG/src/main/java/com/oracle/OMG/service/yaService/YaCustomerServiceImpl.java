@@ -113,11 +113,35 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 
 	@Override
 	public List<Customer> customerSalesSearch(int custcode, String month, String purDate) {
-		System.out.println("YaCustomerService ustomerSalesSearch start...");
+		System.out.println("YaCustomerService customerSalesSearch start...");
 		List<Customer> customerSalesSearch = null;
 		customerSalesSearch = ycd.customerSalesSearch(custcode, month, purDate);
 		
 		return customerSalesSearch;
+	}
+
+	@Override
+	public List<Customer> SearchAllCustomer( String month) {
+		System.out.println("YaCustomerService SearchAllCustomer start...");
+		 List<Customer> SearchAllCustomer = null;
+		 SearchAllCustomer= ycd.SearchAllCustomer(month);
+		return SearchAllCustomer;
+	}
+
+	@Override
+	public List<Customer> SearchForAllMonths( int custcode) {
+		System.out.println("YaCustomerServiceSearchForAllMonths start...");
+		List<Customer> SearchForAllMonths = null;
+		SearchForAllMonths = ycd.SearchForAllMonths(custcode);
+		return SearchForAllMonths;
+	}
+
+	@Override
+	public List<Customer> SearchAll(int custcode, String month) {
+		System.out.println("YaCustomerServiceSearchAll start...");
+		List<Customer> SearchAll = null;
+		SearchAll = ycd.SearchForAll(custcode,month);
+		return SearchAll;
 	}
 
 
