@@ -126,23 +126,75 @@ jQuery(document).ready(function() {
                           <a class="list-group-item list-group-item-action " id="settings-list-item" data-bs-toggle="list" href="#horizontal-settings">출고조정</a>
                         </div>
                         <div class="tab-content px-0 mt-0">
+                          
                           <div class="tab-pane fade  active show" id="horizontal-home">
-		 				기초재고등록폼
+                          <div class="card">
 		 				 <div class="card-body">
-							<div class="row">
-								<div class="mb-3 col-md-6">
-		                        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-		                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect">
-		                        </div>
-		                         <div class="mb-3 col-md-6">
-		                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
-		                         <select id="invType" class="select2 form-select">
-		                              <option value="">전체</option>
-		                              <option value="Opening">기초</option>
-		                              <option value="Closing">기말</option>
-		                         </select>
-		                         </div>
-		                      </div>
+							<div class="row align-items-end"> <!-- Using align-items-end to align items at the bottom of the container -->
+    <div class="mb-3 col-md-3">
+        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
+        <input class="form-control" type="month" value="2021-06-18" id="monthSelect">
+    </div>
+    <div class="mb-3 col-md-3">
+        <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
+        <select id="invType" class="select2 form-select">
+            <option value="">전체</option>
+            <option value="Opening">기초</option>
+            <option value="Closing">기말</option>
+        </select>
+    </div>
+    <div class="mb-3 col-md-3"> <!-- Adjusted column width to accommodate the button -->
+        <button class="btn btn-outline-primary" type="button" onclick="searchButton()">검색</button>
+    </div>
+</div>
+ <h5 class="card-header">발주리스트</h5>
+                <div class="card-body">
+                <div class="table-responsive text-nowrap">
+                  <table class="table table-bordered" id="inventoryTable">
+                    <thead>
+                      <tr>
+                        <td>No.</td>
+						<td>제목</td>
+						<td>회사명</td>
+						<td>발주일</td>
+						<td>발주자</td>
+						<td>상품수</td>
+						<td>총수량</td>
+						<td>상태</td>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                    <tbody>
+				    	<c:set value="${totalPur }" var="num"/>
+				    	<c:forEach items="${purList }" var="purList">
+							<tr>
+								<td>${num }</td>
+								<td class="text-start"><a href="/purDtail?pur_date=${purList.pur_date }&custcode=${purList.custcode }">${purList.title }</a></td>
+								<td>${purList.company }</td>
+								<td>${purList.pur_date }</td>
+								<td>${purList.appli_name}</td>
+								<td>${purList.totalType}</td>
+								<td>${purList.totalQty}개</td>
+								<td><fmt:formatNumber value="${purList.totalPrice}" pattern="#,###"/>원</td>
+								<td>
+									<c:choose>
+										<c:when test="${purList.pur_status == 0}">진행중</c:when>
+										<c:when test="${purList.pur_status == 1}">완료</c:when>
+										<c:when test="${purList.pur_status == 2}">입고완료</c:when>
+									</c:choose>
+								</td>
+							</tr>
+							<c:set var="num" value="${num-1 }"></c:set>
+						</c:forEach>
+				    </tbody>
+                         </tbody>
+                  </table>
+                  </div>
+                </div>
+
+
+
+
 		 					</div>                            	
                           </div>
                           <div class="tab-pane fade" id="horizontal-profile">
@@ -155,6 +207,7 @@ jQuery(document).ready(function() {
                           </div>
                           <div class="tab-pane fade" id="horizontal-settings">
                             	출고조정폼
+                          </div>
                           </div>
                         </div>
                       </div>
