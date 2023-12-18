@@ -184,11 +184,9 @@ public class YaController {
 		System.out.println("YaController ycs.customerSearch Start...");
 		List<Customer> customerSalesSearch = null;
 		
-		//전체 거래처 조회 
-		 String custcodeParam = request.getParameter("custcode");
-		 int custcode =  Integer.parseInt(custcodeParam);	
-		
-		 // 월별 거래처 전체조회 
+
+		String custcodeParam = request.getParameter("custcode");
+		int custcode =  Integer.parseInt(custcodeParam);	 
 		String month = request.getParameter("month");
 		String purDate = request.getParameter("purDate");
 		
