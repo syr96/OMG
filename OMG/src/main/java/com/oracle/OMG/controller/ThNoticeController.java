@@ -28,27 +28,10 @@ public class ThNoticeController {
 	
 	private final ThNoticeService ns;
 	
-//	@GetMapping("/list")
-//	public void list(Board board, Model model, String currentPage, HttpSession session ) {
-//		log.info("list");
-//		
-//		// 공지사항 게시글 수
-//		int totNotice = 0;
-//		totNotice = ns.getNoticeTot();
-//		
-//		// Pagination
-//		Paging page = new Paging(totNotice, currentPage, 10);
-//		log.info("page --> " + page);
-//		board.setStart(page.getStart());
-//		board.setEnd(page.getEnd());
-//		
-//		// 공지사항 게시글 10개 가져와서 model 에저장
-//		model.addAttribute("noticeList", ns.getNoticeList(board));
-//		
-//	}
-	
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
+		log.info("list...");
+		
 		int total = ns.getNoticeTot(cri);
 		
 		model.addAttribute("noticeList", ns.getNoticeList(cri));

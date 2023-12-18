@@ -170,12 +170,12 @@
 						공지사항
 					</a>
 				</li>
-				<li class="menu-item">
-					<a href="/qna" class="menu-link">
-						<i class="menu-icon tf-icons bx bx-support"></i>
-						문의
-					</a>
-				</li>
+<!-- 				<li class="menu-item"> -->
+<!-- 					<a href="/qna" class="menu-link"> -->
+<!-- 						<i class="menu-icon tf-icons bx bx-support"></i> -->
+<!-- 						문의 -->
+<!-- 					</a> -->
+<!-- 				</li> -->
 				<li class="menu-item">
               <a
                 href="https://github.com/themeselection/sneat-html-admin-template-free/issues"

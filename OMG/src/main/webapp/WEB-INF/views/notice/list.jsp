@@ -15,16 +15,16 @@
 		<!-- 검색 필터 부분 -->
 		<div class="row mx-1 mt-2">
 			<div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-3">
-				<div class="dataTables_length" id="DataTables_Table_0_length">
-					<label>
-						<select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select">
-							<option value="10">10</option>
-							<option value="25">25</option>
-							<option value="50">50</option>
-							<option value="100">100</option>
-						</select>
-					</label>
-				</div>
+<!-- 				<div class="dataTables_length" id="DataTables_Table_0_length"> -->
+<!-- 					<label> -->
+<!-- 						<select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select"> -->
+<!-- 							<option value="10">10</option> -->
+<!-- 							<option value="25">25</option> -->
+<!-- 							<option value="50">50</option> -->
+<!-- 							<option value="100">100</option> -->
+<!-- 						</select> -->
+<!-- 					</label> -->
+<!-- 				</div> -->
 				<div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
 					<div class="dt-buttons">
 						<button id="regBtn" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">

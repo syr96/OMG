@@ -28,8 +28,10 @@
 			</div>
 			
 			<div class="d-flex align-content-center flex-wrap gap-3 mb-3">
-				<button data-oper='modify' class="btn btn-primary">수정하기</button>
-				<button data-oper='list' class="btn btn-secondary">목록</button>
+				<c:if test="${sessionScope.mem_id eq notice.mem_id }">
+					<button data-oper='modify' class="btn btn-primary">수정하기</button>
+				</c:if>
+					<button data-oper='list' class="btn btn-secondary">목록</button>
 			</div>
 						
 
@@ -51,7 +53,7 @@
 							</div>
 							<div class="col-6">
 								<label class="form-label" for="ecommerce-product-sku">작성일</label>
-								<input type="text" name="mem_name" readonly value='<c:out value="${notice.reg_date }"/>'  class="form-control" id="ecommerce-product-reg_date" aria-label="Product SKU" >
+								<input type="text" name="reg_date" readonly value='<c:out value="${notice.reg_date }"/>'  class="form-control" id="ecommerce-product-reg_date" aria-label="Product SKU" >
 							</div>
 						</div>
 
@@ -61,10 +63,11 @@
 							<textarea class="form-control" name="brd_cn" readonly id="exampleFormControlTextarea1" rows="15"><c:out value="${notice.brd_cn }"/></textarea>
 						</div>
 
-						<div class="mb-3">
-							<label for="formFile" class="form-label">첨부파일</label>
-							<input class="form-control" type="file" id="formFile">
-						</div>
+						<!-- 첨부파일, 추후에 꼭 하기 -->
+<!-- 						<div class="mb-3"> -->
+<!-- 							<label for="formFile" class="form-label">첨부파일</label> -->
+<!-- 							<input class="form-control" type="file" id="formFile"> -->
+<!-- 						</div> -->
 
 					</div>
 					
@@ -77,16 +80,20 @@
 				<div class="card">
 					<div class="card-header border-bottom d-flex justify-content-between">
 						<i class="bi bi-chat-dots-fill"> 댓글</i> 
-						<button id='addReplyBtn' class="btn btn-primary btn-sm">댓글 작성</button>
+						<c:if test="${not empty sessionScope}">
+							<button id='addReplyBtn' class="btn btn-primary btn-sm">댓글 작성</button>
+						</c:if>
+						
+						
 					</div>
 					<div class="card-body">
 						<ul class="list-group list-group-flush chat">
 							<li class="list-group-item" data-rep_id='12'>
 							<div class="d-flex justify-content-between">
-								    <h5 class="card-title">user00</h5>
-								    <h6 class="card-title text-muted">2018-01-01 13:13</h6>
+								    <h5 class="card-title"></h5>
+								    <h6 class="card-title text-muted"></h6>
 							</div>					
-								    <p class="card-text">Good job!</p>
+								    <p class="card-text"></p>
 	<!-- 							    <a href="#" class="card-link">Card link</a> -->
 	<!-- 							    <a href="#" class="card-link">Another link</a> -->
 							</li>
@@ -107,7 +114,7 @@
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
-	<!-- Modal -->
+<!-- 	Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -118,12 +125,12 @@
 				<div class="modal-body">
 					<div class="form-group my-1">
 						<label class="form-label">내용</label>
-						<input class="form-control" name="rep_cn" value="" placeholder="댓글을 작성해 주세요">
+						<input class="form-control" id="rep_cn" name="rep_cn" value="" placeholder="댓글을 작성해 주세요">
 					</div>
 					<div class="form-group my-1">
 						<label class="form-label">작성자</label>
-						<input type="text" 	 class="form-control" name="mem_name" value='<c:out value="${reply.mem_name }"/>' readonly="readonly">
-						<input type="hidden" class="form-control" name="mem_id"   value='<c:out value="${reply.mem_id }"/>'>
+						<input type="text" 	 class="form-control" name="mem_name" value='<c:out value="${sessionScope.mem_name }"/>' readonly="readonly">
+						<input type="hidden" class="form-control" name="mem_id"   value='<c:out value="${sessionScope.mem_id }"/>'>
 					</div>
 					<div class="form-group my-1">
 						<label class="form-label">작성일</label>
@@ -259,6 +266,7 @@
 	    var modal = $(".modal");
 	    var modalInputRep_cn 	= modal.find("input[name='rep_cn']");
 	    var modalInputMem_id	= modal.find("input[name='mem_id']");
+	    var modalInputMem_name	= modal.find("input[name='mem_name']");
 	    var modalInputRep_date  = modal.find("input[name='rep_date']");
 
 	    
@@ -266,12 +274,20 @@
 	    var modalRemoveBtn 	  = $("#modalRemoveBtn");
 	    var modalRegisterBtn  = $("#modalRegisterBtn");
 	    
+	    var mem_name = null;
+	    var mem_id   = null;
+	    mem_name	 = '${sessionScope.mem_name}';
+	    mem_id		 = '${sessionScope.mem_id}';
+	    
 	    
 	    $("#addReplyBtn").on("click", function(e){
 	      
+	      modal.find("input").val("");
+	      modal.find("input[name='mem_name']").val(mem_name);
+	      modal.find("input[name='mem_id']").val(mem_id);
 	      modalInputRep_date.closest("div").hide();
-	      modal.find("button[id !='modalCloseBtn']").hide();
 	      
+	      modal.find("button[id !='modalCloseBtn']").hide();
 	      modalRegisterBtn.show();
 	      
 	      $(".modal").modal("show");
@@ -312,6 +328,7 @@
 	      
 	    	modalInputRep_cn.val(reply.rep_cn);
 	    	modalInputMem_id.val(reply.mem_id);
+	    	modalInputMem_name.val(reply.mem_name);
 	    	modalInputRep_date.val(replyService.displayTime(reply.rep_date)).attr("readonly","readonly");
 	        modal.data("rep_id", reply.rep_id);
 	        
@@ -325,7 +342,26 @@
 	    });
 	  
 	    modalModBtn.on("click", function(e){
-	      
+			 
+	    	 // 로그인한 유저 
+	    	 console.log("mem_name: " + mem_name);
+	    	 
+	    	 // 원래 작성자
+	    	 var originalMem_name = modalInputMem_name.val();
+	    	 console.log("originalMem_name : " + originalMem_name );
+	    	 
+	    	 if(!mem_name){
+	    		  alert("로그인후 수정 가능합니다");
+	    		  modal.modal("hide");
+	    		  return;
+	    	 }
+	    	  
+	    	 if(mem_name != originalMem_name ){
+	    		  alert("자신이 작성한 댓글만 수정 가능합니다.");
+	    		  modal.modal("hide");
+	    		  return;
+	    	 }
+	    	
 	      var reply = { rep_id : modal.data("rep_id"), rep_cn: modalInputRep_cn.val()};
 	      
 	      replyService.update(reply, function(result){
@@ -341,7 +377,27 @@
 	    modalRemoveBtn.on("click", function (e){
 	    	  
     	  var rep_id = modal.data("rep_id");
-	    	  
+	      
+    	  console.log("rep_id: " + rep_id);
+    	  // 로그인한 유저
+    	  console.log("mem_name: " + mem_name); 	
+    	  
+    	  if(!mem_name){
+    		  alert("로그인후 삭제가 가능합니다");
+    		  modal.modal("hide");
+    		  return;
+    	  }
+    	  
+    	  // 원래 작성자
+    	  var originalMem_name = modalInputMem_name.val();
+    	  console.log("originalMem_name : " + originalMem_name );
+    	  
+    	  if(mem_name != originalMem_name ){
+    		  alert("자신이 작성한 댓글만 삭제가 가능합니다.");
+    		  modal.modal("hide");
+    		  return;
+    	  }
+    	  
     	  replyService.remove(rep_id, function(result){
 	    	        
     	      alert(result);

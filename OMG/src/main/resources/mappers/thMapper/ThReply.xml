@@ -10,7 +10,7 @@
 	</insert>
 	
 	<select id="readReply" parameterType="int" resultType="Reply">
-		SELECT 	*
+		SELECT 	reply.*, GET_MEMBER_NAME(mem_id) as mem_name
 		FROM	reply
 		WHERE	rep_id = #{rep_id}
 	</select>
@@ -30,11 +30,7 @@
 	
 	<select id="getListWithPagingReply" parameterType="map" resultType="Reply">
 		<![CDATA[
-			SELECT  rep_id, brd_id, rep_cn, mem_id, rep_date, mod_date, (
-			                                                                SELECT  mem_name 
-			                                                                FROM    member m
-			                                                                WHERE   m.mem_id = re.mem_id
-			                                                            ) AS mem_name
+			SELECT  rep_id, brd_id, rep_cn, mem_id, rep_date, mod_date, GET_MEMBER_NAME(mem_id) as mem_name
 			FROM    (
 			            SELECT  /*+ INDEX(reply idx_reply) */
 			                    rownum rn, brd_id, rep_id, rep_cn, mem_id, rep_date, mod_date

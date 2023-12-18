@@ -15,7 +15,7 @@
 		<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
 		<input type="hidden" name="amount"  value='<c:out value="${cri.amount }"/>'>
 		<input type="hidden" name='type' 	value='<c:out value="${cri.type }"></c:out>'>
-		<input type="hidden" name='keyword' value='<c:out value="${cri.keyword }"></c:out>'>
+		<input type="hidden" name='keyword' value='<c:out value="${cri.keyword }"></c:out>'> 
 		
 		<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
 
@@ -25,9 +25,11 @@
 			</div>
 			
 			<div class="d-flex align-content-center flex-wrap gap-3">
-				<button type="submit" class="btn btn-primary" 	data-oper='modify'>수정하기</button>
-				<button type="submit" class="btn btn-warning" 	data-oper='remove'>삭제</button>
-				<button type="submit" class="btn btn-secondary" data-oper='list'  >목록</button>
+				<c:if test="${sessionScope.mem_id eq notice.mem_id  }">
+					<button type="submit" class="btn btn-primary" 	data-oper='modify'>수정하기</button>
+					<button type="submit" class="btn btn-warning" 	data-oper='remove'>삭제</button>
+				</c:if>
+					<button type="submit" class="btn btn-secondary" data-oper='list'  >목록</button>
 			</div>
 
 
@@ -59,10 +61,11 @@
 							<textarea class="form-control" name="brd_cn" id="exampleFormControlTextarea1" rows="15">${notice.brd_cn }</textarea>
 						</div>
 
-						<div class="mb-3">
-							<label for="formFile" class="form-label">첨부파일</label>
-							<input class="form-control" type="file" id="formFile">
-						</div>
+						<!-- 첨부파일 수정 추후에 꼭하기 -->
+<!-- 						<div class="mb-3"> -->
+<!-- 							<label for="formFile" class="form-label">첨부파일</label> -->
+<!-- 							<input class="form-control" type="file" id="formFile"> -->
+<!-- 						</div> -->
 
 					</div>
 				</div>
