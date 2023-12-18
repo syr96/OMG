@@ -39,4 +39,6 @@ public class Member {
     private int start;
     private int end;
     private String keyword;
+    //join
+    private String com_cn;     //분류 내용
 }

@@ -178,6 +178,48 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		return customerSalesSearch;
 	}
 
+	@Override
+	public List<Customer> SearchAllCustomer( String month) {
+		System.out.println("YaCustomerDao  SearchAllCustomer start....");
+		List<Customer> SearchAllCustomer=null;
+		try {
+
+			 SearchAllCustomer = session.selectList("searchAllCustomer", month);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDao  SearchAllCustomer e.getMessage?:"+e.getMessage());
+		}
+		
+		return SearchAllCustomer;
+	}
+
+	@Override
+	public List<Customer> SearchForAllMonths(int custcode) {
+		System.out.println("YaCustomerDao  SearchForAllMonths start....");
+		List<Customer> SearchForAllMonths=null;
+		try {
+			SearchForAllMonths =  session.selectList("searchAllMonths", custcode);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDao   SearchForAllMonths e.getMessage?:"+e.getMessage());
+		}
+				
+		return SearchForAllMonths;
+	}
+
+	@Override
+	public List<Customer> SearchForAll(int custcode, String month) {
+		System.out.println("YaCustomerDao  SearchForAllMonths start....");
+		List<Customer> SearchForAll=null;
+		try {
+		     Map<String, Object> parameters = new HashMap<>();
+		        parameters.put("custcode", custcode);
+		        parameters.put("month", month);
+		        SearchForAll = session.selectList("SearchForAll", parameters);
+		} catch (Exception e) {
+			System.out.println("YaCustomerDaoImpl  customerSalesSearch e.getMessage? " + e.getMessage());
+		}
+		
+		return SearchForAll;
+	}
 
 }
 

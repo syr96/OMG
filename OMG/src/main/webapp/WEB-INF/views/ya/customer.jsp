@@ -128,19 +128,20 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	//사원리스트
+    // 사원리스트
     $.ajax({
         url: '/memberList',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-        	mem_id: $('#mem_id').val(),
+            mem_id: $('#mem_id').val(),
         }),
         success: function (response) {
-        	var memberList = response.memberList;
+        	 console.log('Response:', response);
+            var memberList = response.memberList;
             for (var i = 0; i < memberList.length; i++) {
-            	$('#in_mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id + 
-            			'  ' + memberList[i].mem_name + ' [' + memberList[i].mem_dept + ']</option>');
+                $('#in_mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id +
+                    '  ' + memberList[i].mem_name + ' [' + memberList[i].com_cn + ']</option>');
             }
         },
         error: function () {
@@ -148,7 +149,6 @@ $(document).ready(function () {
         }
     });
 });
-
 
 $(document).ready(function () {
     // 등록 
@@ -367,7 +367,7 @@ $(document).ready(function () {
         	var memberList = response.memberList;
             for (var i = 0; i < memberList.length; i++) {
             	$('#mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id + 
-            			'  ' + memberList[i].mem_name + ' [' + memberList[i].mem_dept + ']</option>');
+            			'  ' + memberList[i].mem_name + ' [' + memberList[i].com_cn + ']</option>');
             }
         },
         error: function () {
