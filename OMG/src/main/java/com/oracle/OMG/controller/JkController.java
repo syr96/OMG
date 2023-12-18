@@ -42,22 +42,25 @@ public class JkController {
 	
 	// 기초재고등록
 	@RequestMapping(value="/invRegister")
-	public String invRegister(HttpSession session, Warehouse warehouse, Model model) {
+	public String invRegister(@RequestParam(value = "monthSelect1", required = false)  String selectedMonth, HttpSession session, Warehouse warehouse, Model model) {
 	    System.out.println("JkController invRegister start...");
 
+	    
 	    // 클라이언트에서 전송된 월 값의 형식 변경 (YYYYMM 형식으로)
-	    if (warehouse != null) {
-	        String selectedMonth = warehouse.getYm();
-	        if (selectedMonth != null) {
-	            selectedMonth = selectedMonth.replace("-", "");
-	            warehouse.setYm(selectedMonth);
-	        }
+	    if (selectedMonth != null) {
+	        selectedMonth = selectedMonth.replace("-", "");
+	        warehouse.setYm(selectedMonth);
+	        System.out.println("selectedMonth: " + selectedMonth);
 	    }
+	        System.out.println("selectedMonth"+selectedMonth);
+	    
 	    try {
 	        int result = jws.insertInv(warehouse);
 	        System.out.println("result: " + result);
 
 	        // 성공적으로 처리된 경우
+	        model.addAttribute("successMessage", "정상적으로 등록되었습니다."); 
+	        System.out.println("model"+model);
 	        return "jk/invRegister";
 	    } catch (DuplicateKeyException e) {
 	        // 중복 등록 오류가 발생한 경우
@@ -71,16 +74,94 @@ public class JkController {
 	        throw new RuntimeException("서버 오류가 발생했습니다.", e);
 	    }
 	}
-	
-	@ControllerAdvice
-	public class GlobalExceptionHandler {
-	  // 예외 처리 핸들러
-		 @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-		    public ResponseEntity<String> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
-		        String errorMessage = "재고 등록에 실패했습니다. 이미 등록된 기초재고가 있습니다.";
-		        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT); // 409 Conflict 상태 코드 사용
-		    }
+
+	// 기초재고 조정
+	@RequestMapping(value="/updateInv")
+	public ResponseEntity<String> updateInv(@RequestParam(value = "monthSelect2", required = false) String selectedMonth,
+	                        @RequestParam(value = "code") int code,
+	                        @RequestParam(value = "cnt") int cnt,
+	                        Warehouse warehouse) {
+	    System.out.println("JkController updateInv start...");
+
+	    // 클라이언트에서 전송된 월 값의 형식 변경 (YYYYMM 형식으로)
+	    if (selectedMonth != null) {
+	        selectedMonth = selectedMonth.replace("-", "");
+	        warehouse.setYm(selectedMonth);
+	        System.out.println("selectedMonth: " + selectedMonth);
+	    }
+
+	    try {
+	    	 int result = jws.updateInv(warehouse);
+		     System.out.println("result: " + result);
+
+		   // 성공적으로 처리된 경우
+		     return ResponseEntity.ok("정상적으로 수정되었습니다.");
+	   
+	    } catch (Exception e) {
+	        // 오류 처리
+	        e.printStackTrace();
+	        // 오류가 발생한 경우
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류가 발생했습니다.");
+	    }
 	}
+
+	// 기초재고 삭제
+	@RequestMapping(value="/deleteInv")
+	public ResponseEntity<String> deleteInv(@RequestParam(value = "monthSelect2", required = false) String selectedMonth,
+	                        @RequestParam(value = "code") int code, Model model,
+	                        Warehouse warehouse) {
+	    System.out.println("JkController deleteInv start...");
+	
+	    if (selectedMonth != null) {
+	        selectedMonth = selectedMonth.replace("-", "");
+	        warehouse.setYm(selectedMonth);
+	        System.out.println("selectedMonth: " + selectedMonth);
+	    }
+
+	    try {
+	        int result = jws.deleteInv(warehouse);
+	        System.out.println("result: " + result);
+
+	        // 성공적으로 처리된 경우
+	        return ResponseEntity.ok("정상적으로 삭제되었습니다.");
+
+	    } catch (Exception e) {
+	        // 오류 처리
+	        e.printStackTrace();
+	        // 오류가 발생한 경우
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류가 발생했습니다.");
+	    }
+	}
+	
+//	// 기초재고 삭제
+//	@RequestMapping(value="/deleteInv")
+//	public String deleteInv(@RequestParam(value = "monthSelect2", required = false) String selectedMonth,
+//	                        @RequestParam(value = "code") int code, Model model,
+//	                        Warehouse warehouse) {
+//	    System.out.println("JkController deleteInv start...");
+//	
+//	    if (selectedMonth != null) {
+//	        selectedMonth = selectedMonth.replace("-", "");
+//	        warehouse.setYm(selectedMonth);
+//	        System.out.println("selectedMonth: " + selectedMonth);
+//	    }
+//
+//	    try {
+//	        int result = jws.deleteInv(warehouse);
+//	        System.out.println("result: " + result);
+//	      
+//	        // 성공적으로 처리된 경우     // 성공적으로 처리된 경우
+//	        model.addAttribute("successMessage", "정상적으로 삭제되었습니다."); 
+//	        
+//	        return "jk/invRegister";
+//	        
+//	    } catch (Exception e) {
+//	        // 오류 처리
+//	        e.printStackTrace();
+//	        // 사용자에게 오류 메시지를 보여줄 수 있는 페이지로 이동
+//	        return "errorPage";
+//	    }
+//	}
 		
 	// 제품정보 조회(업데이트용)
 	@GetMapping("/getItemDetails")
@@ -186,4 +267,14 @@ public class JkController {
 //	    return getIOData;
 //	}
 
+	
+@ControllerAdvice
+public class GlobalExceptionHandler {
+  // 예외 처리 핸들러
+	 @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	    public ResponseEntity<String> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
+	        String errorMessage = "재고 등록에 실패했습니다. 이미 등록된 기초재고가 있습니다.";
+	        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT); // 409 Conflict 상태 코드 사용
+	    }
+}
 }

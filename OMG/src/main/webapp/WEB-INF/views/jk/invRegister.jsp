@@ -108,16 +108,6 @@ $(document).ready(function() {
         }, 500);
     }); 
 
-    // 기초재고등록 폼이 제출될 때의 이벤트 처리
-    $('#invRegisterForm').submit(function(event) {
-        // input type="month"에서 선택된 날짜를 'YYYYMM' 형식으로 변환
-        var selectedMonth = $('#monthSelect').val().replace('-', '');
-        console.log('Form submitted. Selected Month:', selectedMonth);
-
-        // 변환된 값을 다시 input에 설정
-        $('#monthSelect').val(selectedMonth);
-    });
-
     $("#productCodeInput2").on("input", function() {
         var code = $(this).val();
         var selectedMonth2 = $('#monthSelect2').val().replace('-', '');
@@ -155,14 +145,72 @@ $(document).ready(function() {
             }
         }, 500);
     });
-});
 
+    $("#updateInvBtn").click(function() {
+        // 선택한 기준년월과 제품코드 가져오기
+        var selectedMonth = $("#monthSelect2").val().replace('-', '');
+        var selectedCode = $("#productCodeInput2").val();
+
+        // 수정할 cnt 가져오기
+        var updatedCnt = $("#cnt2").val();
+
+        // 서버로 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "/updateInv",  // 수정이 이루어질 서버 엔드포인트 주소
+            data: {
+                month: selectedMonth,
+                code: selectedCode,
+                cnt: updatedCnt
+            },
+            success: function(response) {
+                // 성공적으로 수정되었을 때의 처리
+                console.log("수정이 완료되었습니다.", response);
+                alert(response);
+                window.location.href = "/invRegister"; 
+            },
+            error: function(xhr, status, error) {
+                // 에러가 발생했을 때의 처리
+                console.error("에러가 발생했습니다: " + error);
+            }
+        });
+    });
+    
+    
+    
+    $("#deleteInvBtn").click(function() {
+        // 선택한 기준년월과 제품코드 가져오기
+        var selectedMonth = $("#monthSelect2").val().replace('-', '');
+        var selectedCode = $("#productCodeInput2").val();
+        console.log(selectedMonth);
+        // 서버로 데이터 전송
+   
+        $.ajax({
+            type: "POST",
+            url: "/deleteInv",
+            data: {
+                monthSelect2: selectedMonth,  // 수정된 부분
+                code: selectedCode
+            },
+            success: function (response) {
+                // 서버 응답에 메시지가 있는지 확인
+                alert(response);
+                window.location.href = "/invRegister"; 
+              },
+            error: function (xhr, status, error) {
+                // 에러가 발생했을 때의 처리
+                console.error("에러가 발생했습니다: " + error);
+            }
+        });
+    });
+
+});
 
 </script>
 
-
 <%@ include file="../common/header.jsp" %>
 <body>
+
 <%@ include file="../common/menu.jsp" %>
 	<div class="container-xxl flex-grow-1 container-p-y">
        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">재고관리 /</span> 기초재고관리</h4>
@@ -172,7 +220,7 @@ $(document).ready(function() {
 					<div class="row">
 						<div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-                          <input class="form-control" type="month" value="2021-06-18" id="monthSelect" name="month">
+                          <input class="form-control" type="month" id="monthSelect" name="month">
                         </div>
                          <div class="mb-3 col-md-6">
                          <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
@@ -232,7 +280,7 @@ $(document).ready(function() {
 							<div class="row">
 								<div class="mb-3 col-md-6">
 		                        <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-		                          <input class="form-control" type="month" id="monthSelect" name="monthSelect" >
+		                          <input class="form-control" type="month" id="monthSelect1" name="monthSelect1" >
 		                        </div>
 		                         <div class="mb-3 col-md-6">
 		                         </div>
@@ -310,10 +358,14 @@ $(document).ready(function() {
                         <input type="text" class="form-control" id="memNameInput2" placeholder="" aria-describedby="defaultFormControlHelp" readonly />
                     </div>
                 </div>
+               <div class="row">
                 <div class="dt-buttons text-end">
-                    <button id="updateInv" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="submit">
+                    <button id="updateInvBtn" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="submit">
                         <span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">수정완료</span></span>
                     </button>
+                    <button id="deleteInvBtn" class="dt-button btn btn-secondary" tabindex="0" aria-controls="DataTables_Table_0" type="button">삭제</button>
+                </div>
+                
                 </div>
             </div>
         </form>
@@ -339,7 +391,6 @@ $(document).ready(function() {
       $('#invRegisterForm').hide();
     });
   });
-  
   
 </script>
 <%@ include file="../common/footer.jsp" %>

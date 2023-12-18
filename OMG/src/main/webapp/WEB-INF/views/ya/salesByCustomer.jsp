@@ -38,6 +38,7 @@
         .fixed-thead th {
             background-color: #f8f9fa;
              position: sticky;
+              background-color:#e1e2ff;
         }
        
     .hidden-row {
@@ -66,17 +67,17 @@
 <div class="container">
 <div class="col-lg">
 <div class="card">
-  <h5 class="card-header">거래처별판매실적조회</h5>
+ <h5 class="card-header">월별실적조회</h5>
    <div class="row mx-3" >	   
-		<div class="col-12 mb-3 d-flex justify-content-center justify-content-md-between">	  		   
-		    <label for="selectOption">조회기간: </label>
+		<div class="col-12 mb-3 d-flex ">	  		   
+		   <!--  <label for="selectOption">조회기간: </label> -->
 		    <label for="month">
 		    <input class="form-control" type="month" id="monthSelect" name="month">
 		    </label>
 					
-			<label for="searchSelect">거래처명: </label>
+			<!-- <label for="searchSelect">거래처명: </label> -->
 				<select class="form-select" id="in_custcode" style="width: 200px; " ></select>
-			<button class="btn btn-sm btn-outline-primary" id="searchButton" type="button" onclick="search()" style="height:30px;">검색</button>
+			<button class="btn btn-outline-primary" id="searchButton" type="button" onclick="search()" >검색</button>
 		</div>	
     </div>
 

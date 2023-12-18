@@ -84,5 +84,23 @@ public class JkWareServiceImpl implements JkWareService {
 		return selectItem2;
 	}
 
+	@Override
+	public int updateInv(Warehouse warehouse) {
+		System.out.println("JkWareServiceImpl updateInv Start...");
+		int result = jwd.updateInv(warehouse);
+		
+		return result;
+	}
+
+	@Override
+	public int deleteInv(Warehouse warehouse) {
+		System.out.println("JkWareServiceImpl deleteInv Start...");
+		int result = jwd.deleteInv(warehouse);
+		System.out.println("service result"+result);
+		
+		return result;
+	}
+
+
 
 }

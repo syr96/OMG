@@ -3,18 +3,6 @@
 
 <mapper namespace="com.oracle.OMG.mappers.jkWarehouse">
 
-	
-<!-- 		<select id="monthDataList" resultType="Warehouse" parameterType="map">
-		    SELECT *
-		    FROM Warehouse
-		    WHERE YM = #{month, jdbcType=VARCHAR}
-		    AND (
-		        (#{invType, jdbcType=VARCHAR} = 'ALL' AND (INVEN = 0 OR INVEN = 1))
-		        OR (#{invType, jdbcType=VARCHAR} = 'OPENING' AND INVEN = 0)
-		        OR (#{invType, jdbcType=VARCHAR} = 'CLOSING' AND INVEN = 1)
-		    )
-		</select> -->
-
 		<select id="monthDataList" resultType="Warehouse" parameterType="map">
 		SELECT w.*, i.name, m.mem_name
 		FROM Warehouse w
@@ -27,7 +15,7 @@
         OR (#{invType, jdbcType=VARCHAR} = 'OPENING' AND w.INVEN = 0)
         OR (#{invType, jdbcType=VARCHAR} = 'CLOSING' AND w.INVEN = 1)
     )
-</select>
+		</select>
 
 
 		<select id="getPurchaseData" statementType="CALLABLE" parameterType="hashmap" resultType="hashmap">
@@ -75,6 +63,17 @@
 		    INSERT INTO Warehouse(ym, inven, code, cnt, reg_date)
 		    VALUES(#{ym}, 0, #{code}, #{cnt}, SYSDATE)
 		</insert>
+		
+  		<update id="updateInv" parameterType="Warehouse">
+        UPDATE Warehouse
+        SET cnt = #{cnt}
+        WHERE ym = #{ym}
+        AND code = #{code}
+   		</update>
 
-
+		<delete id="deleteInv" parameterType="Warehouse">
+    DELETE FROM Warehouse
+    WHERE ym = #{ym}
+    AND code = #{code}
+</delete>
 </mapper>

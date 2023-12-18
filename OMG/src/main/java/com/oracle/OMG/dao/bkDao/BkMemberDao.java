@@ -6,4 +6,6 @@ import com.oracle.OMG.dto.Member;
 public interface BkMemberDao {
 
 	Member login(Member member);
+
+	Member checkNameAndTel(Member member);
 }
