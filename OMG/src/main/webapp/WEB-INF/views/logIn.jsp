@@ -75,14 +75,14 @@
 	
 	
 		// 모델에 추가한 메시지 가져오기
-		var message = "${message}";
-		
-		
-		
-		// 메시지가 비어있지 않으면 알림창 띄우기
-		if (message && message.trim() !== "") {
-			alert(message);
-		}
+	    var message = "${message}";
+	    
+	    
+	    
+	    // 메시지가 비어있지 않으면 알림창 띄우기
+	    if (message && message.trim() !== "") {
+	       alert(message);
+	    }
 		
 		
 		
@@ -175,14 +175,14 @@
 			</ul>
               
               
-		              <form id="hr_manager" class="mb-3" action="/loginManager" method="POST">
+		              <form id="hr_manager" class="mb-3" action="/auth" method="POST">
 		                <div class="mb-3">
 		                  <label for="email" class="form-label">아이디</label>
 		                  <input
 		                    type="text"
 		                    class="form-control"
 		                    id="mem_id-hr_manager"
-		                    name="mem_id"
+		                    name="username"
 		                    placeholder="관리자 아이디를 입력해주세요"
 		                    autofocus
 		                  />
@@ -199,7 +199,7 @@
 		                      type="password"
 		                      id="password-hr_manager"
 		                      class="form-control"
-		                      name="mem_pw"
+		                      name="password"
 		                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
 		                      aria-describedby="password"
 		                    />

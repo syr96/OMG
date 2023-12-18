@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oracle.OMG.domain.Member;
 import com.oracle.OMG.repository.BkMemberJpaRepository;
 import com.oracle.OMG.service.bkService.BkMemberJpaService;
+import com.oracle.OMG.service.main.MainMemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class BkJpaRestApiController {
+public class BkJpaController {
 	
 	
 	private final BkMemberJpaService	BMemberJpaS;
+	
+	
 	
 	
 	@PostMapping("/loginManager")					// member 객체가 HTML form 데이터로 자동으로 매핑됨
@@ -31,8 +34,12 @@ public class BkJpaRestApiController {
 		System.out.println("BkJpaRestApiController loginManager Start...");
 		System.out.println("BkJpaRestApiController loginManager member.getMem_id() -> " + member.getMem_id());
 		
+		
 		// 사용자 검증 로직 수행 (아이디, 비밀번호 확인)
 		Member foundMember = BMemberJpaS.login(member);
+		
+		
+		
 		
 		// 조회된 사용자가 존재하고, 입력된 비밀번호가 저장된 비밀번호와 일치하는 경우
 		if (foundMember != null) {

@@ -128,19 +128,20 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	//사원리스트
+    // 사원리스트
     $.ajax({
         url: '/memberList',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-        	mem_id: $('#mem_id').val(),
+            mem_id: $('#mem_id').val(),
         }),
         success: function (response) {
-        	var memberList = response.memberList;
+        	 console.log('Response:', response);
+            var memberList = response.memberList;
             for (var i = 0; i < memberList.length; i++) {
-            	$('#in_mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id + 
-            			'  ' + memberList[i].mem_name + ' [' + memberList[i].mem_dept + ']</option>');
+                $('#in_mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id +
+                    '  ' + memberList[i].mem_name + ' [' + memberList[i].com_cn + ']</option>');
             }
         },
         error: function () {
@@ -148,7 +149,6 @@ $(document).ready(function () {
         }
     });
 });
-
 
 $(document).ready(function () {
     // 등록 
@@ -193,12 +193,12 @@ $(document).ready(function () {
 </script>
 <!-----------------검색--------------------------------------------------------->     
 		<div class="row mx-3">
-		    <div class="col-12 mb-3 d-flex">
+		    <div class="col-8 mb-3 d-flex">
 		        <div class="col-4">
 		            <input class="form-control" id="keyword"  type="search" placeholder="거래처검색" aria-label="Search"  value="${keyword}"/>
 		        </div>
 		        <div class="col-4">
-		            <button class="btn btn-outline-primary" id="searchButton" type="button">Search</button>
+		            <button class="btn btn-outline-primary" id="searchButton" type="button">검색</button>
 		        </div>
 		    </div>
 		</div>
@@ -313,7 +313,7 @@ $(document).ready(function () {
          <div class="table-responsive text-nowrap mx-3">
            <c:set var="num" value="${custPage.total - custPage.start+1 }"></c:set> 
              <table id="searchResultsTable"class="table table-hover">
-              <thead class="fixed-thead">
+              <thead class="fixed-thead" style="background: #e1e2ff;"> 
                    <tr>
                      <th>거래처코드</th>
 <!--                      <th>유형</th> -->
@@ -367,7 +367,7 @@ $(document).ready(function () {
         	var memberList = response.memberList;
             for (var i = 0; i < memberList.length; i++) {
             	$('#mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id + 
-            			'  ' + memberList[i].mem_name + ' [' + memberList[i].mem_dept + ']</option>');
+            			'  ' + memberList[i].mem_name + ' [' + memberList[i].com_cn + ']</option>');
             }
         },
         error: function () {

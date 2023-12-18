@@ -6,4 +6,7 @@ public interface BkMemberService {
 
 	Member login(Member member);
 
+	Member checkNameAndTel(Member member);
+
+
 }

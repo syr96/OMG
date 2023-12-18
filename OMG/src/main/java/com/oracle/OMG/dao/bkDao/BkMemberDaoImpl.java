@@ -30,5 +30,22 @@ public class BkMemberDaoImpl implements BkMemberDao {
 		return loginUser;
 	}
 
+	
+	
+	@Override
+	public Member checkNameAndTel(Member member) {
+		
+		System.out.println("BkMemberDaoImpl login Start...");
+		Member checkResult = null;
+		
+		try {
+			checkResult = session.selectOne("bkcheckNameAndTel", member);
+		} catch (Exception e) {
+			System.out.println("BkMemberDaoImpl checkNameAndTel Exception -> " + e.getMessage());
+		}
+		
+		return checkResult;
+	}
+
 
 }

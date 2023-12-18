@@ -83,8 +83,7 @@ public class YaController {
 	@PostMapping("/memberList")
 	@ResponseBody
 	public Map<String, Object> memberList(@RequestBody Member member){
-		Map<String, Object> result = new HashMap<>();
-		
+		Map<String, Object> result = new HashMap<>();		
 		List<Member> memberList = null;
 		memberList = ycs.memberList(member);
 		result.put("memberList", memberList);
@@ -183,34 +182,38 @@ public class YaController {
 	@ResponseBody
 	public Map<String, Object> customerSalesSearch(HttpServletRequest request, Customer customer){
 		System.out.println("YaController ycs.customerSearch Start...");
+		List<Customer> customerSalesSearch = null;
 		
 		//전체 거래처 조회 
 		 String custcodeParam = request.getParameter("custcode");
-		 int custcode = "all".equals(custcodeParam) ? 0 : Integer.parseInt(custcodeParam);	
-		// 월별 거래처 전체조회 로직
+		 int custcode =  Integer.parseInt(custcodeParam);	
+		
+		 // 월별 거래처 전체조회 
 		String month = request.getParameter("month");
 		String purDate = request.getParameter("purDate");
 		
-		List<Customer> customerSalesSearch = ycs.customerSalesSearch(custcode,month,purDate);
-		
-		// 모두 "all"일 경우
-	    if ("all".equals(custcodeParam) && "all".equals(month)) {
-	        customerSalesSearch = ycs.customerList(customer);
+		// 모두 전체 일 경우 조회	  
+	    if ("0".equals(custcodeParam) && "0".equals(month)) {
+	        customerSalesSearch = ycs.SearchAll(custcode, month);
+	        System.out.println("모두 전체일 경우 조회");
 	    } 
 	    
-/*	    // 거래처만 "all"일 경우
-	    else if ("all".equals(custcodeParam) && !"all".equals(month) ) {
-	        customerSalesSearch = ycs.customerSalesSearchAllMonths(month, custcode);
+	    // 월만 전체일 경우 조회
+		else if ("0".equals(custcodeParam) && !"0".equals(month) ) {
+	        customerSalesSearch = ycs.SearchAllCustomer(month);
+	        System.out.println("월만 전체일 경우 조회");
+		}
+	    // 거래처만 전체일 경우 조회 
+	    else if (!"0".equals(custcodeParam) && "0".equals(month) ) {
+	        customerSalesSearch = ycs.SearchForAllMonths(custcode);
+	        System.out.println("거래처만  전체일 경우 조회 ");
 	    } 
-	    // 월만 "all"일 경우
-	    else if (!"all".equals(custcodeParam) && "all".equals(month) ) {
-	        customerSalesSearch = ycs.customerSalesSearchForAllMonths(custcode, month);
-	    } 
-	    // 나머지 경우
+	    // 조건충족일경우
 	    else {
 	        customerSalesSearch = ycs.customerSalesSearch(custcode, month, purDate);
+	        System.out.println(" 조건충족일경우 조회 ");
 	    }
-*/		
+		
 		Map<String, Object> result = new HashMap<>();
 		result.put("customerSalesSearch", customerSalesSearch);
 

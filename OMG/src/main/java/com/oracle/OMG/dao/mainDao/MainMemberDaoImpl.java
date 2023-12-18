@@ -26,6 +26,7 @@ public class MainMemberDaoImpl implements MainMemberDao {
 			System.out.println("MainMemberDaoImpl memSelectById Exception -> " + e.getMessage());
 		}
 		return mem;
+		// 수정 test
 	}
 	
 	

@@ -72,7 +72,52 @@
   	
   		function sendCode() {
   			
-  			let tel = $('#')
+  			var mem_name	=	$('#name').val();
+  			//var number		= 	$('#number').val();
+  			
+  			
+  			/* var formData = {
+				  name	:	$('#name').val()
+  				 ,number:	$('#number').val()
+  			}; */
+  			
+  			alert("이름: " 		+ mem_name 
+  				//+ "\n모바일 번호: " + number
+  					); 
+  			
+  			$.ajax({
+               type	:   'POST'
+              ,url	:   '/sendCode'
+              // ,data	:	{  mem_name	: mem_name
+            	  		//,  number	: number
+            	  		//}
+  			  ,dataType	:	'json'
+  			  // dataType 이란, 서버로부터 받아올 응답 데이터의 타입
+  			  // 서버로 데이터를 전송할 때는 영향 X
+               ,contentType:	'application/json'
+               ,data	:	JSON.stringify({
+            	   mem_name:	mem_name
+            	   //formData
+            	   })
+              ,success:	function (response) {
+            	  
+            	  if (response.status === 'success') {
+            		  
+	            	  // 회원 정보가 일치하는 경우
+	            	  alert("인증번호가 전송되었습니다.");
+	            	  
+            	  } else if (response.status === 'error') {
+            		  
+            		  // 일치하지 않는 경우
+            		  alert("이름과 전화번호가 일치하지 않습니다.");
+            	  }
+              },
+              error: function () {
+            	  alert("비밀번호 찾기 에러");
+              }
+              
+              });
+  			
   		}
   	
   	
@@ -101,7 +146,7 @@
               <!-- /Logo -->
               <h4 class="mb-2">비밀번호 찾기</h4>
               <p class="mb-4">입력한 모바일 번호와 ID에 등록된 모바일 번호가 일치할 경우, <br>[SMS 인증번호]가 발송됩니다. 10분 내에 입력바랍니다.</p>
-              <form id="formAuthentication" class="mb-3" action="index.html" method="POST">
+              <form id="formAuthentication" class="mb-3" method="POST">
               	<div class="row">
 	                <div class="mb-3 col-md-6">
 	                  <label for="name" class="form-label">성명</label>
@@ -138,7 +183,7 @@
 		                    id="number"
 		                    name="number"
 		                    placeholder=""
-		                    autofocus
+		                    autofocus 
 		                  />
 	                  		<button type="button" class="btn btn-primary">확인</button>
                   	</div>
