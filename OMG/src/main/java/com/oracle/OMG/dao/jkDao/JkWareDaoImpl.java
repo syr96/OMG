@@ -160,6 +160,39 @@ public class JkWareDaoImpl implements JkWareDao {
 	}
 
 
+	@Override
+	public int updateInv(Warehouse warehouse) {
+		System.out.println("JkWareDaoImpl updateInv start");
+		int result = 0;
+	
+		try {
+			result = session.update("updateInv", warehouse);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		
+		}
+		return result;
+	}
+
+
+	@Override
+	public int deleteInv(Warehouse warehouse) {
+		System.out.println("JkWareDaoImpl deleteInv start");
+		int result = 0;
+	
+		try {
+			result = session.delete("deleteInv", warehouse);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		
+		}
+		return result;
+	}
+
+
+
+
+
 	
 	
 }

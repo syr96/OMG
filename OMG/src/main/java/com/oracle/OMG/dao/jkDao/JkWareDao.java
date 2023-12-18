@@ -23,5 +23,10 @@ public interface JkWareDao {
 	Map<String, Object> 		selectItem(int code, String ym);
 
 	Map<String, Object> 		selectItem2(int code);
-	
+
+	int updateInv(Warehouse warehouse);
+
+	int deleteInv(Warehouse warehouse);
+
+		
 }

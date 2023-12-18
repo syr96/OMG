@@ -19,8 +19,12 @@ public interface JkWareService {
 	Map<String, Object> 		selectItem(int code, String ym);
 	Map<String, Object> 		selectItem2(int code);
 
-	// 기초재고등록
-	int 			insertInv(Warehouse warehouse);
+	// 기초재고 관리
+	int 						insertInv(Warehouse warehouse);
+	int 						updateInv(Warehouse warehouse);
+	int 						deleteInv(Warehouse warehouse);
+
+	
 
 	
 	
