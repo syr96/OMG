@@ -129,29 +129,17 @@
             <li class="menu-header small text-uppercase"><span class="menu-header-text">재고 관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
-               <a href="invRegister" class="menu-link">
+               <a href="/invRegister" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">기초재고조정/등록</div>
+                <div data-i18n="Form Elements">기초재고관리</div>
               </a>
             </li>
 
             <li class="menu-item">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">입출고관리</div>
+              <a href="/inboundRegister" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-detail"></i>
+                <div data-i18n="Form Elements">입출고관리</div>
               </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="inboundRegister" class="menu-link">
-                    <div data-i18n="Vertical Form">입고등록</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="form-layouts-horizontal.html" class="menu-link">
-                    <div data-i18n="Horizontal Form">출고등록</div>
-                  </a>
-                </li>
-              </ul>
             </li>
             
             <!-- Tables -->

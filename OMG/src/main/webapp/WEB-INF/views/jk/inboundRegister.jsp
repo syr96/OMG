@@ -70,7 +70,7 @@ jQuery(document).ready(function() {
 <body>
 <%@ include file="../common/menu.jsp" %>
 	<div class="container-xxl flex-grow-1 container-p-y">
-       <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">재고관리 /</span><span class="text-muted fw-light">입출고관리/</span>입고등록</h4>
+       <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">재고관리 /</span>입고등록</h4>
 		<div class="card mb-4">
 			<h5 class="card-header">입고내역</h5>
 				<div class="card-body">
@@ -104,7 +104,6 @@ jQuery(document).ready(function() {
                         <th>품번</th>
                         <th>품명</th>
                         <th>수량</th>
-                        <th>조정수량</th>
                         <th>담당자</th>
                         <th>등록일</th>
                       </tr>
