@@ -120,5 +120,9 @@
 		WHERE	brd_id   = #{brd_id}		
 	</update>
 	
-	
+	<update id="updateReplyCnt" parameterType="map">
+		UPDATE	board
+		SET		replycnt = replycnt + #{amount}
+		WHERE	brd_id = #{brd_id}
+	</update>
 </mapper>

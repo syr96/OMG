@@ -30,15 +30,19 @@
 	
 	<select id="getListWithPagingReply" parameterType="map" resultType="Reply">
 		<![CDATA[
-			SELECT  rep_id, brd_id, rep_cn, mem_id, rep_date, mod_date
+			SELECT  rep_id, brd_id, rep_cn, mem_id, rep_date, mod_date, (
+			                                                                SELECT  mem_name 
+			                                                                FROM    member m
+			                                                                WHERE   m.mem_id = re.mem_id
+			                                                            ) AS mem_name
 			FROM    (
-			            SELECT  /*+ INDEX(reply idx_reply */
+			            SELECT  /*+ INDEX(reply idx_reply) */
 			                    rownum rn, brd_id, rep_id, rep_cn, mem_id, rep_date, mod_date
 			            FROM    reply
 			            WHERE   brd_id = #{brd_id}
 			            AND     rep_id > 0
 			            AND     rownum <= #{cri.pageNum} * #{cri.amount}
-			        ) 
+			        ) re
 			WHERE rn > (#{cri.pageNum}-1) * #{cri.amount}
 		]]>
 	</select>

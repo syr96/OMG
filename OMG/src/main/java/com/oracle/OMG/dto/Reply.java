@@ -16,4 +16,7 @@ public class Reply {
 	private String 	replyer;
 	private Date	rep_date;
 	private Date	mod_date;
+	
+	// 조회용 변수
+	private String	mem_name;	//댓글 작성자
 }
