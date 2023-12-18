@@ -193,12 +193,12 @@ $(document).ready(function () {
 </script>
 <!-----------------검색--------------------------------------------------------->     
 		<div class="row mx-3">
-		    <div class="col-12 mb-3 d-flex">
+		    <div class="col-8 mb-3 d-flex">
 		        <div class="col-4">
 		            <input class="form-control" id="keyword"  type="search" placeholder="거래처검색" aria-label="Search"  value="${keyword}"/>
 		        </div>
 		        <div class="col-4">
-		            <button class="btn btn-outline-primary" id="searchButton" type="button">Search</button>
+		            <button class="btn btn-outline-primary" id="searchButton" type="button">검색</button>
 		        </div>
 		    </div>
 		</div>
@@ -313,7 +313,7 @@ $(document).ready(function () {
          <div class="table-responsive text-nowrap mx-3">
            <c:set var="num" value="${custPage.total - custPage.start+1 }"></c:set> 
              <table id="searchResultsTable"class="table table-hover">
-              <thead class="fixed-thead">
+              <thead class="fixed-thead" style="background: #e1e2ff;"> 
                    <tr>
                      <th>거래처코드</th>
 <!--                      <th>유형</th> -->

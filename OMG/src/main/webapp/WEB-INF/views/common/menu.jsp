@@ -74,7 +74,7 @@
             <li class="menu-item">
               <a href="/customerSales" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="Extended UI">거래처별판매실적조회</div>
+                <div data-i18n="Extended UI">월별실적조회</div>
               </a>
             </li>
 
