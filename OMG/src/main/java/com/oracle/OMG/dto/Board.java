@@ -17,6 +17,7 @@ public class Board {
 	private int		brd_group;
 	private int		brd_step;
 	private String	mod_date;
+	private int		replyCnt;
 	
 	// 페이징 조회용    //검색타입						 //검색 내용
 	private String search;   	private String keyword;

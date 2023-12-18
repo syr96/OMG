@@ -28,6 +28,22 @@
               </a>
             </li>
 
+			<li class="menu-header small text-uppercase">
+              <span class="menu-header-text">사원 관리</span>
+            </li>
+            <li class="menu-item">
+              <a href="/memberL" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">사원 조회</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="/memberR" class="menu-link">
+              	<i class="menu-icon tf-icons bx bx-detail"></i>
+                <div data-i18n="Form Elements">사원 등록</div>
+              </a>
+            </li>
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">제품 관리</span>
             </li>
@@ -59,32 +75,6 @@
               <a href="/customerSales" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="Extended UI">거래처별판매실적조회</div>
-              </a>
-            </li>
-            <!-- Extended components -->
-            <li class="menu-item">
-              <a href="javascript:void(0)" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Extended UI</div>
-              </a>
-              <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="extended-ui-perfect-scrollbar.html" class="menu-link">
-                    <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
-                  </a>
-                </li>
-                <li class="menu-item">
-                  <a href="extended-ui-text-divider.html" class="menu-link">
-                    <div data-i18n="Text Divider">Text Divider</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="menu-item">
-              <a href="icons-boxicons.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-crown"></i>
-                <div data-i18n="Boxicons">Boxicons</div>
               </a>
             </li>
 

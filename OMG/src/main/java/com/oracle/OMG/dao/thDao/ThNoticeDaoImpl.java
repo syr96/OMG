@@ -1,6 +1,8 @@
 package com.oracle.OMG.dao.thDao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -19,10 +21,10 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	private final SqlSession session;
 	
 	@Override
-	public int getTotNotice() {
+	public int getTotNotice(Criteria cri) {
 		int totNotice = 0;
 		try {			
-			totNotice = session.selectOne("getTotNotice");
+			totNotice = session.selectOne("getTotNotice", cri);
 			log.info("totNotice --> " + totNotice);
 		} catch (Exception e) {
 			log.info(e.getMessage());
@@ -114,6 +116,22 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 		try {
 			updateResult = session.update("updateNotice", board);
 			log.info("updateResult --> " + updateResult );
+		} catch (Exception e) {
+			log.info(e.getMessage());
+		}
+		return updateResult;
+	}
+
+
+	@Override
+	public int updateReplyCnt(int brd_id, int amount) {
+		int updateResult = 0;
+		try {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("brd_id", brd_id);
+			map.put("amount", amount);
+			updateResult = session.update("updateReplyCnt", map);
+			log.info("updateResult --> " + updateResult);
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}

@@ -1,12 +1,12 @@
 package com.oracle.OMG.controller;
 
-import java.util.List;
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,12 +49,13 @@ public class ThNoticeController {
 	
 	@GetMapping("/list")
 	public void list(Criteria cri, Model model) {
-		int total = ns.getNoticeTot();
-		log.info("list: " + cri);
+		int total = ns.getNoticeTot(cri);
+		
 		model.addAttribute("noticeList", ns.getNoticeList(cri));
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
-		
-		
+		model.addAttribute("cri", cri);
+		log.info("list: " + cri);
+
 	}
 	
 	@GetMapping("/register")
@@ -78,9 +79,10 @@ public class ThNoticeController {
 		return "redirect:/notice/list";
 	}
 
-	// RequestParam 생략 가능하다는데 한번해보기  --> @RequestParam("brd_id") 생략 가능 / 명시적 느낌에서 선언한 듯?
+	// RequestParam 생략 된다는데 한번해보기  --> @RequestParam("brd_id") 생략 가능 / 명시적 느낌에서 선언한 듯?
+	// @ModelAttribute 생략 된다는데 해보기
 	@GetMapping({"/get", "/modify"})
-	public void get(int brd_id, Model model) {
+	public void get(int brd_id, Model model, @ModelAttribute("cri") Criteria cri) {
 		
 		log.info("/get or modify");
 		model.addAttribute("notice", ns.getNotice(brd_id));
@@ -88,26 +90,27 @@ public class ThNoticeController {
 
 	
 	@PostMapping("/modify")
-	public String modify(Board board, RedirectAttributes rttr) {
+	public String modify(Board board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("modify"+ board);
-		
+		log.info("cri.getListLink() : " + cri.getListLink());
 		if(ns.modifyNotice(board) > 0) {
 			rttr.addFlashAttribute("result", "success");
 		}
+	
 		
-		return "redirect:/notice/list";
+		return "redirect:/notice/list" + cri.getListLink(); 
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("brd_id") int brd_id, RedirectAttributes rttr) {
+	public String remove(@RequestParam("brd_id") int brd_id, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("remove ..." + brd_id);
-		
+		log.info("cri.getListLink() : " + cri.getListLink());
 		if(ns.removeNotice(brd_id) > 0) {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/notice/list";
+		return "redirect:/notice/list" + cri.getListLink();
 	}
 }

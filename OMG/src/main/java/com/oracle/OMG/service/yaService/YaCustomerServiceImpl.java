@@ -2,6 +2,7 @@ package com.oracle.OMG.service.yaService;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.yaDao.YaCustomerDao;
@@ -85,8 +86,6 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		List<Customer> customerSearch = null;
 		System.out.println("YaCustomerServiceImpl search start...");
 		customerSearch = ycd.customerSearch(keyword, start, end);
-		System.out.println("YaCustomerServiceImpl serach start....");
-		
 		return customerSearch;
 	}
 
@@ -104,6 +103,47 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		List<Customer> customerSalesList = ycd.customerSalesList(customer);
 		return customerSalesList;
 	}
+
+	@Override
+	public List<Customer> customerListSelect(Customer customer) {
+		System.out.println("YaCustomerService customerListSelectstart...");
+		List<Customer> customerListSelect = ycd.customerListSelect(customer);
+		return customerListSelect;
+	}
+
+	@Override
+	public List<Customer> customerSalesSearch(int custcode, String month, String purDate) {
+		System.out.println("YaCustomerService customerSalesSearch start...");
+		List<Customer> customerSalesSearch = null;
+		customerSalesSearch = ycd.customerSalesSearch(custcode, month, purDate);
 		
-		
+		return customerSalesSearch;
+	}
+
+	@Override
+	public List<Customer> SearchAllCustomer( String month) {
+		System.out.println("YaCustomerService SearchAllCustomer start...");
+		 List<Customer> SearchAllCustomer = null;
+		 SearchAllCustomer= ycd.SearchAllCustomer(month);
+		return SearchAllCustomer;
+	}
+
+	@Override
+	public List<Customer> SearchForAllMonths( int custcode) {
+		System.out.println("YaCustomerServiceSearchForAllMonths start...");
+		List<Customer> SearchForAllMonths = null;
+		SearchForAllMonths = ycd.SearchForAllMonths(custcode);
+		return SearchForAllMonths;
+	}
+
+	@Override
+	public List<Customer> SearchAll(int custcode, String month) {
+		System.out.println("YaCustomerServiceSearchAll start...");
+		List<Customer> SearchAll = null;
+		SearchAll = ycd.SearchForAll(custcode,month);
+		return SearchAll;
+	}
+
+
+
 }

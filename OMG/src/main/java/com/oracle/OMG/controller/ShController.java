@@ -1,10 +1,24 @@
 package com.oracle.OMG.controller;
 
-import org.apache.jasper.tagplugins.jstl.core.Out;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Paging;
+import com.oracle.OMG.service.shService.ShMemberService;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 @Slf4j
 public class ShController {
+	
+	private final ShMemberService ms;
 	
 	@RequestMapping(value = "/")
 	public String main() {
@@ -29,9 +45,53 @@ public class ShController {
 		return "sh/memberUpdate";
 	}
 	
+	//사원 목록
 	@RequestMapping(value = "memberL")
-	public String memberList() {
+	public String memberList(String currentPage, Model model) {
+		System.out.println("shController memberList() Start");
+		Member member = new Member();
+		//사원 총 인원수
+		int memberTotal = ms.memberTotal();
+		
+		//리스트 페이지 세팅
+		Paging page = new Paging(memberTotal, currentPage);
+		int start = page.getStart();
+		int end   = page.getEnd();
+		member.setStart(start);
+		member.setEnd(end);
+		
+		//사원 리스트 조회용
+		List<Member> memberList = ms.memberList(member);
+		
+		model.addAttribute("memberTotal", memberTotal);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("page",page);
 		return "sh/memberList";
+	}
+	
+	//사원 목록 검색창
+	@RequestMapping(value = "memberRequirement")
+	public List<Member> searchMemberRequirement(@RequestParam("require") String require, String currentPage, Model model) {
+		System.out.println("shController searchMemberRequirement() Start");
+		Member member = new Member();
+		
+		//사원 총 인원수
+		int memberTotal = ms.memberTotal();
+				
+		//리스트 페이지 세팅
+		Paging page = new Paging(memberTotal, currentPage);
+		int start = page.getStart();
+		int end   = page.getEnd();
+		member.setStart(start);
+		member.setEnd(end);
+		
+		member.setKeyword(require);
+		List<Member> memberList = ms.memberSearchList(member);
+		model.addAttribute("memberList",memberList);
+		model.addAttribute("page",page);
+		model.addAttribute("memberTotal", memberTotal);
+
+		return memberList;
 	}
 	
 	@RequestMapping(value = "example")
@@ -57,4 +117,70 @@ public class ShController {
 		}
 		return result;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "createMember", method = RequestMethod.POST)
+	public int createMember(   @RequestParam("right") 	 int right,
+							   @RequestParam("hiredate") String hiredate,
+							   @RequestParam("name") 	 String name,
+							   @RequestParam("birthday") String birthday,
+							   @RequestParam("sex") 	 String sex,
+							   @RequestParam("email") 	 String email,
+							   @RequestParam("phone") 	 String phone,
+							   @RequestParam("dept") 	 int dept,
+							   @RequestParam("posi") 	 int posi,
+							   @RequestParam("duty") 	 int duty,
+							   @RequestParam("mailcode") int mailcode,
+							   @RequestParam("address")  String address,
+							   @RequestParam("password") String password,
+							   @RequestParam("img") 	 MultipartFile img,
+							   HttpServletRequest 		 request,
+							   Model 					 model) throws IOException {
+		System.out.println("shController createMember() Start");
+		int result = 0;
+		
+		Member member = new Member();
+		member.setMem_right(right);
+		//Date를 String으로 바꾸기
+		member.setMem_hiredate(hiredate);
+		member.setMem_name(name);
+		member.setMem_bd(birthday);
+		member.setMem_sex(sex);
+		member.setMem_email(email);
+		member.setMem_phone(phone);
+		member.setMem_dept_md(dept);
+		member.setMem_posi_md(posi);
+		member.setMem_duty_md(duty);
+		member.setMem_mailcode(mailcode);
+		member.setMem_address(address);
+		member.setMem_pw(password);
+		
+			//multipartFile 경로 설정
+			String path 		  = request.getSession().getServletContext().getRealPath("upload");
+			
+			//경로 내 파일 생성
+			String root = path +"\\sh";
+			File file = new File(root);
+			if(!file.exists()) file.mkdir();	//만약 파일이 존재하지 않으면 생성한다.
+			
+			//업로드할 폴더 설정
+			String originFileName = img.getOriginalFilename();
+			String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
+			String ranFileName 	  = UUID.randomUUID().toString() + ext;
+			
+			File changeFile 	  = new File(root + "\\" + ranFileName);
+			
+			try {
+				img.transferTo(changeFile);
+				System.out.println("파일 업로드 성공");
+				member.setMem_img(ranFileName);
+			} catch (Exception e) {
+				System.out.println("shController createMember Exception ->" + e.getMessage());
+			}
+			
+			result = ms.createMember(member);
+	
+		
+		return result;
+ 	}
 }

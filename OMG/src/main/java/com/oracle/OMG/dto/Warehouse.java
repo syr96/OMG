@@ -1,5 +1,7 @@
 package com.oracle.OMG.dto;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -8,7 +10,7 @@ public class Warehouse {
     private int 	inven;
     private int 	code;    
     private int 	cnt;
-    private String 	reg_date;
+    private Date 	reg_date;
     
     
     // 조회용
@@ -18,5 +20,7 @@ public class Warehouse {
     private String purDate;
     private int qty;
     private int price;
+    private String name;
+    private String mem_name;
     
 }

@@ -19,9 +19,9 @@ public class ThNoticeServiceImpl implements ThNoticeService {
 	private final ThNoticeDao nd;
 
 	@Override
-	public int getNoticeTot() {
+	public int getNoticeTot(Criteria cri) {
 		log.info("tot...");
-		return nd.getTotNotice();
+		return nd.getTotNotice(cri);
 	}
 
 //	@Override

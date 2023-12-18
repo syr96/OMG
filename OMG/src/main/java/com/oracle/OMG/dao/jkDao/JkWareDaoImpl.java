@@ -1,10 +1,14 @@
 package com.oracle.OMG.dao.jkDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+
+import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.Warehouse;
 
 import lombok.Data;
@@ -103,6 +107,56 @@ public class JkWareDaoImpl implements JkWareDao {
 			System.out.println("JkWareDaoImpl getSalesData error?"+ e.getMessage());
 		}
 		return getPurchaseDataResultMap;
+	}
+
+
+	@Override
+	public Map<String, Object> selectItem(@Param("code") int code, @Param("ym") String ym) {
+	    System.out.println("JkWareDaoImpl selectItemByCode start");
+	    Map<String, Object> itemDetails = null;
+	    try {
+	        // 매퍼 메서드에 파라미터를 전달하도록 수정
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("code", code);
+	        parameters.put("ym", ym);
+	        
+	        itemDetails = session.selectOne("selectItem", parameters);
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	    }
+	    return itemDetails;
+	}
+
+
+	@Override
+	public int insertInv(Warehouse warehouse) {
+		System.out.println("JkWareDaoImpl insertInv start");
+		int result = 0;
+	
+		try {
+			result = session.insert("insertInv", warehouse);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		
+		}
+		return result;
+	}
+
+
+	@Override
+	public Map<String, Object> selectItem2(int code) {
+		 System.out.println("JkWareDaoImpl selectItemByCode start");
+		    Map<String, Object> itemDetails = null;
+		    try {
+		      
+		        Map<String, Object> parameters = new HashMap<>();
+		        parameters.put("code", code);
+		       		        
+		        itemDetails = session.selectOne("selectItem2", parameters);
+		    } catch (Exception e) {
+		        System.out.println(e.getMessage());
+		    }
+		    return itemDetails;
 	}
 
 

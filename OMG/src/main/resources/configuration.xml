@@ -17,5 +17,6 @@
 		<typeAlias alias="Sales"		type="com.oracle.OMG.dto.Sales"/>
 		<typeAlias alias="SalesDetail"	type="com.oracle.OMG.dto.SalesDetail"/>
 		<typeAlias alias="Warehouse"	type="com.oracle.OMG.dto.Warehouse"/>
+		<typeAlias alias="Reply"		type="com.oracle.OMG.dto.Reply"/>
 	</typeAliases>
 </configuration>

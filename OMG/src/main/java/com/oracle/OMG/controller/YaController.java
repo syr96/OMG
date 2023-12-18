@@ -1,14 +1,18 @@
 package com.oracle.OMG.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,12 +79,11 @@ public class YaController {
 		return result;
 	}
 	
-	//직원 전체조회 ( 거래처수정용) 미완 
+	//직원 전체조회 ( 거래처수정용) 
 	@PostMapping("/memberList")
 	@ResponseBody
 	public Map<String, Object> memberList(@RequestBody Member member){
-		Map<String, Object> result = new HashMap<>();
-		
+		Map<String, Object> result = new HashMap<>();		
 		List<Member> memberList = null;
 		memberList = ycs.memberList(member);
 		result.put("memberList", memberList);
@@ -88,7 +91,18 @@ public class YaController {
 		return result;
 	}
 	
+	//거래처 전체조회 
+	@PostMapping("/customerListSelect")
+	@ResponseBody
+	public Map<String, Object> customerListSelect(@RequestBody Customer customer){
+		Map<String, Object> result = new HashMap<>();
+		
+		List<Customer> customerListSelect = null;
+		customerListSelect = ycs.customerListSelect(customer);
+		result.put("customerListSelect", customerListSelect);
 	
+		return result;
+	}	
 	//거래처 정보수정
 	@PostMapping("/updateCustomer")
 	@ResponseBody
@@ -149,29 +163,70 @@ public class YaController {
 		return result;
 	}
 	
-	//거래처판매실적 조회
+	//거래처판매실적 전체조회
 	@GetMapping("/customerSales")
 	/* @ResponseBody */
-	/*public Map<String, Object> customerSalesList (Customer customer ){*/
-	public String customerSalesList(Customer customer, Model model) {
+	public String customerSalesList(Customer customer, Model model,
+			@RequestParam(value = "displayedMonths", required = false) String displayedMonths) {
 		System.out.println("YaController ycs.custoemrSales start...");
 		List<Customer> customerSalesList = ycs.customerSalesList(customer);
 		model.addAttribute("customerSalesList", customerSalesList);
-		/*
-		 * Map<String, Object> result = new HashMap<>(); result.put("customerSalesList",
-		 * customerSalesList); return result;
-		 */
-		//날짜변환		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-		for (Customer c : customerSalesList) {
-		    try {
-		        Date date = sdf.parse(c.getPurDate());
-		        c.setDate(date);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		}
-		
+
 		 return "ya/salesByCustomer";
+	}
+	
+
+
+	//거래처,월별,유형별 판매실적 검색
+	@GetMapping("/customerSalesSearch")
+	@ResponseBody
+	public Map<String, Object> customerSalesSearch(HttpServletRequest request, Customer customer){
+		System.out.println("YaController ycs.customerSearch Start...");
+		List<Customer> customerSalesSearch = null;
+		
+		//전체 거래처 조회 
+		 String custcodeParam = request.getParameter("custcode");
+		 int custcode =  Integer.parseInt(custcodeParam);	
+		
+		 // 월별 거래처 전체조회 
+		String month = request.getParameter("month");
+		String purDate = request.getParameter("purDate");
+		
+		// 모두 전체 일 경우 조회	  
+	    if ("0".equals(custcodeParam) && "0".equals(month)) {
+	        customerSalesSearch = ycs.SearchAll(custcode, month);
+	        System.out.println("모두 전체일 경우 조회");
+	    } 
+	    
+	    // 월만 전체일 경우 조회
+		else if ("0".equals(custcodeParam) && !"0".equals(month) ) {
+	        customerSalesSearch = ycs.SearchAllCustomer(month);
+	        System.out.println("월만 전체일 경우 조회");
+		}
+	    // 거래처만 전체일 경우 조회 
+	    else if (!"0".equals(custcodeParam) && "0".equals(month) ) {
+	        customerSalesSearch = ycs.SearchForAllMonths(custcode);
+	        System.out.println("거래처만  전체일 경우 조회 ");
+	    } 
+	    // 조건충족일경우
+	    else {
+	        customerSalesSearch = ycs.customerSalesSearch(custcode, month, purDate);
+	        System.out.println(" 조건충족일경우 조회 ");
+	    }
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("customerSalesSearch", customerSalesSearch);
+
+
+		System.out.println("customerSalesSearch size:"+ customerSalesSearch.size());
+		System.out.println("customerSalesSearch custcode:"+custcode);
+		System.out.println("customerSalesSearch  month:"+ month);
+
+		
+		return result;
+		
+
+	
+
 	}
 }

@@ -4,11 +4,35 @@
 
 <mapper namespace="com.oracle.OMG.ThNoticeMapper">
 	
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title LIKE '%' || #{keyword} || '%'
+						</when>
+						<when test="type == 'C'.toString()">
+							brd_cn LIKE '%' || #{keyword} || '%'
+						</when>
+						<!--작성자 부분 일단 스킵(join 가져온후 필터거는게 어려움 ㅠ  -->
+<!-- 						<when test="type == 'W'.toString()"> -->
+<!-- 							mem_name LIKE '%' || #{keyword} || '%' -->
+<!-- 						</when> -->
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>		
+	
+	<!-- 작성자 조인 해야하는데 일단스킵  -->
 	<select id="getTotNotice" resultType="int">
 		SELECT 	COUNT(*) 
-		FROM 	board
-		WHERE	brd_md=100
-		AND		brd_step=0
+		FROM 	board b
+		WHERE	
+		<include refid="criteria"></include>
+				b.brd_md=100
+		AND		b.brd_step=0
 	</select>
 	
 	<select id="getNoticeList" parameterType="Board" resultType="Board">
@@ -30,23 +54,33 @@
 			) b
 		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
+
+
 	
 	<select id="getListWithPaging" resultType="Board">
 		<![CDATA[
-			SELECT b.*, (
-		                    SELECT  mem_name
-		                    FROM    member m
-		                    WHERE   m.mem_id = b.mem_id
-                    	) AS mem_name
+			SELECT brd.*
 			FROM    (
 			            SELECT      /*+ INDEX_DESC(board pk_board) */
-			                        rownum rn , board.*
-			            FROM        board
-			            WHERE       rownum <= #{pageNum} * #{amount}
-			        ) b
-			WHERE   rn > (#{pageNum} -1) * #{amount}        
-
+			                        rownum rn , b.*, (
+									                    SELECT  mem_name
+									                    FROM    member m
+									                    WHERE   m.mem_id = b.mem_id
+							                    	 ) AS mem_name
+			            FROM        board b
+			            WHERE   	
 		]]>
+       
+       <include refid="criteria"></include>
+
+			<![CDATA[
+						b.brd_md =  100    
+			    AND		b.brd_step =  0
+			    AND		rownum <= #{pageNum} * #{amount}
+				) brd
+			
+			WHERE   rn > (#{pageNum} -1) * #{amount}        
+			]]>
 	</select>
 	
 	<insert id="insertNotice" parameterType="Board">
@@ -86,5 +120,9 @@
 		WHERE	brd_id   = #{brd_id}		
 	</update>
 	
-	
+	<update id="updateReplyCnt" parameterType="map">
+		UPDATE	board
+		SET		replycnt = replycnt + #{amount}
+		WHERE	brd_id = #{brd_id}
+	</update>
 </mapper>
