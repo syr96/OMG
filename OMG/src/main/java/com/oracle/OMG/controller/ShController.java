@@ -41,7 +41,9 @@ public class ShController {
 	}
 	
 	@RequestMapping(value = "memberU")
-	public String memberUpdate() {
+	public String memberUpdate(@RequestParam("mem_id") int mem_id, Model model) {
+		System.out.println("shController memberUpdate() Start");
+		
 		return "sh/memberUpdate";
 	}
 	
@@ -70,29 +72,31 @@ public class ShController {
 	}
 	
 	//사원 목록 검색창
-	@RequestMapping(value = "memberRequirement")
-	public List<Member> searchMemberRequirement(@RequestParam("require") String require, String currentPage, Model model) {
+	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)
+	public String searchMemberRequirement(@RequestParam("keyword") String keyword, String currentPage, Model model) {
 		System.out.println("shController searchMemberRequirement() Start");
 		Member member = new Member();
-		
+		member.setKeyword(keyword);
 		//사원 총 인원수
-		int memberTotal = ms.memberTotal();
-				
+		int searchMemberTotal = ms.searchMemberTotal(member);
+		System.out.println("searchMemberTotal->"+searchMemberTotal);
+		
 		//리스트 페이지 세팅
-		Paging page = new Paging(memberTotal, currentPage);
+		Paging page = new Paging(searchMemberTotal, currentPage);
 		int start = page.getStart();
 		int end   = page.getEnd();
 		member.setStart(start);
 		member.setEnd(end);
 		
-		member.setKeyword(require);
 		List<Member> memberList = ms.memberSearchList(member);
 		model.addAttribute("memberList",memberList);
 		model.addAttribute("page",page);
-		model.addAttribute("memberTotal", memberTotal);
+		model.addAttribute("memberTotal", searchMemberTotal);
+		System.out.println("memberList->"+memberList);
 
-		return memberList;
+		return "/sh/memberList";
 	}
+	
 	
 	@RequestMapping(value = "example")
 	public String example() {
