@@ -29,19 +29,7 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return memberList;
 	}
 
-	@Override
-	public int memberLeave(int mem_id) {
-		System.out.println("memberService memberList() Start");
-		int result = md.memberLeave(mem_id);
-		return result;
-	}
-	
-	@Override
-	public int memberResign(int mem_id) {
-		System.out.println("memberService memberResign() Start");
-		int result = md.memberResign(mem_id);
-		return result;
-	}
+
 	
 	@Override
 	public int memberTotal() {

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -83,14 +84,6 @@ public class ShController {
 		return "redirect:memberL";				
 	}
 	
-	//사원 목록에서 사원 퇴직 처리
-		@RequestMapping(value = "memberLeave")
-		public String memberResign(@RequestParam("mem_id") int mem_id, Model model) {
-			System.out.println("shController memberResign() Start");
-			int result = ms.memberResign(mem_id);
-			return "redirect:memberL";				
-		}
-	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)
 	public String searchMemberRequirement(@RequestParam("keyword") String keyword, String currentPage, Model model) {
@@ -101,7 +94,7 @@ public class ShController {
 		int searchMemberTotal = ms.searchMemberTotal(member);
 		System.out.println("searchMemberTotal->"+searchMemberTotal);
 		
-		//리스트 페이지 세팅
+		//리스트 페이지 세팅		
 		Paging page = new Paging(searchMemberTotal, currentPage);
 		int start = page.getStart();
 		int end   = page.getEnd();
@@ -143,69 +136,59 @@ public class ShController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "createMember", method = RequestMethod.POST)
-	public int createMember(   @RequestParam("right") 	 int right,
-							   @RequestParam("hiredate") Date hiredate,
-							   @RequestParam("name") 	 String name,
-							   @RequestParam("birthday") String birthday,
-							   @RequestParam("sex") 	 String sex,
-							   @RequestParam("email") 	 String email,
-							   @RequestParam("phone") 	 String phone,
-							   @RequestParam("dept") 	 int dept,
-							   @RequestParam("posi") 	 int posi,
-							   @RequestParam("duty") 	 int duty,
-							   @RequestParam("mailcode") int mailcode,
-							   @RequestParam("address")  String address,
-							   @RequestParam("password") String password,
-							   @RequestParam("img") 	 MultipartFile img,
+	@RequestMapping(value = "createMember", method = RequestMethod.POST, consumes = "multipart/form-data")
+	public String createMember(  
+								@ModelAttribute Member member,
+							    @RequestParam("img") 	 MultipartFile img,
 							   HttpServletRequest 		 request,
 							   Model 					 model) throws IOException {
 		System.out.println("shController createMember() Start");
-		System.out.println("Received 'right' parameter: " + right);
-		int result = 0;
+		System.out.println("Received member: " + member);
+		String result = "0";
 		
-		Member member = new Member();
-		member.setMem_right(right);
-		//Date를 String으로 바꾸기
-		member.setMem_hiredate_d(hiredate);
-		member.setMem_name(name);
-		member.setMem_bd(birthday);
-		member.setMem_sex(sex);
-		member.setMem_email(email);
-		member.setMem_phone(phone);
-		member.setMem_dept_md(dept);
-		member.setMem_posi_md(posi);
-		member.setMem_duty_md(duty);
-		member.setMem_mailcode(mailcode);
-		member.setMem_address(address);
-		member.setMem_pw(password);
+//		Member member = new Member();
+//		member.setMem_right(right);
+//		//Date를 String으로 바꾸기
+//		member.setMem_hiredate_d(hiredate);
+//		member.setMem_name(name);
+//		member.setMem_bd(birthday);
+//		member.setMem_sex(sex);
+//		member.setMem_email(email);
+//		member.setMem_phone(phone);
+//		member.setMem_dept_md(dept);
+//		member.setMem_posi_md(posi);
+//		member.setMem_duty_md(duty);
+//		member.setMem_mailcode(mailcode);
+//		member.setMem_address(address);
+//		member.setMem_pw(password);
 		
-			//multipartFile 경로 설정
-			String path 		  = request.getSession().getServletContext().getRealPath("upload");
-			
-			//경로 내 파일 생성
-			String root = path +"\\sh";
-			File file = new File(root);
-			if(!file.exists()) file.mkdir();	//만약 파일이 존재하지 않으면 생성한다.
-			
-			//업로드할 폴더 설정
-			String originFileName = img.getOriginalFilename();
-			String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
-			String ranFileName 	  = UUID.randomUUID().toString() + ext;
-			
-			File changeFile 	  = new File(root + "\\" + ranFileName);
-			
-			try {
-				img.transferTo(changeFile);
-				System.out.println("파일 업로드 성공");
-				member.setMem_img(ranFileName);
-			} catch (Exception e) {
-				System.out.println("shController createMember Exception ->" + e.getMessage());
-			}
-			
-			result = ms.createMember(member);
+//			//multipartFile 경로 설정
+//			String path 		  = request.getSession().getServletContext().getRealPath("upload");
+//			
+//			//경로 내 파일 생성
+//			String root = path +"\\sh";
+//			File file = new File(root);
+//			if(!file.exists()) file.mkdir();	//만약 파일이 존재하지 않으면 생성한다.
+//			
+//			//업로드할 폴더 설정
+//			String originFileName = img.getOriginalFilename();
+//			String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
+//			String ranFileName 	  = UUID.randomUUID().toString() + ext;
+//			
+//			File changeFile 	  = new File(root + "\\" + ranFileName);
+//			
+//			try {
+//				img.transferTo(changeFile);
+//				System.out.println("파일 업로드 성공");
+//				member.setMem_img(ranFileName);
+//			} catch (Exception e) {
+//				System.out.println("shController createMember Exception ->" + e.getMessage());
+//			}
+//			
+//			result = ms.createMember(member);
 	
 		
 		return result;
- 	}
+ 	}	
+	
 }

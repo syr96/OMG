@@ -458,7 +458,74 @@
 		});
 	});
 	
+	$('#formAccountSettings').on('submit', function(event) {
+        event.preventDefault(); // 다른 이벤트 방지
+        console.log('Form submitted');
+        return checkValidation();
+	});	
+	
+	
+	//유효성 체크
+	function checkValidation(){
+		alert("함수 실행");
+		//권리 변수 설정
+		var right = $('input[name="mem_right"]:checked').val();
+		//비밀번호 유효성 검사
+		var pw1 = $('#basic-default-password1').val();
+		var pwMessage = $('#basic-default-password2').css('display');
+		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/;
+		if (pwMessage === 'block'){
+			alert("비밀번호 일치");
+		//등록 확인 시 함수
+		var requestData = {
+				//체크박스여서 checked 되면 값 지정
+				mem_right	 : right,
+				mem_hiredate_d : '2023-12-19',//$('#mem_hiredate').val(),
+				mem_name	 : 'kktest', //$('#mem_name').val(),
+				mem_bd		 : $('#mem_bd').val(),
+				mem_sex		 : $('input[name="mem_sex"]:checked').val(),
+				mem_email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
+				mem_phone	 : $('#mem_phone').val(),
+				mem_dept_md	 : $('#mem_dept_md').val(),
+				mem_posi_md	 : $('#mem_posi_md').val(),
+				mem_duty_md	 : $('#mem_duty_md').val(),
+				mem_mailcode : $('#sample6_postcode').val(),
+				mem_address  : $('#sample6_address').val()+"/"+$('#sample6_extraAddress').val()+"/"+$('#sample6_detailAddress').val(),
+				mem_pw		 : $('#basic-default-password1').val(),
+			};
+		
+		var requestDataString = JSON.stringify(requestData);
+		
+		alert("requestData->"+requestDataString);
+		console.log("requestData->"+requestDataString);
+		
+		//이미지 데이터 수집
+		var image = $('#upload')[0].files[0];
+		var formData = new FormData();
+		formData.append("img",image);
+		formData.append("requestData",requestDataString);
+		alert("img");
+		
+		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
+		var jsonBlob = new Blob([requestDataString], {type:"application/json"});
+		alert("request");
+
+		if(confirm("등록을 완료하시겠습니까?")){
+			alert("ajax 실행");
+			// 추가된 부분: 'right' 파라미터를 AJAX 요청에 추가
+		   // checkMember(formData);
+		    checkMember(requestDataString);
+			}else{
+				alert("등록 취소");
+			}
+		} else {
+			alert("비밀번호 ");
+		}
+	}
+	
 	function checkMember(formData){
+		alert("checkMember formData->"+formData);
+		console.log("checkMember formData->"+formData);
 		$.ajax({
 			type: "POST",
 			url : "createMember",
@@ -475,77 +542,6 @@
 		});
 	}
 	
-	$('#formAccountSettings').on('submit', function(event) {
-        event.preventDefault(); // 다른 이벤트 방지
-        console.log('Form submitted');
-        return checkValidation();
-	});	
-	
-	
-	//유효성 체크
-	function checkValidation(){
-		alert("함수 실행");
-		//비밀번호 유효성 검사
-		var right = $('input[name="mem_right"]:checked').val();
-		alert('right->'+right);
-		var pw1 = $('#basic-default-password1').val();
-		var pwMessage = $('#basic-default-password2').css('display');
-		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/;
-		if (pwMessage === 'block'){
-			alert("비밀번호 일치");
-		//등록 확인 시 함수
-		var requestData = {
-				//체크박스여서 checked 되면 값 지정
-				right	 : right,
-				hiredate : $('#mem_hiredate').val(),
-				name	 : $('#mem_name').val(),
-				birthday : $('#mem_bd').val(),
-				sex		 : $('input[name="mem_sex"]:checked').val(),
-				email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
-				phone	 : $('#mem_phone').val(),
-				dept	 : $('#mem_dept_md').val(),
-				posi	 : $('#mem_posi_md').val(),
-				duty	 : $('#mem_duty_md').val(),
-				mailcode : $('#sample6_postcode').val(),
-				address  : $('#sample6_address').val()+"/"+$('#sample6_extraAddress').val()+"/"+$('#sample6_detailAddress').val(),
-				password : $('#basic-default-password1').val(),
-			};
-		
-		var requestDataString = JSON.stringify(requestData);
-		
-		alert("requestData->"+requestDataString);
-			
-		//이미지 데이터 수집
-		var image = $('#upload')[0].files[0];
-		var formData = new FormData();
-		formData.append("img",image);
-		alert("img");
-		
-		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
-		var jsonBlob = new Blob([requestDataString], {type:"application/json"});
-		formData.append("request",jsonBlob);
-		alert("request");
-
-		// FormData 내용을 alert로 출력
-		var formDataString = '';
-		for (var pair of formData.entries()) {
-		    formDataString += pair[0] + ': ' + pair[1] + '\n';
-		}
-
-		alert('FormData Contents:\n\n' + formDataString);
-		if(confirm("등록을 완료하시겠습니까?")){
-			alert("ajax 실행");
-			// 추가된 부분: 'right' 파라미터를 AJAX 요청에 추가
-		    checkMember(formData);
-			}else{
-				alert("등록 취소");
-			}
-		} else {
-			alert("비밀번호 ");
-		}
-	}
-	
-
 </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <mapper namespace="com.oracle.OMG.shMember">
 	<insert id="shCreateMember" parameterType="Member">
 		Insert Into Member(mem_id, mem_right, mem_name, mem_img, mem_email, mem_hiredate, mem_bd, mem_sex, mem_phone, mem_dept_lg, mem_dept_md, mem_posi_lg, mem_posi_md, mem_duty_lg, mem_duty_md, mem_mailcode, mem_address, mem_pw)
-		values (member_id_seq.nextval,#{mem_right}, #{mem_name}, #{mem_img}, #{mem_email}, TO_CHAR(#{mem_hiredate_d}, 'YYYYMMDD'), #{mem_bd}, #{mem_sex}, #{mem_phone}, #{mem_dept_lg}, #{mem_dept_md},#{mem_posi_lg},#{mem_posi_md},#{mem_duty_lg}, #{mem_duty_md}, #{mem_mailcode}, #{mem_pw});
+		values (member_id_seq.nextval,#{mem_right}, #{mem_name}, #{mem_img}, #{mem_email}, TO_CHAR(#{mem_hiredate_d}, 'YYYYMMDD'), #{mem_bd}, #{mem_sex}, #{mem_phone}, 200, #{mem_dept_md},300,#{mem_posi_md},400, #{mem_duty_md}, #{mem_mailcode}, #{mem_pw});
 	</insert>
 	
 	<select id="shMemberList" parameterType="Member" resultType="Member">
@@ -32,9 +32,7 @@
 	]]>
 	</select>
 	
-	<update id="shMemberLeave" parameterType="int">
-		Update member Set mem_leave = to_char(sysdate,'yyyyMMdd') Where mem_id = ${mem_id}
-	</update>
+
 	
 	<select id="shSearchMemberTotal" parameterType="Member" resultType="int"> 
 		Select count(*) From member Where mem_id LIKE '%'||#{keyword}||'%' 
