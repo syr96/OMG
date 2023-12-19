@@ -23,7 +23,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 									// 로그인 성공 시 이전 페이지 돌아가기
 		registry.addInterceptor(new BkLoginInterceptor()).addPathPatterns("/logIn");
 		
-		registry.addInterceptor(new BkDeptInterceptor()).addPathPatterns("/memberL");	// 승현 - 사원리스트 페이지		200 - 101(인사팀)
+		// registry.addInterceptor(new BkDeptInterceptor()).addPathPatterns("/memberL");	// 승현 - 사원리스트 페이지		200 - 101(인사팀)
 		
 	}
 }

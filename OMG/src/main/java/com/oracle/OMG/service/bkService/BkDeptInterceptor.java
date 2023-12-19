@@ -19,7 +19,7 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 	
 	static {
 		// 각 권한에 대한 허용된 부서별 페이지 등록						/**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치
-		DEPT_PAGE_MAP.put("101", new String[] {"/memberL/**"});		// 101 인사팀
+		// DEPT_PAGE_MAP.put("101", new String[] {"/memberL/**"});		// 101 인사팀
 	}
 	
 	

@@ -71,7 +71,7 @@ public class BkController {
 	
 	
 	
-	@RequestMapping(value = "/403forbidden")
+	@RequestMapping(value = "/bk/403forbidden")
 	public String forbidden() {
 		
 		System.out.println("BkController 403forbidden Start...");
