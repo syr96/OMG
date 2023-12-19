@@ -40,28 +40,58 @@
 				</tr>
 			</table>
 			
+			
+			<div class="text-center"><h3>정보</h3></div>
 			<div class="col-12">
 				<div class="row text-center bg-white">
-					<div class="col-6">제목 : ${pc.title}</div>
-					<div class="col-6">상태 : <c:choose>
-												<c:when test="${pc.pur_status == 0}">진행중</c:when>
-												<c:when test="${pc.pur_status == 1}">완료</c:when>
-												<c:when test="${pc.pur_status == 2}">입고완료</c:when>
-											</c:choose>
-					</div>
-					<div class="col-6">날짜 : ${pc.pur_date }</div>
-					<div class="col-6">회사명 : ${pc.company }</div>
-					<div class="col-6">발주자 : ${pc.appli_name }(${pc.mem_id })</div>
-					<div class="col-6">담당자 : ${pc.mgr_name } (${pc.mgr_id })</div>
-					<div class="col-12 text-center">비고</div>
-					<div class="container">
-						${pc.ref }
-					</div>
+					<table class="table">
+						<tr>
+							<td class="table-primary">제목</td><td><input type="text" id="title" value="${pc.title}" style="width: 60%;" disabled="disabled"></td>
+							<td class="table-primary">상태</td>
+							<td>
+								 <c:choose>
+									<c:when test="${pc.pur_status == 0}">진행중</c:when>
+									<c:when test="${pc.pur_status == 1}">완료</c:when>
+									<c:when test="${pc.pur_status == 2}">입고완료</c:when>
+								</c:choose>
+							</td>
+						</tr>
+						<tr>
+							<td class="table-primary">날짜</td><td>${pc.pur_date }</td>
+							<td class="table-primary">회사명</td><td>${pc.company }</td>
+						</tr>
+						<tr>
+							<td class="table-primary">발주자</td><td>${pc.appli_name }(${pc.mem_id })</td>
+							<td class="table-primary">담당자</td><td> ${pc.mgr_name } (${pc.mgr_id })</td>
+						</tr>
+						<tr>
+							<td colspan="4">비고 </td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<div class="row justify-content-center">
+									<div class="col-12"><textarea rows="10" cols="100" disabled="disabled" id="ref">${pc.ref }</textarea></div>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
+						<div class="col-12">
+							<div>
+								<button type="button" class="btn btn-outline-primary" onclick="refUpdateBtn()" id="updateBtn">수정</button>
+								<button type="button" class="btn btn-outline-primary" id="updateStart" style="display: none;" onclick="refUpStart()">수정완료</button>
+							</div>
+						</div>
+					</c:if>
 				</div>
 			</div>
 			
+			<hr>
+			
+			<div class="text-center"><h3>발주 상품</h3></div>
 			<div class="col-12 text-center">
 				<input type="hidden" id="pur_date" value="${pc.pur_date }">
+				<input type="hidden" id="custcode" value="${pc.custcode}">
 				<c:if test="${mem_id == pc.mem_id}">
 						<input type="hidden" id="pur_date" value="${pc.pur_date }">
 						제품:<select id="code" onchange="item_chk()">
@@ -82,7 +112,7 @@
 						<tr>
 							<td>제품명</td>
 							<td>단가</td>
-							<td>수량 </td>
+							<td class="text-center">수량 </td>
 							<td class="text-end">공급가액</td>
 						</tr>
 					</thead>
@@ -90,13 +120,13 @@
 						<tr id="row${status.index }">
 							<td>${pdList.item_name }</td>
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
-							<td id="td${status.index }">
+							<td id="td${status.index }" class="text-center">
 								${pdList.qty }개
 								<c:if test="${pc.pur_status == 0 && mem_id == pc.mem_id}">
 									<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 								</c:if>
 							</td>
-							<td id="inputTd${status.index }" style="display: none;">
+							<td id="inputTd${status.index }" style="display: none;" class="text-center">
 									<input type="number" name="qty${status.index }" value="${pdList.qty }" id="qty${status.index }" disabled="disabled">
 									<input type="hidden" name="code${status.index }" value="${pdList.code }" id="code${status.index }" disabled="disabled">
 									<button type="button" onclick="changeQty(${status.index })" class="btn btn-outline-primary">완료</button>
@@ -108,7 +138,7 @@
 					<tr>
 						<td></td>
 						<td>합계</td>
-						<td>${totalQty }개</td>
+						<td class="text-center">${totalQty }개</td>
 						<td class="text-end"><fmt:formatNumber value="${totalPrice }" pattern="#,###"/>원</td>
 					</tr>
 				</table>
@@ -187,6 +217,37 @@
 				}
 			}
 		);
+	}
+	
+	function refUpdateBtn(){
+		if($("#ref").prop("disabled")){
+			$("#ref").prop("disabled", false);
+			$("#title").prop("disabled", false);
+			$("#updateBtn").html("수정취소");
+			$("#updateStart").show();
+		}else {
+			$("#ref").prop("disabled", true);
+			$("#title").prop("disabled", true);
+			$("#updateBtn").html("수정");
+			$("#updateStart").hide();
+		}
+	}
+	
+	function refUpStart(){
+		var title 	 = $("#title").val();
+		var ref 	 = $("#ref").val();
+		var pur_date = $("#pur_date").val();
+		var custcode = $("#custcode").val();
+		$.ajax({
+			type:"POST",
+			data: {title : title, ref : ref, pur_date : pur_date, custcode : custcode},
+			url: "refUpdate",
+			success:function(result){
+				if(result > 0){
+					refUpdateBtn();
+				}
+			}
+		});
 	}
 </script>	
 </body>
