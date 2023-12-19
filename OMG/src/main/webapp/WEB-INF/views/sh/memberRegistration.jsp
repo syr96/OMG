@@ -72,7 +72,7 @@
                   <div class="card mb-4">
                     <h5 class="card-header">
                       <i class="bx bx-user me-1"></i> Account</h5>
-                      <form id="formAccountSettings" enctype="multipart/form-data">
+                      <form id="formAccountSettings" action="createMember" method="post" enctype="multipart/form-data">	<!-- onsubmit="validCheck()" -->
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -81,7 +81,7 @@
                           <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
-                            <input type="file" id="upload" name="mem_img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
+                            <input type="file" id="upload" name="img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
                           </label>
                           <button type="button" id="reset" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
@@ -134,9 +134,9 @@
                           
                           <!-- mem_hiredate -->
                           <div class="mb-3 col-md-6">
-	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
+	                        <label for="mem_hiredate_d" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" />
+	                          <input class="form-control" type="date" name="mem_hiredate_d" id="mem_hiredate_d" />
 	                        </div>
 	                    </div>
                        
@@ -216,9 +216,9 @@
                         
                         <!-- mem_dept -->  
                      	<div class="mb-3 col-md-6" >
-                            <label class="form-label" for="mem_dept_md">부서</label>
+                            <label class="form-label" for="mem_dept">부서</label>
                             <div class="input-group">
-	                            <select id="mem_dept_md" name="mem_dept_md" class="select2 form-select">
+	                            <select id="mem_dept"  class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">회계팀</option>
 	                              <option value="101">인사팀</option>
@@ -229,15 +229,15 @@
 	                              <option value="106">CS1팀</option>
 	                              <option value="107">CS2팀</option>
 	                            </select>
-                            <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" readonly="readonly"/>
+                            <input type="text"class="form-control" id="mem_dept_md" name="mem_dept_md" aria-label="Text input with dropdown button" readonly="readonly"/>
 	                          </div>
                           </div>
                           
                           <!-- mem_posi -->
                           <div class="mb-3 col-md-6">
-                            <label class="form-label" for="mem_posi_md">직위</label>
+                            <label class="form-label" for="mem_posi">직위</label>
                             <div class="input-group">
-                            <select id="mem_posi_md" name="mem_posi_md" class="select2 form-select">
+                            <select id="mem_posi" class="select2 form-select">
                               <option value="">Select</option>
                               <option value="100">대표이사</option>
                               <option value="101">상무</option>
@@ -246,16 +246,16 @@
                               <option value="104">대리</option>
                               <option value="105">사원</option>
                             </select>
-                            <input type="text" class="form-control" id="mem_posi" aria-label="Text input with dropdown button" readonly="readonly" />
+                            <input type="text" class="form-control" id="mem_posi_md" name="mem_posi_md" aria-label="Text input with dropdown button" readonly="readonly" />
 	                          </div>
                           </div>
                           
                           <!-- mem_duty -->
                           <div class="mb-3 col-md-12">
-                            <label for="mem_duty_md" class="form-label">직책</label>
+                            <label for="mem_duty" class="form-label">직책</label>
                             <div class="col-md-6">
 	                            <div class="input-group">
-	                            <select id="mem_duty_md" name="mem_duty_md" class="select2 form-select">
+	                            <select id="mem_duty" class="select2 form-select">
 	                              <option value="">Select</option>
 	                              <option value="100">CEO</option>
 	                              <option value="101">CFO</option>
@@ -264,7 +264,7 @@
 	                              <option value="104">팀장</option>
 	                              <option value="105">팀원</option>
 	                            </select>
-	                            <input type="text" class="form-control" id="mem_duty" aria-label="Text input with dropdown button" readonly="readonly" />
+	                            <input type="text" class="form-control" id="mem_duty_md" name="mem_duty_md" aria-label="Text input with dropdown button" readonly="readonly" />
 		                      	</div>
 	                      	</div>
                           </div>
@@ -400,23 +400,23 @@
 	});
 
 	$(document).ready(function(){
-		$('#mem_dept_md').on('change',function(){
+		$('#mem_dept').on('change',function(){
 			var selected = $(this).val();
-			$('#mem_dept').val(selected);
+			$('#mem_dept_md').val(selected);
 		});
 	});
 	
 	$(document).ready(function(){
-		$('#mem_posi_md').on('change',function(){
+		$('#mem_posi').on('change',function(){
 			var selected = $(this).val();
-			$('#mem_posi').val(selected);
+			$('#mem_posi_md').val(selected);
 		});
 	});
 	
 	$(document).ready(function(){
-		$('#mem_duty_md').on('change',function(){
+		$('#mem_duty').on('change',function(){
 			var selected = $(this).val();
-			$('#mem_duty').val(selected);
+			$('#mem_duty_md').val(selected);
 		});
 	});
 	
@@ -457,15 +457,15 @@
 			}			
 		});
 	});
-	
+/* 	
 	$('#formAccountSettings').on('submit', function(event) {
         event.preventDefault(); // 다른 이벤트 방지
         console.log('Form submitted');
         return checkValidation();
-	});	
+	});	 */
 	
 	
-	//유효성 체크
+	/* //유효성 체크
 	function checkValidation(){
 		alert("함수 실행");
 		//권리 변수 설정
@@ -480,8 +480,8 @@
 		var requestData = {
 				//체크박스여서 checked 되면 값 지정
 				mem_right	 : right,
-				mem_hiredate_d : '2023-12-19',//$('#mem_hiredate').val(),
-				mem_name	 : 'kktest', //$('#mem_name').val(),
+				mem_hiredate_d : $('#mem_hiredate').val(),
+				mem_name	 : $('#mem_name').val(),
 				mem_bd		 : $('#mem_bd').val(),
 				mem_sex		 : $('input[name="mem_sex"]:checked').val(),
 				mem_email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
@@ -539,8 +539,8 @@
 			error : function(request, status, error){
 				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
-		});
-	}
+		}); 
+	}*/
 	
 </script>
 </body>
