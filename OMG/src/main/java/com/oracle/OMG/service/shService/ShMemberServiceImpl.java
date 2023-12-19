@@ -30,6 +30,20 @@ public class ShMemberServiceImpl implements ShMemberService {
 	}
 
 	@Override
+	public int memberLeave(int mem_id) {
+		System.out.println("memberService memberList() Start");
+		int result = md.memberLeave(mem_id);
+		return result;
+	}
+	
+	@Override
+	public int memberResign(int mem_id) {
+		System.out.println("memberService memberResign() Start");
+		int result = md.memberResign(mem_id);
+		return result;
+	}
+	
+	@Override
 	public int memberTotal() {
 		System.out.println("memberService memberTotal() Start");
 		int total = md.memberTotal();
@@ -49,6 +63,15 @@ public class ShMemberServiceImpl implements ShMemberService {
 		int total = md.searchMemberTotal(member);
 		return total;
 	}
+
+	@Override
+	public Member searchMemberDetail(int mem_id) {
+		System.out.println("memberService searchMemberDetail() Start");
+		Member member = md.searchMemberDetail(mem_id);
+		return member;
+	}
+
+
 
 
 }

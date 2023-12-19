@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.oracle.OMG.dto.Item;
+import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 
 import lombok.Data;
@@ -187,6 +188,24 @@ public class JkWareDaoImpl implements JkWareDao {
 		
 		}
 		return result;
+	}
+
+
+	@Override
+	public List<Purchase> purMonthData(String month) {
+		System.out.println("JkWareDaoImpl monthData start...");
+		List<Purchase> purMonthData = null;
+		
+		try {
+			purMonthData = session.selectList("purMonthData", month);
+			System.out.println("monthDatalistsize"+purMonthData);
+			 System.out.println("Params: " + purMonthData);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("JkWareDaoImpl monthDataList error?"+ e.getMessage());
+		}
+		
+		return purMonthData;
 	}
 
 

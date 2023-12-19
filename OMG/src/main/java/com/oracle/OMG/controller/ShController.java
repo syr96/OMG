@@ -43,7 +43,11 @@ public class ShController {
 	@RequestMapping(value = "memberU")
 	public String memberUpdate(@RequestParam("mem_id") int mem_id, Model model) {
 		System.out.println("shController memberUpdate() Start");
+		//특정 사원 정보
+		Member member = new Member();
+		member = ms.searchMemberDetail(mem_id);
 		
+		model.addAttribute("member",member);
 		return "sh/memberUpdate";
 	}
 	
@@ -70,6 +74,22 @@ public class ShController {
 		model.addAttribute("page",page);
 		return "sh/memberList";
 	}
+	
+	//사원 목록에서 사원 휴직 처리
+	@RequestMapping(value = "memberLeave")
+	public String memberLeave(@RequestParam("mem_id") int mem_id, Model model) {
+		System.out.println("shController memberLeave() Start");
+		int result = ms.memberLeave(mem_id);
+		return "redirect:memberL";				
+	}
+	
+	//사원 목록에서 사원 퇴직 처리
+		@RequestMapping(value = "memberLeave")
+		public String memberResign(@RequestParam("mem_id") int mem_id, Model model) {
+			System.out.println("shController memberResign() Start");
+			int result = ms.memberResign(mem_id);
+			return "redirect:memberL";				
+		}
 	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)
@@ -125,7 +145,7 @@ public class ShController {
 	@ResponseBody
 	@RequestMapping(value = "createMember", method = RequestMethod.POST)
 	public int createMember(   @RequestParam("right") 	 int right,
-							   @RequestParam("hiredate") String hiredate,
+							   @RequestParam("hiredate") Date hiredate,
 							   @RequestParam("name") 	 String name,
 							   @RequestParam("birthday") String birthday,
 							   @RequestParam("sex") 	 String sex,
@@ -141,12 +161,13 @@ public class ShController {
 							   HttpServletRequest 		 request,
 							   Model 					 model) throws IOException {
 		System.out.println("shController createMember() Start");
+		System.out.println("Received 'right' parameter: " + right);
 		int result = 0;
 		
 		Member member = new Member();
 		member.setMem_right(right);
 		//Date를 String으로 바꾸기
-		member.setMem_hiredate(hiredate);
+		member.setMem_hiredate_d(hiredate);
 		member.setMem_name(name);
 		member.setMem_bd(birthday);
 		member.setMem_sex(sex);

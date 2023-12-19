@@ -18,5 +18,6 @@ public interface ChPurService {
 	int 			qtyUpdate(PurDetail pd);
 	int 			completePur(Purchase purchase);
 	int 			deletePur(Purchase purchase);
+	int 			purUpdate(Purchase purchase);
 	
 }

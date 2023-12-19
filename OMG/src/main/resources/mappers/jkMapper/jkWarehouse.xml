@@ -4,25 +4,23 @@
 <mapper namespace="com.oracle.OMG.mappers.jkWarehouse">
 
 		<select id="monthDataList" resultType="Warehouse" parameterType="map">
-		SELECT w.*, i.name, m.mem_name
-		FROM Warehouse w
-		INNER JOIN Item i ON w.code = i.code
-		INNER JOIN Customer c ON i.custcode = c.custcode
-		INNER JOIN Member m ON c.mem_id = m.mem_id
-		WHERE w.YM = #{month, jdbcType=VARCHAR}
-		AND (
-        (#{invType, jdbcType=VARCHAR} = 'ALL' AND (w.INVEN = 0 OR w.INVEN = 1))
-        OR (#{invType, jdbcType=VARCHAR} = 'OPENING' AND w.INVEN = 0)
-        OR (#{invType, jdbcType=VARCHAR} = 'CLOSING' AND w.INVEN = 1)
-    )
+			SELECT w.*, i.name, m.mem_name
+			FROM Warehouse w
+			INNER JOIN Item i ON w.code = i.code
+			INNER JOIN Customer c ON i.custcode = c.custcode
+			INNER JOIN Member m ON c.mem_id = m.mem_id
+			WHERE w.YM = #{month, jdbcType=VARCHAR}
+			AND (
+	        (#{invType, jdbcType=VARCHAR} = 'ALL' AND (w.INVEN = 0 OR w.INVEN = 1))
+	        OR (#{invType, jdbcType=VARCHAR} = 'OPENING' AND w.INVEN = 0)
+	        OR (#{invType, jdbcType=VARCHAR} = 'CLOSING' AND w.INVEN = 1))
 		</select>
 
 
 		<select id="getPurchaseData" statementType="CALLABLE" parameterType="hashmap" resultType="hashmap">
 		    {call GET_PURCHASE_DATA(
 		        #{month, mode=IN, jdbcType=VARCHAR},
-		        #{result, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=resultmap01}
-		    )}
+		        #{result, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=resultmap01})}
 		</select>
 
 		<resultMap id="resultmap01" type="Warehouse">
@@ -36,7 +34,7 @@
 		</resultMap> 
 
 		<select id="selectItem" resultType="map">
-		 SELECT i.name , m.mem_name, w.cnt
+			SELECT i.name , m.mem_name, w.cnt
 		    FROM item i
 		    INNER JOIN customer c ON i.custcode = c.custcode
 		    INNER JOIN member m ON c.mem_id = m.mem_id
@@ -65,15 +63,17 @@
 		</insert>
 		
   		<update id="updateInv" parameterType="Warehouse">
-        UPDATE Warehouse
-        SET cnt = #{cnt}
-        WHERE ym = #{ym}
-        AND code = #{code}
+	        UPDATE Warehouse
+	        SET cnt = #{cnt}
+	        WHERE ym = #{ym}
+	        AND code = #{code}
    		</update>
 
 		<delete id="deleteInv" parameterType="Warehouse">
-    DELETE FROM Warehouse
-    WHERE ym = #{ym}
-    AND code = #{code}
-</delete>
+		    DELETE FROM Warehouse
+		    WHERE ym = #{ym}
+		    AND code = #{code}
+		</delete>
+		
+
 </mapper>

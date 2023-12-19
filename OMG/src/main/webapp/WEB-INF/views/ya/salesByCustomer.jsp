@@ -44,7 +44,6 @@
     .hidden-row {
         display: none;
     }
-
     </style>
 
 <meta charset="UTF-8">
@@ -53,10 +52,10 @@
 <%@ include file="/WEB-INF/views/common/menu.jsp"%>    
 </head>
 
-    <!-- 스크롤  JavaScript 코드 -->
+    <!-- 스크롤 코드 -->
     <script>
         $(document).ready(function () {
-            // 스크롤 이벤트 발생 시 고정 THEAD 
+            // 스크롤  고정 thaed 
             $(".table-container").scroll(function () {
                 $(".fixed-thead").css("left", -$(".table-container").scrollLeft());
             });
@@ -70,24 +69,18 @@
  <h5 class="card-header">월별실적조회</h5>
    <div class="row mx-3" >	   
 		<div class="col-12 mb-3 d-flex ">	  		   
-		   <!--  <label for="selectOption">조회기간: </label> -->
 		    <label for="month">
 		    <input class="form-control" type="month" id="monthSelect" name="month">
-		    </label>
-					
-			<!-- <label for="searchSelect">거래처명: </label> -->
+		    </label>			
 				<select class="form-select" id="in_custcode" style="width: 200px; " ></select>
 			<button class="btn btn-outline-primary" id="searchButton" type="button" onclick="search()" >검색</button>
 		</div>	
     </div>
 
  <script>
-
-	    
-$(document).ready(function () {
+ $(document).ready(function () {
 	
-	
-	//거래처리스트 
+	//거래처리스트  조회
     $.ajax({
         url: '/customerListSelect',
         type: 'POST',
@@ -141,6 +134,7 @@ function search() {
                     "<td>" + (customer.custstyle == 0 ? '매입' : '매출') + "</td>" +
                     "<td>" + customer.custcode + "</td>" +
                     "<td>" + customer.company + "</td>" +
+                    "<td>" + customer.businum + "</td>" +
                     "<td>" + customer.purCode + "</td>" +
                     "<td>" + customer.itemName + "</td>" +
                     "<td>" + customer.purQty + "</td>" +
@@ -164,7 +158,7 @@ function search() {
 
                     row += "<tr style='background-color: #f2f2f2;'>" +
                         "<td colspan='6'></td>" +
-                        "<th colspan='3'>" +  "소 계</th>" +
+                        "<th colspan='4'>" +  "소 계</th>" +
                         "<th style='text-align: right;'>" + formatAmount(monthlyPurTotal) + "</th>" +
                         "<th style='text-align: right;'>" + formatAmount(monthlySalesTotal) + "</th>" +
                         "</tr>";
@@ -179,12 +173,10 @@ function search() {
     });
 }
 
+//0일경우 '-' 표기
 function formatAmount(amount) {
     return amount !== 0 ? amount.toLocaleString() : '-';
 }
-
-
-
 </script>
   
     		
@@ -198,7 +190,7 @@ function formatAmount(amount) {
                      <th style="width: 100px;">유형</th>
                      <th style="width: 119.508px;">거래처코드</th>
                      <th style="width: 300px;" >거래처명</th>
-                    <!-- <th style="width: 119.508px;">사업자번호</th> -->
+                     <th style="width: 119.508px;">사업자번호</th>
                     
                      <th  style="width: 119.508px;">제품코드</th>
                      <th style="width: 300px;">제품</th>
@@ -219,7 +211,7 @@ function formatAmount(amount) {
         <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
             <tr class="${firstMonth ? 'hidden-row' : ''}"  style="background-color: #f2f2f2;"> <!-- 첫 번째 월 소계 행에 hidden-row 클래스 추가 -->
                 <td colspan="6"></td>
-                <th colspan="3">${currentMonth}월 소 계</th>
+                <th colspan="4">${currentMonth}월 소 계</th>
 					<c:choose>
 					    <c:when test="${monthlyPurTotal != 0}">
 					        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
@@ -253,6 +245,7 @@ function formatAmount(amount) {
                   	 <td>${customer.custstyle == 0 ? '매입' : '매출'}</td>
                   	 <td>${customer.custcode }</td>
                      <td>${customer.company}</td>
+                     <td>${customer.businum }</td>
                      <td>${customer.purCode}</td>
                      <td>${customer.itemName }</td>
                      <td>${customer.purQty}</td>
@@ -285,7 +278,7 @@ function formatAmount(amount) {
 			<!-- 마지막 월에 대한 소계 행 표시 -->
 	        <tr style="background-color: #f2f2f2;">
 		        <td colspan="6"></td>
-		        <th colspan="3">${currentMonth}월 소 계</th>
+		        <th colspan="4">${currentMonth}월 소 계</th>
 					<c:choose>
 					    <c:when test="${monthlyPurTotal != 0}">
 					        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
@@ -324,7 +317,7 @@ function formatAmount(amount) {
 				    	 <!-- 누계 행 추가 -->			
 					<tr style="background-color: #f2f2f2;">
 						<td colspan="6"></td>
-						<th colspan="3">누          계</th>
+						<th colspan="4">누          계</th>
 					    <th style="text-align: right;"><fmt:formatNumber value="${totalPurchaseAmount}" pattern="#,##0" /></th>
 					    <th style="text-align: right;"><fmt:formatNumber value="${totalSalesAmount}" pattern="#,##0" /></th>
 					</tr>

@@ -61,6 +61,7 @@ function sample6_execDaumPostcode() {
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
+<c:set var="member" value="${member }"></c:set>
 	<h4 class="fw-bold py-3"><span class="text-muted fw-light">인사 /</span> 사원 상세</h4>
               <!-- Content -->
               <div class="row">
@@ -90,7 +91,7 @@ function sample6_execDaumPostcode() {
 		                              value="0"
 		                              id="mem_right_employee"
 		                              name="mem_right"
-		                              checked
+		                              <c:if test="${member.mem_right eq 0}">checked="checked"</c:if>
 		                            />
 		                            <label class="form-check-label" for="mem_right_employee"> 사원 권한</label>
 		                          </div>
@@ -99,8 +100,9 @@ function sample6_execDaumPostcode() {
 		                              class="form-check-input"
 		                              type="radio"
 		                              value="1"
-		                              id="mem_right_manager"
+		                              id="mem_right_manager"`
 		                              name="mem_right"
+		                              <c:if test="${member.mem_right eq 1}">checked="checked"</c:if>
 		                            />
 		                            <label class="form-check-label" for="mem_right_manager"> 관리자 권한</label>
 		                          </div>
@@ -119,6 +121,7 @@ function sample6_execDaumPostcode() {
                               type="text"
                               id="mem_id"
                               name="mem_id"
+                              value="${member.mem_id }"
                               readonly="readonly"
                               autofocus
                             />
@@ -127,7 +130,7 @@ function sample6_execDaumPostcode() {
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" id="mem_hiredate"/>
+	                          <input class="form-control" type="date" id="mem_hiredate" value="${member.mem_hiredate }"/>
 	                        </div>
 	                      </div>
                       
@@ -138,13 +141,15 @@ function sample6_execDaumPostcode() {
                                type="text"
                                id="mem_name"
                                name="mem_name"
+                               value="${member.mem_name }"
                              />
                            </div>
                            
                            <div class="mb-3 col-md-6">
 	                         <label for="mem_leave" class="col-md-2 col-form-label">휴직 일자</label>
 	                         <div class="col-md-10">
-	                           <input class="form-control" type="date" id="mem_leave"/>
+	                           <fmt:parseDate var="mem_leave_1" value="${member.mem_leave }" pattern="yyyyMMdd"/>
+	                           <input class="form-control" type="date" id="mem_leave" value="<fmt:formatDate pattern='yyyy-MM-dd' value='${mem_leave_1}'/>"/>
 	                         </div>
 	                       </div>
                       
@@ -161,6 +166,7 @@ function sample6_execDaumPostcode() {
 			                     aria-label="Recipient's username with two button addons"
 			                     maxlength="8"
 			                     min="19000101"
+			                     value="${member.mem_bd }"
 			                     pattern="\d*"
 			                     
 			                   />
@@ -171,6 +177,7 @@ function sample6_execDaumPostcode() {
 		                         type="radio"
 		                         value="M"
 		                         id="mem_sex"
+		                         <c:if test="${member.mem_sex eq 'M'}">checked="checked"</c:if>
 		                        />남
 		                       <input
 		                         name="mem_sex"
@@ -178,7 +185,7 @@ function sample6_execDaumPostcode() {
 		                         type="radio"
 		                         value="F"
 		                         id="mem_sex"
-		                         
+		                          <c:if test="${member.mem_sex eq 'F'}">checked="checked"</c:if>
 		                       />여
 	                        	</div>
 			               </div>
@@ -187,7 +194,8 @@ function sample6_execDaumPostcode() {
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_rein" class="col-md-2 col-form-label">복직 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" id="mem_rein" />
+	                          <fmt:parseDate var="mem_rein_1" value="${member.mem_rein }" pattern="yyyyMMdd"/>
+	                          <input class="form-control" type="date" id="mem_rein" value="<fmt:formatDate pattern='yyyy-MM-dd' value='${mem_rein_1}'/>"/>
 	                        </div>
                       	 </div>
                       
@@ -195,9 +203,10 @@ function sample6_execDaumPostcode() {
                       <div class="mb-3 col-md-6" id="mem_email">
                         <label for="mem_email" class="form-label">이메일</label>
                         <div class="input-group">
-	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"/>
+                        	<c:set var="emailParts" value="${fn:split(member.mem_email, '@')}" />
+	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1" value="${emailParts[0]}"/>
 	                            <span class="input-group-text">@</span>
-	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2"/>
+	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2" value="${emailParts[1]}"/>
 	                            <select id="mem_email3" class="select2 form-select">
 		                            <option value="" >직접입력</option>
 		                            <option value="naver.com">네이버</option>
@@ -211,7 +220,8 @@ function sample6_execDaumPostcode() {
                          <div class="mb-3 col-md-6">
 	                        <label for="mem_resi" class="col-md-2 col-form-label">퇴직 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" id="mem_resi"/>
+	                          <fmt:parseDate var="mem_resi_1" value="${member.mem_resi }" pattern="yyyyMMdd"/>
+	                          <input class="form-control" type="date" id="mem_resi" value="<fmt:formatDate pattern='yyyy-MM-dd' value='${mem_resi_1}'/>"/>
 	                        </div>
                       	 </div>
                       
@@ -220,7 +230,7 @@ function sample6_execDaumPostcode() {
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text">KR (+82)</span>
-                              <input type="tel" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11"/>
+                              <input type="tel" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11" value="${member.mem_phone }"/>
                         	</div>
                      	</div>
                           
@@ -229,16 +239,16 @@ function sample6_execDaumPostcode() {
                             <div class="input-group">
 	                            <select id="mem_dept_md" name="mem_dept_md" class="select2 form-select">
 	                              <option value="">Select</option>
-	                              <option value="100">회계팀</option>
-	                              <option value="101">인사팀</option>
-	                              <option value="102">영업1팀</option>
-	                              <option value="103">영업2팀</option>
-	                              <option value="104">물류1팀</option>
-	                              <option value="105">물류2팀</option>
-	                              <option value="106">CS1팀</option>
-	                              <option value="107">CS2팀</option>
+	                              <option value="100" <c:if test="${member.mem_dept_md eq 100}"> selected="selected"</c:if>>회계팀</option>
+	                              <option value="101" <c:if test="${member.mem_dept_md eq 101}"> selected="selected"</c:if>>인사팀</option>
+	                              <option value="102" <c:if test="${member.mem_dept_md eq 102}"> selected="selected"</c:if>>영업1팀</option>
+	                              <option value="103" <c:if test="${member.mem_dept_md eq 103}"> selected="selected"</c:if>>영업2팀</option>
+	                              <option value="104" <c:if test="${member.mem_dept_md eq 104}"> selected="selected"</c:if>>물류1팀</option>
+	                              <option value="105" <c:if test="${member.mem_dept_md eq 105}"> selected="selected"</c:if>>물류2팀</option>
+	                              <option value="106" <c:if test="${member.mem_dept_md eq 106}"> selected="selected"</c:if>>CS1팀</option>
+	                              <option value="107" <c:if test="${member.mem_dept_md eq 107}"> selected="selected"</c:if>>CS2팀</option>
 	                            </select>
-                            <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" readonly="readonly"/>
+                            <input type="text"class="form-control" id="mem_dept" aria-label="Text input with dropdown button" value="${member.mem_dept_md}" readonly="readonly"/>
 	                          </div>
                           </div>
                           
@@ -247,14 +257,14 @@ function sample6_execDaumPostcode() {
                             <div class="input-group">
                             <select id="mem_posi_md" name="mem_posi_md" class="select2 form-select">
                               <option value="">Select</option>
-                              <option value="100">대표이사</option>
-                              <option value="101">상무</option>
-                              <option value="102">차장</option>
-                              <option value="103">과장</option>
-                              <option value="104">대리</option>
-                              <option value="105">사원</option>
+                              <option value="100" <c:if test="${member.mem_posi_md eq 100}"> selected="selected"</c:if>>대표이사</option>
+                              <option value="101" <c:if test="${member.mem_posi_md eq 101}"> selected="selected"</c:if>>상무</option>
+                              <option value="102" <c:if test="${member.mem_posi_md eq 102}"> selected="selected"</c:if>>차장</option>
+                              <option value="103" <c:if test="${member.mem_posi_md eq 103}"> selected="selected"</c:if>>과장</option>
+                              <option value="104" <c:if test="${member.mem_posi_md eq 104}"> selected="selected"</c:if>>대리</option>
+                              <option value="105" <c:if test="${member.mem_posi_md eq 105}"> selected="selected"</c:if>>사원</option>
                             </select>
-                            <input type="text" class="form-control" id="mem_posi" aria-label="Text input with dropdown button" readonly="readonly"/>
+                            <input type="text" class="form-control" id="mem_posi" aria-label="Text input with dropdown button" value="${member.mem_posi_md}" readonly="readonly"/>
 	                          </div>
                           </div>
                           
@@ -263,14 +273,14 @@ function sample6_execDaumPostcode() {
                             <div class="input-group">
                             <select id="mem_duty_md" name="mem_duty_md" class="select2 form-select">
                               <option value="">Select</option>
-                              <option value="100">CEO</option>
-                              <option value="101">CFO</option>
-                              <option value="102">본부장</option>
-                              <option value="103">실장</option>
-                              <option value="104">팀장</option>
-                              <option value="105">팀원</option>
+                              <option value="100" <c:if test="${member.mem_duty_md eq 100}"> selected="selected"</c:if>>CEO</option>
+                              <option value="101" <c:if test="${member.mem_duty_md eq 101}"> selected="selected"</c:if>>CFO</option>
+                              <option value="102" <c:if test="${member.mem_duty_md eq 102}"> selected="selected"</c:if>>본부장</option>
+                              <option value="103" <c:if test="${member.mem_duty_md eq 103}"> selected="selected"</c:if>>실장</option>
+                              <option value="104" <c:if test="${member.mem_duty_md eq 104}"> selected="selected"</c:if>>팀장</option>
+                              <option value="105" <c:if test="${member.mem_duty_md eq 105}"> selected="selected"</c:if>>팀원</option>
                             </select>
-                            	<input type="text" class="form-control" id="mem_duty" aria-label="Text input with dropdown button" readonly="readonly" />
+                            	<input type="text" class="form-control" id="mem_duty" aria-label="Text input with dropdown button" value="${member.mem_duty_md}" readonly="readonly" />
 	                      	</div>
                           </div>
                           
@@ -278,7 +288,7 @@ function sample6_execDaumPostcode() {
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-2 col-md-4">
-						            <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호">
+						            <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" value="${member.mem_mailcode }">
 						        </div>
 						        <div class="mb-1 col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
@@ -288,8 +298,8 @@ function sample6_execDaumPostcode() {
 								<input type="text" class="form-control" id="sample6_address" placeholder="주소"><br>
 							</div>
 							<div class="mb-2 col-md-6">
-								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소"><br>
-								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목">
+								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목"><br>
+								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소">
 							</div>
                           </div>
                           
@@ -370,6 +380,14 @@ function sample6_execDaumPostcode() {
 		});
 	});
 	
+	//이메일 주소 설정
+	$(document).ready(function(){
+		$('#mem_email3').on('change',function(){
+			var selected = $(this).val();
+			$('#mem_email2').val(selected);
+		});
+	});
+
 	$(document).ready(function(){
 		$('#mem_dept_md').on('change',function(){
 			var selected = $(this).val();

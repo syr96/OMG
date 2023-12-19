@@ -88,12 +88,12 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="purWriteForm" class="menu-link">
+                  <a href="/purWriteForm" class="menu-link">
                     <div data-i18n="Basic Inputs">발주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="purList" class="menu-link">
+                  <a href="/purList" class="menu-link">
                     <div data-i18n="Input groups">발주서 리스트</div>
                   </a>
                 </li>
@@ -102,17 +102,17 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">Form Layouts</div>
+                <div data-i18n="Form Layouts">매출</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="form-layouts-vertical.html" class="menu-link">
-                    <div data-i18n="Vertical Form">Vertical Form</div>
+                  <a href="/sales/salesInsertForm" class="menu-link">
+                    <div data-i18n="Vertical Form">판매서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="form-layouts-horizontal.html" class="menu-link">
-                    <div data-i18n="Horizontal Form">Horizontal Form</div>
+                  <a href="/sales/salesInquiry" class="menu-link">
+                    <div data-i18n="Horizontal Form">판매서 리스트</div>
                   </a>
                 </li>
               </ul>
