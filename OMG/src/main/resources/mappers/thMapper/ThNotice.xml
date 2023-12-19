@@ -36,11 +36,7 @@
 	</select>
 	
 	<select id="getNoticeList" parameterType="Board" resultType="Board">
-		SELECT b.*, (
-	                    SELECT  mem_name
-	                    FROM    member m
-	                    WHERE   m.mem_id = b.mem_id
-                    ) AS mem_name
+		SELECT b.*, GET_MEMBER_NAME(mem_id) AS mem_name
 		FROM 
 			(
 				SELECT rownum rn, a.*
@@ -62,11 +58,7 @@
 			SELECT brd.*, GET_MEMBER_NAME(mem_id) AS mem_name
 			FROM    (
 			            SELECT      /*+ INDEX_DESC(b pk_board) */
-			                        rownum rn , b.*, (
-									                    SELECT  mem_name
-									                    FROM    member m
-									                    WHERE   m.mem_id = b.mem_id
-							                    	 ) AS mem_name
+			                        rownum rn , b.*
 			            FROM        board b
 			            WHERE   	
 		]]>
