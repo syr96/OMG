@@ -14,31 +14,31 @@
 			<div class="col-12">
 				<h2>발주 상세</h2>
 			</div>
-			<table class="col-12">
-				<tr>
-					<td class="col-6 text-start">
-						<c:if test="${mem_id == pc.mgr_id && pc.pur_status == 0}">
-							<form action="completePur" class="col-6" method="POST">
-								<input type="hidden" name="pur_date" value="${pc.pur_date }">
-								<input type="hidden" name="custcode" value="${pc.custcode }">
-								<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
-								<button class="btn btn-outline-primary">발주 완료</button>
-							</form>
-						</c:if>
-						<div class="col-6">
-							<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
-								<form action="deletePur" class="col-6" method="POST">
-									<input type="hidden" name="pur_date" value="${pc.pur_date }">
-									<input type="hidden" name="custcode" value="${pc.custcode }">
-									<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
-									<button class="btn btn-outline-primary">발주 취소</button>
-								</form>
-							</c:if>
-						</div>
-					</td>
-					<td class="col-6 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></td>
-				</tr>
-			</table>
+			
+				<div class="col-12 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></div>
+			<div class="row">
+				<div class="col-2" style="width: 110px;">
+					<c:if test="${mem_id == pc.mgr_id && pc.pur_status == 0}">
+						<form action="completePur" method="POST">
+							<input type="hidden" name="pur_date" value="${pc.pur_date }">
+							<input type="hidden" name="custcode" value="${pc.custcode }">
+							<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+							<input type="submit" class="btn btn-outline-primary" value="발주 완료">
+						</form>
+					</c:if>
+				</div>
+				<div class="col-2">
+				<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
+					<form action="deletePur" method="POST">
+						<input type="hidden" name="pur_date" value="${pc.pur_date }">
+						<input type="hidden" name="custcode" value="${pc.custcode }">
+						<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+						<input type="submit" class="btn btn-outline-primary" value="발주 취소">
+					</form>
+				</c:if>
+				</div>
+			</div>
+			
 			
 			
 			<div class="text-center"><h3>정보</h3></div>
