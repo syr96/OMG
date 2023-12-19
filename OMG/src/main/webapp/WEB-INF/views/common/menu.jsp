@@ -88,12 +88,12 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="purWriteForm" class="menu-link">
+                  <a href="/purWriteForm" class="menu-link">
                     <div data-i18n="Basic Inputs">발주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="purList" class="menu-link">
+                  <a href="/purList" class="menu-link">
                     <div data-i18n="Input groups">발주서 리스트</div>
                   </a>
                 </li>
