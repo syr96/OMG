@@ -23,6 +23,9 @@ public interface JkWareService {
 	int 						insertInv(Warehouse warehouse);
 	int 						updateInv(Warehouse warehouse);
 	int 						deleteInv(Warehouse warehouse);
+	
+	// 발주 조회
+	List<Purchase>				purMonthData(String month);
 
 	
 
