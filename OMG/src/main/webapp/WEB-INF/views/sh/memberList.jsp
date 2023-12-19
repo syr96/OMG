@@ -9,6 +9,7 @@
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
+			  <input type="hidden" value="${currentDate}">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회 ${memberTotal }</h4>
               <!-- Basic Bootstrap Table -->
               <div class="card">
@@ -46,7 +47,7 @@
 	                    	<tr>
 	                    		<td><i class="fab fa-angular fa-lg text-danger me-1"></i><strong>${list.rn}</strong></td>
 	                    		<td>${list.mem_hiredate}</td>
-	                    		<td><a href="memberU?mem_id=${sessionScope.mem_id}">${list.mem_id}</a></td>
+	                    		<td><a href="memberU?mem_id=${list.mem_id}">${list.mem_id}</a></td>
 	                    		<td>${list.mem_name}</td>
 	                    		<td>
 	                    			<c:choose>
@@ -79,15 +80,15 @@
 		                              <i class="bx bx-dots-vertical-rounded"></i>
 		                            </button>
 		                            <div class="dropdown-menu">
-		                              <a class="dropdown-item" href="/memberU"
+		                              <a class="dropdown-item" href="memberU?mem_id=${list.mem_id}"
 		                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
 		                              >
 		                              <c:choose>
 		                              	<c:when test="${list.mem_leave == null and list.mem_resi == null }">
-			                              <a class="dropdown-item" href="/memberU"
+			                              <a class="dropdown-item" href="memberLeave?mem_id=${list.mem_id}"
 			                                ><i class="bx bx-edit-alt me-1"></i> 휴직</a
 			                              >
-			                              <a class="dropdown-item" href="/memberD;"
+			                              <a class="dropdown-item" href="memberResign?mem_id=${list.mem_id};"
 			                               ><i class="bx bx-trash me-1"></i> 퇴사</a
 			                               >
 		                              	</c:when>
