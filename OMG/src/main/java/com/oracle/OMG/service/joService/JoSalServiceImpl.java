@@ -159,6 +159,21 @@ public class JoSalServiceImpl implements JoSalService {
 		return salesDetail;
 		
 	}
+
+
+	@Override
+	public int UpdateSales(SalesDetail sales) {
+		int result = 0;
+		result = jsd.UpdateSales(sales);
+		
+		if(result == 0) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 데이터를 수정하는데 실패하였습니다.");
+		}
+		
+		return result;
+		
+		
+	}
 	
 	
 }

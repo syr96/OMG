@@ -10,12 +10,12 @@
 <body>
 <%@ include file="../common/menu.jsp" %>
 	<div>
-		<h1>판매입력</h1>
+		<h1>판매수정</h1>
 	</div>
 	<div class="my-5">
 		<div class="" id="detail-main-container">
 			<div class="container p-5" id="form-container">
-			<form action="salesInsert" method="post">
+			<form action="salesUpdate" method="post">
 				<div class="mb-3 ">
 				  <label for="sales_date" class="form-label">매출일자</label>
 				  <input type="text" class="form-control" name="sales_date" id="sales_date" value="${salesDetail.sales_date}" required="required" disabled>
@@ -27,7 +27,7 @@
 				<div class="mb-3 ">
 				  <label for="company" class="form-label">거래처명</label>
 				  <input type="hidden" name="custstyle" value="1">
-				  <select class="form-select" aria-label="custcode" name="custcode" required="required">
+				  <select class="form-select" aria-label="custcode" name="custcode" required="required" disabled>
 					<c:forEach var="custCode" items="${listCustCode}">
 						<option value="${custCode.custcode}" ${custCode.custcode == salesDetail.custcode? 'selected' : ''} >${custCode.company}</option>
 					</c:forEach>
