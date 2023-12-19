@@ -37,12 +37,6 @@
         <!-- 첫 번째 열 -->
         <div class="col-md-6">
             <form>
-<!--                 <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" for="custcode">거래처코드</label>
-                     <div class="col-sm-10">
-                         <input type="text" class="form-control"  readonly="readonly" placeholder="자동생성"/>
-                     </div>
-                </div> -->
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" for="company">상호명</label>
                     <div class="col-sm-10">
@@ -116,12 +110,12 @@
             </div>                                              
             </form>
         </div>
-        <!-- <div class="text-end mx-3" > -->
+        <div class="text-end mx-3" >
         <p class="demo-inline-spacing">
         <button class="btn btn-sm  btn-primary btn-show-insert" type="button" data-bs-toggle="" data-bs-target="l"
-               data-custcode="${customer.custcode}" >등록 </button>
+               data-custcode="${customer.custcode}">등록 </button>
         </p>
-        <!-- </div>    -->               			
+       </div>               			
     </div>
 </div>
 
@@ -264,6 +258,7 @@ $(document).ready(function () {
                         // 검색 결과를 표시& 기존 페이징 숨기기
                         $("#searchResultsTable").show();
                         $("#staticPagination").hide();
+                        
                         //아작스페이징 생성
                         updateAjaxPagination(paging);
                         $(".ajaxPagination").show();
@@ -316,16 +311,12 @@ $(document).ready(function () {
               <thead class="fixed-thead" style="background: #e1e2ff;"> 
                    <tr>
                      <th>거래처코드</th>
-<!--                      <th>유형</th> -->
                      <th style="width: 100px;">구분</th>
                      <th>상호명</th>
                      <th>대표자</th>
                      <th>사업자번호</th>
                      <th>업태</th>
                      <th>업종</th>
-<!--                      <th>전화번호</th>
-                     <th>이메일</th>
-                     <th>담당직원</th> -->
                      <th style="width: 90px;">상세</th>
                      <th style="width: 90px;">삭제</th>
                     </tr>
@@ -334,20 +325,15 @@ $(document).ready(function () {
                <c:forEach var="customer" items="${customerList}">
                     <tr>
                       <td><strong>${customer.custcode}</strong></td>
-                   <%--<td>${customer.custstyle == 0 ? '매입' : '매출'}</td> --%>
                         <td>${customer.cust_md == 101? '매입처' : '매출처'}</td>
                         <td>${customer.company }</td>
                         <td>${customer.ceo }</td>
                         <td>${customer.businum}</td>
                         <td>${customer.busitype}</td>
                         <td>${customer.busiitems}</td>
-<%--                    <td>${customer.tel}</td>
-                        <td>${customer.email}</td>
-                        <td>${customer.mem_name}</td> --%>
                         <td><button class="btn btn-xs  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
                           			data-custcode="${customer.custcode}" aria-controls="offcanvasScroll">상세 </button></td>                      
-                         <td><button class="btn btn-xs btn-primary" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button>  		</td>	 
-    <%--                   	<td><button class="btn btn-xs btn-primary" type="button"  onclick="location.href='/deleteCustomer?custcode=${customer.custcode}'">삭제</button></td> --%>
+                         <td><button class="btn btn-xs btn-primary" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button></td>	 
                       </tr>
                 </c:forEach>
                 </tbody>
@@ -375,6 +361,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 $(document).on('click', '.btn-show-detail', function () {
     var selectedCustCode = $(this).data('custcode');
@@ -410,15 +397,9 @@ $(document).on('click', '.btn-show-detail', function () {
 function confirmDelete(custcode) {
   var result = confirm("삭제하시겠습니까?");
   if (result) {
-    // 사용자가 확인을 클릭하면 deleteCustomer 엔드포인트로 리디렉션
     location.href = '/deleteCustomer?custcode=' + custcode;
-  } else {
-    // 사용자가 취소를 클릭하면 아무 작업도 수행하지 않음
-  }
+  } 
 }
-
-
-
 </script>
 
 <!-----------------거래처 상세조회---------------------------------------------------------> 
@@ -606,7 +587,6 @@ function confirmDelete(custcode) {
 				        </c:if>
 				    </ul>
 				</div>		             
-              
          
 </div>
 </div>

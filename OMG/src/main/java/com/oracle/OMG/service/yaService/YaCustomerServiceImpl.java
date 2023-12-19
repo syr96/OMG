@@ -88,7 +88,7 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		customerSearch = ycd.customerSearch(keyword, start, end);
 		return customerSearch;
 	}
-
+	//검색결과 수
 	@Override
 	public int totalSearch(String keyword) {
 		System.out.println("YaCustomerService totalSearch start....");
@@ -96,21 +96,22 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		System.out.println("YaCustomerServiceImpl  totalSearch start....");
 		return  totalSearch;
 	}
-
+	//월별실적조회리스트 
 	@Override
 	public List<Customer> customerSalesList(Customer customer) {
 		System.out.println("YaCustomerService customerSalesList start....");
 		List<Customer> customerSalesList = ycd.customerSalesList(customer);
 		return customerSalesList;
 	}
-
+	//거래처실적조회 리스트 거래처 선택
 	@Override
 	public List<Customer> customerListSelect(Customer customer) {
 		System.out.println("YaCustomerService customerListSelectstart...");
 		List<Customer> customerListSelect = ycd.customerListSelect(customer);
 		return customerListSelect;
 	}
-
+	
+	//거래처 실적조회 
 	@Override
 	public List<Customer> customerSalesSearch(int custcode, String month, String purDate) {
 		System.out.println("YaCustomerService customerSalesSearch start...");
@@ -119,7 +120,8 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		
 		return customerSalesSearch;
 	}
-
+	
+	//거래처전체조회
 	@Override
 	public List<Customer> SearchAllCustomer( String month) {
 		System.out.println("YaCustomerService SearchAllCustomer start...");
@@ -127,7 +129,8 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		 SearchAllCustomer= ycd.SearchAllCustomer(month);
 		return SearchAllCustomer;
 	}
-
+	
+	//전체월조회
 	@Override
 	public List<Customer> SearchForAllMonths( int custcode) {
 		System.out.println("YaCustomerServiceSearchForAllMonths start...");
@@ -135,7 +138,8 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		SearchForAllMonths = ycd.SearchForAllMonths(custcode);
 		return SearchForAllMonths;
 	}
-
+	
+	//거래처,월 모두 전체조회
 	@Override
 	public List<Customer> SearchAll(int custcode, String month) {
 		System.out.println("YaCustomerServiceSearchAll start...");
