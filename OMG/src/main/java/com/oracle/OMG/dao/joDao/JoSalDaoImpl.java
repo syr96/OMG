@@ -246,6 +246,13 @@ public class JoSalDaoImpl implements JoSalDao {
 	
 	
 	}
+
+
+	@Override
+	public int UpdateSales(SalesDetail sales) {
+		
+		return 0;
+	}
 			
 	
 }

@@ -18,5 +18,6 @@ public interface JoSalDao {
 	List<SalesDetail>       getSalesDetail(SalesDetail sales);
 	int                     getTotalSalesDetail(SalesDetail sales);
 	SalesDetail     		getSalesData(SalesDetail sales);
+	int                     UpdateSales(SalesDetail sales);
 
 }
