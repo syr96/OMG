@@ -39,6 +39,9 @@ public class Member {
     private int start;
     private int end;
     private String keyword;
+    //날짜 타입 변환용
+    private Date mem_hiredate_d;
+    
     //join
     private String com_cn;     //분류 내용
 }

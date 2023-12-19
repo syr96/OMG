@@ -29,6 +29,8 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return memberList;
 	}
 
+
+	
 	@Override
 	public int memberTotal() {
 		System.out.println("memberService memberTotal() Start");
@@ -49,6 +51,15 @@ public class ShMemberServiceImpl implements ShMemberService {
 		int total = md.searchMemberTotal(member);
 		return total;
 	}
+
+	@Override
+	public Member searchMemberDetail(int mem_id) {
+		System.out.println("memberService searchMemberDetail() Start");
+		Member member = md.searchMemberDetail(mem_id);
+		return member;
+	}
+
+
 
 
 }

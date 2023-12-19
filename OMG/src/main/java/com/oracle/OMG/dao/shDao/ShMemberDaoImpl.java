@@ -80,4 +80,17 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return total;
 	}
 
+	@Override
+	public Member searchMemberDetail(int mem_id) {
+		// TODO Auto-generated method stub
+		System.out.println("memberDao searchMemberDetail() Start");
+		Member member = null;
+		try {
+			member = session.selectOne("shSearchMemberDetail",mem_id);
+		} catch (Exception e) {
+			System.out.println("memberDao searchMemberTotal() Exception ->" + e.getMessage());
+		}
+		return member;
+	}
+
 }

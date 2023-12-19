@@ -64,9 +64,9 @@
 								<td style="text-align: center"><input type="checkbox" name="check" value="check"></td>
 								<td style="text-align: center">${num}</td>
 								<td style="text-align: center">${salesInquirySort.sales_date}</td>
-						  		<td style="text-align: center">${salesInquirySort.title}</td>
-								<td style="text-align: center">${salesInquirySort.company_name}</td>
-								<td style="text-align: center">${salesInquirySort.item_name}</td>
+						  		<td style="text-align: center"><a href="salesUpdateForm?sales_date=${salesInquirySort.sales_date}&custcode=${salesInquirySort.custcode}">${salesInquirySort.title}</a></td>
+								<td style="text-align: center">${salesInquirySort.company}</td>
+								<td style="text-align: center">${salesInquirySort.name}</td>
 								<td style="text-align: center">${salesInquirySort.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${salesInquirySort.sales_status == 0}">진행</c:if>

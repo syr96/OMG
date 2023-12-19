@@ -96,22 +96,18 @@ public class JoController {
 	
 	// 판매서 분류 -> 전체,진행,취소,완료,출고등록
 	@RequestMapping("salesInquirySort")
-//	public String salesInquirySort(SalesDetail sales, int sales_status, String currentPage, Model model, HttpServletRequest request) {
 	public String salesInquirySort(SalesDetail sales, String currentPage, Model model, HttpServletRequest request) {
 		UUID transactionId = UUID.randomUUID();
 		
 		try {
 			log.info("[{}]{}:{}", transactionId, "salesInquirySort", "Start");
-			// sales_status = Integer.parseInt(request.getParameter("sales_status"));
-			log.info("sales_status -> " + sales.getSales_status());
+						
 			int SortTotalSalesInquiry = jss.getSortTotalSalesInquiry(sales.getSales_status());
 								
 			Paging page = new Paging(SortTotalSalesInquiry, currentPage); 
 			sales.setStart(page.getStart());
 			sales.setEnd(page.getEnd());
-			// Target		
-			//  List<SalesDetail> salesInquirySort = jss.sortSalesInquiry(sales_status);
-			// sales.setSales_status(sales_status);  
+			
 			List<SalesDetail> salesInquirySort = jss.sortSalesInquiry(sales);
 			
 			model.addAttribute("sortTotalSalesInquiry", SortTotalSalesInquiry);
@@ -192,7 +188,7 @@ public class JoController {
 		}
 		
 		if(result > 0) {
-			return "redirect:jo/salesInuqiry";
+			return "redirect:salesInquiry";
 		} else {
 			model.addAttribute("msg", "입력실패 확인해보세요");
 			return "forward:salesInsertForm";
@@ -241,4 +237,24 @@ public class JoController {
 	}
 
 
+	// 판매서 수정
+	@RequestMapping("salesUpdate")
+	public String salesUpdate(SalesDetail sales, String currentPage, Model model) {
+		UUID transactionId = UUID.randomUUID();
+		int result = 0;
+		
+		try {
+			log.info("[{}]{}:{}", transactionId, "salesUpdate", "Start");
+			result = jss.UpdateSales(sales);
+			
+		} catch (Exception e) {
+			log.error("[{}]{}:{}", "salesUpdate Exception", e.getMessage());
+			
+		} finally {
+			log.info("[{}]{}:{}", transactionId, "salesUpdate", "End");		
+			
+		}
+				
+		return "salesUpdate";
+	}
 }

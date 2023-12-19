@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.jkDao.JkWareDao;
 import com.oracle.OMG.dto.Item;
+import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 
 import lombok.Data;
@@ -99,6 +100,13 @@ public class JkWareServiceImpl implements JkWareService {
 		System.out.println("service result"+result);
 		
 		return result;
+	}
+
+	@Override
+	public List<Purchase> purMonthData(String month) {
+		System.out.println("JkWareServiceImpl monthData Start...");
+		List<Purchase> purMonthData = jwd.purMonthData(month);
+		return purMonthData;
 	}
 
 

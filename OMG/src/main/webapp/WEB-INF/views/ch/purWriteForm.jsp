@@ -19,14 +19,19 @@
 				<div class="col-12">
 					<div class="row text-center bg-white">
 						
-						<table>
+						<table class="table">
 							<tr>
-								<td colspan="2" width="40%">제목: <input type="text" name="title" placeholder="발주전표_YYYYMMDD_회사명" style="width: 30%;" required="required"></td>
+								<td class="table-primary">제목: </td>
+								<td><input type="text" name="title" placeholder="발주전표_YYYYMMDD_회사명" style="width: 70%;" required="required"></td>
+								<td class="table-primary">담당자:</td>
+								<td><span id="mgr_name"></span></td>
 							</tr>
 							<tr>
-								<td>발주자 : ${member.mem_name }<input type="hidden" name="mem_id" value="${member.mem_id }"></td>
+								<td class="table-primary">발주자 : </td>
+								<td>${member.mem_name }<input type="hidden" name="mem_id" value="${member.mem_id }"></td>
+								<td class="table-primary">회사명:</td>
 								<td id="selectCustcode">
-									회사명:<select id="custcode">
+									<select id="custcode">
 											<c:forEach items="${pur_custList }" var="pur_custList">
 												<option value="${pur_custList.custcode }" data-name=${pur_custList.company } data-mgr_name=${pur_custList.mem_name }>${pur_custList.company }</option>
 											</c:forEach>
@@ -39,14 +44,11 @@
 									<button type="button" onclick="saveCustcode()">취소</button>
 								</td>
 							</tr>
-							<tr style="display: none;" id="mgr_row">
-								<td colspan="2">담당자:<span id="mgr_name"></span></td>
+							<tr>
+								<td colspan="4">비고 </td>
 							</tr>
 							<tr>
-								<td colspan="2">비고 </td>
-							</tr>
-							<tr>
-								<td colspan="2"><textarea rows="10" cols="100" name="ref" id="ref"></textarea></td>
+								<td colspan="4"><textarea rows="10" cols="100" name="ref" id="ref"></textarea></td>
 							</tr>
 						</table>
 					</div>
@@ -63,8 +65,7 @@
 								<td>제품명</td>
 								<td>단가</td>
 								<td>수량 </td>
-								<td class="text-end">공급가액</td>
-								<td></td>
+								<td>공급가액</td>
 							</tr>
 						</thead>
 						<tbody id="pur_body">
@@ -81,9 +82,9 @@
 <script type="text/javascript">
 	var rownum = 0;
 	function chkduplication(data){
-		var chkdupli = $('[id^="chkDupli"]');
-		var values = [];
-		var result = true;
+		var chkdupli = $('[id^="chkDupli"]'); // id가 chkDupli 인 항목들 선택 
+		var values = []; // 위에 선택된 항목들의 값을 담을 배열 
+		var result = true; // 성
 		chkdupli.each(function(){
 			values.push($(this).val());
 		})
@@ -96,13 +97,16 @@
 		
 		return result;
 	}
-	
-	function inSertDetail(){
+	// 발주서 작성 (발주서Detail Input )
+	function wirteDetail(){
 		var pur_body = $("#pur_body");
 		var code = $("#code").val();
 		var qty = $("#qty").val();
 		var chk = chkduplication(code);
-		if(chk == true){
+		if(qty == ""){
+			alert("수량을 입력해 주세요");
+			$("#qty").focus();
+		} else if(chk == true){
 			$.ajax({
 				data:{code : code, rownum : rownum, qty : qty},
 				url: "wirteDetail",
@@ -137,7 +141,6 @@
 			$("#inputCustCode").show();
 			$("#inputCode").prop("disabled",false);
 			$("#inputCode").val(custcode);
-			$("#mgr_row").show();
 			$("#company_name").html(company_name);
 			$("#mgr_name").html(mgr_name);
 			$("#selectCustcode").hide();
@@ -147,7 +150,8 @@
 			$("#inputCustCode").hide();
 			$("#inputCode").prop("disabled",true);
 			$("#selectCustcode").show();
-			$("#mgr_row").hide();
+			$("#mgr_name").empty();
+			$("#pur_body").empty();
 			$("#smtbtn").prop("disabled",true);
 			$("#selectItems").empty();
 		}
@@ -156,6 +160,16 @@
 	
 	function cancelItem(data){
 		$("#row"+data).remove();
+	}
+	
+	function price_cal(rownum){
+		var price = $("#price"+rownum).val();
+		var qty   = $("#qty"+rownum).val();
+		price = parseFloat(price);
+		qty = parseFloat(qty);
+		
+		var totalPrice = new Intl.NumberFormat('en-US').format(price * qty);
+		$("#totalPrice"+rownum).html(totalPrice);
 	}
 </script>
 </body>

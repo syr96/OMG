@@ -94,4 +94,11 @@
 		Where pur_date = #{pur_date}
 		and custcode = #{custcode} 
 	</delete>
+	
+	<update id="chpurUpdate">
+		Update Purchase
+		Set title = #{title}, ref = #{ref}
+		Where pur_date = #{pur_date}
+		and custcode = #{custcode} 
+	</update>
 </mapper>

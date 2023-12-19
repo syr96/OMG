@@ -50,7 +50,7 @@
 				<a href="/purWriteForm"></a>
 				<div class="table-responsive">
 				  <table class="table bg-white bordered">
-				    <thead class="table-dark">
+				    <thead class="table-primary">
 				      <tr>
 				        <td>No.</td>
 						<td>제목</td>

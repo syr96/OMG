@@ -11,4 +11,5 @@ public interface ShMemberService {
 	int			 memberTotal();
 	List<Member> memberSearchList(Member member);
 	int 		 searchMemberTotal(Member member);
+	Member 		 searchMemberDetail(int mem_id);
 }

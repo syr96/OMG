@@ -24,8 +24,12 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
+import com.oracle.OMG.dto.Customer;
+import com.oracle.OMG.dto.PurDetail;
+import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
+import com.oracle.OMG.service.chService.ChCustService;
+import com.oracle.OMG.service.chService.ChPurService;
 import com.oracle.OMG.service.jkService.JkWareService;
 import com.oracle.OMG.service.yrService.YrItemService;
 
@@ -39,6 +43,8 @@ public class JkController {
 	private static final Logger logger = LoggerFactory.getLogger(JkController.class);
 	private final JkWareService jws;
 	private final YrItemService	yis;
+	private final ChCustService	ccs;
+	private final ChPurService	cps;
 	
 	// 기초재고등록
 	@RequestMapping(value="/invRegister")
@@ -132,36 +138,7 @@ public class JkController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 중 오류가 발생했습니다.");
 	    }
 	}
-	
-//	// 기초재고 삭제
-//	@RequestMapping(value="/deleteInv")
-//	public String deleteInv(@RequestParam(value = "monthSelect2", required = false) String selectedMonth,
-//	                        @RequestParam(value = "code") int code, Model model,
-//	                        Warehouse warehouse) {
-//	    System.out.println("JkController deleteInv start...");
-//	
-//	    if (selectedMonth != null) {
-//	        selectedMonth = selectedMonth.replace("-", "");
-//	        warehouse.setYm(selectedMonth);
-//	        System.out.println("selectedMonth: " + selectedMonth);
-//	    }
-//
-//	    try {
-//	        int result = jws.deleteInv(warehouse);
-//	        System.out.println("result: " + result);
-//	      
-//	        // 성공적으로 처리된 경우     // 성공적으로 처리된 경우
-//	        model.addAttribute("successMessage", "정상적으로 삭제되었습니다."); 
-//	        
-//	        return "jk/invRegister";
-//	        
-//	    } catch (Exception e) {
-//	        // 오류 처리
-//	        e.printStackTrace();
-//	        // 사용자에게 오류 메시지를 보여줄 수 있는 페이지로 이동
-//	        return "errorPage";
-//	    }
-//	}
+
 		
 	// 제품정보 조회(업데이트용)
 	@GetMapping("/getItemDetails")
@@ -187,16 +164,30 @@ public class JkController {
 	    return response;
 	}
 
-	
+	// 발주 조회
+	@GetMapping("/invPurList")
+	@ResponseBody
+	public List<Purchase> invPurList(@RequestParam(name = "month") String month) {
+	    System.out.println("JkController invPurList start....");
+	    logger.info("Received month: {}", month);
+	 
+	    List<Purchase> purMonthData = jws.purMonthData(month);
+	    
+	    logger.info("JkController monthData.size(): {}", purMonthData.size());
+
+	    return purMonthData;
+		
+		
+	}
 	
 	// 입고등록
 	@RequestMapping(value="/inboundRegister")
-	public String inboundRegister(HttpSession session) {
+	public String inboundRegister(Model model, Purchase purchase) {
 		System.out.println("JkController inboundRegister start...");
-	
 		
 		return "jk/inboundRegister";
 		}
+	
 	
 	// 월별 재고리스트 조회
 

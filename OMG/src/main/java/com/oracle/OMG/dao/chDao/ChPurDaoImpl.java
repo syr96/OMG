@@ -170,7 +170,21 @@ public class ChPurDaoImpl implements ChPurDao {
 		
 		int result = 0;
 		try {
-			result = session.update("chdeletePur", purchase);
+			result = session.delete("chdeletePur", purchase);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl deletePur e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
+	@Override
+	public int purUpdate(Purchase purchase) {
+		System.out.println("ChPurDaoImpl purUpdate start...");
+		
+		int result = 0;
+		try {
+			result = session.update("chpurUpdate", purchase);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
