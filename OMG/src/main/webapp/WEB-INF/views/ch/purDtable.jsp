@@ -14,7 +14,7 @@
 		<tr>
 			<td>제품명</td>
 			<td>단가</td>
-			<td>수량 </td>
+			<td class="text-center">수량 </td>
 			<td class="text-end">공급가액</td>
 		</tr>
 	</thead>
@@ -22,13 +22,13 @@
 		<tr id="row${status.index }">
 			<td>${pdList.item_name }</td>
 			<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
-			<td id="td${status.index }">
+			<td id="td${status.index }" class="text-center">
 				${pdList.qty }개
 				<c:if test="${pc.pur_status == 0 && mem_id == pc.mem_id}">
 					<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 				</c:if>
 			</td>
-			<td id="inputTd${status.index }" style="display: none;">
+			<td id="inputTd${status.index }" style="display: none;" class="text-center">
 					<input type="number" name="qty${status.index }" value="${pdList.qty }" id="qty${status.index }" disabled="disabled">
 					<input type="hidden" name="code${status.index }" value="${pdList.code }" id="code${status.index }" disabled="disabled">
 					<button type="button" onclick="changeQty(${status.index })" class="btn btn-outline-primary">완료</button>
@@ -40,9 +40,9 @@
 	<tr>
 		<td></td>
 		<td>합계</td>
-		<td>${totalQty }개</td>
+		<td class="text-center">${totalQty }개</td>
 		<td class="text-end"><fmt:formatNumber value="${totalPrice }" pattern="#,###"/>원</td>
-	</tr>
+		</tr>
 </table>
 <%@ include file="../common/footer.jsp" %>
 </body>

@@ -128,4 +128,14 @@ public class ChPurServiceImpl implements ChPurService {
 		return result;
 	}
 
+	@Override
+	public int purUpdate(Purchase purchase) {
+		System.out.println("ChPurServiceImpl purUpdate Start...");
+		int result = 0;
+		
+		result = chPurDao.purUpdate(purchase);
+		
+		return result;
+	}
+
 }

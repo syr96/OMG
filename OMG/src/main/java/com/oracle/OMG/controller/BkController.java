@@ -151,10 +151,13 @@ public class BkController {
 			if(loginResult.getMem_resi() == null) {
 				// ?: 인터셉터가 아니라 일반 로그인이면 여기서 세션 담아야 
 				session = request.getSession();
+				session.setAttribute("login", true);	// "login" 속성을 설정
 				session.setAttribute("mem_id", loginResult.getMem_id());
 				session.setAttribute("mem_name", loginResult.getMem_name());
 				session.setAttribute("mem_dept_lg", loginResult.getMem_dept_lg());
 				session.setAttribute("mem_dept_md", loginResult.getMem_dept_md());
+				session.setAttribute("mem_right", loginResult.getMem_right());
+				
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
 
@@ -189,12 +192,14 @@ public class BkController {
 		
 		System.out.println("BkController sendCode Start...");
 		System.out.println("BkController sendCode member.getMem_name() -> " + member.getMem_name());
+		System.out.println("BkController sendCode member.getMem_email() -> " + member.getMem_email());
 		
 		// String mem_name = member.getMem_name();
 		// int tel = formData.getMem_tel();
 		
 		// DB에서 name, tel 확인 후 일치 여부 판단		mapper key:	bkcheckNameAndTel
 		Member checkResult = bMemberS.checkNameAndTel(member);
+		System.out.println("member");
 		
 		Map<String, String> response = new HashMap<>();
 		

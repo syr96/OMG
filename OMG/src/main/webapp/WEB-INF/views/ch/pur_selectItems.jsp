@@ -14,6 +14,6 @@
 		</c:forEach>
 	</select>
 수량: <input type="number" id="qty">
-<button type="button" onclick="inSertDetail()" id="insertBtn">추가</button>
+<button type="button" onclick="wirteDetail()" id="insertBtn">추가</button>
 </body>
 </html>

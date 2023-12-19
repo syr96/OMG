@@ -227,6 +227,15 @@ public class ChController {
 		return "redirect:purList";
 	}
 	
+	// 발주서 ref 수정 
+	@ResponseBody
+	@PostMapping("refUpdate")
+	public int refUpdate(Purchase purchase) {
+		int result = chPurService.purUpdate(purchase);
+		
+		return result;
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("insertDetail")
