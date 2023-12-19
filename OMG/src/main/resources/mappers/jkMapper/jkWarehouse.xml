@@ -75,5 +75,21 @@
 		    AND code = #{code}
 		</delete>
 		
-
+		<select id="purMonthData" parameterType="Purchase" resultType="Purchase">
+		Select *
+		From (Select ROWNUM rn, a.*
+				From(Select p.*, m.mem_name appli_name, c.company, c.mem_id mgr_id
+				    From purchase p, member m, customer c
+				    Where p.mem_id = m.mem_id
+	                <if test="custcode > 0">
+	                    AND (p.custcode = #{custcode})
+	                </if>
+	                <if test="pur_date != null">
+	                    AND (p.pur_date = #{pur_date})
+	                </if>
+			        and p.custcode = c.custcode
+				    Order by p.pur_date DESC) a
+		     ) b
+		WHERE rn BETWEEN #{start} and #{end}
+	</select>
 </mapper>
