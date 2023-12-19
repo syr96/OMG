@@ -72,11 +72,21 @@ public class BkController {
 	
 	
 	@RequestMapping(value = "/403forbidden")
-	public String errorPage() {
+	public String forbidden() {
 		
 		System.out.println("BkController 403forbidden Start...");
 		
 		return "bk/403forbidden";
+	}
+
+	
+	
+	@RequestMapping(value = "/errorLogin")
+	public String errorPage() {
+		
+		System.out.println("BkController errorLogin Start...");
+		
+		return "bk/errorLogin";
 	}
 	
 	
@@ -143,8 +153,8 @@ public class BkController {
 				session = request.getSession();
 				session.setAttribute("mem_id", loginResult.getMem_id());
 				session.setAttribute("mem_name", loginResult.getMem_name());
-				session.setAttribute("Mem_dept_lg", loginResult.getMem_dept_lg());
-				session.setAttribute("Mem_dept_md", loginResult.getMem_dept_md());
+				session.setAttribute("mem_dept_lg", loginResult.getMem_dept_lg());
+				session.setAttribute("mem_dept_md", loginResult.getMem_dept_md());
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
 
