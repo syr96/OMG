@@ -8,8 +8,10 @@ import com.oracle.OMG.dao.yrDao.YrItemDao;
 import com.oracle.OMG.dto.Item;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class YrItemServiceImpl implements YrItemService {
 
@@ -17,28 +19,28 @@ public class YrItemServiceImpl implements YrItemService {
 	
 	@Override
 	public List<Item> itemList(Item item) {
-		System.out.println("YrItemServiceImpl itemList start");
+		log.info("itemList start");
 		List<Item> itemList = yid.itemList(item);
 		return itemList;
 	}
 
 	@Override
 	public Item selectItem(int code) {
-		System.out.println("YrItemServiceImpl selectItem start");
+		log.info("selectItem start");
 		Item itemDetail = yid.selectItem(code);
 		return itemDetail;
 	}
 
 	@Override
 	public int insertItem(Item item) {
-		System.out.println("YrItemServiceImpl insertItem start");
+		log.info("insertItem start");
 		int result = yid.insertItem(item);
 		return result;
 	}
 
 	@Override
 	public int updateItem(Item item) {
-		System.out.println("YrItemServiceImpl updateItem start");
+		log.info("updateItem start");
 		int result = yid.updateItem(item);
 		return result;
 	}

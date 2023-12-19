@@ -35,7 +35,7 @@ public class YrItemController {
 			            , @RequestParam(value = "cate_md", required = false) String cate_md
 			            , @RequestParam(value = "keyword", required = false) String keyword
 			               ) {
-		System.out.println("YrItemController itemList start");
+		log.info("itemList start");
 		
 		Item item = new Item();
 		int cate_md_int = 0;
@@ -68,7 +68,7 @@ public class YrItemController {
 	// 아이템 상세보기
 	@GetMapping("/detail")
 	public String itemDetail(@RequestParam("code") int code, Model model) {
-		System.out.println("YrItemController itemDetail start");
+		log.info("itemDetail start");
 		
 		// 제품 상세정보
 		Item itemDetail = yis.selectItem(code);
@@ -89,7 +89,7 @@ public class YrItemController {
 	@PostMapping("/update")
 	public String itemUpdate(Item item, RedirectAttributes rttr) {
 		// RedirectAttributes: redirect로 보낼 때, 값을 담아서 보낼 수 있다
-		System.out.println("YrItemController itemUpdate start");
+		log.info("itemUpdate start");
 		
 		int result = yis.updateItem(item);
 		
@@ -101,7 +101,7 @@ public class YrItemController {
 	
 	@GetMapping("/create")
 	public String itemCreate(Model model) {
-		System.out.println("YrItemController itemCreate start");
+		log.info("itemCreate start");
 		
 		// 거래처 전체 리스트
 		List<Customer> customer = ycss.customerList();
@@ -118,7 +118,7 @@ public class YrItemController {
 	@PostMapping("/createPro")
 	public String itemCreatePro(Item item, RedirectAttributes rttr) {
 		// RedirectAttributes: redirect로 보낼 때, 값을 담아서 보낼 수 있다
-		System.out.println("YrItemController itemCreatePro start");
+		log.info("itemCreatePro start");
 		
 		int result = yis.insertItem(item);
 		
