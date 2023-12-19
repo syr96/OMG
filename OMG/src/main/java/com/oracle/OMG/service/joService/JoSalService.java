@@ -9,8 +9,14 @@ public interface JoSalService {
 	List<SalesDetail>      getListSalesInquiry(SalesDetail sales);
 	List<SalesDetail>      searchSalesInquiry(SalesDetail sales);
 	int                    getTotalSalesInquiry();
-	int                    getSearchTotalSalesInquiry();
-	int                    getSortTotalSalesInquiry();
-	List<SalesDetail>      sortSalesInquiry(int sales_status);
+	int                    getSearchTotalSalesInquiry(SalesDetail sales);
+	int                    getSortTotalSalesInquiry(int sales_status);
+	List<SalesDetail>      sortSalesInquiry(SalesDetail salesDetail);
+	int                    deleteSalesDetail(SalesDetail sales);
+	List<SalesDetail>      getListCustCode(int custstyle);
+	int                    InsertSales(SalesDetail sales);
+	List<SalesDetail>      getSalesDetail(SalesDetail sales);
+	int                    getTotalSalesDetail(SalesDetail sales);
+	SalesDetail     	   getSalesData(SalesDetail sales);
 
 }

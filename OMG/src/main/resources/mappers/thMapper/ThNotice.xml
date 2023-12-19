@@ -59,9 +59,9 @@
 	
 	<select id="getListWithPaging" resultType="Board">
 		<![CDATA[
-			SELECT brd.*
+			SELECT brd.*, GET_MEMBER_NAME(mem_id) AS mem_name
 			FROM    (
-			            SELECT      /*+ INDEX_DESC(board pk_board) */
+			            SELECT      /*+ INDEX_DESC(b pk_board) */
 			                        rownum rn , b.*, (
 									                    SELECT  mem_name
 									                    FROM    member m

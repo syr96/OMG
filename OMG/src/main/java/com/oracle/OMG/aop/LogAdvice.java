@@ -15,8 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogAdvice {
 	
-	@Pointcut("within( com.oracle.OMG.service.thService*)")
-	
 	@Around("execution(* com.oracle.OMG.service.thService.ThReplyService*.*(..))")
 	public Object logTime(ProceedingJoinPoint pjp) {
 		

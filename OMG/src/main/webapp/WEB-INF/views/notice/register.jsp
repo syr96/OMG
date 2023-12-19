@@ -49,10 +49,11 @@
 								<textarea class="form-control" id="exampleFormControlTextarea1" name="brd_cn" rows="15"></textarea>
 							</div>
 		
-							<div class="mb-3">
-								<label for="formFile" class="form-label">첨부파일</label>
-								<input class="form-control" type="file" id="formFile">
-							</div>
+							<!-- 첨부파일 추후에 꼭 하기 -->
+<!-- 							<div class="mb-3"> -->
+<!-- 								<label for="formFile" class="form-label">첨부파일</label> -->
+<!-- 								<input class="form-control" type="file" id="formFile"> -->
+<!-- 							</div> -->
 						
 					</div>
 				</div>
