@@ -56,6 +56,7 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 };
+
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -72,7 +73,7 @@ function sample6_execDaumPostcode() {
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img id="img" class="d-block rounded" style="height: 150px; width: 150px; display: none"/>
+                        <img id="img" class="d-block rounded" src="${pageContext.request.contextPath}/upload/sh/${member.mem_img }" style="height: 150px; width: 150px; display: none"/>
                         <div class="button-wrapper">
                           <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -142,6 +143,7 @@ function sample6_execDaumPostcode() {
                                id="mem_name"
                                name="mem_name"
                                value="${member.mem_name }"
+                               oninput="nameValid(this)"
                              />
                            </div>
                            
@@ -287,6 +289,7 @@ function sample6_execDaumPostcode() {
                           <div class="mb-3 col-md-6">
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
+                            <c:set var="addressParts" value="${fn:split(member.mem_address, '/')}" />
 						        <div class="mb-2 col-md-4">
 						            <input type="text" class="form-control" id="sample6_postcode" placeholder="우편번호" value="${member.mem_mailcode }">
 						        </div>
@@ -295,11 +298,11 @@ function sample6_execDaumPostcode() {
 						        </div>
 						    </div>
 	                        <div class="mb-2 col-md-8">
-								<input type="text" class="form-control" id="sample6_address" placeholder="주소"><br>
+								<input type="text" class="form-control" id="sample6_address" value="${addressParts[0]}" placeholder="주소"><br>
 							</div>
 							<div class="mb-2 col-md-6">
-								<input type="text"class="form-control" id="sample6_extraAddress" placeholder="참고항목"><br>
-								<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소">
+								<input type="text"class="form-control" id="sample6_extraAddress" value="${addressParts[1]}" placeholder="참고항목"><br>
+								<input type="text" class="form-control" id="sample6_detailAddress" value="${addressParts[2]}"  placeholder="상세주소">
 							</div>
                           </div>
                           
@@ -348,6 +351,12 @@ function sample6_execDaumPostcode() {
 		
 <%@ include file="../common/footer.jsp" %>
 <script type="text/javascript">
+
+	function nameValid(words){
+		// 입력된 값에서 한글이 아닌 문자를 정규식으로 찾아 제거
+		words.value = words.value.replace(/[^가-힣]/g, '');
+	}
+
 	//이메일 도메인 유효성 검사 //create 버튼 클릭시 체크 할 메소드 추가 예정
 	$(document).ready(function(){
 		$('#mem_email2').on('change',function(){

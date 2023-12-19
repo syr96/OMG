@@ -57,9 +57,87 @@
             }
         }).open();
     };
+    
+    
 </script>
 <script type="text/javascript">
+	function checkPswd1(){
+		if(pwFlag) return true;
+		
+		var pw = $('#basic-default-password1').val();
+		var oSpan = $('spanPw1').val();
+		var oMsg = $('pswd1Msg').val();
+		var input =$('#basic-default-password1');
+		
+		//필수 입력
+		if(pw == "") {
+			​​​​​​​​showErrorMsg(oMsg,"필수 정보입니다.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}
+		
+		//기본 유효성검사
+		​​​​if (isValidPasswd(pw) != true) { //유효성검사
+			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 1); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
+			
+			​​​​​​​​showErrorMsg(oMsg,"8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}else if(checkpswd1_sameNum(pw) == true){ //비밀번호 연속동일숫자가 맞으면
+			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 2); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
+			​​​​​​​​showErrorMsg(oMsg,"보안상 연속된 숫자는 제한합니다.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}
+		}
+//----------------------pw1 패스워드 검증 ------------------------------
+	function isValidPasswd(pw){
+		if(pw == ""){
+			return false;
+		}
+		
+		//공백 제거
+		var space = checkSpace(pw);
+		if(space){
+			return false;
+		}
+		
+		//8자리 이상 설정
+		if(pw.length<8){
+			return false;
+		}
+		
+		​​​​//8~12자의 영문 소문자, 숫자, 특수문자만 사용 가능
+		​​​​var isValid = /^[A-Za-z0-9`\-=\\\[\];',\./~!@#\$%\^&\*\(\)_\+|\{\}:"<>\?]{8,16}$/;
+		​​​​if (!isValid.test(pw)) {
+		​​​​​​​​return false;
+		​​​​}
+		
+		return true;
+	}
+	
+//----------------------pw1 연속숫자 검사 ------------------------------
+	function checkpswd1_sameNum(pw){
+		var cnt = 0;
+		//연속 숫자 제한
+		for (var i = 0; i < str.length; ++i) {
+			​​​​​​​​if (str.charAt(0) == str.substring(i, i + 1))
+			​​​​​​​​​​​​++cnt;
+		}
+		if (cnt == str.length) {
+			​​​​​​​​console.log("연속된 숫자");
+			​​​​​​​​console.log("입력한 Pwd값 검증2 : " + str);
+			​​​​​​​​return true;
+			​​​​}
+	}
 
+
+
+	function showErrorMsg(errorId,errorMessage) {
+		var error = document.getElementById('pswd1Msg');
+		// 오류 메시지를 해당 DOM 요소에 추가합니다.
+		errorId = errorMessage;
+	}
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -134,13 +212,13 @@
                           
                           <!-- mem_hiredate -->
                           <div class="mb-3 col-md-6">
-	                        <label for="mem_hiredate_d" class="col-md-2 col-form-label">입사 일자</label>
+	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" name="mem_hiredate_d" id="mem_hiredate_d" />
+	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" />
 	                        </div>
 	                    </div>
                        
-                       	<!-- mem_duty -->
+                       	<!-- mem_name -->
                         <div class="mb-3 col-md-6">
                           <label for="mem_name" class="form-label">성명</label>
                           <input
@@ -148,7 +226,6 @@
                            type="text"
                            id="mem_name"
                            name="mem_name"
-                           
                           />
                         </div>
                            
@@ -174,14 +251,14 @@
 		                         class="form-check-input"
 		                         type="radio"
 		                         value="M"
-		                         id="mem_sex"
+		                         id="mem_sex_m"
 		                        />남
 		                       <input
 		                         name="mem_sex"
 		                         class="form-check-input"
 		                         type="radio"
 		                         value="F"
-		                         id="mem_sex"
+		                         id="mem_sex_f"
 		                         
 		                       />여
 	                        	</div>
@@ -274,7 +351,7 @@
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-3 col-md-4">
-						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" placeholder="우편번호">
+						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" maxlength="6" min="10000" placeholder="우편번호">
 						        </div>
 						        <div class="col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
@@ -296,8 +373,8 @@
 	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>
-	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1"/>
-		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
+	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1" oninput="checkPswd1()"/>
+		                          <span id="spanPw1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 		                          <span id="pswd1Msg" style="display: none" aria-live="assertice">8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.</span>
@@ -364,6 +441,20 @@
 		});
 	});
 	
+	//이메일 주소 설정
+	$(document).ready(function(){
+		$('#mem_email3').on('change',function(){
+			var selected = $(this).val();
+			var email2 = $('#mem_email2');
+			if(selected||selected!=""){
+				$('#mem_email2').val(selected);
+				email2.prop('readonly', true);
+			}else{
+				email2.prop('readonly', false);
+			}
+		});
+	});
+	
 	//input type=file reset 함수
 	$(document).ready(function(){
 		$("#reset").on('click',function(){
@@ -383,6 +474,15 @@
 		});
 	});
 	
+	//우편번호 input 숫자만 입력 가능하게 하는 함수
+	$(document).ready(function(){
+		$('#sample6_postcode').on('input',function(){
+			//숫자 이외의 문자 제거
+			var sanitizedValue = $(this).val().replace(/[^0-9]/g, '');
+			$(this).val(sanitizedValue);
+		});
+	});
+	
 	//전화번호 input 숫자만 입력 가능하게 하는 함수
 	$(document).ready(function(){
 		$('#mem_phone').on('input',function(){
@@ -391,21 +491,24 @@
 		});
 	});
 	
-	//이메일 주소 설정
+	//이름 input 한글만 입력 가능하게 하는 함수
 	$(document).ready(function(){
-		$('#mem_email3').on('change',function(){
-			var selected = $(this).val();
-			$('#mem_email2').val(selected);
+		$('#mem_name').on('input',function(){
+			var sanitizedValue = $(this).val().replace(/[^ㄱ-ㅎ가-힣ㅏ-ㅣ]/g,'');
+			$(this).val(sanitizedValue);
 		});
 	});
-
+	
+	//option 선택마다 input 값 노출(부서)
 	$(document).ready(function(){
 		$('#mem_dept').on('change',function(){
 			var selected = $(this).val();
 			$('#mem_dept_md').val(selected);
+			
 		});
 	});
 	
+	//option 선택마다 input 값 노출(직위)
 	$(document).ready(function(){
 		$('#mem_posi').on('change',function(){
 			var selected = $(this).val();
@@ -413,6 +516,7 @@
 		});
 	});
 	
+	//option 선택마다 input 값 노출(직급)
 	$(document).ready(function(){
 		$('#mem_duty').on('change',function(){
 			var selected = $(this).val();
@@ -420,6 +524,7 @@
 		});
 	});
 	
+	//비밀번호 1,2 입력 값 비교 후 input 문장 출력
 	$(document).ready(function(){
 		$('#basic-default-password2').on('change',function(){
 			var pw1 = $('#basic-default-password1').val();
@@ -439,6 +544,7 @@
 		});
 	});
 	
+	//비밀번호 1,2 입력 값 비교 후 input 문장 출력
 	$(document).ready(function(){
 		$('#basic-default-password1').on('change',function(){
 			var pw1 = $('#basic-default-password1').val();
@@ -457,90 +563,7 @@
 			}			
 		});
 	});
-/* 	
-	$('#formAccountSettings').on('submit', function(event) {
-        event.preventDefault(); // 다른 이벤트 방지
-        console.log('Form submitted');
-        return checkValidation();
-	});	 */
-	
-	
-	/* //유효성 체크
-	function checkValidation(){
-		alert("함수 실행");
-		//권리 변수 설정
-		var right = $('input[name="mem_right"]:checked').val();
-		//비밀번호 유효성 검사
-		var pw1 = $('#basic-default-password1').val();
-		var pwMessage = $('#basic-default-password2').css('display');
-		var pwRegex = /^[a-zA-Z0-9._-]{8,20}/;
-		if (pwMessage === 'block'){
-			alert("비밀번호 일치");
-		//등록 확인 시 함수
-		var requestData = {
-				//체크박스여서 checked 되면 값 지정
-				mem_right	 : right,
-				mem_hiredate_d : $('#mem_hiredate').val(),
-				mem_name	 : $('#mem_name').val(),
-				mem_bd		 : $('#mem_bd').val(),
-				mem_sex		 : $('input[name="mem_sex"]:checked').val(),
-				mem_email	 : $('#mem_email1').val() + "@" + $('#mem_email2').val(),
-				mem_phone	 : $('#mem_phone').val(),
-				mem_dept_md	 : $('#mem_dept_md').val(),
-				mem_posi_md	 : $('#mem_posi_md').val(),
-				mem_duty_md	 : $('#mem_duty_md').val(),
-				mem_mailcode : $('#sample6_postcode').val(),
-				mem_address  : $('#sample6_address').val()+"/"+$('#sample6_extraAddress').val()+"/"+$('#sample6_detailAddress').val(),
-				mem_pw		 : $('#basic-default-password1').val(),
-			};
-		
-		var requestDataString = JSON.stringify(requestData);
-		
-		alert("requestData->"+requestDataString);
-		console.log("requestData->"+requestDataString);
-		
-		//이미지 데이터 수집
-		var image = $('#upload')[0].files[0];
-		var formData = new FormData();
-		formData.append("img",image);
-		formData.append("requestData",requestDataString);
-		alert("img");
-		
-		//JSON 데이터를 Blob으로 변환하여 FormData에 추가
-		var jsonBlob = new Blob([requestDataString], {type:"application/json"});
-		alert("request");
 
-		if(confirm("등록을 완료하시겠습니까?")){
-			alert("ajax 실행");
-			// 추가된 부분: 'right' 파라미터를 AJAX 요청에 추가
-		   // checkMember(formData);
-		    checkMember(requestDataString);
-			}else{
-				alert("등록 취소");
-			}
-		} else {
-			alert("비밀번호 ");
-		}
-	}
-	
-	function checkMember(formData){
-		alert("checkMember formData->"+formData);
-		console.log("checkMember formData->"+formData);
-		$.ajax({
-			type: "POST",
-			url : "createMember",
-			data : formData,
-			//content-type 헤더를 'application/x-www-form-urlencoded; charset=UTF-8' 로 설정하지 않기 위해
-			contentType : false,		
-			processData : false,
-			success : function(result){
-				alert("ajax 성공");			
-				},
-			error : function(request, status, error){
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		}); 
-	}*/
 	
 </script>
 </body>
