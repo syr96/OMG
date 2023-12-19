@@ -67,32 +67,6 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return memberList;
 	}
 	
-	//리스트 내 휴직 처리
-	@Override
-	public int memberLeave(int mem_id) {
-		System.out.println("memberDao memberLeave() Start");
-		int result = 0;
-		try {
-			result = session.update("shMemberLeave",mem_id);
-		} catch (Exception e) {
-			System.out.println("memberDao memberLeave() Exception ->" + e.getMessage());
-		}
-		return result;
-	}
-	
-	//리스트 내 휴직 처리
-	@Override
-	public int memberResign(int mem_id) {
-		System.out.println("memberDao memberLeave() Start");
-		int result = 0;
-		try {
-			result = session.update("shMemberLeave",mem_id);
-		} catch (Exception e) {
-			System.out.println("memberDao memberLeave() Exception ->" + e.getMessage());
-		}
-		return result;
-	}
-	
 	//조건에 적합한 인원수
 	@Override
 	public int searchMemberTotal(Member member) {
