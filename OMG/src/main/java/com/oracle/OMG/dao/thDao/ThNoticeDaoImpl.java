@@ -126,15 +126,13 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	@Override
 	public int updateReplyCnt(int brd_id, int amount) {
 		int updateResult = 0;
-		try {
+	
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("brd_id", brd_id);
 			map.put("amount", amount);
 			updateResult = session.update("updateReplyCnt", map);
 			log.info("updateResult --> " + updateResult);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
+	
 		return updateResult;
 	}
 
