@@ -84,41 +84,85 @@ $(document).ready(function() {
             <div class="tab-content px-0 mt-0" style="padding-top: 0px;padding-bottom: 0px;margin-top: 1px;">
                 <div class="tab-pane fade active show" id="horizontal-home">
                     <div class="card">
+                  
                         <h5 class="card-header">발주서 선택</h5>
-                        <div class="card-body">
-                            <div class="row align-items-end">
+                          <div class="card-body">
+                            <div class="row align-items-end" style="padding-left: 23px;">
                                 <div class="mb-3 col-md-3">
-                                    <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-                                    <input class="form-control" type="month" id="monthSelect">
+                                    <label for="thtml5-date-input" class="col-md-2 col-form-label">날짜</label>
+                                    <input class="form-control" type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD">
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <label for="html5-date-input" class="col-md-2 col-form-label">업체명</label>
-                                    <input class="form-control me-2" type="search" placeholder="제품 / 거래처 검색" id="keyword" onkeypress="if(event.keyCode == 13){searchButton();}">
+                                    
+                                   <select id="srchCompany" class="select2 form-select">
+										<option value="all" selected="selected">전체</option>
+										<c:forEach items="${pur_custList }" var="pur_custList">
+											<c:choose>
+												<c:when test="${pur_custList.custcode == srchCompany }">
+													<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${pur_custList.custcode }">${pur_custList.company }</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <button class="btn btn-outline-primary" type="button" onclick="searchButton()">검색</button>
+                                    <button class="btn btn-outline-primary" type="button" onclick="srch()">검색</button>
                                 </div>
                             </div>
                             <h5 class="card-header">발주리스트</h5>
                             <div class="card-body">
                                 <div class="table-responsive text-nowrap">
                                     <table class="table table-bordered" id="purListTable">
-                                        <thead class="table-dark">
+                                        <thead class="table-primary">
                                             <tr>
-                                                <td>No.</td>
-                                                <td>제목</td>
-                                                <td>회사명</td>
-                                                <td>발주일</td>
-                                                <td>발주자</td>
-                                                <td>상품수</td>
-                                                <td>총수량</td>
-                                                <td>단가</td>
-                                                <td>상태</td>
+                                               	<td class="text-center">No.</td>
+												<td class="text-center">제목</td>
+												<td class="text-center">회사명</td>
+												<td class="text-center">발주일</td>
+												<td class="text-center">발주자</td>
+												<td class="text-center">상품수</td>
+												<td class="text-center">총수량</td>
+												<td class="text-center">총금액</td>
+												<td class="text-center">상태</td>
                                             </tr>
                                         </thead>
+                                       	<c:set value="${totalPur }" var="num"/>
+				    	<c:forEach items="${purList }" var="purList">
+							<tr>
+								<td class="text-center">${num }</td>
+								<td class="text-start"><a href="/purDtail?pur_date=${purList.pur_date }&custcode=${purList.custcode }">${purList.title }</a></td>
+								<td class="text-center">${purList.company }</td>
+								<td class="text-center">${purList.pur_date }</td>
+								<td class="text-center">${purList.appli_name}</td>
+								<td class="text-center">${purList.totalType}</td>
+								<td class="text-center">${purList.totalQty}개</td>
+								<td class="text-center"><fmt:formatNumber value="${purList.totalPrice}" pattern="#,###"/>원</td>
+								 <td class="text-center">
+        <!-- pur_status가 0이면 "진행중" 출력 -->
+        <c:if test="${purList.pur_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
+
+        <!-- pur_status가 1이면 "입고" 버튼 생성 -->
+        <c:if test="${purList.pur_status == 1}">
+            <button class="btn btn-outline-primary" type="button" onclick="srch()">입고</button>
+        </c:if>
+
+        <!-- pur_status가 2이면 "입고완료" 출력 -->
+        <c:if test="${purList.pur_status == 2}"><span class="badge bg-label-success me-1">입고완료</span></c:if>
+    </td>
+
+								
+							</tr>
+								<c:set var="num" value="${num-1 }"></c:set>
+						</c:forEach>
+				    </tbody>
                                          <tbody class="table-border-bottom-0">
                         				 </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -139,7 +183,6 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card mb-4">
             <h5 class="card-header">입고내역</h5>
@@ -188,5 +231,8 @@ $(document).ready(function() {
     </div>
 
     <%@ include file="../common/footer.jsp" %>
+    <script type="text/javascript">
+
+</script>
 </body>
 </html>
