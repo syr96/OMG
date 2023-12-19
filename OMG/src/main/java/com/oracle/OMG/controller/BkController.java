@@ -72,11 +72,21 @@ public class BkController {
 	
 	
 	@RequestMapping(value = "/403forbidden")
-	public String errorPage() {
+	public String forbidden() {
 		
 		System.out.println("BkController 403forbidden Start...");
 		
 		return "bk/403forbidden";
+	}
+
+	
+	
+	@RequestMapping(value = "/errorLogin")
+	public String errorPage() {
+		
+		System.out.println("BkController errorLogin Start...");
+		
+		return "bk/errorLogin";
 	}
 	
 	
