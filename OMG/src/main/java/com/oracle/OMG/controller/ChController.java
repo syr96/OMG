@@ -85,7 +85,6 @@ public class ChController {
 				// 발주서 상세 내용 불러오기 
 				List<PurDetail> pd = chPurService.purDList(p);
 				totalType = pd.size(); // row 수 = 발주서 내 물품 수
-				System.out.println();
 				// 상세 내용의 물품 항목별 수량과 결제액 
 				for(PurDetail pd2 : pd) {
 					totalPrice += pd2.getQty() * pd2.getPrice();

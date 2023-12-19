@@ -151,6 +151,7 @@
 			$("#inputCode").prop("disabled",true);
 			$("#selectCustcode").show();
 			$("#mgr_name").empty();
+			$("#pur_body").empty();
 			$("#smtbtn").prop("disabled",true);
 			$("#selectItems").empty();
 		}
@@ -167,7 +168,7 @@
 		price = parseFloat(price);
 		qty = parseFloat(qty);
 		
-		var totalPrice = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(price * qty);
+		var totalPrice = new Intl.NumberFormat('en-US').format(price * qty);
 		$("#totalPrice"+rownum).html(totalPrice);
 	}
 </script>

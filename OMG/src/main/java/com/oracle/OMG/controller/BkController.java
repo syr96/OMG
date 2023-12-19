@@ -76,7 +76,7 @@ public class BkController {
 		
 		System.out.println("BkController 403forbidden Start...");
 		
-		return "bk/403forbidden";
+		return "/bk/403forbidden";
 	}
 
 	

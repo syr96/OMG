@@ -1,7 +1,5 @@
 package com.oracle.OMG.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,7 @@ public class ThReplyRestController {
 	private final ThReplyService rs;
 	
 	@PostMapping(value = "/new", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
-	public ResponseEntity<String> create(@RequestBody Reply rep) {
+	public ResponseEntity<String> create(@RequestBody Reply rep){
 
 		log.info("Reply: " + rep);
 
@@ -64,7 +62,7 @@ public class ThReplyRestController {
 	public ResponseEntity<String> remove(@PathVariable("rep_id") int rep_id){
 		
 		log.info("remove: " + rep_id);
-		
+	
 		return rs.remove(rep_id) == 1 
 				? new ResponseEntity<>("success", HttpStatus.OK) 
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

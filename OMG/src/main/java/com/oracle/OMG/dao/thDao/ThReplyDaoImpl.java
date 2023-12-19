@@ -25,35 +25,28 @@ public class ThReplyDaoImpl implements ThReplyDao {
 	public int insert(Reply rep) {
 		int insertResult = 0;
 		log.info("rep: " + rep);
-		try {
+		
 			insertResult = session.insert("insertReply", rep);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
+		
 		return insertResult;
 	}
 
 	@Override
 	public Reply read(int rep_id) {
 		Reply reply = null;
-		try {
-			reply = session.selectOne("readReply", rep_id);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
+			try {
+				reply = session.selectOne("readReply", rep_id);
+			} catch (Exception e) {
+				log.info(e.getMessage());
+			}
+			
 		return reply;
 	}
 
 	@Override
 	public int delete(int rep_id) {
-		int deleteResult = 0;
-		
-		try {
-			deleteResult = session.delete("deleleReply", rep_id);
+		int deleteResult = session.delete("deleleReply", rep_id);
 			log.info("deleteResult: " + deleteResult);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
 		return deleteResult;
 	}
 
