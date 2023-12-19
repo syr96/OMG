@@ -73,6 +73,8 @@
   		function sendCode() {
   			
   			var mem_name	=	$('#name').val();
+  			var mem_email	=	$('#email').val();
+  			
   			//var number		= 	$('#number').val();
   			
   			
@@ -82,7 +84,7 @@
   			}; */
   			
   			alert("이름: " 		+ mem_name 
-  				//+ "\n모바일 번호: " + number
+  				+ "\n이메일: "	+ mem_email
   					); 
   			
   			$.ajax({
@@ -96,7 +98,10 @@
   			  // 서버로 데이터를 전송할 때는 영향 X
                ,contentType:	'application/json'
                ,data	:	JSON.stringify({
-            	   mem_name:	mem_name
+            	   	//	키	:		값
+            	    mem_name:	mem_name
+            	   ,mem_email:	mem_email
+            	   
             	   //formData
             	   })
               ,success:	function (response) {
@@ -145,7 +150,7 @@
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">비밀번호 찾기</h4>
-              <p class="mb-4">입력한 모바일 번호와 ID에 등록된 모바일 번호가 일치할 경우, <br>[SMS 인증번호]가 발송됩니다. 10분 내에 입력바랍니다.</p>
+              <p class="mb-4">입력한 성명과 ID에 등록되어 있는 복구Email이 일치할 경우, <br>[로그인 정보 안내 메일]이 발송됩니다.</p>
               <form id="formAuthentication" class="mb-3" method="POST">
               	<div class="row">
 	                <div class="mb-3 col-md-6">
@@ -160,12 +165,12 @@
 	                  />
 	                </div>
 	                <div class="mb-3 col-md-6">
-	                  <label for="number" class="form-label">모바일 번호</label>
+	                  <label for="email" class="form-label">복구 Email</label>
 	                  <input
 	                    type="text"
 	                    class="form-control"
-	                    id="number"
-	                    name="number"
+	                    id="email"
+	                    name="email"
 	                    placeholder=""
 	                    autofocus
 	                  />

@@ -33,7 +33,7 @@ public class BkLoginInterceptor implements HandlerInterceptor {
 		// 클라이언트 요청에 대한 세션을 가져오거나, 세션이 없을 경우 새로 생성
 		HttpSession session = request.getSession();
 		
-		if (session.getAttribute(LOGIN) != null) {
+		if (session.getAttribute("login") != null) {
 			
 			// 기존 HttpSession 에 남아있는 정보가 있는 경우, 이를 삭제
 			logger.info("clear login data before");
@@ -67,6 +67,7 @@ public class BkLoginInterceptor implements HandlerInterceptor {
 			// 로그인 성공 시, Session 에 저장 후, 초기 화면 이동
 			logger.info("new login success");
 			session.setAttribute(LOGIN, member);
+			
 			
 			// 이전 페이지 불러오기
 			Object page = session.getAttribute("page");
