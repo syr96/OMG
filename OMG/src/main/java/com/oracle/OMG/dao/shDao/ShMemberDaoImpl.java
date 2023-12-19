@@ -53,7 +53,8 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		}
 		return total;
 	}
-
+	
+	//리스트 검색 조건
 	@Override
 	public List<Member> memberSearchList(Member member) {
 		System.out.println("memberDao memberSearchList() Start");
@@ -64,6 +65,19 @@ public class ShMemberDaoImpl implements ShMemberDao {
 			System.out.println("memberDao memberList() Exception ->" + e.getMessage());
 		}
 		return memberList;
+	}
+	
+	//조건에 적합한 인원수
+	@Override
+	public int searchMemberTotal(Member member) {
+		System.out.println("memberDao searchMemberTotal() Start");
+		int total = 0;
+		try {
+			total = session.selectOne("shSearchMemberTotal",member);
+		} catch (Exception e) {
+			System.out.println("memberDao searchMemberTotal() Exception ->" + e.getMessage());
+		}
+		return total;
 	}
 
 }

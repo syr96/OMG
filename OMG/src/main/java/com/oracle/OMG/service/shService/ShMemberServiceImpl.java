@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.shDao.ShMemberDao;
-import com.oracle.OMG.dto.Item;
 import com.oracle.OMG.dto.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -42,6 +41,13 @@ public class ShMemberServiceImpl implements ShMemberService {
 		System.out.println("memberService memberSearchList() Start");
 		List<Member> memberList = md.memberSearchList(member);
 		return memberList;
+	}
+
+	@Override
+	public int searchMemberTotal(Member member) {
+		System.out.println("memberService searchMemberTotal() Start");
+		int total = md.searchMemberTotal(member);
+		return total;
 	}
 
 

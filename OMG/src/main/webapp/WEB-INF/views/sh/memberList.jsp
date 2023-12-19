@@ -46,7 +46,7 @@
 	                    	<tr>
 	                    		<td><i class="fab fa-angular fa-lg text-danger me-1"></i><strong>${list.rn}</strong></td>
 	                    		<td>${list.mem_hiredate}</td>
-	                    		<td><a href="memberU?mem_id="+${list.mem_id}>${list.mem_id}</a></td>
+	                    		<td><a href="memberU?mem_id=${sessionScope.mem_id}">${list.mem_id}</a></td>
 	                    		<td>${list.mem_name}</td>
 	                    		<td>
 	                    			<c:choose>
@@ -149,15 +149,23 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  <script type="text/javascript">
  	$(document).ready(function(){
- 		$('#searchMember').on('change',function(e){
- 			$.ajax({
- 				url  : "memberRequirement",
- 				data : {keyword : e.target.value},
- 				type : "GET",
- 				success : function(response){
-					console.log(response);
- 				}
- 			});
+ 		$('#searchMember').on('keydown',function(e){
+ 			   
+	 			if(e.key === 'Enter'){
+	 				  alert("success");
+	 				window.location.href = "memberRequirement?keyword="+e.target.value;	
+/* 	 			$.ajax({
+	 				url  : "memberRequirement",
+	 				data : {keyword : e.target.value},
+	 				type : "GET",
+	 				success : function(){
+						alert("success");
+						window.location.href = "sh/memberList`";
+	 				}
+	 			}); */
+	 			
+	 			
+	 		}
  		});
  	});
  </script>

@@ -32,4 +32,7 @@
 	]]>
 	</select>
 	
+	<select id="shSearchMemberTotal" parameterType="Member" resultType="int"> 
+		Select count(*) From member Where mem_id LIKE '%'||#{keyword}||'%' 
+	</select>
 </mapper>
