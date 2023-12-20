@@ -93,4 +93,52 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return member;
 	}
 
+	@Override
+	public int updateLeaveMember(Member member) {
+		System.out.println("memberDao updateLeaveMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateLeaveMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateLeaveMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateReinMember(Member member) {
+		System.out.println("memberDao updateReinMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateReinMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateReinMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateResiMember(Member member) {
+		System.out.println("memberDao updateResiMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateResiMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateResiMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateMember(Member member) {
+		System.out.println("memberDao updateMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
 }

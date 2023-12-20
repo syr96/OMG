@@ -12,5 +12,9 @@ public interface ShMemberDao {
 	List<Member> memberSearchList(Member member);
 	int 		 searchMemberTotal(Member member);
 	Member 		 searchMemberDetail(int mem_id);
+	int 		 updateLeaveMember(Member member);
+	int 		 updateReinMember(Member member);
+	int		 	 updateResiMember(Member member);
+	int 		 updateMember(Member member);
 
 }

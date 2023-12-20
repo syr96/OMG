@@ -154,10 +154,10 @@
                     <!-- Account -->
                     <div class="card-body">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img id="img" class="d-block rounded" style="height: 150px; width: 150px; display: none"/>
+                        <img id="imgView" class="d-block rounded" style="height: 150px; width: 150px; display: none"/>
                         <div class="button-wrapper">
                           <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                            <span class="d-none d-sm-block">Upload new photo</span>
+                            <span class="d-none d-sm-block">Upload</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
                             <input type="file" id="upload" name="img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
                           </label>
@@ -177,27 +177,24 @@
 		                              checked
 		                            />
 		                            <label class="form-check-label" for="mem_right_employee"> 사원 권한</label>
-		                          </div>
-		                          <div class="form-check">
-		                            <input
-		                              class="form-check-input"
-		                              type="radio"
-		                              value="1"
-		                              id="mem_right_manager"
-		                              name="mem_right"
-		                            />
-		                            <label class="form-check-label" for="mem_right_manager"> 관리자 권한</label>
-		                          </div>
+		                      </div>
+		                      <div class="form-check">
+		                      	<input
+		                          class="form-check-input"
+		                          type="radio"
+		                          value="1"
+		                          id="mem_right_manager"
+		                          name="mem_right"
+		                        />
+		                        <label class="form-check-label" for="mem_right_manager"> 관리자 권한</label>
+		                      </div>
                       	  </div>
                         </div>
                       </div>
                     </div>
                     <hr class="my-0" />
-                    
                     <div class="card-body">
-                      
                         <div class="row">
-                        
                           <!-- mem_id -->
                           <div class="mb-3 col-md-6">
                             <label for="mem_id" class="form-label">사원번호</label>
@@ -241,10 +238,10 @@
 			                     placeholder="yyyyMMdd"
 			                     aria-label="Recipient's username with two button addons"
 			                     maxlength="8"
-			                     min="19000101"
 			                     pattern="\d*"
 			                     
 			                   />
+			             	<!-- mem_sex -->
 			                <div class="col-md-3" style="margin: 5px 100px 0 50px;">
 		                	    <input
 		                         name="mem_sex"
@@ -267,7 +264,10 @@
                       
                       <!-- mem_email -->
                       <div class="mb-3 col-md-6" id="mem_email">
-                        <label for="mem_email" class="form-label">이메일</label>
+                      	<div style="align-items: center; display: flex;">
+                       		<label for="mem_email" class="form-label">이메일</label>
+							<span id="emailMsg"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: red; font-weight: bold; width: 170px;">유효한 이메일 주소를 입력해주세요.</span>
+                        </div>
                         <div class="input-group">
 	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"/>
 	                            <span class="input-group-text">@</span>
@@ -351,7 +351,7 @@
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
 						        <div class="mb-3 col-md-4">
-						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" maxlength="6" min="10000" placeholder="우편번호">
+						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" maxlength="6" placeholder="우편번호">
 						        </div>
 						        <div class="col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
@@ -367,22 +367,27 @@
                           </div>
                           
                           
-                           <!-- mem_pw -->
+                           <!-- mem_pw1 -->
                            <div class="mb-2 col-md-4">
 	                          <div class="form-password-toggle">
 	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
+	                        	<span id="pswd1Msg" aria-live="assertive" style="font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;"></span>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>
-	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1" oninput="checkPswd1()"/>
+	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1"/>
 		                          <span id="spanPw1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
-		                          <span id="pswd1Msg" style="display: none" aria-live="assertice">8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.</span>
 	                       		</div>
 	                       	  </div>
-                       	 
+	                       	  
+                       	 	<!-- mem_pw2 -->
 	                        <div class="form-password-toggle">
-		                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
+		                        <div style="display: flex; align-items: center;">
+			                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
+			                        <span id="pswd2Msg1"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: green; font-weight: bold; width: 140px;">비밀번호가 일치합니다.</span>
+				                     <span id="pswd2Msg2"  aria-live="assertice" style="display: none; font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;">비밀번호가 일치하지 않습니다.</span>
+		                        </div>
 		                        <div class="input-group">
 		                        <span class="ps_box int_pass"></span>
 		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;"/>
@@ -390,11 +395,8 @@
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 		                        </div>
-		                         <span id="pswd2Msg1"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: green; font-weight: bold; width: 140px;">비밀번호가 일치합니다.</span>
-			                     <span id="pswd2Msg2"  aria-live="assertice" style="display: none; font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;">비밀번호가 일치하지 않습니다.</span>
 		                      </div>
 	                      </div>
-	                      
                         </div>
                         <div class="mt-2">
                           <button type="submit" class="btn btn-primary me-2" >Create</button>
@@ -418,26 +420,47 @@
 			var reader = new FileReader();
 			//파일을 읽으면 함수 호출
 			reader.onload = function(e){
-				$('#img').attr("src", e.target.result);
-				$('#img').css("display","block");
+				$('#imgView').attr("src", e.target.result);
+				$('#imgView').css("display","block");
 			}
 			//파일을 데이터 URL로 읽어오기
 			reader.readAsDataURL(files[0]);
 		});
 	});
 	
+	//input type=file reset 함수
+	$(document).ready(function(){
+		$("#reset").on('click',function(){
+			//img 초기화
+			$('#imgView').css("block","none");
+			$('#imgView').attr("src","");
+			//input type=file  초기화
+			$('#upload').val('');
+			});
+	});
+	
+	//email1 input 영어만 입력 가능하게 하는 함수
+	$(document).ready(function(){
+		$('#mem_email1').on('input',function(){
+			var sanitizedValue = $(this).val().replace(/[^a-zA-Z0-9._-]/g,'');
+			$(this).val(sanitizedValue);
+		});
+	});	
+	
 	//이메일 도메인 유효성 검사 //create 버튼 클릭시 체크 할 메소드 추가 예정
 	$(document).ready(function(){
 		$('#mem_email2').on('change',function(){
 			//이메일 값
-			var email = $('#mem_email1').val() + '@' + $('#mem_email2').val();	
+			var email2 = $('#mem_email2').val();	
 			//이메일 유효성 검사할 변수 생성
-			var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-			if(!emailRegex.test(email)){
-				alert('유효한 이메일 주소를 입력해주세요.');
+			var emailRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+			if(!emailRegex.test(email2)){
+				$('#emailMsg').css('display','block');
+				$('#mem_email2').val('');
 				return false;
+			} else {
+				$('#emailMsg').css('display','none');
 			}
-			return true;
 		});
 	});
 	
@@ -455,16 +478,6 @@
 		});
 	});
 	
-	//input type=file reset 함수
-	$(document).ready(function(){
-		$("#reset").on('click',function(){
-			//img 초기화
-			$('#img').css("block","none");
-			$('#img').attr("src","");
-			//input type=file  초기화
-			$('#upload').val('');
-			});
-	});
 	//생년월일 input 숫자만 입력 가능하게 하는 함수
 	$(document).ready(function(){
 		$('#mem_bd').on('input',function(){
@@ -498,6 +511,8 @@
 			$(this).val(sanitizedValue);
 		});
 	});
+	
+
 	
 	//option 선택마다 input 값 노출(부서)
 	$(document).ready(function(){
@@ -546,11 +561,38 @@
 	
 	//비밀번호 1,2 입력 값 비교 후 input 문장 출력
 	$(document).ready(function(){
-		$('#basic-default-password1').on('change',function(){
+		$('#basic-default-password1').on('input',function(){
+			validatePassword();
+		});
+	});
+	
+	function validatePassword(){
 			var pw1 = $('#basic-default-password1').val();
 			var pw2 = $('#basic-default-password2').val();
 			
-			if(isNaN(pw2) || pw2 != null){
+			// 최소 길이 검사
+		    if (pw1.length < 8) {
+		        displayError("비밀번호가 8자리보다 적습니다");
+		        return;
+		    }
+			
+		 // 최소 조합 검사
+		    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+		    if (!regex.test(pw1)) {
+		        displayError("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+		        return;
+		    }
+		    
+		 // 공백 검사
+		    if (pw1.includes(" ")) {
+		        displayError("공백을 포함시킬 수 없습니다.");
+		        return;
+		    }
+		 	
+		 // 모든 검사를 통과하면 성공 메시지 표시
+		    displayError("사용가능한 비밀번호 입니다.", false);
+		 
+		    if(isNaN(pw2)){
 				if(pw1 == pw2){
 					$('#pswd2Msg1').css('display','block');
 					$('#pswd2Msg2').css('display','none');
@@ -559,10 +601,16 @@
 					$('#pswd2Msg2').css('display','block');
 				}
 			} else {
-			return false;
+				$('#pswd2Msg1').css('display','none	');
+				$('#pswd2Msg2').css('display','none');
 			}			
-		});
-	});
+		}
+
+		function displayError(message, isError = true) {
+		    var errorDiv = $("#pswd1Msg");
+		    errorDiv.css("color", isError ? "red" : "green");
+		    errorDiv.text(message);
+		}
 
 	
 </script>

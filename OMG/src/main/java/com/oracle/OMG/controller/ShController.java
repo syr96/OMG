@@ -50,6 +50,76 @@ public class ShController {
 		return "sh/memberUpdate";
 	}
 	
+	@RequestMapping(value = "updateMember", method = RequestMethod.POST)
+	public String updateMember( @RequestParam("mem_address1")  String address1,
+								@RequestParam("mem_address2")  String address2,
+								@RequestParam("mem_address3")  String address3,
+								
+								@RequestParam("mem_email1")    String email1,
+								@RequestParam("mem_email2")    String email2,
+								
+								
+							    @RequestParam(name="img1", required=false) 	 MultipartFile img1,
+							    @RequestParam("img2") 	 String img2,
+							    
+							    @RequestParam(name="leave", required=false)	String leave,
+							    @RequestParam(name="rein" , required=false)	String rein,
+							    @RequestParam(name="resi" , required=false)	String resi,
+	
+							    @ModelAttribute 		 Member member,
+							    HttpServletRequest 		 request,
+							    Model 					 model) throws IOException {
+		System.out.println("shController updateMember() Start");
+		System.out.println("Received member1: " + member);
+		int result = 0;
+		
+		String address = address1 + "/" + address2 + "/" + address3;
+		String email   = email1 + "@" + email2;
+		member.setMem_address(address);
+		member.setMem_email(email);
+		member.setMem_img(img2);
+		
+		if(img1!=null) {
+			try {
+				//multipartFile 경로 설정
+				String path 		  = request.getSession().getServletContext().getRealPath("upload");
+				
+				//경로 내 파일 생성
+				String root = path +"\\sh";
+				
+				//업로드할 폴더 설정
+				String originFileName = img1.getOriginalFilename();
+				String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
+				String ranFileName 	  = UUID.randomUUID().toString() + ext;
+				
+				File changeFile 	  = new File(root + "\\" + ranFileName);
+				
+				img1.transferTo(changeFile);
+				
+				System.out.println("파일 업로드 성공");
+				member.setMem_img(ranFileName);
+			} catch (Exception e) {
+				System.out.println("shController updateMember Exception ->" + e.getMessage());
+			}
+		}
+		System.out.println("Received member2: " + member);
+		
+		if(leave!=null && !leave.trim().isEmpty()) {
+			member.setMem_leave(leave);
+			result = ms.updateLeaveMember(member);
+		} else if (rein!=null && !rein.trim().isEmpty()) {
+			member.setMem_rein(rein);
+			result = ms.updateReinMember(member);
+		} else if (resi!=null && !resi.trim().isEmpty()) {
+			member.setMem_resi(resi);
+			result = ms.updateResiMember(member);
+		} else {
+			result = ms.updateMember(member);
+		}
+		
+		return "/";
+ 	}	
+	
 	//사원 목록
 	@RequestMapping(value = "memberL")
 	public String memberList(String currentPage, Model model) {

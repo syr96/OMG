@@ -10,7 +10,7 @@
 <body>
 <%@ include file="../common/menu.jsp" %>
 			  <input type="hidden" value="${currentDate}">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회 ${memberTotal }</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회</h4>
               <!-- Basic Bootstrap Table -->
               <div class="card">
                 <h5 class="card-header">사원 명단</h5>
@@ -153,7 +153,6 @@
  		$('#searchMember').on('keydown',function(e){
  			   
 	 			if(e.key === 'Enter'){
-	 				  alert("success");
 	 				window.location.href = "memberRequirement?keyword="+e.target.value;	
 /* 	 			$.ajax({
 	 				url  : "memberRequirement",
