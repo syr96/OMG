@@ -46,7 +46,11 @@
 	                    <c:forEach var="list" items="${memberList }">
 	                    	<tr>
 	                    		<td><i class="fab fa-angular fa-lg text-danger me-1"></i><strong>${list.rn}</strong></td>
-	                    		<td>${list.mem_hiredate}</td>
+	                    		<td>
+	                    			<fmt:parseDate var="parsedDate" value="${list.mem_hiredate}" pattern="yyyy-MM-dd HH:mm:ss" />
+									<fmt:formatDate var="formattedDate" value="${parsedDate}" pattern="yyyy-MM-dd" />
+									${formattedDate}
+								</td>
 	                    		<td><a href="memberU?mem_id=${list.mem_id}">${list.mem_id}</a></td>
 	                    		<td>${list.mem_name}</td>
 	                    		<td>

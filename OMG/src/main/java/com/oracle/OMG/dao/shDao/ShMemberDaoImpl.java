@@ -141,4 +141,16 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return result;
 	}
 
+	@Override
+	public int detailMember(Member member) {
+		System.out.println("memberDao detailMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shDetailMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao detailMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
 }
