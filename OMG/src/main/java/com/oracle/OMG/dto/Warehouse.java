@@ -22,5 +22,7 @@ public class Warehouse {
     private int price;
     private String name;
     private String mem_name;
+    private String company;
+    
     
 }

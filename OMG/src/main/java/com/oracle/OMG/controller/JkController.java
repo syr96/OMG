@@ -16,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -169,7 +171,7 @@ public class JkController {
 
 	// 발주 조회
 	@RequestMapping(value="/inboundRegister")
-	public String invPurList(Purchase purchase, String currentPage, Model model) {
+	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse) {
 	    System.out.println("JkController invPurList start....");
 	 	    
 	    int totalPur = 0;
@@ -189,7 +191,7 @@ public class JkController {
 		}
 		
 		totalPur = cps.totalPur(purchase);
-		page = new Paging(totalPur, currentPage);
+		page = new Paging(999);
 		
 		purchase.setStart(page.getStart());
 		purchase.setEnd(page.getEnd());	
@@ -217,18 +219,52 @@ public class JkController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
+		List<Warehouse> inboundList = null;
+		inboundList = jws.inboundList(warehouse);
+		
 		List<Customer> pur_custList = ccs.custList();
+		
 		
 		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
 		model.addAttribute("page",page);
-		
+		model.addAttribute("inboundList", inboundList);
+
 		System.out.println("model"+model);
 	    return "jk/inboundRegister";
 		
 		
 	}
+	
+	// 발주 조회
+	@RequestMapping(value = "/inboundRegister", method = RequestMethod.POST)
+	public String invPurList(@RequestBody Map<String, String> requestData, Model model) {
+	    System.out.println("Received data from client: " + requestData);
+
+	    // requestData에서 pur_date와 custcode를 꺼내서 사용
+	    String purDate = requestData.get("pur_date");
+	    String custCodeStr = requestData.get("custcode");
+	    System.out.println("Received pur_date: " + purDate);
+	    System.out.println("Received custcode: " + custCodeStr);
+
+	    // custCode를 숫자로 변환
+	    int custCode = Integer.parseInt(custCodeStr);
+
+	    // callInboundPC 메서드를 호출하여 결과를 받아옴
+	    Map<String, String> response = jws.callInboundPD(purDate, custCode);
+
+	    // 모델에 결과 데이터 추가
+	    model.addAttribute("response", response);
+
+	    // 뷰로 이동
+	    return "jk/inboundRegister";
+	}
+
+
+
+	
+	
 //	 List<Purchase> purMonthData = jws.purMonthData(month);	
 	// 입고등록
 //	@RequestMapping(value="/inboundRegister")

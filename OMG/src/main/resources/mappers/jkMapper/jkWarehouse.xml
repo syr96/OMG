@@ -92,4 +92,23 @@
 		     ) b
 		WHERE rn BETWEEN #{start} and #{end}
 	</select>
+	
+	   <update id="callInboundPD" statementType="CALLABLE">
+        {CALL process_incoming_inventory2(
+            #{purDate, mode=IN, jdbcType=VARCHAR},
+            #{custCode, mode=IN, jdbcType=NUMERIC}
+        )}
+    </update>
+    <select id="inboundList" parameterType="Purchase" resultType="Purchase">
+    	SELECT p.pur_date, pd.code, i.name, c.company, pd.qty, m.mem_name, w.reg_date, w.inven
+		FROM purchase p
+		JOIN member m ON p.mem_id = m.mem_id
+		JOIN customer c ON p.custcode = c.custcode
+		JOIN pur_detail pd ON p.pur_date = pd.pur_date AND p.custcode = pd.custcode
+		LEFT JOIN item i ON pd.code = i.code
+		INNER JOIN warehouse w ON pd.code = w.code AND w.inven = 1
+		WHERE p.pur_status = 2
+		ORDER BY p.pur_date DESC;
+    </select>
+    
 </mapper>

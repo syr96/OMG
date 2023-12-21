@@ -50,5 +50,17 @@ public class Paging {
 			endPage = totalPage;
 		}
 	}
+	
+	public Paging(int rowPage1) {
+		
+		// rowPage1 값을 주면 rowPage값을 수정
+		this.rowPage = rowPage1;	
+		
+		
+		start =  1;
+		end   = rowPage;
+		
+	}
+	
 }
 
