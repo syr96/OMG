@@ -15,10 +15,6 @@
 						<when test="type == 'C'.toString()">
 							brd_cn LIKE '%' || #{keyword} || '%'
 						</when>
-						<!--작성자 부분 일단 스킵(join 가져온후 필터거는게 어려움 ㅠ  -->
-<!-- 						<when test="type == 'W'.toString()"> -->
-<!-- 							mem_name LIKE '%' || #{keyword} || '%' -->
-<!-- 						</when> -->
 					</choose>
 				</trim>
 			</foreach>
@@ -89,11 +85,7 @@
 	</insert>
 	
 	<select id="readNotice" parameterType="int" resultType="Board">
-		SELECT 	b.*, (
-	                    SELECT  mem_name
-	                    FROM    member m
-	                    WHERE   m.mem_id = b.mem_id
-                   	 ) AS mem_name
+		SELECT 	b.*, GET_MEMBER_NAME(mem_id) AS mem_name
 		FROM	board b
 		WHERE	b.brd_id = ${brd_id}
 	</select>
@@ -117,4 +109,11 @@
 		SET		replycnt = replycnt + #{amount}
 		WHERE	brd_id = #{brd_id}
 	</update>
+	
+	<update id="updateViewCntUp" parameterType="int">
+		UPDATE	board
+		SET		view_cnt = view_cnt + 1
+		WHERE	brd_id = #{brd_id}
+	</update>
+	
 </mapper>

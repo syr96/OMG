@@ -20,14 +20,14 @@ import com.oracle.OMG.service.thService.ThReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/replies/")
+@RequestMapping("/replies/*")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class ThReplyRestController {
 	private final ThReplyService rs;
 	
-	@PostMapping(value = "/new", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
+	@PostMapping(value = "/new")
 	public ResponseEntity<String> create(@RequestBody Reply rep){
 
 		log.info("Reply: " + rep);

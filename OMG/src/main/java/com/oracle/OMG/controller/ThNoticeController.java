@@ -2,7 +2,6 @@ package com.oracle.OMG.controller;
 
 
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,15 +61,20 @@ public class ThNoticeController {
 		return "redirect:/notice/list";
 	}
 
-	// RequestParam 생략 된다는데 한번해보기  --> @RequestParam("brd_id") 생략 가능 / 명시적 느낌에서 선언한 듯?
-	// @ModelAttribute 생략 된다는데 해보기
-	@GetMapping({"/get", "/modify"})
+	// @RequestParam("brd_id") 생략 or 명시적용도로 사용
+	// @ModelAttribute 생략 or 명시적용도로 사용
+	@GetMapping("/get")
 	public void get(int brd_id, Model model, @ModelAttribute("cri") Criteria cri) {
 		
-		log.info("/get or modify");
+		log.info("/get");
 		model.addAttribute("notice", ns.getNotice(brd_id));
 	}
-
+	
+	@GetMapping("/modify")
+	public void modify(int brd_id, Model model, @ModelAttribute("cri") Criteria cri) {
+		log.info("/modify");
+		model.addAttribute("notice", ns.modifyNoticeView(brd_id));
+	}
 	
 	@PostMapping("/modify")
 	public String modify(Board board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
@@ -96,4 +100,6 @@ public class ThNoticeController {
 		
 		return "redirect:/notice/list" + cri.getListLink();
 	}
+	
+
 }

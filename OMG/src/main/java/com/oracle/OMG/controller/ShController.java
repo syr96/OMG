@@ -76,14 +76,6 @@ public class ShController {
 		return "sh/memberList";
 	}
 	
-	//사원 목록에서 사원 휴직 처리
-	@RequestMapping(value = "memberLeave")
-	public String memberLeave(@RequestParam("mem_id") int mem_id, Model model) {
-		System.out.println("shController memberLeave() Start");
-		int result = ms.memberLeave(mem_id);
-		return "redirect:memberL";				
-	}
-	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)
 	public String searchMemberRequirement(@RequestParam("keyword") String keyword, String currentPage, Model model) {
