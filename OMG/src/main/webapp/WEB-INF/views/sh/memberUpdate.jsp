@@ -134,7 +134,9 @@ function sample6_execDaumPostcode() {
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" id="mem_hiredate" name="mem_hiredate" value="${member.mem_hiredate }"/>
+	                          <fmt:parseDate var="parsedDate" value="${member.mem_hiredate}" pattern="yyyy-MM-dd HH:mm:ss" />
+							  <fmt:formatDate var="formattedDate" value="${parsedDate}" pattern="yyyy-MM-dd" />
+	                          <input class="form-control" type="date" id="mem_hiredate" name="mem_hiredate" value="${formattedDate}"/>
 	                        </div>
 	                      </div>
                       	  
@@ -319,7 +321,7 @@ function sample6_execDaumPostcode() {
 	                        	<span id="pswd1Msg" aria-live="assertive" style="font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;"></span>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>
-	                          	<input type="password"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1"/>
+	                          	<input type="text"	class="form-control" name="mem_pw" id="basic-default-password1" maxlength="20"	aria-describedby="basic-default-password1" value="${member.mem_pw }"/>
 		                          <span id="basic-default-password1" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>

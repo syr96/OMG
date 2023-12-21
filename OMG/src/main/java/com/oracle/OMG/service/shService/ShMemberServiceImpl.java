@@ -87,6 +87,13 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return result;
 	}
 
+	@Override
+	public int detailMember(Member member) {
+		System.out.println("memberService detailMember() Start");
+		int result = md.detailMember(member);
+		return result;
+	}
+
 
 
 

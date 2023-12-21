@@ -88,4 +88,14 @@
 				Where 
 					mem_id = #{mem_id}
 	</update>
+	
+	<update id="shDetailMember" parameterType="Member">
+		Update Member 
+				Set 
+					mem_name= #{mem_name}, mem_pw= #{mem_pw}, mem_bd= #{mem_bd}, mem_sex= #{mem_sex}, 
+					mem_email= #{mem_email}, mem_mailcode= #{mem_mailcode}, mem_address= #{mem_address}, 
+					mem_phone= #{mem_phone}
+				Where 
+					mem_id = #{mem_id}
+	</update>
 </mapper>
