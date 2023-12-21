@@ -26,6 +26,8 @@ public interface JkWareService {
 	
 	// 발주 조회
 	List<Purchase>				purMonthData(String month);
+	Map<String, String> 		callInboundPD(String purDate, int custCode);
+	List<Warehouse> 			inboundList(Warehouse warehouse);
 
 	
 

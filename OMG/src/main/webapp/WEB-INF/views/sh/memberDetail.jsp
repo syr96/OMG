@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="js/jquery.js"></script>
+<script src="js/jquery.js"></script>
 <script>
 	//주소 API
     function sample6_execDaumPostcode() {
@@ -60,197 +60,108 @@
     
 </script>
 <script type="text/javascript">
-	//create 버튼 클리식 전 컬럼
-	function validCheck(){
-		var isValid = true;
-		nameCheck();
-		emailCheck();
-		sexCheck();
-		birthdayCheck();
-		hiredateCheck();
-		deptCheck();
-		posiCheck();
-		dutyCheck();
-		passwordValid();
+	function checkPswd1(){
+		if(pwFlag) return true;
 		
-		// 폼 제출 여부 결정
-	    if (!isValid) {
-	    	alert("(!isValid)false");
-	        return false; // 유효성 검사에서 실패한 경우 폼 제출 중단
-	    } else{
-	    	// 유효성 검사 통과 시  폼 제출
-	    	alert("true");
-	    	return true;
-	    	}
-	    
-	  //이름 유효성검사
-		function nameCheck(){
-			var name = document.getElementById("mem_name").value;
+		var pw = $('#basic-default-password1').val();
+		var oSpan = $('spanPw1').val();
+		var oMsg = $('pswd1Msg').val();
+		var input =$('#basic-default-password1');
+		
+		//필수 입력
+		if(pw == "") {
+			​​​​​​​​showErrorMsg(oMsg,"필수 정보입니다.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}
+		
+		//기본 유효성검사
+		​​​​if (isValidPasswd(pw) != true) { //유효성검사
+			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 1); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
 			
-			var koreanNameRegex = /^[가-힣]+$/;
-			var englishNameRregex = /^[a-zA-Z]+$/;
-			
-			if(!koreanNameRegex.test(name)){
-				if(!englishNameRregex.test(name)){
-					alert("이름을 다시 작성해주세요.");
-					formAccountSettings.name.value= "";
-					isValid = false;
-				}
-			}
+			​​​​​​​​showErrorMsg(oMsg,"8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}else if(checkpswd1_sameNum(pw) == true){ //비밀번호 연속동일숫자가 맞으면
+			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 2); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
+			​​​​​​​​showErrorMsg(oMsg,"보안상 연속된 숫자는 제한합니다.");
+			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
+			​​​​​​​​return false;
+			​​​​}
+		}
+//----------------------pw1 패스워드 검증 ------------------------------
+	function isValidPasswd(pw){
+		if(pw == ""){
+			return false;
 		}
 		
-		//이메일 유효성 검사
-		function emailCheck(){
-			var email1 = document.getElementById("mem_email1").value;
-			var email2 = document.getElementById("mem_email2").value;
-			var email = email1 + "@" + email2;
-			
-			var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-			
-			if(!emailRegex.test(email)){
-				alert("이메일 양식이 맞지 않습니다.");
-				isValid = false;
-			}
+		//공백 제거
+		var space = checkSpace(pw);
+		if(space){
+			return false;
 		}
 		
-		//입사일자 유효성 검사
-		function hiredateCheck(){
-			var hiredate = document.getElementById("mem_hiredate").value;;
-			if(!hiredate || !hiredate.trim()){
-				alert("입사일자를 입력해주세요.");
-				isValid = false;
-			}
+		//8자리 이상 설정
+		if(pw.length<8){
+			return false;
 		}
 		
-		//생일 유효성 검사
-		function birthdayCheck(){
-			var birthday = document.getElementById("mem_bd").value;
-			
-			if(!birthday || !birthday.trim()){
-				alert("생년월일을 입력해주세요.");
-				isValid = false;
-			}
-		}
+		​​​​//8~12자의 영문 소문자, 숫자, 특수문자만 사용 가능
+		​​​​var isValid = /^[A-Za-z0-9`\-=\\\[\];',\./~!@#\$%\^&\*\(\)_\+|\{\}:"<>\?]{8,16}$/;
+		​​​​if (!isValid.test(pw)) {
+		​​​​​​​​return false;
+		​​​​}
 		
-		//성별 유효성 검사
-		function sexCheck(){
-			var sexMale = document.getElementById("mem_sex_m");
-			var sexFemale = document.getElementById("mem_sex_f");
-				
-			if(!(sexMale.checked || sexFemale.checked)){
-				alert("성별항목란을 체크해주세요.");
-				isValid = false;
-			}
-		}
-		
-		//부서 체크 유무
-		function deptCheck(){
-			var dept = 	document.getElementById("mem_dept_md").value;
-			
-			if(!dept || !dept.trim()){
-				alert("부서항목란을를 체크해주세요.");
-				isValid = false;
-			}
-		}
-		
-		//직위 체크 유무
-		function posiCheck(){
-			var posi = 	document.getElementById("mem_posi_md").value;
-			
-			if(!posi || !posi.trim()){
-				alert("직위항목란을 체크해주세요.");
-				isValid = false;
-			}
-		}
-		
-		//직급 체크 유무
-		function dutyCheck(){
-			var duty = 	document.getElementById("mem_duty_md").value;
-			
-			if(!duty || !duty.trim()){
-				alert("직급항목란을 체크해주세요.");
-				isValid = false;
-			}
-		}
-		
-		function passwordValid(){
-			var pw = document.getElementById("basic-default-password1").value;
-			var pwValid = true;
-			var cnt = 0;
-			var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-			
-			//유효성 검사	
-			if(!pwRegex.test(pw)){
-				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
-				pwValid = false;
-			}
-			
-			//공백 검사
-			if (pw.includes(" ")) {
-				alert("공백은 사용 할 수 없습니다.");
-				pwValid = false;
-
-			}
-			
-			if(!pwValid){
-				isValid = false;
-			}
-		}
+		return true;
 	}
 	
+//----------------------pw1 연속숫자 검사 ------------------------------
+	function sameNum(pw){
+		var cnt = 0;
+		//연속 숫자 제한
+		for (var i = 0; i < str.length; ++i) {
+			​​​​​​​​if (str.charAt(0) == str.substring(i, i + 1))
+			​​​​​​​​​​​​++cnt;
+		}
+		if (cnt == str.length) {
+			​​​​​​​​console.log("연속된 숫자");
+			​​​​​​​​console.log("입력한 Pwd값 검증2 : " + str);
+			​​​​​​​​return true;
+			​​​​}
+	}
+
+
+
+	function showErrorMsg(errorId,errorMessage) {
+		var error = document.getElementById('pswd1Msg');
+		// 오류 메시지를 해당 DOM 요소에 추가합니다.
+		errorId = errorMessage;
+	}
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
-	<h4 class="fw-bold py-3"><span class="text-muted fw-light">인사 /</span> 사원 등록</h4>
+	<c:set var="member" value="${member }"></c:set>
+	<h4 class="fw-bold py-3"><span class="text-muted fw-light">
+									<c:if test="${member.mem_posi_md eq 100 }">대표이사</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 101 }">상무</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 102 }">차장</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 103 }">과장</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 104 }">대리</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 105 }">사원</c:if> /
+	                          </span> ${member.mem_name }</h4>
               <!-- Content -->
               <div class="row">
                 <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">
-                      <i class="bx bx-user me-1"></i> Account</h5>
-                      <form id="formAccountSettings" action="createMember" method="post" enctype="multipart/form-data" onsubmit="return validCheck();">
+                      <i class="bx bx-user me-1"></i> Account Detail</h5>
+                      <form id="formAccountSettings" action="detailMember" method="post" enctype="multipart/form-data">	<!-- onsubmit="validCheck()" -->
                     <!-- Account -->
-                    <div class="card-body">
+                    <div class="card-body text-center">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img id="imgView" class="d-block rounded" style="height: 150px; width: 150px; display: none" />
-                        <div class="button-wrapper">
-                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                            <span class="d-none d-sm-block">Upload</span>
-                            <i class="bx bx-upload d-block d-sm-none"></i>
-                            <input type="file" id="upload" name="img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
-                            <input type="hidden" name="defaultImg" value="../assets/img/elements/image.jpg">
-                          </label>
-                          <button type="button" id="reset" class="btn btn-outline-secondary account-image-reset mb-4">
-                            <i class="bx bx-reset d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Reset</span>
-                          </button>
-                          <!-- mem_right -->
-                          <div class="form-check col-mb-2">
-                        	  <div class="form-check mt-3">
-		                            <input
-		                              class="form-check-input"
-		                              type="radio"
-		                              value="0"
-		                              id="mem_right_employee"
-		                              name="mem_right"
-		                              checked
-		                            />
-		                            <label class="form-check-label" for="mem_right_employee"> 사원 권한</label>
-		                      </div>
-		                      <div class="form-check">
-		                      	<input
-		                          class="form-check-input"
-		                          type="radio"
-		                          value="1"
-		                          id="mem_right_manager"
-		                          name="mem_right"
-		                        />
-		                        <label class="form-check-label" for="mem_right_manager"> 관리자 권한</label>
-		                      </div>
-                      	  </div>
-                        </div>
+                        <img id="imgView" src="${pageContext.request.contextPath}/upload/sh/${member.mem_img }" class="d-block rounded" style="height: 150px; width: 150px; display: none;  margin: auto;	"/>
                       </div>
                     </div>
                     <hr class="my-0" />
@@ -263,7 +174,9 @@
                               class="form-control"
                               type="text"
                               id="mem_id"
+                              name = "mem_id"
                               readonly="readonly"
+                              value="${member.mem_id }"
                               autofocus
                             />
                           </div>
@@ -272,7 +185,9 @@
                           <div class="mb-3 col-md-6">
 	                        <label for="mem_hiredate" class="col-md-2 col-form-label">입사 일자</label>
 	                        <div class="col-md-10">
-	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" />
+	                          <fmt:parseDate var="parsedDate" value="${member.mem_hiredate}" pattern="yyyy-MM-dd HH:mm:ss" />
+							  <fmt:formatDate var="formattedDate" value="${parsedDate}" pattern="yyyy-MM-dd" />
+	                          <input class="form-control" type="date" name="mem_hiredate" id="mem_hiredate" value="${formattedDate}" readonly="readonly" />
 	                        </div>
 	                    </div>
                        
@@ -284,6 +199,7 @@
                            type="text"
                            id="mem_name"
                            name="mem_name"
+                           value="${member.mem_name }"
                           />
                         </div>
                            
@@ -299,6 +215,7 @@
 			                     placeholder="yyyyMMdd"
 			                     aria-label="Recipient's username with two button addons"
 			                     maxlength="8"
+			                     value="${member.mem_bd }"
 			                     pattern="\d*"
 			                     
 			                   />
@@ -310,6 +227,7 @@
 		                         type="radio"
 		                         value="M"
 		                         id="mem_sex_m"
+		                         <c:if test="${member.mem_sex eq 'M'}">checked="checked"</c:if>
 		                        />남
 		                       <input
 		                         name="mem_sex"
@@ -317,7 +235,7 @@
 		                         type="radio"
 		                         value="F"
 		                         id="mem_sex_f"
-		                         
+		                         <c:if test="${member.mem_sex eq 'F'}">checked="checked"</c:if>
 		                       />여
 	                        	</div>
 			               </div>
@@ -330,9 +248,10 @@
 							<span id="emailMsg"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: red; font-weight: bold; width: 170px;">유효한 이메일 주소를 입력해주세요.</span>
                         </div>
                         <div class="input-group">
-	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"/>
+                        <c:set var="emailParts" value="${fn:split(member.mem_email, '@')}" />
+	                        <input class="form-control" type="text" id="mem_email1" name="mem_email1"  value="${emailParts[0]}"/>
 	                            <span class="input-group-text">@</span>
-	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2"/>
+	                            <input class="form-control" type="text" id="mem_email2" name="mem_email2"  value="${emailParts[1]}"/>
 	                            <select id="mem_email3" class="select2 form-select">
 		                            <option value="" >직접입력</option>
 		                            <option value="naver.com">네이버</option>
@@ -348,7 +267,7 @@
                             <label class="form-label" for="mem_phone">전화번호</label>
                             <div class="input-group input-group-merge">
                               <span class="input-group-text">KR (+82)</span>
-                              <input type="text" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11"/>
+                              <input type="text" id="mem_phone" name="mem_phone" class="form-control" placeholder="휴대폰 번호(-제외)" maxlength="11" value="${member.mem_phone}"/>
                         	</div>
                      	</div>
                         
@@ -356,36 +275,34 @@
                      	<div class="mb-3 col-md-6" >
                             <label class="form-label" for="mem_dept">부서</label>
                             <div class="input-group">
-	                            <select id="mem_dept"  class="select2 form-select">
-	                              <option value="">Select</option>
-	                              <option value="100">회계팀</option>
-	                              <option value="101">인사팀</option>
-	                              <option value="102">영업1팀</option>
-	                              <option value="103">영업2팀</option>
-	                              <option value="104">물류1팀</option>
-	                              <option value="105">물류2팀</option>
-	                              <option value="106">CS1팀</option>
-	                              <option value="107">CS2팀</option>
-	                            </select>
-                            <input type="text"class="form-control" id="mem_dept_md" name="mem_dept_md" aria-label="Text input with dropdown button" readonly="readonly" />
-	                          </div>
+	                            <input id="mem_dept"  class="form-control" readonly="readonly"
+	                            	<c:if test="${member.mem_dept_md eq 100 }">value="회계팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 101 }">value="인사팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 102 }">value="영업1팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 103 }">value="영업2팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 104 }">value="물류1팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 105 }">value="물류2팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 106 }">value="CS1팀"</c:if>
+	                            	<c:if test="${member.mem_dept_md eq 107 }">value="CS2팀"</c:if>
+	                            >
+                            	<input type="text"class="form-control" id="mem_dept_md" name="mem_dept_md" aria-label="Text input with dropdown button" value="${member.mem_dept_md }" readonly="readonly"/>
+	                        </div>
                           </div>
                           
                           <!-- mem_posi -->
                           <div class="mb-3 col-md-6">
                             <label class="form-label" for="mem_posi">직위</label>
                             <div class="input-group">
-                            <select id="mem_posi" class="select2 form-select">
-                              <option value="">Select</option>
-                              <option value="100">대표이사</option>
-                              <option value="101">상무</option>
-                              <option value="102">차장</option>
-                              <option value="103">과장</option>
-                              <option value="104">대리</option>
-                              <option value="105">사원</option>
-                            </select>
-                            <input type="text" class="form-control" id="mem_posi_md" name="mem_posi_md" aria-label="Text input with dropdown button" readonly="readonly" />
-	                          </div>
+                            	<input id="mem_posi"  class="form-control" readonly="readonly"
+                            		<c:if test="${member.mem_posi_md eq 100 }">value="대표이사"</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 101 }">value="상무"</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 102 }">value="차장"</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 103 }">value="과장"</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 104 }">value="대리"</c:if>
+	                            	<c:if test="${member.mem_posi_md eq 105 }">value="사원"</c:if>
+                            	>
+                            	<input type="text" class="form-control" id="mem_posi_md" name="mem_posi_md" aria-label="Text input with dropdown button" value="${member.mem_posi_md }" readonly="readonly" />
+	                        </div>
                           </div>
                           
                           <!-- mem_duty -->
@@ -393,16 +310,15 @@
                             <label for="mem_duty" class="form-label">직책</label>
                             <div class="col-md-6">
 	                            <div class="input-group">
-	                            <select id="mem_duty" class="select2 form-select">
-	                              <option value="">Select</option>
-	                              <option value="100">CEO</option>
-	                              <option value="101">CFO</option>
-	                              <option value="102">본부장</option>
-	                              <option value="103">실장</option>
-	                              <option value="104">팀장</option>
-	                              <option value="105">팀원</option>
-	                            </select>
-	                            <input type="text" class="form-control" id="mem_duty_md" name="mem_duty_md" aria-label="Text input with dropdown button" readonly="readonly" />
+	                            <input id="mem_duty"  class="form-control" readonly="readonly"
+	                            	<c:if test="${member.mem_duty_md eq 100 }">value="CEO"</c:if>
+	                            	<c:if test="${member.mem_duty_md eq 101 }">value="CFO"</c:if>
+	                            	<c:if test="${member.mem_duty_md eq 102 }">value="본부장"</c:if>
+	                            	<c:if test="${member.mem_duty_md eq 103 }">value="실장"</c:if>
+	                            	<c:if test="${member.mem_duty_md eq 104 }">value="팀장"</c:if>
+	                            	<c:if test="${member.mem_duty_md eq 105 }">value="팀원"</c:if>
+	                            >
+	                            <input type="text" class="form-control" id="mem_duty_md" name="mem_duty_md" aria-label="Text input with dropdown button" value="${member.mem_duty_md }" readonly="readonly" />
 		                      	</div>
 	                      	</div>
                           </div>
@@ -411,19 +327,20 @@
                           <div class="mb-3 col-md-6"  id="mem_address">
                             <label for="exampleFormControlInput1" class="form-label">주소</label>
                             <div class="row">
+                            <c:set var="addressParts" value="${fn:split(member.mem_address, '/')}" />
 						        <div class="mb-3 col-md-4">
-						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" maxlength="6" placeholder="우편번호">
+						            <input type="text" class="form-control" name="mem_mailcode" id="sample6_postcode" maxlength="6" placeholder="우편번호" value="${member.mem_mailcode }">
 						        </div>
 						        <div class="col-md-2">
 						            <input type="button" class="form-control" onclick="sample6_execDaumPostcode()" value="주소 검색">
 						        </div>
 						    </div>
 	                        <div class="col-md-8">
-								<input type="text" class="form-control" name="mem_address1" id="sample6_address" placeholder="주소"><br>
+								<input type="text" class="form-control" name="mem_address1" id="sample6_address" value="${addressParts[0]}" placeholder="주소"><br>
 							</div>
 							<div class="col-md-6">
-								<input type="text"class="form-control" name="mem_address2" id="sample6_extraAddress" placeholder="참고항목"><br>
-								<input type="text" class="form-control" name="mem_address3" id="sample6_detailAddress" placeholder="상세주소">
+								<input type="text"class="form-control" name="mem_address2" id="sample6_extraAddress" value="${addressParts[1]}" placeholder="참고항목"><br>
+								<input type="text" class="form-control" name="mem_address3" id="sample6_detailAddress" value="${addressParts[2]}" placeholder="상세주소">
 							</div>
                           </div>
                           
@@ -444,6 +361,7 @@
 	                       	  
                        	 	<!-- mem_pw2 -->
 	                        <div class="form-password-toggle">
+	                        	<input type="hidden" name="oldPw" id="oldPw" value="${member.mem_pw}">
 		                        <div style="display: flex; align-items: center;">
 			                        <label class="form-label" for="basic-default-password2">비밀번호 재확인</label>
 			                        <span id="pswd2Msg1"  aria-live="assertice" style="display: none; font-size: 10px;  margin-left: 10px; color: green; font-weight: bold; width: 140px;">비밀번호가 일치합니다.</span>
@@ -641,6 +559,12 @@
 		    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 		    if (!regex.test(pw1)) {
 		        displayError("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+		        return;
+		    }
+		    
+		 // 공백 검사
+		    if (pw1.includes(" ")) {
+		        displayError("공백을 포함시킬 수 없습니다.");
 		        return;
 		    }
 		 	

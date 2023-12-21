@@ -8,20 +8,22 @@ import org.springframework.stereotype.Repository;
 import com.oracle.OMG.dto.Customer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 @RequiredArgsConstructor
 public class YrCustomerDaoImpl implements YrCustomerDao {
 	private final SqlSession session;
 	
 	@Override
 	public List<Customer> customerList() {
-		System.out.println("YrCustomerDaoImpl customerList start");
+		log.info("customerList start");
 		List<Customer> customer = null;
 		try {
 			customer = session.selectList("yrCustomerSelectList");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return customer;
 	}

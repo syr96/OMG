@@ -24,6 +24,8 @@ public interface JkWareDao {
 	int deleteInv(Warehouse warehouse);
 
 	List<Purchase> 				purMonthData(String month);
+	void 						callInboundPD(String purDate, int custCode);
+	List<Warehouse> inboundList(Warehouse warehouse);
 	
 		
 }

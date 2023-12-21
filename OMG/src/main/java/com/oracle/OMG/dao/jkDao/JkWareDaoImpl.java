@@ -209,9 +209,41 @@ public class JkWareDaoImpl implements JkWareDao {
 	}
 
 
+	@Override
+	public void callInboundPD(String purDate, int custCode) {
+	    try {
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("purDate", purDate);
+	        parameters.put("custCode", custCode);
+
+	        // 프로시저 호출
+	        int updatedRows = session.update("callInboundPD", parameters);
+	        
+	        // 업데이트된 행의 수를 출력
+	        System.out.println("Updated rows: " + updatedRows);
+	    } catch (Exception e) {
+	        // 프로시저 호출 중 오류 처리
+	        e.printStackTrace();
+	    }
+	}
 
 
+	@Override
+	public List<Warehouse> inboundList(Warehouse warehouse) {
+		System.out.println("JkWareDaoImpl monthData start...");
+		List<Warehouse> inboundList = null;
+		
+		try {
+			inboundList = session.selectList("inboundList", warehouse);
+			System.out.println("monthDatalistsize"+inboundList);
+			 System.out.println("Params: " + inboundList);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("JkWareDaoImpl inboundList error?"+ e.getMessage());
+		}
+		
+		return inboundList;
+	}
 
-	
 	
 }
