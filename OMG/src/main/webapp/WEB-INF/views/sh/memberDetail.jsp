@@ -116,7 +116,7 @@
 	}
 	
 //----------------------pw1 연속숫자 검사 ------------------------------
-	function checkpswd1_sameNum(pw){
+	function sameNum(pw){
 		var cnt = 0;
 		//연속 숫자 제한
 		for (var i = 0; i < str.length; ++i) {

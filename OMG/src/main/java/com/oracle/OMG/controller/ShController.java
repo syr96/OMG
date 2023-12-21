@@ -50,17 +50,19 @@ public class ShController {
 								
 								@ModelAttribute Member member,
 							    @RequestParam("img") 	 MultipartFile img,
+							    @RequestParam("defaultImg") 	 String img2,
 							   HttpServletRequest 		 request,
 							   Model 					 model) throws IOException {
 		System.out.println("shController createMember() Start");
 		System.out.println("Received member: " + member);
 		int result = 0;
-		
 		String address = address1 + "/" + address2 + "/" + address3;
 		String email   = email1 + "@" + email2;
 		member.setMem_address(address);
 		member.setMem_email(email);
-		
+		member.setMem_img(img2);
+		System.out.println("shController createMember() 1");
+		if(!img.isEmpty()) {
 		//multipartFile 경로 설정
 		String path 		  = request.getSession().getServletContext().getRealPath("upload");
 		
@@ -76,14 +78,14 @@ public class ShController {
 		
 		File changeFile 	  = new File(root + "\\" + ranFileName);
 		
-		try {
-			img.transferTo(changeFile);
-			System.out.println("파일 업로드 성공");
-			member.setMem_img(ranFileName);
-		} catch (Exception e) {
-			System.out.println("shController createMember Exception ->" + e.getMessage());
+			try {
+				img.transferTo(changeFile);
+				System.out.println("파일 업로드 성공");
+				member.setMem_img(ranFileName);
+			} catch (Exception e) {
+				System.out.println("shController createMember Exception ->" + e.getMessage());
+			}
 		}
-		
 		System.out.println("Received member: " + member);
 			
 		result = ms.createMember(member);
@@ -132,7 +134,7 @@ public class ShController {
 		member.setMem_email(email);
 		member.setMem_img(img2);
 		
-		if(img1!=null) {
+		if(!img1.isEmpty()) {
 			try {
 				//multipartFile 경로 설정
 				String path 		  = request.getSession().getServletContext().getRealPath("upload");
