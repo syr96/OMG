@@ -219,9 +219,7 @@ public class JkController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
-		List<Warehouse> inboundList = null;
-		inboundList = jws.inboundList(warehouse);
-		
+	
 		List<Customer> pur_custList = ccs.custList();
 		
 		
@@ -229,8 +227,7 @@ public class JkController {
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
 		model.addAttribute("page",page);
-		model.addAttribute("inboundList", inboundList);
-
+	
 		System.out.println("model"+model);
 	    return "jk/inboundRegister";
 		
