@@ -185,13 +185,6 @@
 				pwValid = false;
 			}
 			
-			//공백 검사
-			if (pw.includes(" ")) {
-				alert("공백은 사용 할 수 없습니다.");
-				pwValid = false;
-
-			}
-			
 			if(!pwValid){
 				isValid = false;
 			}
@@ -452,7 +445,7 @@
 		                        <div class="input-group">
 		                        <span class="ps_box int_pass"></span>
 		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;"/>
-		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                          <span id="spanPw2" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 		                        </div>
@@ -460,7 +453,7 @@
 	                      </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2" >Create</button>
+                          <button type="submit" class="btn btn-primary me-2">Create</button>
                           <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                     </div>

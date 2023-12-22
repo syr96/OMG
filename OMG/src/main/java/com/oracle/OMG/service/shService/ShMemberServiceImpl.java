@@ -29,7 +29,12 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return memberList;
 	}
 
-
+	@Override
+	public List<Member> selectStatus() {
+		System.out.println("memberService selectStatus() Start");
+		List<Member> statusList = md.selectStatus();
+		return statusList;
+	}
 	
 	@Override
 	public int memberTotal() {
@@ -93,8 +98,5 @@ public class ShMemberServiceImpl implements ShMemberService {
 		int result = md.detailMember(member);
 		return result;
 	}
-
-
-
 
 }

@@ -159,22 +159,16 @@ function sample6_execDaumPostcode() {
 		}
 		
 		function passwordValid(){
-			var pw = document.getElementById("basic-default-password1").value;
+			var pw1 = document.getElementById("basic-default-password1").value;
+			var pw2 = document.getElementById("basic-default-password2").value;
 			var pwValid = true;
 			var cnt = 0;
 			var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 			
 			//유효성 검사	
-			if(!pwRegex.test(pw)){
+			if(!pwRegex.test(pw1)){
 				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
 				pwValid = false;
-			}
-			
-			//공백 검사
-			if (pw.includes(" ")) {
-				alert("공백은 사용 할 수 없습니다.");
-				pwValid = false;
-	
 			}
 			
 			if(!pwValid){
@@ -471,7 +465,7 @@ function sample6_execDaumPostcode() {
 	                      </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">Update</button>
+                          <button type="submit" class="btn btn-primary me-2" <c:if test="${mem_right != 1}">disabled="disabled"</c:if>>Update</button>
                           <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                     </div>
@@ -688,44 +682,38 @@ function sample6_execDaumPostcode() {
 	});
 	
 	function validatePassword(){
-			var pw1 = $('#basic-default-password1').val();
-			var pw2 = $('#basic-default-password2').val();
-			
-			// 최소 길이 검사
-		    if (pw1.length < 8) {
-		        displayError("비밀번호가 8자리보다 적습니다");
-		        return;
-		    }
-			
-		 // 최소 조합 검사
-		    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-		    if (!regex.test(pw1)) {
-		        displayError("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
-		        return;
-		    }
-		    
-		 // 공백 검사
-		    if (pw1.includes(" ")) {
-		        displayError("공백을 포함시킬 수 없습니다.");
-		        return;
-		    }
-		 	
-		 // 모든 검사를 통과하면 성공 메시지 표시
-		    displayError("사용가능한 비밀번호 입니다.", false);
-		 
-		    if(isNaN(pw2)){
-				if(pw1 == pw2){
-					$('#pswd2Msg1').css('display','block');
-					$('#pswd2Msg2').css('display','none');
-				} else {
-					$('#pswd2Msg1').css('display','none');
-					$('#pswd2Msg2').css('display','block');
-				}
-			} else {
-				$('#pswd2Msg1').css('display','none	');
+		var pw1 = $('#basic-default-password1').val();
+		var pw2 = $('#basic-default-password2').val();
+		
+		// 최소 길이 검사
+	    if (pw1.length < 8) {
+	        displayError("비밀번호가 8자리보다 적습니다");
+	        return;
+	    }
+		
+	 // 최소 조합 검사
+	    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+	    if (!regex.test(pw1)) {
+	        displayError("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+	        return;
+	    }
+	 	
+	 // 모든 검사를 통과하면 성공 메시지 표시
+	    displayError("사용가능한 비밀번호 입니다.", false);
+	 
+	    if(isNaN(pw2)){
+			if(pw1 == pw2){
+				$('#pswd2Msg1').css('display','block');
 				$('#pswd2Msg2').css('display','none');
-			}			
-		}
+			} else {
+				$('#pswd2Msg1').css('display','none');
+				$('#pswd2Msg2').css('display','block');
+			}
+		} else {
+			$('#pswd2Msg1').css('display','none	');
+			$('#pswd2Msg2').css('display','none');
+		}			
+	}
 
 		function displayError(message, isError = true) {
 		    var errorDiv = $("#pswd1Msg");
