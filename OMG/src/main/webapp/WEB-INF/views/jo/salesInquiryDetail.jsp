@@ -41,26 +41,23 @@
 		<div class="row">
 			<main>
 			<div>
-				<h1>판매수정</h1>
+				<h1>판매정보</h1>
 			</div>
 			
 			<!-- Section1: Table -->
 			<div>
-				<div>	
+				<div>
 					<div>
-					<form action="salesUpdate" method="post">
 						<div class="mb-3 ">
 						  <label for="sales_date" class="form-label" style="font-size: 15px;">매출일자</label>
 						  <input type="text" class="form-control" name="sales_date" id="sales_date" value="${salesDetail.sales_date}" required="required" disabled>
-						  <input type="hidden" name="sales_date" value="${salesDetail.sales_date}">
 						</div>
 						<div class="mb-3 ">
 						  <label for="title" class="form-label" style="font-size: 15px;">제목</label>
-						  <input type="text" class="form-control" name="title" id="title" value="${salesDetail.title}" required="required" >
+						  <input type="text" class="form-control" name="title" id="title" value="${salesDetail.title}" required="required" disabled>
 						</div>
 						<div class="mb-3 ">
-						  <label for="company" class="form-label"  style="font-size: 15px;">거래처명</label>
-						  <input type="hidden" name="custcode" value="${salesDetail.custcode}">
+						  <label for="company" class="form-label" style="font-size: 15px;">거래처명</label>
 						  <input type="hidden" name="custstyle" value="1">
 						  <select class="form-select" aria-label="custcode" name="custcode" required="required" disabled>
 							<c:forEach var="custCode" items="${listCustCode}">
@@ -70,7 +67,7 @@
 						</div>
 						<div class="mb-3 ">
 						  <label for="ref" class="form-label" style="font-size: 15px;">비고</label>
-						  <textarea class="form-control" name="ref" id="ref" rows="5">${salesDetail.ref}</textarea>
+						  <textarea class="form-control" name="ref" id="ref" rows="5" disabled>${salesDetail.ref}</textarea>
 						</div>
 																							
 						<hr class="hr" />			
@@ -78,26 +75,24 @@
 						<table id="itemTable" class="table table-md text-center p-3">
 							<thead>
 								<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
-									<th scope="col" style="text-align: center;"></th>
-									<th scope="col" style="text-align: center;">No.</th>
-									<th scope="col" style="text-align: center;">제품코드</th>
-									<th scope="col" style="text-align: center;">제품명</th>
-									<th scope="col" style="text-align: center;">수량</th>
-									<th scope="col" style="text-align: center;">가격</th>
-									<th scope="col" style="text-align: center;">총 금액</th>
+									<th scope="col">No.</th>
+									<th scope="col">제품코드</th>
+									<th scope="col">제품명</th>
+									<th scope="col">수량</th>
+									<th scope="col">가격</th>
+									<th scope="col">총 금액</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:set var="num" value="${page.start}"/>   
+								<c:set var="num" value="1"/>   
 								<c:forEach var="salesDetail" items="${salesDetailList}">
 								   <tr>
-										<td style="text-align: center"><input type="checkbox" name="check" value="check"></td>
 										<td style="text-align: center">${num}</td>
-										<td style="text-align: center"><input type="text" name="code" value="${salesDetail.code}"></td>
-										<td style="text-align: center"><input type="text" name="name" value="${salesDetail.name}"></td>
-										<td style="text-align: center"><input type="text" name="qty" value="${salesDetail.qty}"></td>
-										<td style="text-align: center"><input type="text" name="price" value="${salesDetail.price}"></td>
-										<td style="text-align: center"><input type="text" name="total_price" value="${salesDetail.total_price}"></td>
+										<td style="text-align: center">${salesDetail.code}</td>
+										<td style="text-align: center">${salesDetail.name}</td>
+										<td style="text-align: center">${salesDetail.qty}</td>
+										<td style="text-align: center">${salesDetail.price}</td>
+										<td style="text-align: center">${salesDetail.total_price}</td>
 								   </tr>
 								 <c:set var="num" value="${num+1}"/>  
 			                    </c:forEach>
@@ -105,17 +100,16 @@
 						 </table>
 							
 					<div class="button-group">
-						<input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-4" value="저장">
+						<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='salesUpdateForm?sales_date=${salesDetail.sales_date}&custcode=${salesDetail.custcode}&code=${salesDetail.code}'">수정</button>
 						<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='salesInquiry'">리스트</button>
 					</div>
-					
-					</form>
+								
 					</div>
 				</div>
 			</div>
-			</main>
-		</div>
-	</div>		
+		</main>
+	</div>
+	</div>			
 <%@ include file="../common/footer.jsp" %>	
 </body>
 </html>

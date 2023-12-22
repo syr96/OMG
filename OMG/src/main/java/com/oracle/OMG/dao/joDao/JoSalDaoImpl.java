@@ -129,30 +129,30 @@ public class JoSalDaoImpl implements JoSalDao {
 		return sortSalesInquiry;
 	
 	}
-
-
-	@Override
-	public int deleteSalesDetail(SalesDetail sales) {
-		int result = 0;
-		TransactionStatus txStatus = 
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
-		
-		try {
-			log.info("JoSalDaoImpl deleteSalesDetail Start");
-			result = session.delete("joDeleteSalesDetail", sales);
-			log.info("JoSalDaoImpl deleteSalesDetail result -> " + result);
-			result = session.delete("joDeleteSales", sales);
-			log.info("JoSalDaoImpl deleteSales result -> " + result);
-			transactionManager.commit(txStatus);
-			
-		} catch (Exception e) {
-			transactionManager.rollback(txStatus);
-			log.info("JoSalDaoImpl deleteSalesDetail Exception ->" + e.getMessage());
-			result = -1;
-		}
-		
-		return result;
-	}
+	
+	  @Override 
+	  public int deleteSalesDetail(SalesDetail sales) { 
+		  int result = 0;
+		  TransactionStatus txStatus = 
+				  transactionManager.getTransaction(new DefaultTransactionDefinition());
+	  
+	  try { 
+		  log.info("JoSalDaoImpl deleteSalesDetail Start"); 
+		  result = session.delete("joDeleteSalesDetail", sales);
+		  log.info("JoSalDaoImpl deleteSalesDetail result -> " + result); 
+		  result = session.delete("joDeleteSales", sales);
+		  log.info("JoSalDaoImpl deleteSales result -> " + result);
+		  transactionManager.commit(txStatus);
+	  
+	  } catch (Exception e) { 
+		  transactionManager.rollback(txStatus);
+		  log.info("JoSalDaoImpl deleteSalesDetail Exception ->" + e.getMessage());
+		  result = -1; 
+	  }
+	  
+	  return result; 
+	  }
+	 
 
 
 	@Override
@@ -250,11 +250,48 @@ public class JoSalDaoImpl implements JoSalDao {
 
 	@Override
 	public int UpdateSales(SalesDetail sales) {
+		int result = 0;
 		
-		return 0;
-	}
+		TransactionStatus txStatus =
+				transactionManager.getTransaction(new DefaultTransactionDefinition());
+				
+		try {
+			log.info("JoSalDaoImpl updateSales Start");
+			result = session.update("joUpdateSales", sales);
+			log.info("JoSalDaoImpl updateSales reuslt -> " + result);
+			result = session.update("joUpdateSalesDetail", sales);
+			log.info("JoSalDaoImpl updateSalesDetail reuslt -> " + result);
+			transactionManager.commit(txStatus);
 			
-	
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			log.error("JoSalDaoImpl updateSales Exception -> " + e.getMessage());
+			result = -1;
+		}
+		return result;
+		
+	}
+
+
+	@Override
+	public List<SalesDetail> getListProduct() {
+		List<SalesDetail> getListProduct = null;
+		
+		try {
+			log.info("JoSalDaoImpl getListProduct Start");
+			getListProduct = session.selectList("joGetListProdcut");
+			log.info("JoSalDaoImpl getListProduct.size -> " + getListProduct.size());
+			
+		} catch (Exception e) {
+			log.info("JoSalDaoImpl getListProduct Exception -> " + e.getMessage());
+			
+		}
+		return getListProduct;
+	}
+
+
 }
+
+
 
 	
