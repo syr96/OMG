@@ -24,6 +24,7 @@ public class SalesDetail {
         
     private String company;
     private String name;
+    private int    output_price;
     
     
     // Search

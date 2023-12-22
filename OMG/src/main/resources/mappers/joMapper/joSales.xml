@@ -151,6 +151,13 @@
 	</select>
 	
 	
+	<update id="joUpdateSalesDetail" parameterType="SalesDetail">
+		UPDATE sales_detail 
+		SET	   code=#{code}, qty=#{qty}, price=#{price}
+		WHERE  sales_date = #{sales_date} 
+		AND    custcode   = #{custcode}
+	</update>
+	
 	
 	<!-- Sales 테이블 -->
 	<delete id="joDeleteSales" parameterType="SalesDetail">
@@ -172,5 +179,31 @@
 		WHERE  sales_date = #{sales_date}
 		AND    custcode   = #{custcode}
 	</select>
+	
+	
+	<update id="joUpdateSales" parameterType="SalesDetail">
+		UPDATE sales 
+		SET    sales_status='0', title=#{title}, ref=#{ref}
+		WHERE  sales_date = #{sales_date}
+		AND    custcode   = #{custcode}   
+	</update>
+	
+	
+	<delete id="joDeleteSelectedSalesDetail" parameterType="java.util.List">
+	    DELETE FROM sales_detail
+	    WHERE sales_detail_id IN
+	    <foreach collection="list" open="(" close=")" separator=",">
+	        #{value}
+	    </foreach>
+	</delete>
+	
+	
+	<!-- Item 테이블 -->
+	<select id="joGetListProdcut" resultType="SalesDetail">
+		SELECT *
+		FROM   item
+		WHERE  deleted = 0
+	</select>
+		
 	
 </mapper>

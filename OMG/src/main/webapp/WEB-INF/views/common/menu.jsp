@@ -117,14 +117,6 @@
                 </li>
               </ul>
             </li>
-            <!-- Tables -->
-            <li class="menu-item">
-              <a href="tables-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Tables">Tables</div>
-              </a>
-            </li>
-            
             <!-- Purchase -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">재고 관리</span></li>
             <!-- Forms -->
