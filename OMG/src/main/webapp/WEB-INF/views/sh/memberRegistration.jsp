@@ -60,7 +60,7 @@
     
 </script>
 <script type="text/javascript">
-	//create 버튼 클리식 전 컬럼
+	//create 버튼 클릭 시 유효성 한번에 검사 진행
 	function validCheck(){
 		var isValid = true;
 		nameCheck();
@@ -220,7 +220,7 @@
                             <span class="d-none d-sm-block">Upload</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
                             <input type="file" id="upload" name="img" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
-                            <input type="hidden" name="defaultImg" value="../assets/img/elements/image.jpg">
+                            <input type="hidden" name="defaultImg" value="image.jpg">
                           </label>
                           <button type="button" id="reset" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>

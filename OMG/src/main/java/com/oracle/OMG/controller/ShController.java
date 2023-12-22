@@ -61,7 +61,6 @@ public class ShController {
 		member.setMem_address(address);
 		member.setMem_email(email);
 		member.setMem_img(img2);
-		System.out.println("shController createMember() 1");
 		if(!img.isEmpty()) {
 		//multipartFile 경로 설정
 		String path 		  = request.getSession().getServletContext().getRealPath("upload");

@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script>
 //주소 API
 function sample6_execDaumPostcode() {
@@ -56,7 +56,133 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 };
-
+</script>
+<script type="text/javascript">
+	function updateValidCheck(){
+		var isValid = true;
+		nameCheck();
+		emailCheck();
+		birthdayCheck();
+		hiredateCheck();
+		deptCheck();
+		posiCheck();
+		dutyCheck();
+		passwordValid();
+		
+		// 폼 제출 여부 결정
+	    if (!isValid) {
+	    	alert("(!isValid)false");
+	        return false; // 유효성 검사에서 실패한 경우 폼 제출 중단
+	    } else{
+	    	// 유효성 검사 통과 시  폼 제출
+	    	alert("true");
+	    	return true;
+	    	}
+	    
+	  //이름 유효성검사
+		function nameCheck(){
+			var name = document.getElementById("mem_name").value;
+			
+			var koreanNameRegex = /^[가-힣]+$/;
+			var englishNameRregex = /^[a-zA-Z]+$/;
+			
+			if(!koreanNameRegex.test(name)){
+				if(!englishNameRregex.test(name)){
+					alert("이름을 다시 작성해주세요.");
+					formAccountSettings.name.value= "";
+					isValid = false;
+				}
+			}
+		}
+		
+		//이메일 유효성 검사
+		function emailCheck(){
+			var email1 = document.getElementById("mem_email1").value;
+			var email2 = document.getElementById("mem_email2").value;
+			var email = email1 + "@" + email2;
+			
+			var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+			
+			if(!emailRegex.test(email)){
+				alert("이메일 양식이 맞지 않습니다.");
+				isValid = false;
+			}
+		}
+		
+		//입사일자 유효성 검사
+		function hiredateCheck(){
+			var hiredate = document.getElementById("mem_hiredate").value;;
+			if(!hiredate || !hiredate.trim()){
+				alert("입사일자를 입력해주세요.");
+				isValid = false;
+			}
+		}
+		
+		//생일 유효성 검사
+		function birthdayCheck(){
+			var birthday = document.getElementById("mem_bd").value;
+			
+			if(!birthday || !birthday.trim()){
+				alert("생년월일을 입력해주세요.");
+				isValid = false;
+			}
+		}
+		
+		//부서 체크 유무
+		function deptCheck(){
+			var dept = 	document.getElementById("mem_dept_md").value;
+			
+			if(!dept || !dept.trim()){
+				alert("부서항목란을를 체크해주세요.");
+				isValid = false;
+			}
+		}
+		
+		//직위 체크 유무
+		function posiCheck(){
+			var posi = 	document.getElementById("mem_posi_md").value;
+			
+			if(!posi || !posi.trim()){
+				alert("직위항목란을 체크해주세요.");
+				isValid = false;
+			}
+		}
+		
+		//직급 체크 유무
+		function dutyCheck(){
+			var duty = 	document.getElementById("mem_duty_md").value;
+			
+			if(!duty || !duty.trim()){
+				alert("직급항목란을 체크해주세요.");
+				isValid = false;
+			}
+		}
+		
+		function passwordValid(){
+			var pw = document.getElementById("basic-default-password1").value;
+			var pwValid = true;
+			var cnt = 0;
+			var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+			
+			//유효성 검사	
+			if(!pwRegex.test(pw)){
+				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+				pwValid = false;
+			}
+			
+			//공백 검사
+			if (pw.includes(" ")) {
+				alert("공백은 사용 할 수 없습니다.");
+				pwValid = false;
+	
+			}
+			
+			if(!pwValid){
+				isValid = false;
+			}
+		}
+	}
+    
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -69,7 +195,7 @@ function sample6_execDaumPostcode() {
                 <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header"><i class="bx bx-user me-1"></i> Account Detail</h5>
-                    <form id="formAccountSettings" action="updateMember" method="post" enctype="multipart/form-data">
+                    <form id="formAccountSettings" action="updateMember" method="post" enctype="multipart/form-data" onsubmit="return updateValidCheck();">
                     <input type="hidden" id="mem_status" name="mem_status" value="${member.mem_status }">
                     <!-- Account -->
                     <div class="card-body">
@@ -80,7 +206,7 @@ function sample6_execDaumPostcode() {
                             <span class="d-none d-sm-block">Upload</span>
                             <i class="bx bx-upload d-block d-sm-none"></i>
                             <input type="file" id="upload" name="img1" class="account-file-input" aria-label="upload" accept="image/png, image/jpeg, image/jpg" hidden />
-                            <input type="hidden" name="img2" value="${member.mem_img }">
+                            <input type="hidden" name="img2" value="image.jpg">
                           </label>
                           <button type="button" id="reset" class="btn btn-outline-secondary account-image-reset mb-4">
                             <i class="bx bx-reset d-block d-sm-none"></i>
@@ -183,7 +309,7 @@ function sample6_execDaumPostcode() {
 			                         class="form-check-input"
 			                         type="radio"
 			                         value="M"
-			                         id="mem_sex"
+			                         id="mem_sex_m"
 			                         <c:if test="${member.mem_sex eq 'M'}">checked="checked"</c:if>
 			                        />남
 			                       <input
@@ -191,7 +317,7 @@ function sample6_execDaumPostcode() {
 			                         class="form-check-input"
 			                         type="radio"
 			                         value="F"
-			                         id="mem_sex"
+			                         id="mem_sex_f"
 			                          <c:if test="${member.mem_sex eq 'F'}">checked="checked"</c:if>
 			                       />여
 		                        	</div>
