@@ -113,9 +113,10 @@ function handleInboundButtonClick() {
             <div class="tab-content px-0 mt-0" style="padding-top: 0px;padding-bottom: 0px;margin-top: 1px;">
                 <div class="tab-pane fade active show" id="horizontal-home">
                     <div class="card">
-                  
+                
                         <h5 class="card-header">발주서 선택</h5>
                           <div class="card-body">
+                            <form action="salesInquirySearch" method="GET">	
                             <div class="row align-items-end" style="padding-left: 23px;">
                                 <div class="mb-3 col-md-3">
                                     <label for="thtml5-date-input" class="col-md-2 col-form-label">조회필터</label>
@@ -125,14 +126,15 @@ function handleInboundButtonClick() {
 							</select> 
                               </div>
                                 <div class="mb-3 col-md-3">
-                                    <label for="html5-date-input" class="col-md-2 col-form-label">업체명</label>
+                                    <label for="html5-date-input" class="col-md-2 col-form-label">키워드</label>
                          	<input type="text" name="keyword" class="form-control" placeholder="keyword를 입력하세요">
 						 
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <button class="btn btn-outline-primary" type="button" onclick="srch()">검색</button>
+                                    <button class="btn btn-outline-primary" type="submit">검색</button>
                                 </div>
                             </div>
+                            </form>
                             <h5 class="card-header">판매리스트</h5>
                             <div class="card-body">
                                 <div class="table-responsive text-nowrap" style="height:500px;">
@@ -173,7 +175,29 @@ function handleInboundButtonClick() {
 						 <c:set var="num" value="${num + 1}"/>
 						</c:forEach>
 					</tbody>
-
+					<tbody id ="searchResults">
+						<c:set var="num" value="${page.start}"/>
+						<c:forEach var="salesInquirySearch" items="${salesInquirySearch}">
+							<tr>
+								<td style="text-align: center">${num}</td>
+								<td><a href="salesInquiryDetail?sales_date=${salesInquirySearch.sales_date}&custcode=${salesInquirySearch.custcode}">${salesInquirySearch.title}</a></td>
+								<td style="text-align: center">${salesInquirySearch.company}</td>
+								<td style="text-align: center">${salesInquirySearch.sales_date}</td>
+								<td style="text-align: center">${salesInquirySearch.name}</td>
+								<td style="text-align: center">${salesInquirySearch.code}</td>
+								<td style="text-align: center">${salesInquirySearch.total_price}</td>
+								<td style="text-align: center">
+									<c:if test="${salesInquirySearch.sales_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 1}">  <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
+                                  출고
+                </button></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 2}"><span class="badge bg-label-danger  me-1">취소</span></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 3}">입고완료</c:if>
+								</td>
+							</tr>
+						<c:set var="num" value="${num + 1}"/>
+						</c:forEach>
+					</tbody>
 			
                                       
                                     </table>
@@ -284,23 +308,38 @@ function handleInboundButtonClick() {
 	}
 	
 	function srch(){
-		//검색 구현
-		var srchcompany = $("#srchCompany").val();  // 회사
-		var srchDate = $("#srchDate").val();		// 날짜
-		var moveUrl = "purList";
-		// 날짜가 선택 됐을 때 
-		if(srchDate != null && srchDate != ""){
-			var subDate = dateFormatt(srchDate);
-			moveUrl += "?pur_date="+subDate;
-			// 회사도 선택 됐을 때 
-			if(srchcompany != "all"){
-				moveUrl += "&custcode="+srchcompany;
-			}
-		} else if(srchcompany != "all"){ // 회사만 선택 됐을 때
-			moveUrl += "?custcode="+srchcompany;
-		}
-		
-		location.href=moveUrl;
+		// 검색 구현
+	    var srchcompany = $("#srchCompany").val();  // 회사
+	    var srchDate = $("#srchDate").val();        // 날짜
+	    var moveUrl = "purList";
+
+	    // 날짜가 선택 됐을 때
+	    if (srchDate != null && srchDate != "") {
+	        var subDate = dateFormatt(srchDate);
+	        moveUrl += "?pur_date=" + subDate;
+
+	        // 회사도 선택 됐을 때
+	        if (srchcompany != "all") {
+	            moveUrl += "&custcode=" + srchcompany;
+	        }
+	    } else if (srchcompany != "all") { // 회사만 선택 됐을 때
+	        moveUrl += "?custcode=" + srchcompany;
+	    }
+
+	    // Ajax를 사용하여 서버에 검색 요청을 보냅니다.
+	    $.ajax({
+	        url: moveUrl, // 실제 서버 측 엔드포인트로 수정
+	        method: 'GET', // 또는 'POST' 등 필요에 따라 변경
+	        dataType: 'html',
+	        success: function (response) {
+	            // 서버 응답에 따라 테이블의 내용을 갱신
+	            $('#searchResults').html(response);
+	        },
+	        error: function (error) {
+	            console.error('서버 요청 중 오류 발생:', error);
+	            // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
+	        }
+	    });
 	}
 	
 	function dateFormatt(inputDate){

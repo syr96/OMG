@@ -306,42 +306,110 @@ public class JkController {
 	}
 	
 	// 출고관리
-		@RequestMapping(value="/outboundRegister")
-		public String invSellList(SalesDetail sales, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
-		    System.out.println("JkController invSellList start....");
-			UUID transactionId = UUID.randomUUID();
-		    logger.info("Received month: {}", inboundMonth);
-	
-		    int inboundTotal =0;
-						
-			try {
+	@RequestMapping(value="/outboundRegister")
+	public String invSellList(SalesDetail sales, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
+	    System.out.println("JkController invSellList start....");
+		UUID transactionId = UUID.randomUUID();
+	    logger.info("Received month: {}", inboundMonth);
+
+	    int inboundTotal =0;
+					
+		try {
+		
+			int totalSalesInquiry = jss.getTotalSalesInquiry();
 			
-				int totalSalesInquiry = jss.getTotalSalesInquiry();
+			Paging page = new Paging(totalSalesInquiry, currentPage);
+			sales.setStart(page.getStart());
+			sales.setEnd(page.getEnd());
+			
+			List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+			
+			model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+			model.addAttribute("page", page);
+			model.addAttribute("listSalesInquiry", sellList);
+			model.addAttribute("currentPage", currentPage);
+			
+		} catch (Exception e) {
+			log.error("[{}]{}:{}", transactionId, "salesInquiry", e.getMessage());
+		} finally {
+			log.info("[{}]{}:{}", transactionId, "salesInquriry", "End");
+		}
+
+	
+		System.out.println("model"+model);
+		System.out.println("total"+inboundTotal);
+	    return "jk/outboundRegister";
 				
-				Paging page = new Paging(totalSalesInquiry, currentPage);
+	}	
+
+	// 판매서 검색 -> 거래처 or 제품
+		@RequestMapping("salesInquirySearch")
+		public String salesInquirySearch(SalesDetail sales, String currentPage, Model model) {
+			UUID transactionId = UUID.randomUUID();
+			
+			try {
+				log.info("[{}]{}:{}", transactionId, "salesInquirySearch", "Start");
+				String search  = sales.getSearch();
+				String keyword = sales.getKeyword();
+				
+				int SearchTotalSalesInquiry = jss.getSearchTotalSalesInquiry(sales);
+				
+				Paging page = new Paging(SearchTotalSalesInquiry, currentPage); 
 				sales.setStart(page.getStart());
 				sales.setEnd(page.getEnd());
 				
-				List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+				List<SalesDetail> salesInquirySearch = jss.searchSalesInquiry(sales);
 				
-				model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+				model.addAttribute("search", search);
+				model.addAttribute("keyword", keyword);
+				model.addAttribute("SearchTotalSalesInquiry", SearchTotalSalesInquiry);
 				model.addAttribute("page", page);
-				model.addAttribute("listSalesInquiry", sellList);
+				model.addAttribute("salesInquirySearch", salesInquirySearch);
 				model.addAttribute("currentPage", currentPage);
-				
+			
 			} catch (Exception e) {
-				log.error("[{}]{}:{}", transactionId, "salesInquiry", e.getMessage());
+				log.error("[{}]{}:{}", transactionId, "salesInquirySearch", e.getMessage());
 			} finally {
-				log.info("[{}]{}:{}", transactionId, "salesInquriry", "End");
+				log.info("[{}]{}:{}", transactionId, "salesInqurirySearch", "End");
 			}
 
-		
-			System.out.println("model"+model);
-			System.out.println("total"+inboundTotal);
-		    return "jk/outboundRegister";
-			
-			
+			return "jk/outboundRegister";
 		}
+	// 출고관리
+//	/*
+//	 * @RequestMapping(value="/outboundRegister") public String
+//	 * invSellList(SalesDetail sales, String currentPage, Model model, Warehouse
+//	 * warehouse, @RequestParam(value = "inboundMonth", required = false) String
+//	 * inboundMonth) { System.out.println("JkController invSellList start....");
+//	 * UUID transactionId = UUID.randomUUID(); logger.info("Received month: {}",
+//	 * inboundMonth);
+//	 * 
+//	 * int inboundTotal =0;
+//	 * 
+//	 * try {
+//	 * 
+//	 * int totalSalesInquiry = jss.getTotalSalesInquiry();
+//	 * 
+//	 * Paging page = new Paging(totalSalesInquiry, currentPage);
+//	 * sales.setStart(page.getStart()); sales.setEnd(page.getEnd());
+//	 * 
+//	 * List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+//	 * 
+//	 * model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+//	 * model.addAttribute("page", page); model.addAttribute("listSalesInquiry",
+//	 * sellList); model.addAttribute("currentPage", currentPage);
+//	 * 
+//	 * } catch (Exception e) { log.error("[{}]{}:{}", transactionId, "salesInquiry",
+//	 * e.getMessage()); } finally { log.info("[{}]{}:{}", transactionId,
+//	 * "salesInquriry", "End"); }
+//	 * 
+//	 * 
+//	 * System.out.println("model"+model); System.out.println("total"+inboundTotal);
+//	 * return "jk/outboundRegister";
+//	 * 
+//	 * 
+//	 * }
+//	 */
 
 
 	
