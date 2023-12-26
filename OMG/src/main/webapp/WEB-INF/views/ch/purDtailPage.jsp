@@ -94,7 +94,7 @@
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<input type="hidden" id="pur_date" value="${pc.pur_date }">
 				<input type="hidden" id="custcode" value="${pc.custcode}">
-				<c:if test="${mem_id == pc.mem_id}">
+				<c:if test="${mem_id == pc.mem_id || mem_id == pc.mgr_id}">
 					<input type="hidden" id="pur_date" value="${pc.pur_date }">
 					<div class="col-5 d-flex justify-content-between align-items-center">
 						<div class="col-3 text-end">
@@ -140,7 +140,7 @@
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 							<td id="td${status.index }" class="text-center">
 								${pdList.qty }개
-								<c:if test="${pc.pur_status == 0 && mem_id == pc.mem_id}">
+								<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
 									<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 								</c:if>
 							</td>
