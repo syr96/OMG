@@ -235,6 +235,14 @@ public class ChController {
 		return result;
 	}
 	
+	@ResponseBody
+	@PostMapping("deletePurDet")
+	public int deltePurDet(PurDetail purDetail) {
+		int result = chPurService.deletePurDet(purDetail);
+		
+		return result;
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("insertDetail")

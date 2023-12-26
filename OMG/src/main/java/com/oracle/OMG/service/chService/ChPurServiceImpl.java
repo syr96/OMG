@@ -138,4 +138,14 @@ public class ChPurServiceImpl implements ChPurService {
 		return result;
 	}
 
+	@Override
+	public int deletePurDet(PurDetail purDetail) {
+		System.out.println("ChPurServiceImpl deltePurDet Start...");
+		int result = 0;
+		
+		result = chPurDao.deletePurDet(purDetail);
+		
+		return result;
+	}
+
 }

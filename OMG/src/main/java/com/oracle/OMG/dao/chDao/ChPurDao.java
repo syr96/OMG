@@ -19,5 +19,6 @@ public interface ChPurDao {
 	int 			completePur(Purchase purchase);
 	int 			deletePur(Purchase purchase);
 	int 			purUpdate(Purchase purchase);
+	int 			deletePurDet(PurDetail purDetail);
 
 }
