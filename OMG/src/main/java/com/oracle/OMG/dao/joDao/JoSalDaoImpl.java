@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.oracle.OMG.dto.Sales;
 import com.oracle.OMG.dto.SalesDetail;
 
 import lombok.RequiredArgsConstructor;
@@ -129,30 +130,30 @@ public class JoSalDaoImpl implements JoSalDao {
 		return sortSalesInquiry;
 	
 	}
-
-
-	@Override
-	public int deleteSalesDetail(SalesDetail sales) {
-		int result = 0;
-		TransactionStatus txStatus = 
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
-		
-		try {
-			log.info("JoSalDaoImpl deleteSalesDetail Start");
-			result = session.delete("joDeleteSalesDetail", sales);
-			log.info("JoSalDaoImpl deleteSalesDetail result -> " + result);
-			result = session.delete("joDeleteSales", sales);
-			log.info("JoSalDaoImpl deleteSales result -> " + result);
-			transactionManager.commit(txStatus);
-			
-		} catch (Exception e) {
-			transactionManager.rollback(txStatus);
-			log.info("JoSalDaoImpl deleteSalesDetail Exception ->" + e.getMessage());
-			result = -1;
-		}
-		
-		return result;
-	}
+	
+	  @Override 
+	  public int deleteSalesDetail(SalesDetail sales) { 
+		  int result = 0;
+		  TransactionStatus txStatus = 
+				  transactionManager.getTransaction(new DefaultTransactionDefinition());
+	  
+	  try { 
+		  log.info("JoSalDaoImpl deleteSalesDetail Start"); 
+		  result = session.delete("joDeleteSalesDetail", sales);
+		  log.info("JoSalDaoImpl deleteSalesDetail result -> " + result); 
+		  result = session.delete("joDeleteSales", sales);
+		  log.info("JoSalDaoImpl deleteSales result -> " + result);
+		  transactionManager.commit(txStatus);
+	  
+	  } catch (Exception e) { 
+		  transactionManager.rollback(txStatus);
+		  log.info("JoSalDaoImpl deleteSalesDetail Exception ->" + e.getMessage());
+		  result = -1; 
+	  }
+	  
+	  return result; 
+	  }
+	 
 
 
 	@Override
@@ -173,24 +174,17 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	public int InsertSales(SalesDetail sales) {
+	public int insertSales(SalesDetail sales) {
 		int result = 0;
-		
-		TransactionStatus txStatus =
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
 		try {
 			log.info("JoSalDaoImpl InsertSales Start");
 			result = session.insert("joInsertSales", sales);
 			log.info("JoSalDaoImpl InsertSales Result -> " + result);
-			result = session.insert("joInsertSalesDetail", sales);
-			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
-			transactionManager.commit(txStatus);
-			
+					
 		} catch (Exception e) {
-			transactionManager.rollback(txStatus);
 			log.info("JoSalDaoImpl InsertSales Exception -> " + e.getMessage());
-			result = -1;
+		
 		}
 		return result;
 	}
@@ -250,11 +244,66 @@ public class JoSalDaoImpl implements JoSalDao {
 
 	@Override
 	public int UpdateSales(SalesDetail sales) {
+		int result = 0;
 		
-		return 0;
-	}
+		TransactionStatus txStatus =
+				transactionManager.getTransaction(new DefaultTransactionDefinition());
+				
+		try {
+			log.info("JoSalDaoImpl updateSales Start");
+			result = session.update("joUpdateSalesDetail", sales);
+			log.info("JoSalDaoImpl updateSalesDetail reuslt -> " + result);
+			result = session.update("joUpdateSales", sales);
+			log.info("JoSalDaoImpl updateSales reuslt -> " + result);
 			
+			transactionManager.commit(txStatus);
+			
+		} catch (Exception e) {
+			transactionManager.rollback(txStatus);
+			log.error("JoSalDaoImpl updateSales Exception -> " + e.getMessage());
+			result = -1;
+		}
+		return result;
+		
+	}
+
+
+	@Override
+	public List<SalesDetail> getListProduct() {
+		List<SalesDetail> getListProduct = null;
+		
+		try {
+			log.info("JoSalDaoImpl getListProduct Start");
+			getListProduct = session.selectList("joGetListProdcut");
+			log.info("JoSalDaoImpl getListProduct.size -> " + getListProduct.size());
+			
+		} catch (Exception e) {
+			log.info("JoSalDaoImpl getListProduct Exception -> " + e.getMessage());
+			
+		}
+		return getListProduct;
+	}
 	
+
+	@Override
+	public int insertSalesDetail(SalesDetail sales) {
+		int result = 0;
+		
+		try {
+			log.info("JoSalDaoImpl getInsertSalesDetail Start");
+			result = session.insert("joInsertSalesDetail", sales);
+			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
+			
+		} catch (Exception e) {
+			log.error("JoSalDaoImpl getInsertSalesDetail Exception -> " + e.getMessage());
+		}
+		
+		return result;
+	}
+
+
 }
+
+
 
 	

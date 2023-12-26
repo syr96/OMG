@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.oracle.OMG.dao.joDao.JoSalDao;
+import com.oracle.OMG.dto.Sales;
 import com.oracle.OMG.dto.SalesDetail;
 
 import lombok.Data;
@@ -84,18 +85,17 @@ public class JoSalServiceImpl implements JoSalService {
 	}
 
 
-	@Override
-	public int deleteSalesDetail(SalesDetail sales) {
-		int result = 0;
-		result = jsd.deleteSalesDetail(sales);
-		
-		if(result <= 0 ) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 정보 삭제에 실패하였습니다.");
-		}
-		
-		return result;
-	}
-
+	
+	  @Override 
+	  public int deleteSalesDetail(SalesDetail sales) { 
+		  int result = jsd.deleteSalesDetail(sales);
+	  
+	  if(result <= 0 ) { 
+		  throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 정보 삭제에 실패하였습니다."); 
+	  }
+	  
+	  return result; }
+	 
 
 	@Override
 	public List<SalesDetail> getListCustCode(int custstyle) {
@@ -110,9 +110,9 @@ public class JoSalServiceImpl implements JoSalService {
 
 
 	@Override
-	public int InsertSales(SalesDetail sales) {
+	public int insertSales(SalesDetail sales) {
 		int result = 0;
-		result = jsd.InsertSales(sales);
+		result = jsd.insertSales(sales);
 		
 		if(result <= 0) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 입력에 실패하였습니다");
@@ -149,7 +149,7 @@ public class JoSalServiceImpl implements JoSalService {
 
 	@Override
 	public SalesDetail getSalesData(SalesDetail sales) {
-		SalesDetail  salesDetail = null;
+		SalesDetail salesDetail = null;
 		salesDetail = jsd.getSalesData(sales);
 		
 		if(salesDetail == null) {
@@ -174,6 +174,32 @@ public class JoSalServiceImpl implements JoSalService {
 		
 		
 	}
+
+
+	@Override
+	public List<SalesDetail> getListProduct() {
+		List<SalesDetail> getListProduct = null;
+		getListProduct = jsd.getListProduct();
+		
+		if(getListProduct == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "제품 데이터를 불러오는데 실패하였습니다.");
+		}
+		return getListProduct;
+	}
+
+
+	@Override
+	public int insertSalesDetail(SalesDetail sales) {
+		int insertSalesDetail = jsd.insertSalesDetail(sales);
+		
+		if(insertSalesDetail == 0 ) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 상세데이터를 저장하는데 실패하였습니다.");
+		}
+		
+		return insertSalesDetail;
+	}
+	
+
 	
 	
 }

@@ -2,6 +2,7 @@ package com.oracle.OMG.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oracle.OMG.dto.Member;
@@ -61,7 +64,6 @@ public class ShController {
 		member.setMem_address(address);
 		member.setMem_email(email);
 		member.setMem_img(img2);
-		System.out.println("shController createMember() 1");
 		if(!img.isEmpty()) {
 		//multipartFile 경로 설정
 		String path 		  = request.getSession().getServletContext().getRealPath("upload");
@@ -199,6 +201,16 @@ public class ShController {
 		return "sh/memberList";
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "selectStatus")
+	public HashMap<String, Object> selectStatus() {
+		System.out.println("shController selectStatus() Start");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<Member> statusList = ms.selectStatus();
+		System.out.println("statusList=>"+statusList);
+		result.put("statusList", statusList);
+		return result;
+	}
 	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)

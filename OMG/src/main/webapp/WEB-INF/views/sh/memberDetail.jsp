@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script>
 	//주소 API
     function sample6_execDaumPostcode() {
@@ -60,83 +60,92 @@
     
 </script>
 <script type="text/javascript">
-	function checkPswd1(){
-		if(pwFlag) return true;
+function detailValidCheck(){
+	var isValid = true;
+	nameCheck();
+	emailCheck();
+	birthdayCheck();
+	hiredateCheck();
+	passwordValid();
+	
+	// 폼 제출 여부 결정
+    if (!isValid) {
+    	alert("(!isValid)false");
+        return false; // 유효성 검사에서 실패한 경우 폼 제출 중단
+    } else{
+    	// 유효성 검사 통과 시  폼 제출
+    	alert("true");
+    	return true;
+    	}
+    
+  //이름 유효성검사
+	function nameCheck(){
+		var name = document.getElementById("mem_name").value;
 		
-		var pw = $('#basic-default-password1').val();
-		var oSpan = $('spanPw1').val();
-		var oMsg = $('pswd1Msg').val();
-		var input =$('#basic-default-password1');
+		var koreanNameRegex = /^[가-힣]+$/;
+		var englishNameRregex = /^[a-zA-Z]+$/;
 		
-		//필수 입력
-		if(pw == "") {
-			​​​​​​​​showErrorMsg(oMsg,"필수 정보입니다.");
-			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
-			​​​​​​​​return false;
-			​​​​}
-		
-		//기본 유효성검사
-		​​​​if (isValidPasswd(pw) != true) { //유효성검사
-			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 1); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
-			
-			​​​​​​​​showErrorMsg(oMsg,"8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
-			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
-			​​​​​​​​return false;
-			​​​​}else if(checkpswd1_sameNum(pw) == true){ //비밀번호 연속동일숫자가 맞으면
-			​​​​​​​​showPasswd1ImgByStep(oImg, oSpan, 2); //비밀번호 괜찮은지 오른쪽 자물쇠 이미지
-			​​​​​​​​showErrorMsg(oMsg,"보안상 연속된 숫자는 제한합니다.");
-			​​​​​​​​setFocusToInputObject(oInput); //유효성 검증을 하고 전송 플래그를 조절한다.
-			​​​​​​​​return false;
-			​​​​}
+		if(!koreanNameRegex.test(name)){
+			if(!englishNameRregex.test(name)){
+				alert("이름을 다시 작성해주세요.");
+				formAccountSettings.name.value= "";
+				isValid = false;
+			}
 		}
-//----------------------pw1 패스워드 검증 ------------------------------
-	function isValidPasswd(pw){
-		if(pw == ""){
-			return false;
-		}
-		
-		//공백 제거
-		var space = checkSpace(pw);
-		if(space){
-			return false;
-		}
-		
-		//8자리 이상 설정
-		if(pw.length<8){
-			return false;
-		}
-		
-		​​​​//8~12자의 영문 소문자, 숫자, 특수문자만 사용 가능
-		​​​​var isValid = /^[A-Za-z0-9`\-=\\\[\];',\./~!@#\$%\^&\*\(\)_\+|\{\}:"<>\?]{8,16}$/;
-		​​​​if (!isValid.test(pw)) {
-		​​​​​​​​return false;
-		​​​​}
-		
-		return true;
 	}
 	
-//----------------------pw1 연속숫자 검사 ------------------------------
-	function sameNum(pw){
-		var cnt = 0;
-		//연속 숫자 제한
-		for (var i = 0; i < str.length; ++i) {
-			​​​​​​​​if (str.charAt(0) == str.substring(i, i + 1))
-			​​​​​​​​​​​​++cnt;
+	//이메일 유효성 검사
+	function emailCheck(){
+		var email1 = document.getElementById("mem_email1").value;
+		var email2 = document.getElementById("mem_email2").value;
+		var email = email1 + "@" + email2;
+		
+		var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+		
+		if(!emailRegex.test(email)){
+			alert("이메일 양식이 맞지 않습니다.");
+			isValid = false;
 		}
-		if (cnt == str.length) {
-			​​​​​​​​console.log("연속된 숫자");
-			​​​​​​​​console.log("입력한 Pwd값 검증2 : " + str);
-			​​​​​​​​return true;
-			​​​​}
 	}
-
-
-
-	function showErrorMsg(errorId,errorMessage) {
-		var error = document.getElementById('pswd1Msg');
-		// 오류 메시지를 해당 DOM 요소에 추가합니다.
-		errorId = errorMessage;
+	
+	//입사일자 유효성 검사
+	function hiredateCheck(){
+		var hiredate = document.getElementById("mem_hiredate").value;;
+		if(!hiredate || !hiredate.trim()){
+			alert("입사일자를 입력해주세요.");
+			isValid = false;
+		}
 	}
+	
+	//생일 유효성 검사
+	function birthdayCheck(){
+		var birthday = document.getElementById("mem_bd").value;
+		
+		if(!birthday || !birthday.trim()){
+			alert("생년월일을 입력해주세요.");
+			isValid = false;
+		}
+	}
+	
+	function passwordValid(){
+		var pw = document.getElementById("basic-default-password1").value;
+		var pwValid = true;
+		var cnt = 0;
+		var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+		
+		if(!pw.isEmpty()){
+			//유효성 검사	
+			if(!pwRegex.test(pw)){
+				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+				pwValid = false;
+			}
+			
+			if(!pwValid){
+				isValid = false;
+			}
+		}
+	}
+}
 </script>
 </head>
 <%@ include file="../common/header.jsp" %>
@@ -157,11 +166,11 @@
                   <div class="card mb-4">
                     <h5 class="card-header">
                       <i class="bx bx-user me-1"></i> Account Detail</h5>
-                      <form id="formAccountSettings" action="detailMember" method="post" enctype="multipart/form-data">	<!-- onsubmit="validCheck()" -->
+                      <form id="formAccountSettings" action="detailMember" method="post" enctype="multipart/form-data" onsubmit="return detailValidCheck();">	
                     <!-- Account -->
                     <div class="card-body text-center">
                       <div class="d-flex align-items-start align-items-sm-center gap-4">
-                        <img id="imgView" src="${pageContext.request.contextPath}/upload/sh/${member.mem_img }" class="d-block rounded" style="height: 150px; width: 150px; display: none;  margin: auto;	"/>
+                        <img id="imgView" src="${pageContext.request.contextPath}/upload/sh/${member.mem_img }" class="d-block rounded" style="height: 150px; width: 150px; display: none;  margin: auto;"/>
                       </div>
                     </div>
                     <hr class="my-0" />
@@ -370,7 +379,7 @@
 		                        <div class="input-group">
 		                        <span class="ps_box int_pass"></span>
 		                          <input type="password" class="form-control" name="mem_pw_check" id="basic-default-password2" maxlength="20" aria-describedby="basic-default-password2" width="200px;"/>
-		                          <span id="basic-default-password2" class="input-group-text cursor-pointer"
+		                          <span id="spanPw2" class="input-group-text cursor-pointer"
 		                            ><i class="bx bx-hide"></i
 		                          ></span>
 		                        </div>
@@ -378,7 +387,7 @@
 	                      </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2" >Create</button>
+                          <button type="submit" class="btn btn-primary me-2" >Update</button>
                           <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                     </div>
@@ -559,12 +568,6 @@
 		    var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 		    if (!regex.test(pw1)) {
 		        displayError("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
-		        return;
-		    }
-		    
-		 // 공백 검사
-		    if (pw1.includes(" ")) {
-		        displayError("공백을 포함시킬 수 없습니다.");
 		        return;
 		    }
 		 	
