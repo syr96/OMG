@@ -171,14 +171,14 @@ $(document).ready(function() {
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" value="2021-06-18" id="monthSelect" name="monthIOData">
                     </div>
-                    <div class="mb-3 col-md-6">
+<!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
                         <select id="IO_Type" class="select2 form-select">
                             <option value="ALL">전체</option>
                             <option value="INBOUND">입고</option>
                             <option value="OUTBOUND">출고</option>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
