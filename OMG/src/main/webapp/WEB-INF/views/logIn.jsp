@@ -485,7 +485,7 @@
 		function showNotice() {
 			$.ajax(
 					{
-						url: "/notice/mainNotice",
+						url: "/mainNotice",
 						dataType: "html",
 						success: function(data) {
 							$("#notice").html(data);

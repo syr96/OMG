@@ -3,7 +3,6 @@ package com.oracle.OMG.controller.yrController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oracle.OMG.dto.Criteria;
 import com.oracle.OMG.service.thService.ThNoticeService;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Data
 @Slf4j
-@RequestMapping("/notice")
 public class YrNoticeController {
 	private final ThNoticeService ns;
 	
