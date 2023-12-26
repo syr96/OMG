@@ -1,5 +1,6 @@
 package com.oracle.OMG.service.jkService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,35 @@ public class JkWareServiceImpl implements JkWareService {
 		System.out.println("JkWareServiceImpl monthData Start...");
 		List<Purchase> purMonthData = jwd.purMonthData(month);
 		return purMonthData;
+	}
+
+    @Override
+    public Map<String, String> callInboundPD(String purDate, int custCode) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            // 프로시저 호출
+            jwd.callInboundPD(purDate, custCode);
+
+            // 성공적으로 프로시저가 호출되면 성공 메시지를 추가
+            response.put("status", "success");
+            response.put("message", "Inbound process completed successfully.");
+        } catch (Exception e) {
+            // 실패 시 실패 메시지를 추가
+            response.put("status", "error");
+            response.put("message", "Error during the inbound process: " + e.getMessage());
+        }
+
+        return response;
+    }
+
+	@Override
+	public List<Warehouse> inboundList(Warehouse warehouse) {
+		System.out.println("JkWareServiceImpl inboundList Start...");
+		
+		List<Warehouse> inboundList = jwd.inboundList(warehouse);
+		
+		return inboundList;
 	}
 
 

@@ -26,5 +26,7 @@ public interface ThNoticeDao {
 	int					updateNotice(Board board);
 	
 	int					updateReplyCnt(int brd_id, int amount);
+
+	void 				viewCntUp(int brd_id);
 	
 }

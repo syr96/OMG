@@ -55,7 +55,7 @@
     
     <tr>
       <th class="table-primary">제품내용</th>
-      <td colspan="3">${i.item_cn }</td>    	
+      <td colspan="3"><c:out value="${i.item_cn }"/></td>    	
     </tr>
     
     <tr>
@@ -133,7 +133,7 @@
 
 		<tr>
 			<th class="table-primary">제품내용</th>
-			<td colspan="3"><textarea class="form-control" rows="3" name="item_cn">${i.item_cn }</textarea></td>
+			<td colspan="3"><textarea class="form-control" rows="3" name="item_cn"><c:out value="${i.item_cn }"></c:out></textarea></td>
 		</tr>
 
 		<tr>

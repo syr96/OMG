@@ -16,10 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,7 @@ import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 import com.oracle.OMG.service.chService.ChCustService;
 import com.oracle.OMG.service.chService.ChPurService;
+import com.oracle.OMG.service.chService.Paging;
 import com.oracle.OMG.service.jkService.JkWareService;
 import com.oracle.OMG.service.yrService.YrItemService;
 
@@ -165,30 +170,101 @@ public class JkController {
 	}
 
 	// 발주 조회
-	@GetMapping("/invPurList")
-	@ResponseBody
-	public List<Purchase> invPurList(@RequestParam(name = "month") String month) {
+	@RequestMapping(value="/inboundRegister")
+	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse) {
 	    System.out.println("JkController invPurList start....");
-	    logger.info("Received month: {}", month);
-	 
-	    List<Purchase> purMonthData = jws.purMonthData(month);
-	    
-	    logger.info("JkController monthData.size(): {}", purMonthData.size());
-
-	    return purMonthData;
+	 	    
+	    int totalPur = 0;
+		List<Purchase> purList = null;
+		Paging page = null;
+		System.out.println("ChController purList Start...");
+		// 검색(custcode가 있을 때 )
+		if(purchase.getCustcode() >0) {
+			model.addAttribute("srchCompany", purchase.getCustcode());
+		}
+		//검색(날짜가 있을 때)
+		if(purchase.getPur_date() != null) {
+			String purDate = purchase.getPur_date();
+			DateTimeFormatter formmater = DateTimeFormatter.ofPattern("yy/MM/dd");
+			LocalDate ldt = LocalDate.parse(purDate, formmater);
+			model.addAttribute("srchDate", ldt);
+		}
+		
+		totalPur = cps.totalPur(purchase);
+		page = new Paging(999);
+		
+		purchase.setStart(page.getStart());
+		purchase.setEnd(page.getEnd());	
+		
+		//발주서 전체 리스트
+		purList = cps.purList(purchase);
+		System.out.println("purList: " + purList);
+		// 발주서 리스트 소환 성공시 
+		if(purList != null) {
+			// purList 조회 성공 시
+			for(Purchase p: purList) {
+				// 제품 종류			총수량		총가격(전체 가격)
+				int totalType = 0; int totalPrice = 0;
+				
+				// 발주서 상세 내용 불러오기 
+				List<PurDetail> pd = cps.purDList(p);
+				totalType = pd.size(); // row 수 = 발주서 내 물품 수
+				System.out.println();
+				// 상세 내용의 물품 항목별 수량과 결제액 
+				for(PurDetail pd2 : pd) {
+					totalPrice += pd2.getQty() * pd2.getPrice();
+				}
+				p.setTotalType(totalType);
+				p.setTotalQty(pd.stream().mapToInt(m->m.getQty()).sum());
+				p.setTotalPrice(totalPrice);
+			}
+		}
+	
+		List<Customer> pur_custList = ccs.custList();
+//		List<Warehouse> inboundList = jws.inboundList(warehouse);
+		
+		
+		model.addAttribute("pur_custList", pur_custList);
+		model.addAttribute("purList",purList);
+		model.addAttribute("totalPur",totalPur);
+		model.addAttribute("page",page);
+//		model.addAttribute("inboundList",inboundList);
+	
+		System.out.println("model"+model);
+	    return "jk/inboundRegister";
 		
 		
 	}
 	
-	// 입고등록
-	@RequestMapping(value="/inboundRegister")
-	public String inboundRegister(Model model, Purchase purchase) {
-		System.out.println("JkController inboundRegister start...");
-		
-		return "jk/inboundRegister";
-		}
-	
-	
+	 // 발주 조회
+	   @RequestMapping(value = "/inboundRegister", method = RequestMethod.POST)
+	   public String invPurList(@RequestBody PurDetail requestData, Model model) {
+	       System.out.println("Received data from client: " + requestData);
+
+	       // requestData에서 pur_date와 custcode를 꺼내서 사용
+	       String purDate= requestData.getPur_date();
+	       int custCodeStr = requestData.getCustcode();
+	       System.out.println("Received data from client: " + requestData);
+	       System.out.println("Received pur_date: " + purDate);
+	       System.out.println("Received custcode: " + custCodeStr);
+
+	         
+	      // 정상적으로 변환된 경우에만 계속 진행
+	       Map<String, String> response = jws.callInboundPD(purDate, custCodeStr);
+	          
+	    
+	    
+
+	       // 모델에 결과 데이터 추가
+	       model.addAttribute("response", response);
+
+	       // 뷰로 이동
+	       return "jk/inboundRegister";
+	   }
+
+
+
+
 	// 월별 재고리스트 조회
 
 	@GetMapping("/monthData")
@@ -209,54 +285,6 @@ public class JkController {
 	    return monthData;
 	}
 
-
-	// 월별 입고리스트 조회
-	@GetMapping("/getIOData")
-	@ResponseBody
-	public List<Warehouse> getIOData(@RequestParam(name = "month") String month,@RequestParam(name = "IO_Type", required = false) String IO_Type) {
-	    System.out.println("JkController getIOData start....");
-	    logger.info("Received month: {}", month);
-	    logger.info("Received IO_Type: {}", IO_Type);
-
-	    Map<String, String> params = new HashMap<>();
-	    params.put("month", month);
-	    params.put("IO_Type", IO_Type);
-	    
-	    List<Warehouse> getPurchaseData = jws.getPurchaseData(params);
-	    
-	    logger.info("JkController getIOData.size(): {}", getPurchaseData.size());
-
-	    return getPurchaseData;
-	}
-
-	
-//	// 월별 입고리스트 조회
-//	@GetMapping("/getIOData")
-//	@ResponseBody
-//	public List<Warehouse> getIOData(
-//	        @RequestParam(name = "month") String month,
-//	        @RequestParam(name = "IO_Type", required = false) String IO_Type) {
-//	    System.out.println("JkController getIOData start....");
-//	    logger.info("Received month: {}", month);
-//	    logger.info("Received IO_Type: {}", IO_Type);
-//
-//	    List<Warehouse> getIOData;
-//	    if ("INBOUND".equals(IO_Type)) {
-//	        // 호출할 구매 데이터에 대한 매퍼 사용
-//	    	getIOData = jws.getPurchaseData(month);
-//	    	getIOData = jws.getPurchaseDataResultMap(month, "resultmap01");
-//	    } else if ("OUTBOUND".equals(IO_Type)) {
-//	        // 호출할 판매 데이터에 대한 매퍼 사용
-//	        getIOData = jws.getSalesData(month);
-//	    } else {
-//	        // 기본적으로는 두 데이터를 합친 매퍼 사용
-//	        getIOData = jws.getIOData(month);
-//	    }
-//	    
-//	    logger.info("JkController getIOData.size(): {}", getIOData.size());
-//
-//	    return getIOData;
-//	}
 
 	
 @ControllerAdvice

@@ -27,14 +27,16 @@
 <!-- 				</div> -->
 				<div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
 					<div class="dt-buttons">
-						<button id="regBtn" class="dt-button btn btn-primary" tabindex="0" aria-controls="DataTables_Table_0" type="button">
-							<span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">공지글 작성</span></span>
-						</button>
+						<c:if test="${sessionScope.mem_right == 1}">
+							<button id="regBtn" class="dt-button btn btn-primary my-1" tabindex="0" aria-controls="DataTables_Table_0" type="button">
+								<span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">공지글 작성</span></span>
+							</button>
+						</c:if>
 					</div>
 				</div>
 			</div>
 			<div class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-3">
-				<form id="searchForm" action="/notice/list" method="get" >				
+				<form id="searchForm" class="my-1" action="/notice/list" method="get" >				
 					<div id="DataTables_Table_0_filter col-auto" class="dataTables_filter">
 						<label>
 							<select name="type" aria-controls="DataTables_Table_0" class="form-select">
@@ -50,7 +52,7 @@
 						<label><input type="text"   name='keyword' value='<c:out value="${pageMaker.cri.keyword }"/>' class="form-control" placeholder="검색" aria-controls="DataTables_Table_0"></label>
 						<label><input type="hidden" name='pageNum' value='<c:out value="${pageMaker.cri.pageNum }"/>'></label> 
 						<label><input type="hidden" name='amount'  value='<c:out value="${pageMaker.cri.amount }"/>'></label>
-						<label><button class="btn btn-primary">검색</button></label>
+						<label><button class="btn btn-primary mb-1">검색</button></label>
 					</div>
 				</form>
 			</div>
@@ -72,7 +74,7 @@
 						<tr>
 							<td class="col-md-2">${notice.brd_id }</td>
 							<td class="col-md-3">
-								<a class='move' href='<c:out value="${notice.brd_id }"></c:out>'>
+								<a class='text-Secondary fw-bold move' href='<c:out value="${notice.brd_id }"></c:out>'>
 									<c:out value="${notice.title }"/>  <b> [<c:out value="${notice.replyCnt }"/>]</b>
 								</a> 
 							</td>
@@ -95,7 +97,7 @@
 							<h5 class="modal-title" id="exampleModalLabel">결과창</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<div class="modal-body">처리가 완료되었습니다</div>
+						<div class="modal-body">수정 완료되었습니다</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
 						</div>

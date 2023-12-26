@@ -2,7 +2,7 @@ package com.oracle.OMG.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,61 @@ public class ShController {
 		return "sh/memberRegistration";
 	}
 	
+
+	@RequestMapping(value = "createMember", method = RequestMethod.POST)
+	public String createMember( @RequestParam("mem_address1") 	   String address1,
+								@RequestParam("mem_address2")  String address2,
+								@RequestParam("mem_address3") String address3,
+								
+								@RequestParam("mem_email1") String email1,
+								@RequestParam("mem_email2") String email2,
+								
+								@ModelAttribute Member member,
+							    @RequestParam("img") 	 MultipartFile img,
+							    @RequestParam("defaultImg") 	 String img2,
+							   HttpServletRequest 		 request,
+							   Model 					 model) throws IOException {
+		System.out.println("shController createMember() Start");
+		System.out.println("Received member: " + member);
+		int result = 0;
+		String address = address1 + "/" + address2 + "/" + address3;
+		String email   = email1 + "@" + email2;
+		member.setMem_address(address);
+		member.setMem_email(email);
+		member.setMem_img(img2);
+		if(!img.isEmpty()) {
+		//multipartFile 경로 설정
+		String path 		  = request.getSession().getServletContext().getRealPath("upload");
+		
+		//경로 내 파일 생성
+		String root = path +"\\sh";
+		File file = new File(root);
+		if(!file.exists()) file.mkdir();	//만약 파일이 존재하지 않으면 생성한다.
+		
+		//업로드할 폴더 설정
+		String originFileName = img.getOriginalFilename();
+		String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
+		String ranFileName 	  = UUID.randomUUID().toString() + ext;
+		
+		File changeFile 	  = new File(root + "\\" + ranFileName);
+		
+			try {
+				img.transferTo(changeFile);
+				System.out.println("파일 업로드 성공");
+				member.setMem_img(ranFileName);
+			} catch (Exception e) {
+				System.out.println("shController createMember Exception ->" + e.getMessage());
+			}
+		}
+		System.out.println("Received member: " + member);
+			
+		result = ms.createMember(member);
+	
+		
+		return "redirect:/memberL";
+ 	}	
+	
+	//인사부 사원정보 수정
 	@RequestMapping(value = "memberU")
 	public String memberUpdate(@RequestParam("mem_id") int mem_id, Model model) {
 		System.out.println("shController memberUpdate() Start");
@@ -51,6 +107,75 @@ public class ShController {
 		model.addAttribute("member",member);
 		return "sh/memberUpdate";
 	}
+	
+	@RequestMapping(value = "updateMember", method = RequestMethod.POST)
+	public String updateMember( @RequestParam("mem_address1")  String address1,
+								@RequestParam("mem_address2")  String address2,
+								@RequestParam("mem_address3")  String address3,
+								
+								@RequestParam("mem_email1")    String email1,
+								@RequestParam("mem_email2")    String email2,
+								
+								
+							    @RequestParam(name="img1", required=false) 	 MultipartFile img1,
+							    @RequestParam("img2") 	 String img2,
+							    
+							    @RequestParam(name="leave", required=false)	String leave,
+							    @RequestParam(name="rein" , required=false)	String rein,
+							    @RequestParam(name="resi" , required=false)	String resi,
+	
+							    @ModelAttribute 		 Member member,
+							    HttpServletRequest 		 request) throws IOException {
+		System.out.println("shController updateMember() Start");
+		System.out.println("Received member1: " + member);
+		int result = 0;
+		
+		String address = address1 + "/" + address2 + "/" + address3;
+		String email   = email1 + "@" + email2;
+		member.setMem_address(address);
+		member.setMem_email(email);
+		member.setMem_img(img2);
+		
+		if(!img1.isEmpty()) {
+			try {
+				//multipartFile 경로 설정
+				String path 		  = request.getSession().getServletContext().getRealPath("upload");
+				
+				//경로 내 파일 생성
+				String root = path +"\\sh";
+				
+				//업로드할 폴더 설정
+				String originFileName = img1.getOriginalFilename();
+				String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
+				String ranFileName 	  = UUID.randomUUID().toString() + ext;
+				
+				File changeFile 	  = new File(root + "\\" + ranFileName);
+				
+				img1.transferTo(changeFile);
+				
+				System.out.println("파일 업로드 성공");
+				member.setMem_img(ranFileName);
+			} catch (Exception e) {
+				System.out.println("shController updateMember Exception ->" + e.getMessage());
+			}
+		}
+		System.out.println("Received member2: " + member);
+		
+		if(leave!=null && !leave.trim().isEmpty()) {
+			member.setMem_leave(leave);
+			result = ms.updateLeaveMember(member);
+		} else if (rein!=null && !rein.trim().isEmpty()) {
+			member.setMem_rein(rein);
+			result = ms.updateReinMember(member);
+		} else if (resi!=null && !resi.trim().isEmpty()) {
+			member.setMem_resi(resi);
+			result = ms.updateResiMember(member);
+		} else {
+			result = ms.updateMember(member);
+		}
+		
+		return "redirect:/memberL";
+ 	}	
 	
 	//사원 목록
 	@RequestMapping(value = "memberL")
@@ -76,12 +201,15 @@ public class ShController {
 		return "sh/memberList";
 	}
 	
-	//사원 목록에서 사원 휴직 처리
-	@RequestMapping(value = "memberLeave")
-	public String memberLeave(@RequestParam("mem_id") int mem_id, Model model) {
-		System.out.println("shController memberLeave() Start");
-		int result = ms.memberLeave(mem_id);
-		return "redirect:memberL";				
+	@ResponseBody
+	@PostMapping(value = "selectStatus")
+	public HashMap<String, Object> selectStatus() {
+		System.out.println("shController selectStatus() Start");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<Member> statusList = ms.selectStatus();
+		System.out.println("statusList=>"+statusList);
+		result.put("statusList", statusList);
+		return result;
 	}
 	
 	//사원 목록 검색창
@@ -110,12 +238,6 @@ public class ShController {
 		return "/sh/memberList";
 	}
 	
-	
-	@RequestMapping(value = "example")
-	public String example() {
-		return "example";
-	}
-	
 	@RequestMapping(value = "pwdCheck")
 	public String pwdCheck(@RequestParam("userPwd") String userPwd, Model model) {
 		//결과값 들어갈 변수
@@ -135,60 +257,50 @@ public class ShController {
 		return result;
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "createMember", method = RequestMethod.POST, consumes = "multipart/form-data")
-	public String createMember(  
-								@ModelAttribute Member member,
-							    @RequestParam("img") 	 MultipartFile img,
-							   HttpServletRequest 		 request,
-							   Model 					 model) throws IOException {
-		System.out.println("shController createMember() Start");
+	//개인 회원정보
+	@RequestMapping(value = "memberD")
+	public String memberDetail(@RequestParam("mem_id") int mem_id, Model model) {
+		System.out.println("shController memberDetail() Start");
+		Member member = new Member();
+		
+		member = ms.searchMemberDetail(mem_id);
+		
+		System.out.println("member->"+member);
+		
+		model.addAttribute("member",member);
+		
+		return "sh/memberDetail";
+	}
+	
+	@RequestMapping(value = "detailMember", method = RequestMethod.POST)
+	public String detailMember(@RequestParam("mem_address1")  String address1,
+							   @RequestParam("mem_address2")  String address2,
+							   @RequestParam("mem_address3")  String address3,
+							
+							   @RequestParam("mem_email1")    String email1,
+							   @RequestParam("mem_email2")    String email2,
+							
+							   @RequestParam("oldPw")		  String oldPw,
+							   @ModelAttribute Member member)throws IOException {
+		System.out.println("shController detailMember() Start");
+		System.out.println("Received member1: " + member);
+		int result = 0;
+		String address = address1 + "/" + address2 + "/" + address3;
+		String email   = email1 + "@" + email2;
+		member.setMem_address(address);
+		member.setMem_email(email);
 		System.out.println("Received member: " + member);
-		String result = "0";
-		
-//		Member member = new Member();
-//		member.setMem_right(right);
-//		//Date를 String으로 바꾸기
-//		member.setMem_hiredate_d(hiredate);
-//		member.setMem_name(name);
-//		member.setMem_bd(birthday);
-//		member.setMem_sex(sex);
-//		member.setMem_email(email);
-//		member.setMem_phone(phone);
-//		member.setMem_dept_md(dept);
-//		member.setMem_posi_md(posi);
-//		member.setMem_duty_md(duty);
-//		member.setMem_mailcode(mailcode);
-//		member.setMem_address(address);
-//		member.setMem_pw(password);
-		
-//			//multipartFile 경로 설정
-//			String path 		  = request.getSession().getServletContext().getRealPath("upload");
-//			
-//			//경로 내 파일 생성
-//			String root = path +"\\sh";
-//			File file = new File(root);
-//			if(!file.exists()) file.mkdir();	//만약 파일이 존재하지 않으면 생성한다.
-//			
-//			//업로드할 폴더 설정
-//			String originFileName = img.getOriginalFilename();
-//			String ext 			  = originFileName.substring(originFileName.lastIndexOf("."));
-//			String ranFileName 	  = UUID.randomUUID().toString() + ext;
-//			
-//			File changeFile 	  = new File(root + "\\" + ranFileName);
-//			
-//			try {
-//				img.transferTo(changeFile);
-//				System.out.println("파일 업로드 성공");
-//				member.setMem_img(ranFileName);
-//			} catch (Exception e) {
-//				System.out.println("shController createMember Exception ->" + e.getMessage());
-//			}
-//			
-//			result = ms.createMember(member);
-	
-		
-		return result;
- 	}	
-	
+		String pw = member.getMem_pw();
+		System.out.println("Received pw: " + pw);
+		System.out.println("Received oldPw: " + oldPw);
+		if(pw==null || pw.isEmpty()) {
+			System.out.println("pw==null");
+			member.setMem_pw(oldPw);
+			System.out.println("Received pw: " + member.getMem_pw());
+		} else {
+			System.out.println("pw!=null");
+		}
+			result = ms.detailMember(member);
+		return "redirect:/";
+	}
 }

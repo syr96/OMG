@@ -41,6 +41,19 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return memberList;
 	}
 	
+	//리스트 select option 출력 ajax
+	@Override
+	public List<Member> selectStatus() {
+		System.out.println("memberDao selectStatus() Start");
+		List<Member> statusList = null;
+		try {
+			statusList = session.selectList("shStatusList");
+		} catch (Exception e) {
+			System.out.println("memberDao selectStatus() Exception ->" + e.getMessage());
+		}
+		return statusList;
+	}
+	
 	//멤버 총 인원수
 	@Override
 	public int memberTotal() {
@@ -91,6 +104,66 @@ public class ShMemberDaoImpl implements ShMemberDao {
 			System.out.println("memberDao searchMemberTotal() Exception ->" + e.getMessage());
 		}
 		return member;
+	}
+
+	@Override
+	public int updateLeaveMember(Member member) {
+		System.out.println("memberDao updateLeaveMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateLeaveMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateLeaveMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateReinMember(Member member) {
+		System.out.println("memberDao updateReinMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateReinMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateReinMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateResiMember(Member member) {
+		System.out.println("memberDao updateResiMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateResiMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateResiMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int updateMember(Member member) {
+		System.out.println("memberDao updateMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shUpdateMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao updateMember() Exception ->" + e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public int detailMember(Member member) {
+		System.out.println("memberDao detailMember() Start");
+		int result = 0 ;
+		try {
+			result = session.update("shDetailMember",member);
+		} catch (Exception e) {
+			System.out.println("memberDao detailMember() Exception ->" + e.getMessage());
+		}
+		return result;
 	}
 
 }

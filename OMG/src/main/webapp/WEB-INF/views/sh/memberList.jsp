@@ -6,11 +6,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript" src="js/jquery.js"></script>
 <%@ include file="../common/header.jsp" %>
 <body>
 <%@ include file="../common/menu.jsp" %>
 			  <input type="hidden" value="${currentDate}">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회 ${memberTotal }</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">인사 /</span> 사원 조회</h4>
               <!-- Basic Bootstrap Table -->
               <div class="card">
                 <h5 class="card-header">사원 명단</h5>
@@ -18,10 +19,55 @@
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
+                  <select class="form-select" id="selectStatus" style="width: 100px;"/>
+                  <script type="text/javascript">
+                  	$(document).click(function(){
+                  		$.ajax({
+                  			type : 'POST',
+                  			url : "selectStatus",
+                  			contentType : 'application/json',
+                  	        success : function(result){
+                  	       // 서버에서 받은 데이터(result)에서 mem_status 값만 추출
+                  	            var statusList = result.statusList.map(function(item) {
+                  	                return item.mem_status;
+                  	            });
+								
+                  	       		console.log("ajax->"+statusList);
+                  	       		
+                  	            // 기존 옵션 제거
+                  	            $('#selectStatus').empty();
+
+                  	          $('#selectStatus').append("<option value ="+ "" + ">" + "전체" + "</option>");
+                  	        	for(var i = 0; i < statusList.length; i++){
+                  	        		var statusText = getStatusText(statusList[i]);
+                  	        		$('#selectStatus').append("<option value ="+ result.statusList[i].mem_status + ">" + statusText + "</option>");
+                  	        	}
+                  	        },
+                  	        //에러 메시지 출력
+                  	      error:function(request, status, error){
+                  			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                  	      }
+                  		});
+                  	});
+                  	
+                 	// mem_status 값에 따라 텍스트 반환
+                  	function getStatusText(status) {
+                  	    switch (status) {
+                  	        case 0:
+                  	            return "재직";
+                  	        case 1:
+                  	            return "휴직";
+                  	        case 2:
+                  	            return "퇴사";
+                  	        default:
+                  	            return "";
+                  	    }
+                 	}
+                  </script>
                   <input
                     type="text"
                     class="form-control border-0 shadow-none"
-                    placeholder="Search..."
+                    placeholder="사원번호"
                     aria-label="Search..."
                     id="searchMember"
                   />
@@ -39,14 +85,18 @@
                         <th>부서명</th>
                         <th>직위</th>
                         <th>이메일</th>
-                        <th>상세정보</th>
+                        <th>상태</th>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
 	                    <c:forEach var="list" items="${memberList }">
 	                    	<tr>
 	                    		<td><i class="fab fa-angular fa-lg text-danger me-1"></i><strong>${list.rn}</strong></td>
-	                    		<td>${list.mem_hiredate}</td>
+	                    		<td>
+	                    			<fmt:parseDate var="parsedDate" value="${list.mem_hiredate}" pattern="yyyy-MM-dd HH:mm:ss" />
+									<fmt:formatDate var="formattedDate" value="${parsedDate}" pattern="yyyy-MM-dd" />
+									${formattedDate}
+								</td>
 	                    		<td><a href="memberU?mem_id=${list.mem_id}">${list.mem_id}</a></td>
 	                    		<td>${list.mem_name}</td>
 	                    		<td>
@@ -75,34 +125,9 @@
 	                    		</td>
 	                    		<td>${list.mem_email}</td>
 	                    		<td>
-		                          <div class="dropdown">
-		                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-		                              <i class="bx bx-dots-vertical-rounded"></i>
-		                            </button>
-		                            <div class="dropdown-menu">
-		                              <a class="dropdown-item" href="memberU?mem_id=${list.mem_id}"
-		                                ><i class="bx bx-edit-alt me-1"></i> Edit</a
-		                              >
-		                              <c:choose>
-		                              	<c:when test="${list.mem_leave == null and list.mem_resi == null }">
-			                              <a class="dropdown-item" href="memberLeave?mem_id=${list.mem_id}"
-			                                ><i class="bx bx-edit-alt me-1"></i> 휴직</a
-			                              >
-			                              <a class="dropdown-item" href="memberResign?mem_id=${list.mem_id};"
-			                               ><i class="bx bx-trash me-1"></i> 퇴사</a
-			                               >
-		                              	</c:when>
-		                              	<c:when test="${list.mem_leave != null and list.mem_resi == null }">
-			                              <a class="dropdown-item" href="/memberU"
-			                                ><i class="bx bx-edit-alt me-1"></i> 복직</a
-			                              >
-			                              <a class="dropdown-item" href="/memberD;"
-			                               ><i class="bx bx-trash me-1"></i> 퇴사</a
-			                               >
-		                                </c:when>
-		                              </c:choose>
-		                            </div>
-		                          </div>
+		                         	<c:if test="${list.mem_status == 0}">재직</c:if>
+		                         	<c:if test="${list.mem_status == 1}">휴직</c:if>
+		                         	<c:if test="${list.mem_status == 2}">퇴직</c:if>
 		                        </td>
 	                    	</tr>
 	                    </c:forEach>
@@ -150,22 +175,9 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  <script type="text/javascript">
  	$(document).ready(function(){
- 		$('#searchMember').on('keydown',function(e){
- 			   
+ 		$('#searchMember').on('keydown',function(e){		   
 	 			if(e.key === 'Enter'){
-	 				  alert("success");
-	 				window.location.href = "memberRequirement?keyword="+e.target.value;	
-/* 	 			$.ajax({
-	 				url  : "memberRequirement",
-	 				data : {keyword : e.target.value},
-	 				type : "GET",
-	 				success : function(){
-						alert("success");
-						window.location.href = "sh/memberList`";
-	 				}
-	 			}); */
-	 			
-	 			
+	 				window.location.href = "memberRequirement?keyword="+e.target.value;		 			
 	 		}
  		});
  	});

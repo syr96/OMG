@@ -29,7 +29,12 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return memberList;
 	}
 
-
+	@Override
+	public List<Member> selectStatus() {
+		System.out.println("memberService selectStatus() Start");
+		List<Member> statusList = md.selectStatus();
+		return statusList;
+	}
 	
 	@Override
 	public int memberTotal() {
@@ -59,7 +64,39 @@ public class ShMemberServiceImpl implements ShMemberService {
 		return member;
 	}
 
+	@Override
+	public int updateLeaveMember(Member member) {
+		System.out.println("memberService updateLeaveMember() Start");
+		int result = md.updateLeaveMember(member);
+		return result;
+	}
 
+	@Override
+	public int updateReinMember(Member member) {
+		System.out.println("memberService updateReinMember() Start");
+		int result = md.updateReinMember(member);
+		return result;
+	}
 
+	@Override
+	public int updateResiMember(Member member) {
+		System.out.println("memberService updateResiMember() Start");
+		int result = md.updateResiMember(member);
+		return result;
+	}
+
+	@Override
+	public int updateMember(Member member) {
+		System.out.println("memberService updateMember() Start");
+		int result = md.updateMember(member);
+		return result;
+	}
+
+	@Override
+	public int detailMember(Member member) {
+		System.out.println("memberService detailMember() Start");
+		int result = md.detailMember(member);
+		return result;
+	}
 
 }

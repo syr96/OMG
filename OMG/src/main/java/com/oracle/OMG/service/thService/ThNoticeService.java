@@ -12,5 +12,7 @@ public interface ThNoticeService {
 	int					registerNotice(Board board);
 	Board				getNotice(int brd_id);
 	int					removeNotice(int brd_id);
+	Board 				modifyNoticeView(int brd_id);
 	int					modifyNotice(Board board);
+	
 }

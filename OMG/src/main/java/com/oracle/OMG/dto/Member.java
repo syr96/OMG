@@ -2,6 +2,8 @@ package com.oracle.OMG.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -41,7 +43,9 @@ public class Member {
     private String keyword;
     //날짜 타입 변환용
     private Date mem_hiredate_d;
-    
+    //업데이트용
+    private MultipartFile mem_img_f;
+    private String oldPw;
     //join
     private String com_cn;     //분류 내용
 }

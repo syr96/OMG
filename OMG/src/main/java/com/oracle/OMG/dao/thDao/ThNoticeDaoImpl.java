@@ -89,12 +89,8 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	@Override
 	public Board readNotice(int brd_id) {
 		Board notice = null;
-		try {
 			notice= session.selectOne("readNotice", brd_id);
 			log.info("notice: {}", notice);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
 		return notice;
 	}
 
@@ -126,16 +122,23 @@ public class ThNoticeDaoImpl implements ThNoticeDao {
 	@Override
 	public int updateReplyCnt(int brd_id, int amount) {
 		int updateResult = 0;
-		try {
+	
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("brd_id", brd_id);
 			map.put("amount", amount);
 			updateResult = session.update("updateReplyCnt", map);
 			log.info("updateResult --> " + updateResult);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
+	
 		return updateResult;
+	}
+
+
+	@Override
+	public void viewCntUp(int brd_id) {
+		
+		int updateResult = session.update("updateViewCntUp", brd_id);
+		log.info("updateResult: " + updateResult);
+
 	}
 
 

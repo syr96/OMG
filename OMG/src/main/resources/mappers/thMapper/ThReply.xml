@@ -5,7 +5,7 @@
 <mapper namespace="com.oracle.OMG.ThReplyMapper">
 	
 	<insert id="insertReply" parameterType="Reply">
-		INSERT INTO reply (rep_id,   brd_id ,   mem_id ,   rep_cn ) 
+		INSERT INTO reply (rep_id,   brd_id ,   mem_id ,   rep_cn) 
         VALUES (seq_reply.nextval, #{brd_id}, #{mem_id}, #{rep_cn})
 	</insert>
 	

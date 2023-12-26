@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.oracle.OMG.dto.Item;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Slf4j
 @RequiredArgsConstructor
 public class YrItemDaoImpl implements YrItemDao {
 
@@ -17,12 +19,12 @@ public class YrItemDaoImpl implements YrItemDao {
 	
 	@Override
 	public List<Item> itemList(Item item) {
-		System.out.println("YrItemDaoImpl itemList start");
 		List<Item> itemList = null;
 		try {
 			itemList = session.selectList("yrItemList", item);
+			log.info("itemList.size() "+ itemList.size());
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		
 		return itemList;
@@ -30,36 +32,36 @@ public class YrItemDaoImpl implements YrItemDao {
 
 	@Override
 	public Item selectItem(int code) {
-		System.out.println("YrItemDaoImpl selectItem start");
 		Item itemDetail = null;
 		try {
 			itemDetail = session.selectOne("yrSelectItem", code);
+			log.info("selectItem: " + itemDetail);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return itemDetail;
 	}
 
 	@Override
 	public int insertItem(Item item) {
-		System.out.println("YrItemDaoImpl insertItem start");
 		int result = 0;
 		try {
 			result = session.insert("yrInsertItem", item);
+			log.info("insert result: " + result);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return result;
 	}
 
 	@Override
 	public int updateItem(Item item) {
-		System.out.println("YrItemDaoImpl updateItem start");
 		int result = 0;
 		try {
 			result = session.update("yrUpdateItem", item);
+			log.info("update result: " + result);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return result;
 	}

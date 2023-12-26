@@ -1,19 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
 <html
   lang="en"
   class="light-style customizer-hide"
@@ -72,9 +59,6 @@
 		
 	</style>
 	<script type="text/javascript">
-	
-	
-	
 		// 모델에 추가한 메시지 가져오기
 	    var message = "${message}";
 	    
@@ -461,62 +445,8 @@
           
           <div class="col-md-6">
           <!-- Basic Bootstrap Table -->
-              <div class="card">
-                <h5 class="card-header d-flex justify-content-between align-items-center"><strong>공지사항</strong>
+              <div class="card" id="notice">
                 
-                <button type="button" class="btn btn-sm btn-outline-secondary ms-auto">더보기</button>
-                </h5>
-                <div class="table-responsive text-nowrap">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>제목</th>
-                        <th class="text-end">날짜</th>
-                        
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
-                      <tr>
-                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> Angular Project</td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                      </tr>
-                      <tr>
-                        <td><i class="fab fa-react fa-lg text-info me-3"></i>React Project</td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                        
-                      </tr>
-                      <tr>
-                        <td><i class="fab fa-vuejs fa-lg text-success me-3"></i>VueJs Project</td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
-                        </td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
-                        </td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                      </tr>
-                      <tr>
-                        <td>
-                          <i class="fab fa-bootstrap fa-lg text-primary me-3"></i>Bootstrap Project
-                        </td>
-                        <td class="text-end">2023-12-07</td>
-                        
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
               <!--/ Basic Bootstrap Table -->
           
@@ -546,5 +476,24 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+    <script type="text/javascript">
+	    $(document).ready(function() {
+			showNotice();
+		});
+		
+		function showNotice() {
+			$.ajax(
+					{
+						url: "/notice/mainNotice",
+						dataType: "html",
+						success: function(data) {
+							$("#notice").html(data);
+						}
+				
+				}
+			)
+		};
+    </script>
   </body>
 </html>

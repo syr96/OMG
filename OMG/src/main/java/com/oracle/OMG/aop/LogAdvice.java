@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogAdvice {
 	
-	@Around("execution(* com.oracle.OMG.service.thService.ThReplyService*.*(..))")
+	@Around("execution(* com.oracle.OMG.service.thService.ThReplyService.getListPage(..))")
 	public Object logTime(ProceedingJoinPoint pjp) {
 		
 		long start = System.currentTimeMillis();
