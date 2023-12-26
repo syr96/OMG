@@ -32,8 +32,7 @@ public class ThReplyServiceImpl implements ThReplyService {
 	@Override
 	public int register(Reply rep){
 		
-		TransactionStatus txStatus = transactionManager
-				.getTransaction(new DefaultTransactionDefinition());
+		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		int result = 0;
 		try {
 			
