@@ -207,37 +207,36 @@ function formatAmount(amount) {
 		        <c:set var="monthlySalesTotal" value="0" />
 	    <c:set var="firstMonth" value="true" />
 
-    <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
-        <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
-            <tr class="${firstMonth ? 'hidden-row' : ''}"  style="background-color: #f2f2f2;"> <!-- 첫 번째 월 소계 행에 hidden-row 클래스 추가 -->
-                <td colspan="6"></td>
-                <th colspan="4">${currentMonth}월 소 계</th>
-					<c:choose>
-					    <c:when test="${monthlyPurTotal != 0}">
-					        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
-					    </c:when>
-					    <c:otherwise>
-					        <th>-</th>
-					    </c:otherwise>
-					</c:choose>
-					
-					<c:choose>
-					    <c:when test="${monthlySalesTotal != 0}">
-					        <th style="text-align: right;"><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
-					    </c:when>
-					    <c:otherwise>
-					        <th>-</th>
-					    </c:otherwise>
-					</c:choose>
-            </tr>
-   
-            <c:set var="firstMonth" value="false" />
-
-            <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
-            <c:set var="monthlyPurTotal" value="0" />
-            <c:set var="monthlySalesTotal" value="0" />
-            <c:set var="currentMonth" value="${customer.month}" />
-        </c:if>
+   	    <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
+	        <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
+	            <tr class="${firstMonth ? 'hidden-row' : ''}"  style="background-color: #f2f2f2;"> <!-- 첫 번째 월 소계 행에 hidden-row 클래스 추가 -->
+	                <td colspan="6"></td>
+	                <th colspan="4">${currentMonth}월 소 계</th>
+						<c:choose>
+						    <c:when test="${monthlyPurTotal != 0}">
+						        <th style="text-align: right;"><fmt:formatNumber value="${monthlyPurTotal}" pattern="#,##0" /></th>
+						    </c:when>
+						    <c:otherwise>
+						        <th>-</th>
+						    </c:otherwise>
+						</c:choose>
+						
+						<c:choose>
+						    <c:when test="${monthlySalesTotal != 0}">
+						        <th style="text-align: right;"><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>
+						    </c:when>
+						    <c:otherwise>
+						        <th>-</th>
+						    </c:otherwise>
+						</c:choose>
+	            </tr>
+	   
+	            <c:set var="firstMonth" value="false" />
+	            <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
+	            <c:set var="monthlyPurTotal" value="0" />
+	            <c:set var="monthlySalesTotal" value="0" />
+	            <c:set var="currentMonth" value="${customer.month}" />
+	        </c:if>
       			<!--전체거래처실적조회 -->        
 					 <tr>
                      <td>${customer.month}</td>
@@ -250,19 +249,24 @@ function formatAmount(amount) {
                      <td>${customer.itemName }</td>
                      <td>${customer.purQty}</td>
                      <td style="text-align: right;"><fmt:formatNumber value="${customer.purPrice}" pattern="#,##0" /></td>
+			     
 			        <!-- customer.custstyle에 따라 총 매입액(0) 또는 총 매출액(1) 표시 -->
-			        <td style="text-align: right;"><c:choose>
-			            <c:when test="${customer.custstyle == 0}">
-			                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
-			            </c:when>
-			            <c:otherwise>-</c:otherwise>
-			        </c:choose></td>
-			        <td style="text-align: right;"><c:choose>
-			            <c:when test="${customer.custstyle == 1}">
-			                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
-			            </c:when>
-			            <c:otherwise>-</c:otherwise>
-			        </c:choose></td>
+			        <td style="text-align: right;">
+				        <c:choose>
+				            <c:when test="${customer.custstyle == 0}">
+				                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
+				            </c:when>
+				            <c:otherwise>-</c:otherwise>
+				        </c:choose>
+			        </td>
+			        <td style="text-align: right;">
+				        <c:choose>
+				            <c:when test="${customer.custstyle == 1}">
+				                <fmt:formatNumber value="${customer.purQty * customer.purPrice}" pattern="#,##0" />
+				            </c:when>
+				            <c:otherwise>-</c:otherwise>
+				        </c:choose>
+			        </td>
                     </tr>
                 
               <c:choose>
@@ -286,8 +290,7 @@ function formatAmount(amount) {
 					    <c:otherwise>
 					        <th>-</th>
 					    </c:otherwise>
-					</c:choose>
-					
+					</c:choose>				
 					<c:choose>
 					    <c:when test="${monthlySalesTotal != 0}">
 					        <th style="text-align: right;"><fmt:formatNumber value="${monthlySalesTotal}" pattern="#,##0" /></th>

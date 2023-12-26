@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Warehouse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -220,6 +221,8 @@ public class YaCustomerDaoImpl implements YaCustomerDao {
 		
 		return SearchForAll;
 	}
+	
+
 
 }
 
