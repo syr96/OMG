@@ -28,13 +28,6 @@ public class ShMemberServiceImpl implements ShMemberService {
 		List<Member> memberList = md.memberList(member);
 		return memberList;
 	}
-
-	@Override
-	public List<Member> selectStatus() {
-		System.out.println("memberService selectStatus() Start");
-		List<Member> statusList = md.selectStatus();
-		return statusList;
-	}
 	
 	@Override
 	public int memberTotal() {

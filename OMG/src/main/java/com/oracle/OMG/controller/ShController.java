@@ -201,16 +201,6 @@ public class ShController {
 		return "sh/memberList";
 	}
 	
-	@ResponseBody
-	@PostMapping(value = "selectStatus")
-	public HashMap<String, Object> selectStatus() {
-		System.out.println("shController selectStatus() Start");
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		List<Member> statusList = ms.selectStatus();
-		System.out.println("statusList=>"+statusList);
-		result.put("statusList", statusList);
-		return result;
-	}
 	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)

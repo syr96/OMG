@@ -41,19 +41,6 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		return memberList;
 	}
 	
-	//리스트 select option 출력 ajax
-	@Override
-	public List<Member> selectStatus() {
-		System.out.println("memberDao selectStatus() Start");
-		List<Member> statusList = null;
-		try {
-			statusList = session.selectList("shStatusList");
-		} catch (Exception e) {
-			System.out.println("memberDao selectStatus() Exception ->" + e.getMessage());
-		}
-		return statusList;
-	}
-	
 	//멤버 총 인원수
 	@Override
 	public int memberTotal() {

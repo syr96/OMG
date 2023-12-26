@@ -16,15 +16,6 @@
 		ORDER BY rn
 	</select>
 	
-	<select id="shStatusList" resultType="Member">
-		Select Distinct mem_status From member Order By mem_status
-	</select>
-	
-	<select id="shMemberTotal" resultType="int">
-		Select count(*)
-		From member
-	</select>
-	
 	<select id="shMemberSearchList" parameterType="Member" resultType="Member">
 	<![CDATA[
 		Select a.*
