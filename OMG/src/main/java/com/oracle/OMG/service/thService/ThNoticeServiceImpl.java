@@ -55,7 +55,10 @@ public class ThNoticeServiceImpl implements ThNoticeService {
 	public Board getNotice(int brd_id) {
 		log.info("get brd_id: " + brd_id );
 
-		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		TransactionStatus txStatus = transactionManager
+			.getTransaction(new DefaultTransactionDefinition());
+		
+		
 		Board result = null;
 		try {
 			nd.viewCntUp(brd_id);

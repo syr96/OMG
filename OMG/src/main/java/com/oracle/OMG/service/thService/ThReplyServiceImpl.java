@@ -31,9 +31,9 @@ public class ThReplyServiceImpl implements ThReplyService {
 	                                                                         
 	@Override
 	public int register(Reply rep){
-		log.info("register..." + rep);
-
-		TransactionStatus txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
+		
+		TransactionStatus txStatus = transactionManager
+				.getTransaction(new DefaultTransactionDefinition());
 		int result = 0;
 		try {
 			
@@ -41,12 +41,13 @@ public class ThReplyServiceImpl implements ThReplyService {
 			result = rd.insert(rep);
 			
 			transactionManager.commit(txStatus);
+			
 		} catch (Exception e) {
+			
 			log.info("예외 발생: " +e.getMessage());
 			transactionManager.rollback(txStatus);
 			
 		}
-		
 		return result;
 	}
 
