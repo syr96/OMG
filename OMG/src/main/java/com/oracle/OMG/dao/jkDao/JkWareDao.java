@@ -3,7 +3,7 @@ package com.oracle.OMG.dao.jkDao;
 import java.util.List;
 import java.util.Map;
 
-import com.oracle.OMG.dto.Item;
+
 import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 
@@ -25,7 +25,9 @@ public interface JkWareDao {
 
 	List<Purchase> 				purMonthData(String month);
 	void 						callInboundPD(String purDate, int custCode);
-	List<Warehouse> inboundList(Warehouse warehouse);
+	List<Warehouse> 			inboundList();
+	int							inboundTotal(Warehouse warehouse);
+	List<Warehouse> 			monthInbound(String inboundMonth);
 	
 		
 }

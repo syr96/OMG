@@ -229,12 +229,12 @@ public class JkWareDaoImpl implements JkWareDao {
 
 
 	@Override
-	public List<Warehouse> inboundList(Warehouse warehouse) {
+	public List<Warehouse> inboundList() {
 		System.out.println("JkWareDaoImpl monthData start...");
 		List<Warehouse> inboundList = null;
 		
 		try {
-			inboundList = session.selectList("inboundList", warehouse);
+			inboundList = session.selectList("inboundList");
 			System.out.println("monthDatalistsize"+inboundList);
 			 System.out.println("Params: " + inboundList);
 		} catch(Exception e) {
@@ -243,6 +243,40 @@ public class JkWareDaoImpl implements JkWareDao {
 		}
 		
 		return inboundList;
+	}
+
+
+	@Override
+	public int inboundTotal(Warehouse warehouse) {
+	System.out.println("JkWareDaoImpl inboundTotal start...");
+		
+		int inboundTotal = 0;
+		try {
+			inboundTotal = session.selectOne("inboundTotal",warehouse);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("JkWareDaoImpl inboundTotal e.getMessage()" + e.getMessage());
+		}
+		return inboundTotal;
+	}
+
+
+	@Override
+	public List<Warehouse> monthInbound(String inboundMonth) {
+		System.out.println("JkWareDaoImpl monthInbound start...");
+		List<Warehouse> monthInbound = null;
+		
+		try {
+			monthInbound = session.selectList("monthInbound", inboundMonth);
+			System.out.println("monthDatalistsize"+monthInbound);
+			 System.out.println("Params: " + monthInbound);
+		} catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("JkWareDaoImpl inboundList error?"+ e.getMessage());
+		}
+		
+		return monthInbound;
 	}
 
 	

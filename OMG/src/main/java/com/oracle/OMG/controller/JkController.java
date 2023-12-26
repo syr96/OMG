@@ -1,6 +1,7 @@
 package com.oracle.OMG.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
@@ -169,12 +172,15 @@ public class JkController {
 	    return response;
 	}
 
-	// 발주 조회
+	// 입고관리
 	@RequestMapping(value="/inboundRegister")
-	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse) {
+	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
 	    System.out.println("JkController invPurList start....");
-	 	    
+	    logger.info("Received month: {}", inboundMonth);
+    
 	    int totalPur = 0;
+	    int inboundTotal =0;
+	    
 		List<Purchase> purList = null;
 		Paging page = null;
 		System.out.println("ChController purList Start...");
@@ -191,6 +197,7 @@ public class JkController {
 		}
 		
 		totalPur = cps.totalPur(purchase);
+		inboundTotal = jws.inboundTotal(warehouse);
 		page = new Paging(999);
 		
 		purchase.setStart(page.getStart());
@@ -219,50 +226,60 @@ public class JkController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
-	
+		
 		List<Customer> pur_custList = ccs.custList();
-//		List<Warehouse> inboundList = jws.inboundList(warehouse);
-		
-		
+		List<Warehouse> inboundList = jws.inboundList();
+	
 		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
+		model.addAttribute("inboundTotal",inboundTotal);
 		model.addAttribute("page",page);
-//		model.addAttribute("inboundList",inboundList);
+		model.addAttribute("inboundList",inboundList);
+		
 	
 		System.out.println("model"+model);
+		System.out.println("total"+inboundTotal);
 	    return "jk/inboundRegister";
 		
 		
 	}
 	
 	 // 발주 조회
-	   @RequestMapping(value = "/inboundRegister", method = RequestMethod.POST)
-	   public String invPurList(@RequestBody PurDetail requestData, Model model) {
-	       System.out.println("Received data from client: " + requestData);
+	@RequestMapping(value = "/inboundRegister", method = RequestMethod.POST)
+	public String invPurList(@RequestBody PurDetail requestData, Model model) {
+	    System.out.println("Received data from client: " + requestData);
 
-	       // requestData에서 pur_date와 custcode를 꺼내서 사용
-	       String purDate= requestData.getPur_date();
-	       int custCodeStr = requestData.getCustcode();
-	       System.out.println("Received data from client: " + requestData);
-	       System.out.println("Received pur_date: " + purDate);
-	       System.out.println("Received custcode: " + custCodeStr);
+	    // requestData에서 pur_date와 custcode를 꺼내서 사용
+	    String purDate = requestData.getPur_date();
+	    int custCodeStr = requestData.getCustcode();
+	    System.out.println("Received data from client: " + requestData);
+	    System.out.println("Received pur_date: " + purDate);
+	    System.out.println("Received custcode: " + custCodeStr);
 
-	         
-	      // 정상적으로 변환된 경우에만 계속 진행
-	       Map<String, String> response = jws.callInboundPD(purDate, custCodeStr);
-	          
+	    // 정상적으로 변환된 경우에만 계속 진행
+	    Map<String, String> response = jws.callInboundPD(purDate, custCodeStr);
+
+	    // 모델에 결과 데이터 추가
+	    model.addAttribute("response", response);
+
+	    // 뷰로 이동
+	    return "jk/inboundRegister";
+	}
+
+	// 제품정보 조회(업데이트용)
+	@GetMapping("/monthInbound")
+	@ResponseBody
+	public List<Warehouse> monthInbound(@RequestParam("inboundMonth") String inboundMonth, Model model ) {
+	    logger.info("년도: {}", inboundMonth );
+
+	    List<Warehouse> monthInbound = jws.monthInbound(inboundMonth);
+	    model.addAttribute("inboundList",monthInbound);
 	    
+	    logger.info("Response: {}", monthInbound);
 	    
-
-	       // 모델에 결과 데이터 추가
-	       model.addAttribute("response", response);
-
-	       // 뷰로 이동
-	       return "jk/inboundRegister";
-	   }
-
-
+	    return monthInbound;
+	}
 
 
 	// 월별 재고리스트 조회
@@ -284,6 +301,79 @@ public class JkController {
 
 	    return monthData;
 	}
+	
+	// 출고관리
+		@RequestMapping(value="/outboundRegister")
+		public String invSellList(Purchase purchase, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
+		    System.out.println("JkController invPurList start....");
+		    logger.info("Received month: {}", inboundMonth);
+	    
+		    int totalPur = 0;
+		    int inboundTotal =0;
+		    
+			List<Purchase> purList = null;
+			Paging page = null;
+			System.out.println("ChController purList Start...");
+			// 검색(custcode가 있을 때 )
+			if(purchase.getCustcode() >0) {
+				model.addAttribute("srchCompany", purchase.getCustcode());
+			}
+			//검색(날짜가 있을 때)
+			if(purchase.getPur_date() != null) {
+				String purDate = purchase.getPur_date();
+				DateTimeFormatter formmater = DateTimeFormatter.ofPattern("yy/MM/dd");
+				LocalDate ldt = LocalDate.parse(purDate, formmater);
+				model.addAttribute("srchDate", ldt);
+			}
+			
+			totalPur = cps.totalPur(purchase);
+			inboundTotal = jws.inboundTotal(warehouse);
+			page = new Paging(999);
+			
+			purchase.setStart(page.getStart());
+			purchase.setEnd(page.getEnd());	
+			
+			//발주서 전체 리스트
+			purList = cps.purList(purchase);
+			System.out.println("purList: " + purList);
+			// 발주서 리스트 소환 성공시 
+			if(purList != null) {
+				// purList 조회 성공 시
+				for(Purchase p: purList) {
+					// 제품 종류			총수량		총가격(전체 가격)
+					int totalType = 0; int totalPrice = 0;
+					
+					// 발주서 상세 내용 불러오기 
+					List<PurDetail> pd = cps.purDList(p);
+					totalType = pd.size(); // row 수 = 발주서 내 물품 수
+					System.out.println();
+					// 상세 내용의 물품 항목별 수량과 결제액 
+					for(PurDetail pd2 : pd) {
+						totalPrice += pd2.getQty() * pd2.getPrice();
+					}
+					p.setTotalType(totalType);
+					p.setTotalQty(pd.stream().mapToInt(m->m.getQty()).sum());
+					p.setTotalPrice(totalPrice);
+				}
+			}
+			
+			List<Customer> pur_custList = ccs.custList();
+			List<Warehouse> inboundList = jws.inboundList();
+		
+			model.addAttribute("pur_custList", pur_custList);
+			model.addAttribute("purList",purList);
+			model.addAttribute("totalPur",totalPur);
+			model.addAttribute("inboundTotal",inboundTotal);
+			model.addAttribute("page",page);
+			model.addAttribute("inboundList",inboundList);
+			
+		
+			System.out.println("model"+model);
+			System.out.println("total"+inboundTotal);
+		    return "jk/inboundRegister";
+			
+			
+		}
 
 
 	

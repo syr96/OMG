@@ -131,12 +131,31 @@ public class JkWareServiceImpl implements JkWareService {
     }
 
 	@Override
-	public List<Warehouse> inboundList(Warehouse warehouse) {
+	public List<Warehouse> inboundList() {
 		System.out.println("JkWareServiceImpl inboundList Start...");
 		
-		List<Warehouse> inboundList = jwd.inboundList(warehouse);
+		List<Warehouse> inboundList = jwd.inboundList();
 		
 		return inboundList;
+	}
+
+	@Override
+	public int inboundTotal(Warehouse warehouse) {
+		System.out.println("JkWareServiceImpl inboundTotal Start...");
+		int inboundTotal = 0;
+		
+		inboundTotal = jwd.inboundTotal(warehouse);
+		
+		return  inboundTotal;
+	}
+
+	@Override
+	public List<Warehouse> monthInbound(String inboundMonth) {
+	System.out.println("JkWareServiceImpl monthInbound Start...");
+		
+		List<Warehouse> monthInbound = jwd.monthInbound(inboundMonth);
+		
+		return monthInbound;
 	}
 
 
