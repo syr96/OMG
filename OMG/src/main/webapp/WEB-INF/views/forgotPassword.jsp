@@ -83,9 +83,12 @@
   				 ,number:	$('#number').val()
   			}; */
   			
-  			alert("이름: " 		+ mem_name 
-  				+ "\n이메일: "	+ mem_email
-  					); 
+  			// alert("이름: " 		+ mem_name 
+  			// 	+ "\n이메일: "	+ mem_email
+  			// 		); 
+  			
+  			// 로딩 인디케이터 표시
+  			showLoader();
   			
   			$.ajax({
                type	:   'POST'
@@ -93,21 +96,26 @@
               // ,data	:	{  mem_name	: mem_name
             	  		//,  number	: number
             	  		//}
+              ,contentType: 'application/json;charset=UTF-8' 
   			  ,dataType	:	'json'
+  			  ,async    :   false	// 메일 보내는데 시간이 걸리기 때문에 동기로 바꿈
   			  // dataType 이란, 서버로부터 받아올 응답 데이터의 타입
   			  // 서버로 데이터를 전송할 때는 영향 X
-               ,contentType:	'application/json'
-               ,data	:	JSON.stringify({
+              ,data	:	JSON.stringify({
             	   	//	키	:		값
             	    mem_name:	mem_name
             	   ,mem_email:	mem_email
-            	   
             	   //formData
             	   })
               ,success:	function (response) {
             	  
+            	  
+            	  //console.log(response);
+            	  console.log('Ajax 요청이 완료되었습니다...');
+            	  
+            	  
             	  if (response.status === 'success') {
-            		  
+            		  console.log('Ajax 요청이 완료되었습니다.');
 	            	  // 회원 정보가 일치하는 경우
 	            	  alert("인증번호가 전송되었습니다.");
 	            	  
@@ -119,10 +127,25 @@
               },
               error: function () {
             	  alert("비밀번호 찾기 에러");
+              },
+              complete: function() {
+            	  // 로딩 인디케이터 숨김 처리
+            	  hideLoader();
               }
               
               });
   			
+  		}
+  		
+  		
+  		function showLoader() {
+  			// 로딩 인디케이터를 보이게 하는 로직을 구현
+  			$('#loading-spinner').show();
+  		}
+  		
+  		function hideLoader() {
+  			// 로딩 인디케이터를 숨기는 로직을 구현
+  			$('#loading-spinner').hide();
   		}
   	
   	
@@ -150,10 +173,10 @@
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">비밀번호 찾기</h4>
-              <p class="mb-4">입력한 성명과 ID에 등록되어 있는 복구Email이 일치할 경우, <br>[로그인 정보 안내 메일]이 발송됩니다.</p>
+              <p class="mb-4">입력한 성명과 ID에 등록되어 있는 복구Email이 일치할 경우, <br>임시 비밀번호가 발송됩니다.</p>
               <form id="formAuthentication" class="mb-3" method="POST">
               	<div class="row">
-	                <div class="mb-3 col-md-6">
+	                <div class="mb-3">
 	                  <label for="name" class="form-label">성명</label>
 	                  <input
 	                    type="text"
@@ -164,7 +187,7 @@
 	                    autofocus
 	                  />
 	                </div>
-	                <div class="mb-3 col-md-6">
+	                <div class="mb-3">
 	                  <label for="email" class="form-label">복구 Email</label>
 	                  <input
 	                    type="text"
@@ -177,21 +200,12 @@
 	                </div>
                 </div>
                 <div class="mb-3">
-                	<button class="btn btn-primary d-grid w-100" onclick="sendCode()">인증번호 발송</button>
-                </div>
-                <div class="mb-3">
-	                  <label for="number" class="form-label">인증 번호</label>
-	                  <div class="input-group">
-		                  <input
-		                    type="text"
-		                    class="form-control"
-		                    id="number"
-		                    name="number"
-		                    placeholder=""
-		                    autofocus 
-		                  />
-	                  		<button type="button" class="btn btn-primary">확인</button>
-                  	</div>
+                	<button class="btn btn-primary d-flex align-items-center justify-content-center w-100" onclick="sendCode()">
+                		<span class="mrgin-right: 8px;">임시 비밀번호 발송</span>
+                		<!-- <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                          <span id="loading-spinner" class="visually-hidden">Loading...</span>
+                        </div> -->
+                	</button>
                 </div>
               </form>
               <div class="text-center">
