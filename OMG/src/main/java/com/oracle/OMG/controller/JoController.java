@@ -1,26 +1,16 @@
 package com.oracle.OMG.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oracle.OMG.dto.Sales;
 import com.oracle.OMG.dto.SalesDetail;
 import com.oracle.OMG.service.joService.JoSalService;
 import com.oracle.OMG.service.joService.Paging;
@@ -162,71 +152,57 @@ public class JoController {
 
 		return "jo/salesInquirySort";
 	}
+
 	
-	
-	@RequestMapping(value = "salesDetailDelete", method = RequestMethod.POST)
-	public String salesDetailDelete(@RequestParam(value = "salesInfos", required = false) List<String> salesInfos,
-	                                @RequestParam(value = "currentPage", required = false) String currentPage,
-	                                SalesDetail sales, Model model) {
+	@RequestMapping("salesDetailDelete")
+	public String salesDetailDelete(@RequestParam(value = "salesDates") List<String> salesDates,
+	                                @RequestParam(value = "custcodes") List<String> custcodes,
+	                                @RequestParam(value = "codes") List<String> codes,
+	                                String currentPage, Model model) {
 	    UUID transactionId = UUID.randomUUID();
 
 	    try {
-	        log.info("[{}]{}:{}", transactionId, "salesDetailDelete", "Start");
+	        log.info("[{}]{}:{}", transactionId, "salesInquiryDelete", "Start");
 
-	        if (salesInfos != null && !salesInfos.isEmpty()) {
-	            // salesInfos에는 JSON 형태의 문자열이 담겨있습니다. 이를 SalesDetail 객체로 변환하여 사용할 수 있습니다.
-	            ObjectMapper objectMapper = new ObjectMapper();
-	            List<SalesDetail> salesDetails = salesInfos.stream()
-	                    .map(info -> {
-	                        try {
-	                            return objectMapper.readValue(info, SalesDetail.class);
-	                        } catch (JsonProcessingException e) {
-	                            e.printStackTrace();
-	                            return null;
-	                        }
-	                    })
-	                    .collect(Collectors.toList());
-
-	            // 삭제 처리 로직을 수행하도록 수정
-	            int result = jss.deleteSalesDetail((SalesDetail) salesDetails);
+	        // salesDates와 custcodes의 길이는 같다고 가정하고, 반복문을 통해 삭제 로직 수행
+	        for (int i = 0; i < salesDates.size(); i++) {
+	            
+	        	SalesDetail sales = new SalesDetail();
+	            sales.setSales_date(salesDates.get(i));
+	            sales.setCustcode(Integer.parseInt(custcodes.get(i)));
+	            sales.setCode(Integer.parseInt(codes.get(i)));
+	            
+	            int result = jss.deleteSalesDetail(sales);
 	        }
-
+	        
 	    } catch (Exception e) {
 	        log.error("[{}]{}:{}", transactionId, "salesDetailDelete Exception", e.getMessage());
-
+	        
 	    } finally {
 	        log.info("[{}]{}:{}", transactionId, "salesDetailDelete", "End");
 	    }
 
-	    // 현재 페이지 정보를 사용하여 리다이렉트
-	    return "redirect:/jo/salesInquiry?currentPage=" + currentPage;
+	    return "redirect:salesInquiry";
 	}
-	
 
-	
-	
-	  // 판매서 삭제
-	  
-		/*
-		 * @RequestMapping("salesDetailDelete") public String
-		 * salesDetailDelete(SalesDetail sales, String currentPage, Model model) { UUID
-		 * transactionId = UUID.randomUUID();
-		 * 
-		 * try { log.info("[{}]{}:{}", transactionId, "salesInquiryDelete", "Start");
-		 * int result = jss.deleteSalesDetail(sales);
-		 * 
-		 * } catch (Exception e) { log.error("[{}]{}:{}", transactionId,
-		 * "salesDetailDelete Exception", e.getMessage());
-		 * 
-		 * } finally { log.info("[{}]{}:{}", transactionId, "salesDetailDelete", "End");
-		 * 
-		 * } return "redirect:jo/salesInquiry";
-		 * 
-		 * }
-		 */
-	 
-	 
-	
+	/*
+	 * // 판매서 삭제
+	 * 
+	 * @RequestMapping("salesDetailDelete") public String
+	 * salesDetailDelete(SalesDetail sales, String currentPage, Model model) { UUID
+	 * transactionId = UUID.randomUUID();
+	 * 
+	 * try { log.info("[{}]{}:{}", transactionId, "salesInquiryDelete", "Start");
+	 * int result = jss.deleteSalesDetail(sales);
+	 * 
+	 * } catch (Exception e) { log.error("[{}]{}:{}", transactionId,
+	 * "salesDetailDelete Exception", e.getMessage());
+	 * 
+	 * } finally { log.info("[{}]{}:{}", transactionId, "salesDetailDelete", "End");
+	 * 
+	 * } return "redirect:jo/salesInquiry"; }
+	 */
+	 	
 	  
 	// 판매서 입력
 	@RequestMapping("salesInsertForm")
@@ -255,32 +231,65 @@ public class JoController {
 		return "jo/salesInsertForm";
 	}
 	
+		
+	/*
+	 * // 판매서 입력
+	 * 
+	 * @RequestMapping("salesInsert") public String salesInsert(SalesDetail sales,
+	 * String currentPage, Model model) { UUID transactionId = UUID.randomUUID();
+	 * int result = 0;
+	 * 
+	 * log.info("sales -> " + sales);
+	 * 
+	 * try { log.info("[{}]{}:{}", transactionId, "salesInsert", "Start"); result =
+	 * jss.insertSales(sales); log.info("[{}]{}:{}", transactionId,
+	 * "result(insertSales)", result); result = jss.insertSalesDetail(sales);
+	 * log.info("[{}]{}:{}", transactionId, "result(insertSalesDetail)", result);
+	 * 
+	 * } catch (Exception e) { log.info("[{}]{}:{}", transactionId,
+	 * "salesInsert Exception", e.getMessage());
+	 * 
+	 * } finally { log.info("[{}]{}:{}", transactionId, "salesInsert", "End");
+	 * 
+	 * }
+	 * 
+	 * if(result > 0) { return "redirect:salesInquiry"; } else {
+	 * model.addAttribute("msg", "입력실패 확인해보세요"); return "forward:salesInsertForm"; }
+	 * 
+	 * }
+	 */
 	
 	
-	  // 판매서 입력
-	  @RequestMapping("salesInsert") 
-	  public String salesInsert(SalesDetail sales, String currentPage, Model model) { 
-		  UUID transactionId = UUID.randomUUID();
-		  int result = 0;
+	  @RequestMapping("salesInsert")
+	  public String salesInsert(Sales sales, List<SalesDetail> salesDetails, Model model) {
+	      UUID transactionId = UUID.randomUUID();
+	      int result = 0;
+
+	      log.info("[{}]{}:{}", transactionId, "salesInsert", "Start");
+	      log.info("SalesDetail -> " + salesDetails);
+	      
+	      try {
+	          log.info("sales -> " + sales);
+	          int salesResult = jss.insertSales(sales);
+	          
+	          // salesDetails에 대한 처리 추가
+	          for (SalesDetail salesDetail : salesDetails) {
+	        	  int salesDetailResult = jss.insertSalesDetail(salesDetail);
+	          }
+	          
+	          log.info("[{}]{}:{}", transactionId, "salesInsert", "Success");
+	          return "redirect:salesInquiry";
+
+	      } catch (Exception e) {
+	          log.info("[{}]{}:{}", transactionId, "salesInsert Exception", e.getMessage());
+	          model.addAttribute("msg", "입력 실패 확인해보세요");
+	          return "forward:salesInsertForm";
+	          
+	      } finally {
+	          log.info("[{}]{}:{}", transactionId, "salesInsert", "End");
+	      }
+	  }  
 	  
-		  log.info("sales -> " + sales);
-	  
-		  try { log.info("[{}]{}:{}", transactionId, "salesInsert", "Start"); 
-		  result = jss.InsertSales(sales);
-		  
-		  } catch (Exception e) { 
-			  log.info("[{}]{}:{}", transactionId, "salesInsert Exception", e.getMessage()); 
-		  } finally { 
-			  log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); 
-		  }
-		  
-		  if(result > 0) { 
-			  return "redirect:salesInquiry"; 
-		  } else {
-		  model.addAttribute("msg", "입력실패 확인해보세요"); 
-		  return "forward:salesInsertForm"; }
-	  
-	  }
 	 
 	  
 	// 판매서 수정
@@ -298,6 +307,8 @@ public class JoController {
 			int custstyle = 1;
 			List<SalesDetail> listCustCode = jss.getListCustCode(custstyle);
 			
+			List<SalesDetail> listProduct  = jss.getListProduct();
+						
 			int totalSalesDetail = jss.getTotalSalesDetail(sales); 
 			
 			Paging page = new Paging(totalSalesDetail, currentPage);
@@ -309,6 +320,7 @@ public class JoController {
 			model.addAttribute("salesDetail", salesDetail);
 			model.addAttribute("page", page);
 			model.addAttribute("listCustCode", listCustCode);
+			model.addAttribute("listProduct", listProduct);
 			model.addAttribute("salesDetailList", salesDetailList);
 			model.addAttribute("currentPage", currentPage);
 		

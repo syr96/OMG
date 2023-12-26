@@ -17,16 +17,18 @@
 			
 				<div class="col-12 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></div>
 			<div class="row">
-				<div class="col-2" style="width: 110px;">
-					<c:if test="${mem_id == pc.mgr_id && pc.pur_status == 0}">
-						<form action="completePur" method="POST">
-							<input type="hidden" name="pur_date" value="${pc.pur_date }">
-							<input type="hidden" name="custcode" value="${pc.custcode }">
-							<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
-							<input type="submit" class="btn btn-outline-primary" value="발주 완료">
-						</form>
-					</c:if>
-				</div>
+				<c:if test="${mem_id == pc.mgr_id && pc.pur_status == 0}">
+					<div class="col-2" style="width: 110px;">
+						
+							<form action="completePur" method="POST">
+								<input type="hidden" name="pur_date" value="${pc.pur_date }">
+								<input type="hidden" name="custcode" value="${pc.custcode }">
+								<input type="hidden" name="mgr_id" value="${pc.mgr_id}">
+								<input type="submit" class="btn btn-outline-primary" value="발주 완료">
+							</form>
+						
+					</div>
+				</c:if>
 				<div class="col-2">
 				<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
 					<form action="deletePur" method="POST">
@@ -46,7 +48,7 @@
 				<div class="row text-center bg-white">
 					<table class="table">
 						<tr>
-							<td class="table-primary">제목</td><td><input type="text" id="title" value="${pc.title}" style="width: 60%;" disabled="disabled"></td>
+							<td class="table-primary">제목</td><td><input type="text" id="title" value="${pc.title}" class="form-control" disabled="disabled"></td>
 							<td class="table-primary">상태</td>
 							<td>
 								 <c:choose>
@@ -70,7 +72,7 @@
 						<tr>
 							<td colspan="4">
 								<div class="row justify-content-center">
-									<div class="col-12"><textarea rows="10" cols="100" disabled="disabled" id="ref">${pc.ref }</textarea></div>
+									<div class="col-12"><textarea rows="10" cols="100" class="form-control" disabled="disabled" id="ref">${pc.ref }</textarea></div>
 								</div>
 							</td>
 						</tr>
@@ -89,20 +91,34 @@
 			<hr>
 			
 			<div class="text-center"><h3>발주 상품</h3></div>
-			<div class="col-12 text-center">
+			<div class="col-12 d-flex justify-content-between align-items-center">
 				<input type="hidden" id="pur_date" value="${pc.pur_date }">
 				<input type="hidden" id="custcode" value="${pc.custcode}">
-				<c:if test="${mem_id == pc.mem_id}">
-						<input type="hidden" id="pur_date" value="${pc.pur_date }">
-						제품:<select id="code" onchange="item_chk()">
+				<c:if test="${mem_id == pc.mem_id || mem_id == pc.mgr_id}">
+					<input type="hidden" id="pur_date" value="${pc.pur_date }">
+					<div class="col-5 d-flex justify-content-between align-items-center">
+						<div class="col-3 text-end">
+							제품:	
+						</div>
+						<div class="col-9">
+							<select id="code" onchange="item_chk()" class="form-select">
 								<c:forEach items="${itemList }" var="itemList">
 									<option value="${itemList.code }">${itemList.name }</option>
 								</c:forEach>
-						</select>
-						
-						수량: <input type="number" id="qty">
-						
+							</select>
+						</div>
+					</div>
+					<div class="col-5 d-flex justify-content-between align-items-center">
+						<div class="col-3 text-end">
+							수량:
+						</div>
+						<div class="col-9">
+							<input type="number" id="qty" class="form-control">
+						</div>
+					</div>
+					<div class="col-2 m-2">
 						<button type="button" onclick="inSertDetail()" id="insertBtn" class="btn btn-outline-primary">추가</button>
+					</div>
 				</c:if>
 			</div>
 			
@@ -118,11 +134,13 @@
 					</thead>
 					<c:forEach items="${pdList }" var="pdList" varStatus="status">
 						<tr id="row${status.index }">
-							<td>${pdList.item_name }</td>
+							<td>
+								${pdList.item_name } <a href="javascript:void(0);" onclick="deletePurDet(${status.index})"><i class='bx bx-x'></i></a>
+							</td>
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 							<td id="td${status.index }" class="text-center">
 								${pdList.qty }개
-								<c:if test="${pc.pur_status == 0 && mem_id == pc.mem_id}">
+								<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
 									<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 								</c:if>
 							</td>
@@ -248,6 +266,26 @@
 				}
 			}
 		});
+	}
+	
+	function deletePurDet(index){
+		var index = index;
+		var i_date = $("#pur_date").val();
+		var i_code = $("#code"+index).val();
+		var custcode = $("#custcode").val();
+		$.ajax({
+			type:"POST",
+			data:{pur_date : i_date, code : i_code},
+			url:"deletePurDet",
+			success:function(result){
+				if(result > 0){
+					window.location.href = "purDtail?pur_date=" + i_date + "&custcode=" + custcode;
+				} else{
+					alert("삭제에 실패했습니다!");
+				}
+			}
+		});
+		
 	}
 </script>	
 </body>

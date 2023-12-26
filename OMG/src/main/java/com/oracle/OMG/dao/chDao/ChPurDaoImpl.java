@@ -192,6 +192,20 @@ public class ChPurDaoImpl implements ChPurDao {
 		}
 		return result;
 	}
+	@Override
+	public int deletePurDet(PurDetail purDetail) {
+		System.out.println("ChPurDaoImpl deltePurDet start...");
+		
+		int result = 0;
+		try {
+			result = session.delete("chDeletePurDet", purDetail);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("ChPurDaoImpl deltePurDet e.getMessage()" + e.getMessage());
+		}
+		return result;
+	}
 
 	
 }

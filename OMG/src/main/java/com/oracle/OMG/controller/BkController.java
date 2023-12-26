@@ -1,18 +1,23 @@
 package com.oracle.OMG.controller;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.service.bkService.BkMemberService;
@@ -32,8 +37,10 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 @Slf4j
 public class BkController {
 	
-	private final BkMemberService bMemberS;
+	private final BkMemberService		bMemberS;
 	private final MainMemberService		MMemberS;
+	private final JavaMailSender		mailSender;
+	
 	
 	
 	@RequestMapping(value = "logIn")
@@ -62,16 +69,16 @@ public class BkController {
 	
 	
 	@RequestMapping(value = "/forgotPassword")
-	public String forgotPassword() {
+	public void forgotPassword() {
 		
 		System.out.println("BkController forgotPassword Start...");
 		
-		return "forgotPassword";
+		
 	}
 	
 	
 	
-	@RequestMapping(value = "/bk/403forbidden")
+	@RequestMapping(value = "/403forbidden")
 	public String forbidden() {
 		
 		System.out.println("BkController 403forbidden Start...");
@@ -186,6 +193,8 @@ public class BkController {
 	
 	
 	
+	// 비밀번호 찾기 Ajax
+	@ResponseBody
 	@PostMapping("/sendCode")
 		// Json 형태 반환할 때 사용
 	public Map<String, String> sendCode(@RequestBody Member member) {
@@ -197,36 +206,91 @@ public class BkController {
 		// String mem_name = member.getMem_name();
 		// int tel = formData.getMem_tel();
 		
-		// DB에서 name, tel 확인 후 일치 여부 판단		mapper key:	bkcheckNameAndTel
-		Member checkResult = bMemberS.checkNameAndTel(member);
-		System.out.println("member");
+		// DB에서 name, email 확인 후 일치 여부 판단		mapper key:	bkCheckNameAndMail
+		Member checkResult = bMemberS.checkNameAndMail(member);
+		System.out.println("checkResult -> " + checkResult);
 		
 		Map<String, String> response = new HashMap<>();
 		
 		// 회원 정보가 일치하는 경우 -> 랜덤 숫자 생성 후 발송
 		if(checkResult != null) {
 			
-			String randomCode = generateRandomCode();	// 여기에서 랜덤 코드를 생성하는 메소드 호출
+			// 임시 비밀번호 생성
+			String randomPw = bMemberS.PwGenerator();
+			Map<String, Object> TempPwByName = new HashMap<String, Object>();
+			TempPwByName.put("mem_name", checkResult.getMem_name());
+			TempPwByName.put("RandomPw", randomPw);
+			System.out.println("RandomPw -> " + randomPw);
+			
+			// 임시 비밀번호로 변경
+			int updateResult = bMemberS.updateTempPw(TempPwByName);
+			System.out.println("BkController sendCode updateResult -> " + updateResult);
+			
+			// String randomCode = generateRandomCode();	// 여기에서 랜덤 코드를 생성하는 메소드 호출
+			// System.out.println("randomCode -> " + randomCode);
+			
+			// 해당 랜덤 문자를 발송 - 이메일
+			System.out.println("mail Sending...");
+			
+			// 받는 사람 메일 주소
+			String recvMail = member.getMem_email();
+			System.out.println("recvMail -> " + recvMail);
+			
+			// 보내는 사람 메일 주소
+			String sendMail = "teamssj02@gmail.com";
+			System.out.println("sendMail -> " + sendMail);
+			
+			// 제목
+			String title = "OMG 비밀번호 찾기";
+			
+			// int result = 0;
+			
+			try {
+				
+				// Mime 전자 우편 Internet 표준 Format
+				MimeMessage msg = mailSender.createMimeMessage();
+				MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "UTF-8");
+				msgHelper.setFrom(sendMail); 	// 보내는 사람: 생략하거나 하면 정상 작동을 안함
+				msgHelper.setTo(recvMail);		// 받는 사람
+				msgHelper.setSubject(title); 	// 메일 제목:	생략 가능하지만 스팸 메일 분류 때문에 가급적 넣음
+				msgHelper.setText("임시 비밀번호 입니다: " + randomPw);
+				
+				mailSender.send(msg);
+				// result = 1;		// 정상 전달
+				// 클라이언트에 응답
+				response.put("status", "success");
+				response.put("message", "인증번호가 전송되었습니다.");
+				System.out.println("response -> " + response);
+				
+			} catch (Exception e) {
+				System.out.println("sendCode e.getMessage() -> " + e.getMessage());
+				// result = 2;	// 메일 전달 실패
+				response.put("status", "error");
+				response.put("message", "메일 발송 오류");
+				System.out.println("response -> " + response);
+				
+			}
 			
 			// 해당 랜덤 문자를 발송
-			sendSms("formData.getNumber() 라던지 여기에 mem 전화번호 넣어야 함", randomCode);	// sms 발송 메서드 호출
+			// sendSms("formData.getNumber() 라던지 여기에 mem 전화번호 넣어야 함", randomCode);	// sms 발송 메서드 호출
 			
 			// 클라이언트에 응답
-			response.put("status", "success");
-			response.put("message", "인증번호가 전송되었습니다.");
+			// response.put("status", "success");
+			// response.put("message", "인증번호가 전송되었습니다.");
 		// 일치하지 않는 경우 -> alert
 		} else {
 			System.out.println("checkResult -> null");
 			response.put("status", "error");
-			response.put("message", "이름과 전화번호가 일치하지 않습니다.");
+			response.put("message", "이름과 이메일이 일치하지 않습니다.");
+			System.out.println("response -> " + response);
 		}
-		
+		System.out.println("response return 직전..... ");
 		return response;
 	}
 	
 	
 	
-	//  랜덤 코드를 생성하는 메소드
+	//  보류 중 - 랜덤 코드를 생성하는 메소드:	인증 번호 대신 임시 비밀번호 방식으로 바꿈
 	private String generateRandomCode() {
 		
 		System.out.println("BkController generateRandomCode Start...");
@@ -242,7 +306,7 @@ public class BkController {
 	
 	
 	
-	// sms 발송 메서드 
+	// 보류 중 - sms 발송 메서드:	문자 대신 이메일로 우선 대체 
 	private void sendSms(String phoneNumber, String randomCode) {
 		
 		

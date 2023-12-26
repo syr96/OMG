@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.oracle.OMG.dto.Sales;
 import com.oracle.OMG.dto.SalesDetail;
 
 import lombok.RequiredArgsConstructor;
@@ -173,24 +174,17 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	public int InsertSales(SalesDetail sales) {
+	public int insertSales(SalesDetail sales) {
 		int result = 0;
-		
-		TransactionStatus txStatus =
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
 		
 		try {
 			log.info("JoSalDaoImpl InsertSales Start");
 			result = session.insert("joInsertSales", sales);
 			log.info("JoSalDaoImpl InsertSales Result -> " + result);
-			result = session.insert("joInsertSalesDetail", sales);
-			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
-			transactionManager.commit(txStatus);
-			
+					
 		} catch (Exception e) {
-			transactionManager.rollback(txStatus);
 			log.info("JoSalDaoImpl InsertSales Exception -> " + e.getMessage());
-			result = -1;
+		
 		}
 		return result;
 	}
@@ -257,10 +251,11 @@ public class JoSalDaoImpl implements JoSalDao {
 				
 		try {
 			log.info("JoSalDaoImpl updateSales Start");
-			result = session.update("joUpdateSales", sales);
-			log.info("JoSalDaoImpl updateSales reuslt -> " + result);
 			result = session.update("joUpdateSalesDetail", sales);
 			log.info("JoSalDaoImpl updateSalesDetail reuslt -> " + result);
+			result = session.update("joUpdateSales", sales);
+			log.info("JoSalDaoImpl updateSales reuslt -> " + result);
+			
 			transactionManager.commit(txStatus);
 			
 		} catch (Exception e) {
@@ -287,6 +282,23 @@ public class JoSalDaoImpl implements JoSalDao {
 			
 		}
 		return getListProduct;
+	}
+	
+
+	@Override
+	public int insertSalesDetail(SalesDetail sales) {
+		int result = 0;
+		
+		try {
+			log.info("JoSalDaoImpl getInsertSalesDetail Start");
+			result = session.insert("joInsertSalesDetail", sales);
+			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
+			
+		} catch (Exception e) {
+			log.error("JoSalDaoImpl getInsertSalesDetail Exception -> " + e.getMessage());
+		}
+		
+		return result;
 	}
 
 

@@ -113,13 +113,14 @@
 				<div class="table-button-gap">
 				<table style="border: 2px solid black; width: 100%" id="userTable" class="table table-md text-center p-3">
 					<thead>
-						<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
+						<tr style="border: 2px solid black; background-color: #E1E2FF; color: #fff;">
 							<th scope="col" style="text-align: center;"><input type="checkbox" name="allCheck" id="allCheck" onchange="checkAll(this)"/></th>
 							<th scope="col" style="text-align: center;">No.</th>
 							<th scope="col" style="text-align: center;">매출일자</th>
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
+							<th scope="col" style="text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
 							<th scope="col" style="text-align: center;">상태</th>
 						</tr>
@@ -128,12 +129,13 @@
 						<c:set var="num" value="${page.start}"/>
 						<c:forEach var="salesInquirySort" items="${salesInquirySort}">
 							<tr>
-								<td style="text-align: center"><input type="checkbox" name="rowCheck" value="${listSalesInquiry.sales_date}"/></td>
+								<td style="text-align: center"><input type="checkbox" name="rowCheck" value="${salesInquirySort.sales_date}"/></td>
 								<td style="text-align: center">${num}</td>
 								<td style="text-align: center">${salesInquirySort.sales_date}</td>
 						  		<td style="text-align: center"><a href="salesInquiryDetail?sales_date=${salesInquirySort.sales_date}&custcode=${salesInquirySort.custcode}">${salesInquirySort.title}</a></td>
 								<td style="text-align: center">${salesInquirySort.company}</td>
 								<td style="text-align: center">${salesInquirySort.name}</td>
+								<td style="text-align: center">${salesInquirySort.code}</td>
 								<td style="text-align: center">${salesInquirySort.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${salesInquirySort.sales_status == 0}">진행</c:if>

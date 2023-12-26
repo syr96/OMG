@@ -22,7 +22,7 @@
 						<table class="table">
 							<tr>
 								<td class="table-primary">제목: </td>
-								<td><input type="text" name="title" placeholder="발주전표_YYYYMMDD_회사명" style="width: 70%;" required="required"></td>
+								<td class="text-center"><input type="text" name="title" placeholder="발주전표_YYYYMMDD_회사명" required="required" class="form-control"></td>
 								<td class="table-primary">담당자:</td>
 								<td><span id="mgr_name"></span></td>
 							</tr>
@@ -31,24 +31,28 @@
 								<td>${member.mem_name }<input type="hidden" name="mem_id" value="${member.mem_id }"></td>
 								<td class="table-primary">회사명:</td>
 								<td id="selectCustcode">
-									<select id="custcode">
-											<c:forEach items="${pur_custList }" var="pur_custList">
-												<option value="${pur_custList.custcode }" data-name=${pur_custList.company } data-mgr_name=${pur_custList.mem_name }>${pur_custList.company }</option>
-											</c:forEach>
-										</select>
-									<button type="button" onclick="saveCustcode()">확인</button>
+									<div class="d-flex justify-content-between">
+										<div class="col-8">
+											<select id="custcode" class="form-select">
+												<c:forEach items="${pur_custList }" var="pur_custList">
+													<option value="${pur_custList.custcode }" data-name=${pur_custList.company } data-mgr_name=${pur_custList.mem_name }>${pur_custList.company }</option>
+												</c:forEach>
+											</select>
+										</div>
+										<div><button type="button" onclick="saveCustcode()" class="btn btn-outline-primary">확인</button></div>
+									</div>
 								</td>
 								<td id="inputCustCode" style="display: none;">
 									회사명:<input type="hidden" id="inputCode" name="custcode" disabled="disabled">
 									<span id="company_name"></span>
-									<button type="button" onclick="saveCustcode()">취소</button>
+									<button type="button" onclick="saveCustcode()" class="btn btn-outline-primary">취소</button>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="4">비고 </td>
 							</tr>
 							<tr>
-								<td colspan="4"><textarea rows="10" cols="100" name="ref" id="ref"></textarea></td>
+								<td colspan="4"><textarea rows="10" cols="100" name="ref" id="ref" class="form-control"></textarea></td>
 							</tr>
 						</table>
 					</div>
@@ -72,7 +76,7 @@
 							
 						</tbody>
 					</table>
-					<div class="col-12 text-end"><input type="submit" id="smtbtn" value="발주완료" class="text-end" disabled="disabled"></div>
+					<div class="col-12 text-end"><input type="submit" id="smtbtn" value="발주완료" class="text-end btn btn-outline-primary" disabled="disabled"></div>
 				</div>
 				
 			</div>

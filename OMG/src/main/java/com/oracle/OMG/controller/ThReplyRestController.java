@@ -31,11 +31,8 @@ public class ThReplyRestController {
 	public ResponseEntity<String> create(@RequestBody Reply rep){
 
 		log.info("Reply: " + rep);
-
 		int insertCount = rs.register(rep);
-
 		log.info("Reply INSERT COUNT: " + insertCount);
-
 		return insertCount == 1  
 				? new ResponseEntity<>("success", HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

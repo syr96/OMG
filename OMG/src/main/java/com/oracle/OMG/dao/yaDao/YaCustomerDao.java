@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Warehouse;
 
 public interface YaCustomerDao {
 
@@ -24,5 +25,6 @@ public interface YaCustomerDao {
 	List<Customer> SearchAllCustomer(String month);
 	List<Customer> SearchForAllMonths(int custcode);
 	List<Customer> SearchForAll(int custcode, String month);
+
 
 }

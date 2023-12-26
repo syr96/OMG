@@ -15,6 +15,7 @@ import com.oracle.OMG.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+// 로그인 인터셉터: url 주소창에 입력했을  때, 로그인 한 사용자가 맞는지 확인하고, 아니면 로그인 페이지가 뜨는 인터셉터
 public class BkLoginInterceptor implements HandlerInterceptor {
 	
 	private static final String LOGIN = "login";

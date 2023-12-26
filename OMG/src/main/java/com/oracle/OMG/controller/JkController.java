@@ -1,10 +1,11 @@
 package com.oracle.OMG.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
@@ -31,11 +34,13 @@ import org.springframework.http.ResponseEntity;
 import com.oracle.OMG.dto.Customer;
 import com.oracle.OMG.dto.PurDetail;
 import com.oracle.OMG.dto.Purchase;
+import com.oracle.OMG.dto.SalesDetail;
 import com.oracle.OMG.dto.Warehouse;
 import com.oracle.OMG.service.chService.ChCustService;
 import com.oracle.OMG.service.chService.ChPurService;
 import com.oracle.OMG.service.chService.Paging;
 import com.oracle.OMG.service.jkService.JkWareService;
+import com.oracle.OMG.service.joService.JoSalService;
 import com.oracle.OMG.service.yrService.YrItemService;
 
 import lombok.Data;
@@ -50,6 +55,7 @@ public class JkController {
 	private final YrItemService	yis;
 	private final ChCustService	ccs;
 	private final ChPurService	cps;
+	private final JoSalService jss;
 	
 	// 기초재고등록
 	@RequestMapping(value="/invRegister")
@@ -169,12 +175,15 @@ public class JkController {
 	    return response;
 	}
 
-	// 발주 조회
+	// 입고관리
 	@RequestMapping(value="/inboundRegister")
-	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse) {
+	public String invPurList(Purchase purchase, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
 	    System.out.println("JkController invPurList start....");
-	 	    
+	    logger.info("Received month: {}", inboundMonth);
+    
 	    int totalPur = 0;
+	    int inboundTotal =0;
+	    
 		List<Purchase> purList = null;
 		Paging page = null;
 		System.out.println("ChController purList Start...");
@@ -191,6 +200,7 @@ public class JkController {
 		}
 		
 		totalPur = cps.totalPur(purchase);
+		inboundTotal = jws.inboundTotal(warehouse);
 		page = new Paging(999);
 		
 		purchase.setStart(page.getStart());
@@ -219,37 +229,39 @@ public class JkController {
 				p.setTotalPrice(totalPrice);
 			}
 		}
-	
+		
 		List<Customer> pur_custList = ccs.custList();
-		
-		
+		List<Warehouse> inboundList = jws.inboundList();
+	
 		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);
+		model.addAttribute("inboundTotal",inboundTotal);
 		model.addAttribute("page",page);
+		model.addAttribute("inboundList",inboundList);
+		
 	
 		System.out.println("model"+model);
+		System.out.println("total"+inboundTotal);
 	    return "jk/inboundRegister";
 		
 		
 	}
 	
-	// 발주 조회
+	 // 발주 조회
 	@RequestMapping(value = "/inboundRegister", method = RequestMethod.POST)
-	public String invPurList(@RequestBody Map<String, String> requestData, Model model) {
+	public String invPurList(@RequestBody PurDetail requestData, Model model) {
 	    System.out.println("Received data from client: " + requestData);
 
 	    // requestData에서 pur_date와 custcode를 꺼내서 사용
-	    String purDate = requestData.get("pur_date");
-	    String custCodeStr = requestData.get("custcode");
+	    String purDate = requestData.getPur_date();
+	    int custCodeStr = requestData.getCustcode();
+	    System.out.println("Received data from client: " + requestData);
 	    System.out.println("Received pur_date: " + purDate);
 	    System.out.println("Received custcode: " + custCodeStr);
 
-	    // custCode를 숫자로 변환
-	    int custCode = Integer.parseInt(custCodeStr);
-
-	    // callInboundPC 메서드를 호출하여 결과를 받아옴
-	    Map<String, String> response = jws.callInboundPD(purDate, custCode);
+	    // 정상적으로 변환된 경우에만 계속 진행
+	    Map<String, String> response = jws.callInboundPD(purDate, custCodeStr);
 
 	    // 모델에 결과 데이터 추가
 	    model.addAttribute("response", response);
@@ -258,20 +270,21 @@ public class JkController {
 	    return "jk/inboundRegister";
 	}
 
+	// 제품정보 조회(업데이트용)
+	@GetMapping("/monthInbound")
+	@ResponseBody
+	public List<Warehouse> monthInbound(@RequestParam("inboundMonth") String inboundMonth, Model model ) {
+	    logger.info("년도: {}", inboundMonth );
+
+	    List<Warehouse> monthInbound = jws.monthInbound(inboundMonth);
+	    model.addAttribute("inboundList",monthInbound);
+	    
+	    logger.info("Response: {}", monthInbound);
+	    
+	    return monthInbound;
+	}
 
 
-	
-	
-//	 List<Purchase> purMonthData = jws.purMonthData(month);	
-	// 입고등록
-//	@RequestMapping(value="/inboundRegister")
-//	public String inboundRegister(Model model, Purchase purchase) {
-//		System.out.println("JkController inboundRegister start...");
-//		
-//		return "jk/inboundRegister";
-//		}
-	
-	
 	// 월별 재고리스트 조회
 
 	@GetMapping("/monthData")
@@ -291,55 +304,113 @@ public class JkController {
 
 	    return monthData;
 	}
+	
+	// 출고관리
+	@RequestMapping(value="/outboundRegister")
+	public String invSellList(SalesDetail sales, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
+	    System.out.println("JkController invSellList start....");
+		UUID transactionId = UUID.randomUUID();
+	    logger.info("Received month: {}", inboundMonth);
 
-
-	// 월별 입고리스트 조회
-	@GetMapping("/getIOData")
-	@ResponseBody
-	public List<Warehouse> getIOData(@RequestParam(name = "month") String month,@RequestParam(name = "IO_Type", required = false) String IO_Type) {
-	    System.out.println("JkController getIOData start....");
-	    logger.info("Received month: {}", month);
-	    logger.info("Received IO_Type: {}", IO_Type);
-
-	    Map<String, String> params = new HashMap<>();
-	    params.put("month", month);
-	    params.put("IO_Type", IO_Type);
-	    
-	    List<Warehouse> getPurchaseData = jws.getPurchaseData(params);
-	    
-	    logger.info("JkController getIOData.size(): {}", getPurchaseData.size());
-
-	    return getPurchaseData;
-	}
+	    int inboundTotal =0;
+					
+		try {
+		
+			int totalSalesInquiry = jss.getTotalSalesInquiry();
+			
+			Paging page = new Paging(totalSalesInquiry, currentPage);
+			sales.setStart(page.getStart());
+			sales.setEnd(page.getEnd());
+			
+			List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+			
+			model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+			model.addAttribute("page", page);
+			model.addAttribute("listSalesInquiry", sellList);
+			model.addAttribute("currentPage", currentPage);
+			
+		} catch (Exception e) {
+			log.error("[{}]{}:{}", transactionId, "salesInquiry", e.getMessage());
+		} finally {
+			log.info("[{}]{}:{}", transactionId, "salesInquriry", "End");
+		}
 
 	
-//	// 월별 입고리스트 조회
-//	@GetMapping("/getIOData")
-//	@ResponseBody
-//	public List<Warehouse> getIOData(
-//	        @RequestParam(name = "month") String month,
-//	        @RequestParam(name = "IO_Type", required = false) String IO_Type) {
-//	    System.out.println("JkController getIOData start....");
-//	    logger.info("Received month: {}", month);
-//	    logger.info("Received IO_Type: {}", IO_Type);
-//
-//	    List<Warehouse> getIOData;
-//	    if ("INBOUND".equals(IO_Type)) {
-//	        // 호출할 구매 데이터에 대한 매퍼 사용
-//	    	getIOData = jws.getPurchaseData(month);
-//	    	getIOData = jws.getPurchaseDataResultMap(month, "resultmap01");
-//	    } else if ("OUTBOUND".equals(IO_Type)) {
-//	        // 호출할 판매 데이터에 대한 매퍼 사용
-//	        getIOData = jws.getSalesData(month);
-//	    } else {
-//	        // 기본적으로는 두 데이터를 합친 매퍼 사용
-//	        getIOData = jws.getIOData(month);
-//	    }
-//	    
-//	    logger.info("JkController getIOData.size(): {}", getIOData.size());
-//
-//	    return getIOData;
-//	}
+		System.out.println("model"+model);
+		System.out.println("total"+inboundTotal);
+	    return "jk/outboundRegister";
+				
+	}	
+
+	// 판매서 검색 -> 거래처 or 제품
+		@RequestMapping("salesInquirySearch")
+		public String salesInquirySearch(SalesDetail sales, String currentPage, Model model) {
+			UUID transactionId = UUID.randomUUID();
+			
+			try {
+				log.info("[{}]{}:{}", transactionId, "salesInquirySearch", "Start");
+				String search  = sales.getSearch();
+				String keyword = sales.getKeyword();
+				
+				int SearchTotalSalesInquiry = jss.getSearchTotalSalesInquiry(sales);
+				
+				Paging page = new Paging(SearchTotalSalesInquiry, currentPage); 
+				sales.setStart(page.getStart());
+				sales.setEnd(page.getEnd());
+				
+				List<SalesDetail> salesInquirySearch = jss.searchSalesInquiry(sales);
+				
+				model.addAttribute("search", search);
+				model.addAttribute("keyword", keyword);
+				model.addAttribute("SearchTotalSalesInquiry", SearchTotalSalesInquiry);
+				model.addAttribute("page", page);
+				model.addAttribute("salesInquirySearch", salesInquirySearch);
+				model.addAttribute("currentPage", currentPage);
+			
+			} catch (Exception e) {
+				log.error("[{}]{}:{}", transactionId, "salesInquirySearch", e.getMessage());
+			} finally {
+				log.info("[{}]{}:{}", transactionId, "salesInqurirySearch", "End");
+			}
+
+			return "jk/outboundRegister";
+		}
+	// 출고관리
+//	/*
+//	 * @RequestMapping(value="/outboundRegister") public String
+//	 * invSellList(SalesDetail sales, String currentPage, Model model, Warehouse
+//	 * warehouse, @RequestParam(value = "inboundMonth", required = false) String
+//	 * inboundMonth) { System.out.println("JkController invSellList start....");
+//	 * UUID transactionId = UUID.randomUUID(); logger.info("Received month: {}",
+//	 * inboundMonth);
+//	 * 
+//	 * int inboundTotal =0;
+//	 * 
+//	 * try {
+//	 * 
+//	 * int totalSalesInquiry = jss.getTotalSalesInquiry();
+//	 * 
+//	 * Paging page = new Paging(totalSalesInquiry, currentPage);
+//	 * sales.setStart(page.getStart()); sales.setEnd(page.getEnd());
+//	 * 
+//	 * List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+//	 * 
+//	 * model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+//	 * model.addAttribute("page", page); model.addAttribute("listSalesInquiry",
+//	 * sellList); model.addAttribute("currentPage", currentPage);
+//	 * 
+//	 * } catch (Exception e) { log.error("[{}]{}:{}", transactionId, "salesInquiry",
+//	 * e.getMessage()); } finally { log.info("[{}]{}:{}", transactionId,
+//	 * "salesInquriry", "End"); }
+//	 * 
+//	 * 
+//	 * System.out.println("model"+model); System.out.println("total"+inboundTotal);
+//	 * return "jk/outboundRegister";
+//	 * 
+//	 * 
+//	 * }
+//	 */
+
 
 	
 @ControllerAdvice

@@ -35,88 +35,116 @@
     	
 	</style>
 	<script>
-	// '제품추가'시 추가 행 생성
-	function addRow() {
-	      var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
-	      var newRow = table.insertRow(table.rows.length);
+		// '제품추가'시 추가 행 생성
+		function addRow() {
+		    var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+		    var newRow = table.insertRow(table.rows.length);
 	
-	      var cell1 = newRow.insertCell(0);
-	      var cell2 = newRow.insertCell(1);
-	      var cell3 = newRow.insertCell(2);
-	      var cell4 = newRow.insertCell(3);
-	      var cell5 = newRow.insertCell(4);
-	      var cell6 = newRow.insertCell(5);
-	      	      
-	      cell1.innerHTML = table.rows.length; // No.
-	      cell2.innerHTML = '<input type="text" name="code">';
-	      cell3.innerHTML = '<select name="name" onchange="updateCodeAndPrice(this)">' +
-	      					'<option>선택</option>' +
-	      					'<c:forEach var="listProduct" items="${listProduct}">' +
-	      					'<option data-code="${listProduct.code}" data-price="${listProduct.output_price}">${listProduct.name}</option>' +
-							'</c:forEach>' +	
-							'</select>'
-	      cell4.innerHTML = '<input type="text" name="qty" oninput="calculateTotalPrice(this)">';
-	      cell5.innerHTML = '<input type="text" name="price">';
-	      cell6.innerHTML = '<input type="text" name="total_price">';
-	 }
+		    var cell1 = newRow.insertCell(0);
+		    var cell2 = newRow.insertCell(1);
+		    var cell3 = newRow.insertCell(2);
+		    var cell4 = newRow.insertCell(3);
+		    var cell5 = newRow.insertCell(4);
+		    var cell6 = newRow.insertCell(5);
+		    var cell7 = newRow.insertCell(6); // 추가된 열
 	
-	// 새로 추가된 행의 데이터 수집
-    var rowData = {
-        code: '',
-        name: '',
-        qty: '',
-        price: '',
-        total_price: ''
-    };
+		    cell1.innerHTML = '<input type="checkbox" name="rowCheck" value="rowCheck">';
+		    cell2.innerHTML = table.rows.length; // No.
+		    cell3.innerHTML = '<input type="text" name="code">';
+		    cell4.innerHTML = '<select name="name" onchange="updateCodeAndPrice(this)">' +
+		        			  '<option>선택</option>' +
+		        			  '<c:forEach var="listProduct" items="${listProduct}">' +
+		        			  '<option data-code="${listProduct.code}" data-price="${listProduct.output_price}">${listProduct.name}</option>' +
+		        			  '</c:forEach>' +
+		        			  '</select>';
+		    cell5.innerHTML = '<input type="text" name="qty" oninput="calculateTotalPrice(this)">';
+		    cell6.innerHTML = '<input type="text" name="price">';
+		    cell7.innerHTML = '<input type="text" name="total_price">';
+			
+			// 새로 추가된 행의 데이터를 배열에 추가
+	    	var rowData = {
+		        code: '',
+		        name: '',
+		        qty: '',
+		        price: '',
+		        total_price: ''
+		    };
+	    	rowDataArray.push(rowData);
+		}
+
+		
 	
-    // 추가된 행의 데이터를 배열에 추가
-    rowDataArray.push(rowData);
-
-	// 드롭다운 선택 시 "code"와 "price"를 업데이트
-	function updateCodeAndPrice(selectElement) {
-	    var selectedOption = selectElement.options[selectElement.selectedIndex];
-	    var row = selectElement.parentNode.parentNode;
-	    var codeInput = row.cells[1].getElementsByTagName('input')[0];
-	    var priceInput = row.cells[4].getElementsByTagName('input')[0];
-
-	    codeInput.value = selectedOption.getAttribute('data-code');
-	    priceInput.value = selectedOption.getAttribute('data-price');
-	}
+		// 드롭다운 선택 시 "code"와 "price"를 업데이트
+		function updateCodeAndPrice(selectElement) {
+		    var selectedOption = selectElement.options[selectElement.selectedIndex];
+		    var row = selectElement.parentNode.parentNode;
+		    var codeInput = row.cells[2].getElementsByTagName('input')[0]; // 열 위치 수정
+		    var priceInput = row.cells[5].getElementsByTagName('input')[0]; // 열 위치 수정
 	
-	// 수량 입력 시 총 금액 계산
-	function calculateTotalPrice(inputElement) {
-	    var row = inputElement.parentNode.parentNode;
-	    var qty = row.cells[3].getElementsByTagName('input')[0].value;
-	    var price = row.cells[4].getElementsByTagName('input')[0].value;
-	    var totalPriceInput = row.cells[5].getElementsByTagName('input')[0];
-
-	    var total_price = parseInt(qty) * parseInt(price);
-	    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
-	}
+		    codeInput.value = selectedOption.getAttribute('data-code');
+		    priceInput.value = selectedOption.getAttribute('data-price');
+		    
+		    // 선택된 행의 데이터를 배열에 업데이트
+		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
+		    rowDataArray[index].code = codeInput.value;
+		    rowDataArray[index].price = priceInput.value;
+		
+		}
 	
-	// '저장' 버튼 클릭 시 데이터 전송
-	function saveData() {
-	    // 추가된 행의 데이터를 서버로 전송
-	    // AJAX를 사용하여 서버로 데이터를 전송
-	    var xhr = new XMLHttpRequest();
-	    var url = "/sales/salesInsert"; // 서버의 컨트롤러 매핑 주소
-	    xhr.open("POST", url, true);
-	    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-	    // 배열을 JSON 문자열로 변환하여 전송
-	    var data = JSON.stringify(rowDataArray);
-
-	    xhr.onreadystatechange = function () {
-	        if (xhr.readyState == 4 && xhr.status == 200) {
-	            console.log(xhr.responseText);
-	            // 서버로부터의 응답을 처리하는 코드 작성
-	            // 예를 들어, 리다이렉트 등의 동작 수행
-	        }
-	    };
-
-	    xhr.send(data);
-	}
+		// 수량 입력 시 총 금액 계산
+		function calculateTotalPrice(inputElement) {
+		    var row = inputElement.parentNode.parentNode;
+		    var qty = row.cells[4].getElementsByTagName('input')[0].value; // 열 위치 수정
+		    var price = row.cells[5].getElementsByTagName('input')[0].value;
+		    var totalPriceInput = row.cells[6].getElementsByTagName('input')[0]; // 열 위치 수정
 	
+		    var total_price = parseInt(qty) * parseInt(price);
+		    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
+		    
+		    // 선택된 행의 데이터를 배열에 업데이트
+		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
+		    rowDataArray[index].qty = qty;
+		    rowDataArray[index].total_price = total_price;
+		
+		}
+	
+		// 체크박스 전체 선택/해제 함수
+		function checkAll(source) {
+		    var checkboxes = document.getElementsByName('rowCheck');
+		    for (var i = 0; i < checkboxes.length; i++) {
+		        checkboxes[i].checked = source.checked;
+		    }
+		}
+		
+		// '저장' 버튼 클릭 시 서버로 데이터 전송
+		function saveData() {
+		    // 서버로 전송할 데이터 객체 생성
+		    var sendData = {
+		        sales_date: document.getElementById("sales_date").value, // 예시로 "sales_date" 필드 추가
+		        title: document.getElementById("title").value, // 예시로 "title" 필드 추가
+		        custcode: document.querySelector('[name="custcode"]').value, // 예시로 "custcode" 필드 추가
+		        ref: document.getElementById("ref").value, // 예시로 "ref" 필드 추가
+		        salesDetails: rowDataArray // 앞서 생성한 배열 추가
+		    };
+
+		    // AJAX를 사용하여 서버로 데이터 전송
+		    // 여기서는 jQuery를 사용한 예시이며, 다른 방법으로도 가능합니다.
+		    $.ajax({
+		        type: "POST",
+		        url: "salesInsert",
+		        contentType: "application/json",
+		        data: JSON.stringify(sendData),
+		        success: function (response) {
+		            // 서버 응답에 따른 처리
+		            console.log(response);
+		        },
+		        error: function (error) {
+		            console.error("Error during data submission:", error);
+		        }
+		    });
+		}
+	
+		
 	</script>
 </head>
 <body>
@@ -132,7 +160,7 @@
 			<div>
 				<div>
 					<div>
-					<form action="salesInsert" method="post">
+					<form id="salesForm" action="salesInsert" method="post">
 						<div class="mb-3 ">
 						  <label for="sales_date" class="form-label" style="font-size: 15px;">매출일자</label>
 						  <input type="text" class="form-control" name="sales_date" id="sales_date" required="required" pattern="\d{2}/\d{2}/\d{2}" placeholder="23/MM/DD">
@@ -159,7 +187,8 @@
 						
 						<table id="itemTable" class="table table-md text-center p-3">
 							<thead>
-								<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
+								<tr style="border: 2px solid black; background-color: #E1E2FF; color: #566A7F;">
+									<th scope="col"><input type="checkbox" name="allCheck" id="allCheck" onchange="checkAll(this)"/></th>
 									<th scope="col">No.</th>
 									<th scope="col">제품코드</th>
 									<th scope="col">제품명</th>
@@ -170,6 +199,7 @@
 							</thead>
 							<tbody>
 								<tr>
+									<td><input type="checkbox" name="rowCheck" value="rowCheck"></td>
 									<td>1</td>
 									<td><input type="text" name="code"></td>
 									<td>

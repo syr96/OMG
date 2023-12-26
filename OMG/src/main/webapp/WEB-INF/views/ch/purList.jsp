@@ -18,30 +18,36 @@
 			<div class="col-12">
 				<table style="width: 100%">
 					<tr class="text-end">
-						<td colspan="3"><a href="purWriteForm" class="btn btn-outline-primary">발주 신청</a></td>
+						<td colspan="5"><a href="purWriteForm" class="btn btn-outline-primary mb-4">발주 신청</a></td>
 					</tr>
 					<tr>
 						<td>
-							날짜 선택 : <input type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD"> 
+							 <div class="d-flex justify-content-between align-items-center">
+							 	<span class="col-3 text-end">날짜 선택 :</span>
+							 	<input type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD" class="form-control">
+							 </div> 
 						</td>
 						<td>
-							회사 선택 :<select id="srchCompany">
-										<option value="all" selected="selected">전체</option>
-										<c:forEach items="${pur_custList }" var="pur_custList">
-											<c:choose>
-												<c:when test="${pur_custList.custcode == srchCompany }">
-													<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
-												</c:when>
-												<c:otherwise>
-													<option value="${pur_custList.custcode }">${pur_custList.company }</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
+							<div class="d-flex justify-content-between align-items-center">
+								<span class="col-3 text-end">회사 선택 :</span>
+								<select id="srchCompany" class="form-select">
+									<option value="all" selected="selected">전체</option>
+									<c:forEach items="${pur_custList }" var="pur_custList">
+										<c:choose>
+											<c:when test="${pur_custList.custcode == srchCompany }">
+												<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${pur_custList.custcode }">${pur_custList.company }</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</select>
+							</div>
 						</td>
-						<td>
-							<button type="button" onclick="srch()">검색</button>
-							<button type="button" onclick="location.href='purList'">초기화</button>
+						<td class="text-end">
+							<button type="button" onclick="srch()" class="btn btn-outline-primary">검색</button>
+							<button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">초기화</button>
 						</td>
 					</tr>
 				</table>

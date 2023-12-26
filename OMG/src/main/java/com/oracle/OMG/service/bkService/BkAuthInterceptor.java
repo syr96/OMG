@@ -59,7 +59,7 @@ public class BkAuthInterceptor implements HandlerInterceptor {
 			savePage(request);
 			
 			// 로그인 페이지로 이동
-			response.sendRedirect("errorLogin");
+			response.sendRedirect("/errorLogin");
 			return false;
 		}
 		

@@ -95,10 +95,16 @@
 		and custcode = #{custcode} 
 	</delete>
 	
-	<update id="chpurUpdate">
+	<update id="chpurUpdate" parameterType="Purchase">
 		Update Purchase
 		Set title = #{title}, ref = #{ref}
 		Where pur_date = #{pur_date}
 		and custcode = #{custcode} 
 	</update>
+	
+	<delete id="chDeletePurDet" parameterType="PurDetail">
+		Delete Pur_detail
+		Where pur_date = #{pur_date}
+		and code = #{code}
+	</delete>
 </mapper>

@@ -111,7 +111,7 @@ public class YaCustomerServiceImpl implements YaCustomerService {
 		return customerListSelect;
 	}
 	
-	//거래처 실적조회 
+	//거래처 실적조회(검색)
 	@Override
 	public List<Customer> customerSalesSearch(int custcode, String month, String purDate) {
 		System.out.println("YaCustomerService customerSalesSearch start...");
