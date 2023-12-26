@@ -35,17 +35,18 @@
             	checkboxes[i].checked = source.checked;
         	}
     	}
-    	 
+    	
     	function deleteSelected() {
     	    // 선택된 체크박스의 sales_date, custcode 값들을 배열에 담기
     	    const selectedSalesInfos = [];
     	    const checkboxes = document.querySelectorAll('input[name="rowCheck"]:checked');
     	    for (const checkbox of checkboxes) {
-    	        const salesDate = checkbox.value;
-    	        const custcode = checkbox.parentElement.querySelector('td:nth-child(4)').innerText;
-    	        selectedSalesInfos.push({salesDate, custcode });
+    	        const custcode = checkbox.value;
+    	        const salesDate = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText;
+    	        const code = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+    	        selectedSalesInfos.push({ salesDate, custcode, code });
     	    }
-						
+
     	    // sales_date, custcode 값들을 서버로 전송하여 삭제 요청
     	    if (selectedSalesInfos.length > 0) {
     	        // 확인 대화상자 표시
@@ -56,11 +57,23 @@
     	            form.method = "POST";
 
     	            for (const salesInfo of selectedSalesInfos) {
-    	                const hiddenField = document.createElement("input");
-    	                hiddenField.type = "hidden";
-    	                hiddenField.name = "salesInfos"; // 서버에서 받을 파라미터 이름
-    	                hiddenField.value = JSON.stringify(salesInfo);
-    	                form.appendChild(hiddenField);
+    	                const hiddenFieldSalesDate = document.createElement("input");
+    	                hiddenFieldSalesDate.type = "hidden";
+    	                hiddenFieldSalesDate.name = "salesDates"; // 서버에서 받을 파라미터 이름
+    	                hiddenFieldSalesDate.value = salesInfo.salesDate;
+    	                form.appendChild(hiddenFieldSalesDate);
+
+    	                const hiddenFieldCustCode = document.createElement("input");
+    	                hiddenFieldCustCode.type = "hidden";
+    	                hiddenFieldCustCode.name = "custcodes"; // 서버에서 받을 파라미터 이름
+    	                hiddenFieldCustCode.value = salesInfo.custcode;
+    	                form.appendChild(hiddenFieldCustCode);
+    	                
+    	                const hiddenFieldCode = document.createElement("input");
+    	                hiddenFieldCode.type = "hidden";
+    	                hiddenFieldCode.name = "codes"; // 서버에서 받을 파라미터 이름
+    	                hiddenFieldCode.value = salesInfo.code;
+    	                form.appendChild(hiddenFieldCode);
     	            }
 
     	            document.body.appendChild(form);
@@ -70,6 +83,8 @@
     	        alert("삭제할 항목을 선택해주세요.");
     	    }
     	}
+
+   	    
 
     	
 	</script>	
@@ -116,13 +131,14 @@
 				<div class="table-button-gap">
 				<table style="border: 2px solid black; width: 100%" id="userTable" class="table table-md text-center p-3">
 					<thead>
-						<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
+						<tr style="border: 2px solid black; background-color: #E1E2FF; color: #fff;">
 							<th scope="col" style="text-align: center;"><input type="checkbox" name="allCheck" id="allCheck" onchange="checkAll(this)"/></th>
 							<th scope="col" style="text-align: center;">No.</th>
 							<th scope="col" style="text-align: center;">매출일자</th>
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
+							<th scope="col" style="text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
 							<th scope="col" style="text-align: center;">상태</th>
 						</tr>
@@ -131,12 +147,13 @@
 						<c:set var="num" value="${page.start}"/>
 						<c:forEach var="listSalesInquiry" items="${listSalesInquiry}">
 							<tr>
-								<td style="text-align: center"><input type="checkbox" name="rowCheck" value="${listSalesInquiry.sales_date}"/></td>
+								<td style="text-align: center"><input type="checkbox" name="rowCheck" value="${listSalesInquiry.custcode}"/></td>
 								<td style="text-align: center">${num}</td>
 								<td style="text-align: center">${listSalesInquiry.sales_date}</td>
 						  		<td style="text-align: center"><a href="salesInquiryDetail?sales_date=${listSalesInquiry.sales_date}&custcode=${listSalesInquiry.custcode}">${listSalesInquiry.title}</a></td>
 								<td style="text-align: center">${listSalesInquiry.company}</td>
 								<td style="text-align: center">${listSalesInquiry.name}</td>
+								<td style="text-align: center">${listSalesInquiry.code}</td>
 								<td style="text-align: center">${listSalesInquiry.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${listSalesInquiry.sales_status == 0}">진행</c:if>
@@ -144,7 +161,7 @@
 									<c:if test="${listSalesInquiry.sales_status == 2}">취소</c:if>
 									<c:if test="${listSalesInquiry.sales_status == 3}">입고완료</c:if>
 								</td>
-						   	 </tr>
+							 </tr>
 						 <c:set var="num" value="${num + 1}"/>
 						</c:forEach>
 					</tbody>

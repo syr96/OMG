@@ -74,7 +74,7 @@
 						
 						<table id="itemTable" class="table table-md text-center p-3">
 							<thead>
-								<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
+								<tr style="border: 2px solid black; background-color: #E1E2FF; color: #fff;">
 									<th scope="col">No.</th>
 									<th scope="col">제품코드</th>
 									<th scope="col">제품명</th>

@@ -9,11 +9,11 @@
 		<style>
 			.button-table-gap {
 		        margin-top: 10px; /* 여백 크기 조정 */
-		        margin-bottom: 0;
+		        margin-bottom: -20px;
 		    }
 			
 			.table-button-gap {
-				margin-top: 0;
+				margin-top: -10px;
 				margin-bottom: 0;
 			
 			}
@@ -23,6 +23,64 @@
 		    }
 		    
 		</style>
+		<script>
+	    	// 체크박스 전체 선택/해제 함수
+	    	function checkAll(source) {
+	        	var checkboxes = document.getElementsByName('rowCheck');
+	        	for (var i = 0; i < checkboxes.length; i++) {
+	            	checkboxes[i].checked = source.checked;
+	        	}
+	    	}
+	    	
+	    	function deleteSelected() {
+	    	    // 선택된 체크박스의 sales_date, custcode 값들을 배열에 담기
+	    	    const selectedSalesInfos = [];
+	    	    const checkboxes = document.querySelectorAll('input[name="rowCheck"]:checked');
+	    	    for (const checkbox of checkboxes) {
+	    	        const custcode = checkbox.value;
+	    	        const salesDate = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText;
+	    	        const code = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+	    	        selectedSalesInfos.push({ salesDate, custcode, code });
+	    	    }
+	
+	    	    // sales_date, custcode 값들을 서버로 전송하여 삭제 요청
+	    	    if (selectedSalesInfos.length > 0) {
+	    	        // 확인 대화상자 표시
+	    	        if (confirm("선택된 항목을 삭제하시겠습니까?")) {
+	    	            // 폼 생성 및 값 전송
+	    	            const form = document.createElement("form");
+	    	            form.action = "/sales/salesDetailDelete"; // 삭제 처리 서블릿 주소
+	    	            form.method = "POST";
+	
+	    	            for (const salesInfo of selectedSalesInfos) {
+	    	                const hiddenFieldSalesDate = document.createElement("input");
+	    	                hiddenFieldSalesDate.type = "hidden";
+	    	                hiddenFieldSalesDate.name = "salesDates"; // 서버에서 받을 파라미터 이름
+	    	                hiddenFieldSalesDate.value = salesInfo.salesDate;
+	    	                form.appendChild(hiddenFieldSalesDate);
+	
+	    	                const hiddenFieldCustCode = document.createElement("input");
+	    	                hiddenFieldCustCode.type = "hidden";
+	    	                hiddenFieldCustCode.name = "custcodes"; // 서버에서 받을 파라미터 이름
+	    	                hiddenFieldCustCode.value = salesInfo.custcode;
+	    	                form.appendChild(hiddenFieldCustCode);
+	    	                
+	    	                const hiddenFieldCode = document.createElement("input");
+	    	                hiddenFieldCode.type = "hidden";
+	    	                hiddenFieldCode.name = "codes"; // 서버에서 받을 파라미터 이름
+	    	                hiddenFieldCode.value = salesInfo.code;
+	    	                form.appendChild(hiddenFieldCode);
+	    	            }
+	
+	    	            document.body.appendChild(form);
+	    	            form.submit();
+	    	        }
+	    	    } else {
+	    	        alert("삭제할 항목을 선택해주세요.");
+	    	    }
+	    	}
+	    	
+	    </script>	
 	</head>
 <body>
 <%@ include file="../common/menu.jsp" %>
@@ -66,13 +124,14 @@
 				<div class="table-button-gap">
 				<table style="border: 2px solid black; width: 100%" id="userTable" class="table table-md text-center p-3">
 					<thead>
-						<tr style="border: 2px solid black; background-color: #696cff; color: #fff;">
+						<tr style="border: 2px solid black; background-color: #E1E2FF; color: #fff;">
 							<th scope="col" style="text-align: center;"><input type="checkbox" name="allCheck" id="allCheck" onchange="checkAll(this)"/></th>
 							<th scope="col" style="text-align: center;">No.</th>
 							<th scope="col" style="text-align: center;">매출일자</th>
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
+							<th scope="col" style="text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
 							<th scope="col" style="text-align: center;">상태</th>
 						</tr>
@@ -87,6 +146,7 @@
 						  		<td><a href="salesInquiryDetail?sales_date=${salesInquirySearch.sales_date}&custcode=${salesInquirySearch.custcode}">${salesInquirySearch.title}</a></td>
 						  		<td style="text-align: center">${salesInquirySearch.company}</td>
 								<td style="text-align: center">${salesInquirySearch.name}</td>
+								<td style="text-align: center">${salesInquirySearch.code}</td>
 								<td style="text-align: center">${salesInquirySearch.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${salesInquirySearch.sales_status == 0}">진행</c:if>
