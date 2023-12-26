@@ -130,18 +130,11 @@
             <li class="menu-item">
               <a href="/inboundRegister" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">입고관리</div>
+                <div data-i18n="Form Elements">입출고관리</div>
               </a>
             </li>
-            
-            <li class="menu-item">
-              <a href="/outboundRegister" class="menu-link">
-                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">출고관리</div>
-              </a>
-            </li>
-            
-            <!-- Tables -->
+
+       <!-- Tables -->
             <li class="menu-item">
               <a href="tables-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-table"></i>

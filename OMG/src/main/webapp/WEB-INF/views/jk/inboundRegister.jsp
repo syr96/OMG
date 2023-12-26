@@ -18,6 +18,10 @@ $(document).ready(function () {
 
     // 기준년월 변경 이벤트 핸들러
     $('#inboundMonth').on('change', handleInboundMonthChange);
+ 	
+    // 출고리스트 조회 핸들러
+    $('#outbound-tab').on('click', handleOutboundTabClick);
+
 });
 
 function handleInboundMonthChange() {
@@ -91,7 +95,6 @@ function handleInboundButtonClick() {
 }
 
 
-
 </script>
 <body>
     <%@ include file="../common/header.jsp" %>
@@ -106,7 +109,9 @@ function handleInboundButtonClick() {
         <div class="demo-inline-spacing mt-3">
             <div class="list-group list-group-horizontal-md text-md-center">
                 <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">입고등록</a>
-                <a class="list-group-item list-group-item-action" id="messages-list-item" data-bs-toggle="list" href="#horizontal-messages">입고조정</a>
+            <a class="list-group-item list-group-item-action" id="outbound-tab" href="/outboundRegister">출고등록</a>
+
+
             </div>
 
             <div class="tab-content px-0 mt-0" style="padding-top: 0px;padding-bottom: 0px;margin-top: 1px;">
@@ -198,12 +203,89 @@ function handleInboundButtonClick() {
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="horizontal-profile">
-                    입출고관리폼
-                </div>
-
                 <div class="tab-pane fade" id="horizontal-messages">
-                    입고조정폼
+                    
+                    
+              <div class="card">
+                  
+                        <h5 class="card-header">발주서 선택</h5>
+                          <div class="card-body">
+                            <div class="row align-items-end" style="padding-left: 23px;">
+                                <div class="mb-3 col-md-3">
+                                    <label for="thtml5-date-input" class="col-md-2 col-form-label">날짜</label>
+                                    <input class="form-control" type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD">
+                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <label for="html5-date-input" class="col-md-2 col-form-label">업체명</label>
+                                    
+                                   <select id="srchCompany" class="select2 form-select">
+										<option value="all" selected="selected">전체</option>
+										<c:forEach items="${pur_custList }" var="pur_custList">
+											<c:choose>
+												<c:when test="${pur_custList.custcode == srchCompany }">
+													<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${pur_custList.custcode }">${pur_custList.company }</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</select>
+                                </div>
+                                <div class="mb-3 col-md-3">
+                                    <button class="btn btn-outline-primary" type="button" onclick="srch()">검색</button>
+                                </div>
+                            </div>
+                            <h5 class="card-header">판매리스트</h5>
+                            <div class="card-body">
+                                <div class="table-responsive text-nowrap" style="height:500px;">
+                                    <table class="table table-bordered" id="purListTable">
+                                        <thead class="table-primary">
+                                            <tr>
+                                               	<td class="text-center">No.</td>
+												<td class="text-center">제목</td>
+												<td class="text-center">업체명</td>
+												<td class="text-center">발주일</td>
+												<td class="text-center">상품명</td>
+												<td class="text-center">코드</td>
+												<td class="text-center">총금액</td>
+												<td class="text-center">상태</td>
+                                            </tr>
+                                        </thead>
+                                     
+				   <tbody>
+						<c:set var="num" value="${page.start}"/>
+						<c:forEach var="listSalesInquiry" items="${listSalesInquiry}">
+							<tr>
+								<td style="text-align: center">${num}</td>
+								<td style="text-align: center"><a href="salesInquiryDetail?sales_date=${listSalesInquiry.sales_date}&custcode=${listSalesInquiry.custcode}">${listSalesInquiry.title}</a></td>
+								<td style="text-align: center">${listSalesInquiry.company}</td>
+								<td style="text-align: center">${listSalesInquiry.sales_date}</td>
+								<td style="text-align: center">${listSalesInquiry.name}</td>
+								<td style="text-align: center">${listSalesInquiry.code}</td>
+								<td style="text-align: center">${listSalesInquiry.total_price}</td>
+								<td style="text-align: center">
+									<c:if test="${listSalesInquiry.sales_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
+									<c:if test="${listSalesInquiry.sales_status == 1}">  <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
+                                  출고
+                </button></c:if>
+									<c:if test="${listSalesInquiry.sales_status == 2}"><span class="badge bg-label-danger  me-1">취소</span></c:if>
+									<c:if test="${listSalesInquiry.sales_status == 3}">입고완료</c:if>
+								</td>
+							 </tr>
+						 <c:set var="num" value="${num + 1}"/>
+						</c:forEach>
+					</tbody>
+
+			
+                                      
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+         
                 </div>
 
                 <div class="tab-pane fade" id="horizontal-settings">
@@ -217,7 +299,7 @@ function handleInboundButtonClick() {
             <h5 class="card-header">입고내역</h5>
             <div class="card-body">
                 <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-md-3">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="inboundMonth" name="inboundMonth" >
                     </div>
@@ -301,7 +383,7 @@ function handleInboundButtonClick() {
 		//검색 구현
 		var srchcompany = $("#srchCompany").val();  // 회사
 		var srchDate = $("#srchDate").val();		// 날짜
-		var moveUrl = "purList";
+		var moveUrl = "inboundRegister";
 		// 날짜가 선택 됐을 때 
 		if(srchDate != null && srchDate != ""){
 			var subDate = dateFormatt(srchDate);

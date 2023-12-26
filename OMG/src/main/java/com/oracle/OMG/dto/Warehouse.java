@@ -25,4 +25,8 @@ public class Warehouse {
     private String company;
     private String pur_date;
     
-}
+    private String 	sales_date;
+    private int 	sales_status;
+    private String	ref;
+	private int 	custcode;
+	}
