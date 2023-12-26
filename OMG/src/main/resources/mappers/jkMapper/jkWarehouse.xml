@@ -108,8 +108,27 @@
 		JOIN item i ON pd.code = i.code
 		JOIN warehouse w ON pd.code = w.code AND w.inven = 1
 		WHERE p.pur_status = 2
-		ORDER BY p.pur_date DESC;
+		ORDER BY p.pur_date DESC
 
+    </select>
+    
+    	<select id="inboundTotal" parameterType="Warehouse" resultType="int">
+		SELECT count(*)
+		FROM warehouse
+	    WHERE inven = 1
+	</select>
+	
+	  <select id="monthInbound" parameterType="Warehouse" resultType="Warehouse">
+    	SELECT p.pur_date, pd.code, i.name, c.company, pd.qty, m.mem_name, w.reg_date, w.inven
+  FROM purchase p
+  JOIN member m ON p.mem_id = m.mem_id
+  JOIN customer c ON p.custcode = c.custcode
+  JOIN pur_detail pd ON p.pur_date = pd.pur_date AND p.custcode = pd.custcode
+  JOIN item i ON pd.code = i.code
+  JOIN warehouse w ON pd.code = w.code AND w.inven = 1
+  WHERE p.pur_status = 2
+    AND (#{inboundMonth} IS NULL OR TO_CHAR(w.reg_date, 'YYYY-MM') = #{inboundMonth, jdbcType=VARCHAR})
+  ORDER BY p.pur_date DESC
     </select>
     
 </mapper>

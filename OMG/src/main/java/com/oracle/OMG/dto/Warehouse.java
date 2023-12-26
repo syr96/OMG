@@ -23,6 +23,6 @@ public class Warehouse {
     private String name;
     private String mem_name;
     private String company;
-    
+    private String pur_date;
     
 }
