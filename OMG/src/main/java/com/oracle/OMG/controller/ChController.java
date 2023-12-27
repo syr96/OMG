@@ -130,7 +130,7 @@ public class ChController {
 	@GetMapping("purDtail")
 	public String purDtail(Model model,Purchase purchase, HttpSession session) {
 		
-		int mem_id = session.getAttribute("mem_id") != null? mem_id = (int) session.getAttribute("mem_id") : 0;
+		int mem_id = session.getAttribute("mem_id") != null? (int) session.getAttribute("mem_id") : 0;
 		
 		
 		System.out.println("purchase.getPur_date()->" + purchase.getPur_date());
