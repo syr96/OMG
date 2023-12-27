@@ -306,6 +306,7 @@ $(document).ready(function () {
        
 <!-----------------거래처 전체조회--------------------------------------------------------->   
          <div class="table-responsive text-nowrap mx-3">
+         <input type="hidden" name="user_num" value="${sessionScope.mem_dept_md}">	
            <c:set var="num" value="${custPage.total - custPage.start+1 }"></c:set> 
              <table id="searchResultsTable"class="table table-hover">
               <thead class="fixed-thead" style="background: #e1e2ff;"> 
@@ -332,12 +333,33 @@ $(document).ready(function () {
                         <td>${customer.busitype}</td>
                         <td>${customer.busiitems}</td>
                         <td><button class="btn btn-xs  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
-                          			data-custcode="${customer.custcode}" aria-controls="offcanvasScroll">상세 </button></td>                      
-                         <td><button class="btn btn-xs btn-primary" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button></td>	 
+                          			data-custcode="${customer.custcode}"  aria-controls="offcanvasScroll">상세 </button></td>                      
+                         <td><button class="btn btn-xs btn-primary deleteBtn"  data-mem_dept_md="${sessionScope.mem_dept_md}" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button></td>	 
                       </tr>
                 </c:forEach>
                 </tbody>
               </table>
+              
+			<script>
+			/*부서번호 100(회계팀)만 삭제 가능  */
+			    document.addEventListener('DOMContentLoaded', function() {
+			        var mem_dept_md = ${sessionScope.mem_dept_md};
+			        console.log('mem_dept_md:', mem_dept_md);
+			        disableButton();
+			    });
+			
+			    function disableButton() {
+			        var mem_dept_md = ${sessionScope.mem_dept_md};
+
+			        if (mem_dept_md !== 100) {
+			            var buttons = document.querySelectorAll('.deleteBtn');
+			            buttons.forEach(function(button) {
+			                button.disabled = true;
+			            });
+			        }
+			    }
+			</script>
+              
 
 <script>
 $(document).ready(function () {
@@ -351,6 +373,7 @@ $(document).ready(function () {
         }),
         success: function (response) {
         	var memberList = response.memberList;
+        	var loginMemId= '${sessionScope.mem_id}';
             for (var i = 0; i < memberList.length; i++) {
             	$('#mem_id').append('<option value="' + memberList[i].mem_id + '">' + memberList[i].mem_id + 
             			'  ' + memberList[i].mem_name + ' [' + memberList[i].com_cn + ']</option>');
@@ -365,7 +388,7 @@ $(document).ready(function () {
 
 $(document).on('click', '.btn-show-detail', function () {
     var selectedCustCode = $(this).data('custcode');
-
+	
         $.ajax({
           url: '/customerDetail',
           type: 'GET',
@@ -386,12 +409,23 @@ $(document).on('click', '.btn-show-detail', function () {
             $('#mem_dept').val(data.customer.mem_dept);
             $('#mem_name').val(data.customer.mem_name);
                
-          },
-          error: function () {
+            // 담당직원(mem_id) 설정
+            var memId = $('#mem_id');
+            memId.val(data.customer.mem_id);
+
+            // 로그인한 mem_id와 선택된 담당직원(mem_id)가 다를 경우 담당직원 입력란 비활성화
+            var loggedInMemId = ${sessionScope.mem_id};
+            if (loggedInMemId !== data.customer.mem_id) {
+                memId.prop('disabled', true);
+            } else {
+                memId.prop('disabled', false);
+            }
+        },
+        error: function () {
             console.error('Error customer detail.');
-          }
-        });
-      });
+        }
+    });
+});
 
 
 function confirmDelete(custcode) {
@@ -490,7 +524,7 @@ function confirmDelete(custcode) {
                           <label class="col-sm-2 col-form-label" for="mem_info">담당직원</label>
                           <div class="col-sm-8">
 								<select class="form-select" id="mem_id"></select>
-                          </div>                                                                                                                                                                                     
+                         </div>                                                                                                                                                                                     
                         </div>                                                   
                       	</form>
                  	  </div>
@@ -545,7 +579,7 @@ function confirmDelete(custcode) {
                 });
             });                     
                    
-</script>
+	</script>
 
 
 				<!--검색 결과에 따른 페이징  ------->

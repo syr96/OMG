@@ -63,7 +63,6 @@ $(document).ready(function() {
                 '<td>' + data[i].code + '</td>' +
                 '<td>' + data[i].name + '</td>' +
                 '<td>' + data[i].cnt + '</td>' +
-                '<td>' + '-' + '</td>' +
                 '<td>' + data[i].mem_name + '</td>' +
                 '<td>' + formattedDate + '</td>' + // 변경된 날짜 포맷 적용
                 '</tr>';
@@ -240,19 +239,18 @@ $(document).ready(function() {
  			<div class="card">
                 <h5 class="card-header">재고리스트</h5>
                 <div class="card-body">
-                <div class="table-responsive text-nowrap">
+                 <div class="table-responsive text-nowrap" style="height:500px;">
                   <table class="table table-bordered" id="inventoryTable">
-                    <thead>
+                  <thead class="table-primary">
                       <tr>
-                        <th>번호</th>
-                        <th>년월</th>
-                        <th>구분</th>
-                        <th>품번</th>
-                        <th>품명</th>
-                        <th>수량</th>
-                        <th>조정수량</th>
-                        <th>담당자</th>
-                        <th>등록일</th>
+                        <td class="text-center">번호</td>
+                        <td class="text-center">년월</td>
+                        <td class="text-center">구분</td>
+                        <td class="text-center">품번</td>
+                        <td class="text-center">품명</td>
+                        <td class="text-center">수량</td>
+              			<td class="text-center">담당자</td>
+                        <td class="text-center">등록일</td>
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">

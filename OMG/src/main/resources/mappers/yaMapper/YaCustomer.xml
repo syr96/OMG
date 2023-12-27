@@ -32,7 +32,7 @@
 	    SELECT m.mem_name, m.mem_id, c.com_cn, m.mem_dept_md, c.ct_md
 	    FROM member m
 	    INNER JOIN comm c ON c.ct_md = m.mem_dept_md
-	    WHERE c.ct_lg = 400
+	    WHERE c.ct_lg = 200
 	</select>
 	
 	<select id="customerListSelect" parameterType="customer" resultType="customer">
@@ -72,12 +72,12 @@
  		 FROM (
  		 		SELECT  ROWNUM AS rn, a.* 
  		 		FROM (
-		 		 		SELECT  c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, c.mem_id, m.mem_name
-		 		 		FROM   customer c
+		 		 		SELECT     c.custcode, c.cust_md, c.custstyle, c.company, c.ceo, c.businum, c.busitype, c.busiitems, c.tel, c.email, c.mem_id, m.mem_name
+		 		 		FROM  	   customer c
 		 		 		INNER JOIN member m ON c.mem_id = m.mem_id
-		 		 	    WHERE c.mem_id = m.mem_id
-		 		 	    AND (c.custcode LIKE '%' || #{keyword} || '%' OR c.company LIKE '%' || #{keyword} || '%' OR  c.businum LIKE '%' || #{keyword} || '%')
-		      		    ORDER BY 	c.custcode DESC) a
+		 		 	    WHERE 	   c.mem_id = m.mem_id
+		 		 	    AND 	   (c.custcode LIKE '%' || #{keyword} || '%' OR c.company LIKE '%' || #{keyword} || '%' OR  c.businum LIKE '%' || #{keyword} || '%')
+		      		    ORDER BY c.custcode DESC) a
  		 )
  		 WHERE rn BETWEEN #{start} AND #{end}  
 	</select>
@@ -114,7 +114,6 @@
             JOIN customer c ON c.custcode = s.custcode
             JOIN item i ON i.code = s.code
         ) combined_result
-
     </select>
 
    <select id="customerSalesSearch" resultType="customer">

@@ -18,10 +18,6 @@ $(document).ready(function () {
 
     // 기준년월 변경 이벤트 핸들러
     $('#inboundMonth').on('change', handleInboundMonthChange);
- 	
-    // 출고리스트 조회 핸들러
-    $('#outbound-tab').on('click', handleOutboundTabClick);
-
 });
 
 function handleInboundMonthChange() {
@@ -95,6 +91,7 @@ function handleInboundButtonClick() {
 }
 
 
+
 </script>
 <body>
     <%@ include file="../common/header.jsp" %>
@@ -102,140 +99,42 @@ function handleInboundButtonClick() {
 
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">재고관리 /</span>입고등록
+            <span class="text-muted fw-light">재고관리 /</span>출고등록
         </h4>
 
         <!-- 재고리스트 -->
         <div class="demo-inline-spacing mt-3">
             <div class="list-group list-group-horizontal-md text-md-center">
-                <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">입고등록</a>
-            <a class="list-group-item list-group-item-action" id="outbound-tab" href="/outboundRegister">출고등록</a>
-
-
+                
+                <a class="list-group-item list-group-item-action" id="messages-list-item" href="/inboundRegister">입고등록</a>
+                <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">출고등록</a>
             </div>
 
             <div class="tab-content px-0 mt-0" style="padding-top: 0px;padding-bottom: 0px;margin-top: 1px;">
                 <div class="tab-pane fade active show" id="horizontal-home">
                     <div class="card">
-                  
+                
                         <h5 class="card-header">발주서 선택</h5>
                           <div class="card-body">
+                            <form action="salesInquirySearch" method="GET">	
                             <div class="row align-items-end" style="padding-left: 23px;">
                                 <div class="mb-3 col-md-3">
-                                    <label for="thtml5-date-input" class="col-md-2 col-form-label">날짜</label>
-                                    <input class="form-control" type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD">
+                                    <label for="thtml5-date-input" class="col-md-2 col-form-label">조회필터</label>
+                                    <select name="search" class="form-select" style="margin-left: 0px;">
+								<option value="s_company">거래처별</option>
+								<option value="s_item">제품별</option>
+							</select> 
+                              </div>
+                                <div class="mb-3 col-md-3">
+                                    <label for="html5-date-input" class="col-md-2 col-form-label">키워드</label>
+                         	<input type="text" name="keyword" class="form-control" placeholder="keyword를 입력하세요">
+						 
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <label for="html5-date-input" class="col-md-2 col-form-label">업체명</label>
-                                    
-                                   <select id="srchCompany" class="select2 form-select">
-										<option value="all" selected="selected">전체</option>
-										<c:forEach items="${pur_custList }" var="pur_custList">
-											<c:choose>
-												<c:when test="${pur_custList.custcode == srchCompany }">
-													<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
-												</c:when>
-												<c:otherwise>
-													<option value="${pur_custList.custcode }">${pur_custList.company }</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
-                                </div>
-                                <div class="mb-3 col-md-3">
-                                    <button class="btn btn-outline-primary" type="button" onclick="srch()">검색</button>
+                                    <button class="btn btn-outline-primary" type="submit">검색</button>
                                 </div>
                             </div>
-                            <h5 class="card-header">발주리스트</h5>
-                            <div class="card-body">
-                                <div class="table-responsive text-nowrap" style="height:500px;">
-                                    <table class="table table-bordered" id="purListTable">
-                                        <thead class="table-primary">
-                                            <tr>
-                                               	<td class="text-center">No.</td>
-												<td class="text-center">제목</td>
-												<td class="text-center">업체명</td>
-												<td class="text-center">발주일</td>
-												<td class="text-center">발주자</td>
-												<td class="text-center">상품수</td>
-												<td class="text-center">총수량</td>
-												<td class="text-center">총금액</td>
-												<td class="text-center">상태</td>
-                                            </tr>
-                                        </thead>
-                                       	<c:set value="${totalPur }" var="num"/>
-				    	<c:forEach items="${purList }" var="purList">
-							<tr>
-								<td class="text-center">${num }</td>
-								<td class="text-start"><a href="/purDtail?pur_date=${purList.pur_date }&custcode=${purList.custcode }">${purList.title }</a></td>
-								<td class="text-center">${purList.company }</td>
-								<td class="text-center">${purList.pur_date }</td>
-								<td class="text-center">${purList.appli_name}</td>
-								<td class="text-center">${purList.totalType}</td>
-								<td class="text-center">${purList.totalQty}개</td>
-								<td class="text-center"><fmt:formatNumber value="${purList.totalPrice}" pattern="#,###"/>원</td>
-								 <td class="text-center">
-        <!-- pur_status가 0이면 "진행중" 출력 -->
-        <c:if test="${purList.pur_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
-
-        <!-- pur_status가 1이면 "입고" 버튼 생성 -->
-        <c:if test="${purList.pur_status == 1}">
-              <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
-                                  입고
-                </button>
-        </c:if>
-
-        <!-- pur_status가 2이면 "입고완료" 출력 -->
-        <c:if test="${purList.pur_status == 2}"><span class="badge bg-label-success me-1">입고완료</span></c:if>
-    </td>
-
-								
-							</tr>
-								<c:set var="num" value="${num-1 }"></c:set>
-						</c:forEach>
-			
-                                      
-                                    </table>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="horizontal-messages">
-                    
-                    
-              <div class="card">
-                  
-                        <h5 class="card-header">발주서 선택</h5>
-                          <div class="card-body">
-                            <div class="row align-items-end" style="padding-left: 23px;">
-                                <div class="mb-3 col-md-3">
-                                    <label for="thtml5-date-input" class="col-md-2 col-form-label">날짜</label>
-                                    <input class="form-control" type="date" id="srchDate" value="${srchDate }" pattern="YY/MM/DD">
-                                </div>
-                                <div class="mb-3 col-md-3">
-                                    <label for="html5-date-input" class="col-md-2 col-form-label">업체명</label>
-                                    
-                                   <select id="srchCompany" class="select2 form-select">
-										<option value="all" selected="selected">전체</option>
-										<c:forEach items="${pur_custList }" var="pur_custList">
-											<c:choose>
-												<c:when test="${pur_custList.custcode == srchCompany }">
-													<option value="${pur_custList.custcode }" selected="selected">${pur_custList.company }</option>
-												</c:when>
-												<c:otherwise>
-													<option value="${pur_custList.custcode }">${pur_custList.company }</option>
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
-                                </div>
-                                <div class="mb-3 col-md-3">
-                                    <button class="btn btn-outline-primary" type="button" onclick="srch()">검색</button>
-                                </div>
-                            </div>
+                            </form>
                             <h5 class="card-header">판매리스트</h5>
                             <div class="card-body">
                                 <div class="table-responsive text-nowrap" style="height:500px;">
@@ -276,7 +175,29 @@ function handleInboundButtonClick() {
 						 <c:set var="num" value="${num + 1}"/>
 						</c:forEach>
 					</tbody>
-
+					<tbody id ="searchResults">
+						<c:set var="num" value="${page.start}"/>
+						<c:forEach var="salesInquirySearch" items="${salesInquirySearch}">
+							<tr>
+								<td style="text-align: center">${num}</td>
+								<td><a href="salesInquiryDetail?sales_date=${salesInquirySearch.sales_date}&custcode=${salesInquirySearch.custcode}">${salesInquirySearch.title}</a></td>
+								<td style="text-align: center">${salesInquirySearch.company}</td>
+								<td style="text-align: center">${salesInquirySearch.sales_date}</td>
+								<td style="text-align: center">${salesInquirySearch.name}</td>
+								<td style="text-align: center">${salesInquirySearch.code}</td>
+								<td style="text-align: center">${salesInquirySearch.total_price}</td>
+								<td style="text-align: center">
+									<c:if test="${salesInquirySearch.sales_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 1}">  <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
+                                  출고
+                </button></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 2}"><span class="badge bg-label-danger  me-1">취소</span></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 3}">입고완료</c:if>
+								</td>
+							</tr>
+						<c:set var="num" value="${num + 1}"/>
+						</c:forEach>
+					</tbody>
 			
                                       
                                     </table>
@@ -285,7 +206,14 @@ function handleInboundButtonClick() {
                             </div>
                         </div>
                     </div>
-         
+                </div>
+
+                <div class="tab-pane fade" id="horizontal-profile">
+                    입출고관리폼
+                </div>
+
+                <div class="tab-pane fade" id="horizontal-messages">
+                    입고조정폼
                 </div>
 
                 <div class="tab-pane fade" id="horizontal-settings">
@@ -296,10 +224,10 @@ function handleInboundButtonClick() {
     </div>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card mb-4">
-            <h5 class="card-header">입고내역</h5>
+            <h5 class="card-header">출고내역</h5>
             <div class="card-body">
                 <div class="row">
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="inboundMonth" name="inboundMonth" >
                     </div>
@@ -316,7 +244,7 @@ function handleInboundButtonClick() {
 
             <!-- 재고리스트 -->
             <div class="card">
-                <h5 class="card-header">입고내역</h5>
+                <h5 class="card-header">출고내역</h5>
                 <div class="card-body">
                      <div class="table-responsive text-nowrap" style="height:500px;" >
                         <table class="table table-bordered" id="inventoryTable">
@@ -380,23 +308,38 @@ function handleInboundButtonClick() {
 	}
 	
 	function srch(){
-		//검색 구현
-		var srchcompany = $("#srchCompany").val();  // 회사
-		var srchDate = $("#srchDate").val();		// 날짜
-		var moveUrl = "inboundRegister";
-		// 날짜가 선택 됐을 때 
-		if(srchDate != null && srchDate != ""){
-			var subDate = dateFormatt(srchDate);
-			moveUrl += "?pur_date="+subDate;
-			// 회사도 선택 됐을 때 
-			if(srchcompany != "all"){
-				moveUrl += "&custcode="+srchcompany;
-			}
-		} else if(srchcompany != "all"){ // 회사만 선택 됐을 때
-			moveUrl += "?custcode="+srchcompany;
-		}
-		
-		location.href=moveUrl;
+		// 검색 구현
+	    var srchcompany = $("#srchCompany").val();  // 회사
+	    var srchDate = $("#srchDate").val();        // 날짜
+	    var moveUrl = "purList";
+
+	    // 날짜가 선택 됐을 때
+	    if (srchDate != null && srchDate != "") {
+	        var subDate = dateFormatt(srchDate);
+	        moveUrl += "?pur_date=" + subDate;
+
+	        // 회사도 선택 됐을 때
+	        if (srchcompany != "all") {
+	            moveUrl += "&custcode=" + srchcompany;
+	        }
+	    } else if (srchcompany != "all") { // 회사만 선택 됐을 때
+	        moveUrl += "?custcode=" + srchcompany;
+	    }
+
+	    // Ajax를 사용하여 서버에 검색 요청을 보냅니다.
+	    $.ajax({
+	        url: moveUrl, // 실제 서버 측 엔드포인트로 수정
+	        method: 'GET', // 또는 'POST' 등 필요에 따라 변경
+	        dataType: 'html',
+	        success: function (response) {
+	            // 서버 응답에 따라 테이블의 내용을 갱신
+	            $('#searchResults').html(response);
+	        },
+	        error: function (error) {
+	            console.error('서버 요청 중 오류 발생:', error);
+	            // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
+	        }
+	    });
 	}
 	
 	function dateFormatt(inputDate){
