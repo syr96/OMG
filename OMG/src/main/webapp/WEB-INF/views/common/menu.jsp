@@ -166,7 +166,7 @@
                 target="_blank"
                 class="menu-link"
               >
-                <i class="menu-icon tf-icons bx bx-support"></i>
+                <i class="menu-icon tf-icons bx bxl-github"></i>
                 <div data-i18n="Support">Github</div>
               </a>
             </li>
