@@ -127,7 +127,7 @@
             <li class="menu-item">
                <a href="/invRegister" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">기초재고관리</div>
+                <div data-i18n="Form Elements">월재고관리</div>
               </a>
             </li>
 

@@ -212,9 +212,9 @@ $(document).ready(function() {
 
 <%@ include file="../common/menu.jsp" %>
 	<div class="container-xxl flex-grow-1 container-p-y">
-       <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">재고관리 /</span> 기초재고관리</h4>
+       <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">재고관리 /</span> 월재고관리</h4>
 		<div class="card mb-4">
-			<h5 class="card-header">기초재고</h5>
+			<h5 class="card-header">월재고조회</h5>
 				<div class="card-body">
 					<div class="row">
 						<div class="mb-3 col-md-6">
@@ -266,7 +266,9 @@ $(document).ready(function() {
         		 <div class="demo-inline-spacing mt-3">
                         <div class="list-group list-group-horizontal-md text-md-center">
                           <a class="list-group-item list-group-item-action active" id="home-list-item" data-bs-toggle="list" href="#horizontal-home">기초재고등록</a>
-                          <a class="list-group-item list-group-item-action" id="profile-list-item" data-bs-toggle="list" href="#horizontal-profile">기초재고조정</a>
+                          <a class="list-group-item list-group-item-action" id="profile-list-item" data-bs-toggle="list" href="#horizontal-profile">재고조정 / 마감</a>
+                          
+                          
 
                         </div>
                   
@@ -281,6 +283,11 @@ $(document).ready(function() {
 		                          <input class="form-control" type="month" id="monthSelect1" name="monthSelect1" >
 		                        </div>
 		                         <div class="mb-3 col-md-6">
+		                          <div class="mb-3 col-md-3">
+                     
+                 <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
+
+                 </div>
 		                         </div>
 		                      </div>
 		               <div class="row"> 
@@ -367,8 +374,15 @@ $(document).ready(function() {
                 </div>
             </div>
         </form>
+        
     </div>
+    
 </div>
+
+                        
+
+
+
 </div>
 </div>
 
