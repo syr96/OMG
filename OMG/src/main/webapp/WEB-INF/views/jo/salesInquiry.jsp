@@ -159,7 +159,6 @@
 									<c:if test="${listSalesInquiry.sales_status == 0}">진행</c:if>
 									<c:if test="${listSalesInquiry.sales_status == 1}">완료</c:if>
 									<c:if test="${listSalesInquiry.sales_status == 2}">취소</c:if>
-									<c:if test="${listSalesInquiry.sales_status == 3}">입고완료</c:if>
 								</td>
 							 </tr>
 						 <c:set var="num" value="${num + 1}"/>
