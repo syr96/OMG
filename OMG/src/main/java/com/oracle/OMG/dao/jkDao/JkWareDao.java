@@ -35,9 +35,11 @@ public interface JkWareDao {
 	// 프로시져 호출
 	void 						callOutoundPD(String salesDate, int custCodeStr);
 	void 						callInboundPD(String purDate, int custCode);
+	void 						callOutoundPD(String inboundMonth);
+	
 	
 	// 입출고 조회
 	List<Warehouse> 			monthOutbound(String outboundMonth);
 	List<Warehouse> 			monthInbound(String inboundMonth);
-		
+
 }

@@ -94,6 +94,29 @@ function handleInboundButtonClick() {
     });
 }
 
+//마감 버튼 클릭 이벤트 핸들러
+$('#closeMonthBtn').on('click', function () {
+    // 선택한 기준년월 가져오기
+    var inboundMonth = $('#inboundMonth').val();
+
+    // Ajax 요청을 통해 서버에 기준년월 전송
+    $.ajax({
+        url: '/api/closeMonth',
+        method: 'POST',
+        data: { 'yearMonth': inboundMonth },
+        dataType: 'text',
+        success: function (response) {
+            console.log('서버 응답:', response);
+            // 서버 응답에 따른 후속 처리 (예: 알림 메시지 표시)
+            alert(response);
+        },
+        error: function (error) {
+            console.error('서버 요청 중 오류 발생:', error);
+        }
+    });
+});
+
+
 
 </script>
 <body>
@@ -305,7 +328,8 @@ function handleInboundButtonClick() {
                     </div>
                   <div class="mb-3 col-md-3">
                      
-                 <button class="btn btn-outline-primary" type="button" onclick="srch()">마감</button>
+                 <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
+
                  </div>
 <!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>

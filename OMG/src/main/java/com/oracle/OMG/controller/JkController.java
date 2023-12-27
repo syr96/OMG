@@ -321,7 +321,7 @@ public class JkController {
 	
 	// 출고관리
 	@RequestMapping(value="/outboundRegister")
-	public String invSellList(SalesDetail sales, String currentPage, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
+	public String invSellList(SalesDetail sales, Model model, Warehouse warehouse, @RequestParam(value = "inboundMonth", required = false) String inboundMonth) {
 	    System.out.println("JkController invSellList start....");
 		UUID transactionId = UUID.randomUUID();
 	    logger.info("Received month: {}", inboundMonth);
@@ -330,18 +330,18 @@ public class JkController {
 					
 		try {
 		
-			int totalSalesInquiry = jss.getTotalSalesInquiry();
+			Paging page = new Paging(999);
 			
-			Paging page = new Paging(totalSalesInquiry, currentPage);
 			sales.setStart(page.getStart());
 			sales.setEnd(page.getEnd());
 			
 			List<SalesDetail> sellList = jss.getListSalesInquiry(sales);
+			logger.info("start", page.getStart());
 			
-			model.addAttribute("totalSalesInquiry", totalSalesInquiry);
+			
 			model.addAttribute("page", page);
 			model.addAttribute("listSalesInquiry", sellList);
-			model.addAttribute("currentPage", currentPage);
+			
 			
 		} catch (Exception e) {
 			log.error("[{}]{}:{}", transactionId, "salesInquiry", e.getMessage());
@@ -414,9 +414,25 @@ public class JkController {
 		    return "jk/outboundRegister";
 		}
 		
+		// 출고 프로시져 호출
+
+		@RequestMapping(value = "/callCloseMonth", method = RequestMethod.POST)
+		public String callCloseMonth(@RequestParam("inboundMonth") String inboundMonth, Model model) {
+		 
+
+		    // 정상적으로 변환된 경우에만 계속 진행
+		    Map<String, String> response = jws.callCloseMonth(inboundMonth);
+
+		    // 모델에 결과 데이터 추가
+		    model.addAttribute("response", response);
+		    logger.info("Response: {}", response);
+		    // 뷰로 이동
+		    return "jk/inboundRegister";
+		   
+		 
+		   	
 		
-		
-		
+}
 		
 		
 		

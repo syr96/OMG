@@ -186,6 +186,26 @@ public class JkWareServiceImpl implements JkWareService {
 		
 		return monthOutbound;
 	}
+
+	@Override
+	public Map<String, String> callCloseMonth(String inboundMonth) {
+		  Map<String, String> response = new HashMap<>();
+
+	        try {
+	            // 프로시저 호출
+	            jwd.callOutoundPD(inboundMonth);
+
+	            // 성공적으로 프로시저가 호출되면 성공 메시지를 추가
+	            response.put("status", "success");
+	            response.put("message", "Inbound process completed successfully.");
+	        } catch (Exception e) {
+	            // 실패 시 실패 메시지를 추가
+	            response.put("status", "error");
+	            response.put("message", "Error during the inbound process: " + e.getMessage());
+	        }
+
+	        return response;
+	}
 	
 
 
