@@ -223,7 +223,7 @@ function handleOutboundButtonClick() {
     </div>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card mb-4">
-            <h5 class="card-header">출고내역</h5>
+            <h5 class="card-header">출고관리</h5>
             <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-md-6">
@@ -250,7 +250,7 @@ function handleOutboundButtonClick() {
                             <thead class="table-secondary">
                                 <tr>
                                     <td class="text-center">No.</td>
-                                    <td class="text-center">발주일</td>
+                                    <td class="text-center">수주일</td>
                                     <td class="text-center">구분</td>
                                     <td class="text-center">품번</td>
                                     <td class="text-center">품명</td>

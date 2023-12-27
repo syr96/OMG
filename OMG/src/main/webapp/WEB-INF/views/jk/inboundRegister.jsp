@@ -95,6 +95,7 @@ function handleInboundButtonClick() {
 }
 
 
+
 </script>
 <body>
     <%@ include file="../common/header.jsp" %>
@@ -305,7 +306,8 @@ function handleInboundButtonClick() {
                     </div>
                   <div class="mb-3 col-md-3">
                      
-                 <button class="btn btn-outline-primary" type="button" onclick="srch()">마감</button>
+                 <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
+
                  </div>
 <!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>

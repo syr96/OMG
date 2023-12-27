@@ -511,7 +511,7 @@
 		function showNotice() {
 			$.ajax(
 					{
-						url: "/mainNotice",
+						url: "/main/loginNotice",
 						dataType: "html",
 						success: function(data) {
 							$("#notice").html(data);

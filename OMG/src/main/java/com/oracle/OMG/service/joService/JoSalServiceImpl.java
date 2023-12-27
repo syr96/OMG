@@ -111,6 +111,7 @@ public class JoSalServiceImpl implements JoSalService {
 
 	@Override
 	public int insertSales(SalesDetail sales) {
+	// public int insertSales(Sales sales) {
 		int result = 0;
 		result = jsd.insertSales(sales);
 		
