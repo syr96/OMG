@@ -46,22 +46,22 @@
 		    var cell4 = newRow.insertCell(3);
 		    var cell5 = newRow.insertCell(4);
 		    var cell6 = newRow.insertCell(5);
-		    var cell7 = newRow.insertCell(6); // 추가된 열
+		    
 	
 		    cell1.innerHTML = '<input type="checkbox" name="rowCheck" value="rowCheck">';
-		    cell2.innerHTML = table.rows.length; // No.
-		    cell3.innerHTML = '<input type="text" name="code">';
-		    cell4.innerHTML = '<select name="name" onchange="updateCodeAndPrice(this)">' +
+		    cell2.innerHTML = '<input type="text" name="code">';
+		    cell3.innerHTML = '<select name="name" onchange="updateCodeAndPrice(this)">' +
 		        			  '<option>선택</option>' +
 		        			  '<c:forEach var="listProduct" items="${listProduct}">' +
 		        			  '<option data-code="${listProduct.code}" data-price="${listProduct.output_price}">${listProduct.name}</option>' +
 		        			  '</c:forEach>' +
 		        			  '</select>';
-		    cell5.innerHTML = '<input type="text" name="qty" oninput="calculateTotalPrice(this)">';
-		    cell6.innerHTML = '<input type="text" name="price">';
-		    cell7.innerHTML = '<input type="text" name="total_price">';
+		    cell4.innerHTML = '<input type="text" name="qty" oninput="calculateTotalPrice(this)">';
+		    cell5.innerHTML = '<input type="text" name="price">';
+		    cell6.innerHTML = '<input type="text" name="total_price">';
 			
 			// 새로 추가된 행의 데이터를 배열에 추가
+		
 	    	var rowData = {
 		        code: '',
 		        name: '',
@@ -69,17 +69,37 @@
 		        price: '',
 		        total_price: ''
 		    };
-	    	rowDataArray.push(rowData);
+	    				
+			rowDataArray.push(rowData);
 		}
-
 		
-	
+		// 추가행 삭제
+		function removeRow() {
+			  var table = document.getElementById("itemTable").getElementsByTagName('tbody')[0];
+			  var checkboxes = table.querySelectorAll('input[name="rowCheck"]');
+			  var rowsToRemove = [];
+
+			  // 체크된 체크박스를 찾아서 해당 행을 rowsToRemove 배열에 추가합니다.
+			  checkboxes.forEach(function(checkbox) {
+			    if (checkbox.checked) {
+			      var row = checkbox.parentNode.parentNode;
+			      rowsToRemove.push(row);
+			    }
+			  });
+
+			  // rowsToRemove 배열에 있는 행을 테이블에서 제거합니다.
+			  rowsToRemove.forEach(function(row) {
+			    table.removeChild(row);
+			  });
+			}
+		
+		
 		// 드롭다운 선택 시 "code"와 "price"를 업데이트
 		function updateCodeAndPrice(selectElement) {
 		    var selectedOption = selectElement.options[selectElement.selectedIndex];
 		    var row = selectElement.parentNode.parentNode;
-		    var codeInput = row.cells[2].getElementsByTagName('input')[0]; // 열 위치 수정
-		    var priceInput = row.cells[5].getElementsByTagName('input')[0]; // 열 위치 수정
+		    var codeInput = row.cells[1].getElementsByTagName('input')[0]; 
+		    var priceInput = row.cells[4].getElementsByTagName('input')[0]; 
 	
 		    codeInput.value = selectedOption.getAttribute('data-code');
 		    priceInput.value = selectedOption.getAttribute('data-price');
@@ -94,9 +114,9 @@
 		// 수량 입력 시 총 금액 계산
 		function calculateTotalPrice(inputElement) {
 		    var row = inputElement.parentNode.parentNode;
-		    var qty = row.cells[4].getElementsByTagName('input')[0].value; // 열 위치 수정
-		    var price = row.cells[5].getElementsByTagName('input')[0].value;
-		    var totalPriceInput = row.cells[6].getElementsByTagName('input')[0]; // 열 위치 수정
+		    var qty = row.cells[3].getElementsByTagName('input')[0].value; 
+		    var price = row.cells[4].getElementsByTagName('input')[0].value;
+		    var totalPriceInput = row.cells[5].getElementsByTagName('input')[0];
 	
 		    var total_price = parseInt(qty) * parseInt(price);
 		    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
@@ -116,19 +136,43 @@
 		    }
 		}
 		
-		// '저장' 버튼 클릭 시 서버로 데이터 전송
 		function saveData() {
+		    // Sales 객체 생성
+		    var salesData = {
+		        sales_date: document.getElementById("sales_date").value,
+		        title: document.getElementById("title").value,
+		        custcode: document.querySelector('[name="custcode"]').value,
+		        ref: document.getElementById("ref").value
+		    };
+
+		    // SalesDetails 배열 생성
+		    var salesDetailsData = [];
+		    
+		    // SalesDetails 데이터 수집
+		    var rows = document.querySelectorAll("#itemTable tbody tr");
+		    
+		    
+		    rows.forEach(function(row) {
+		        var productCode = row.querySelector('input[name="code"]');
+		        var quantity = row.querySelector('input[name="qty"]');
+		        var price = row.querySelector('input[name="price"]');
+
+		        var salesDetailData = {
+		            code: productCode,
+		            quantity: quantity,
+		            price: price
+		        };
+
+		        salesDetailsData.push(salesDetailData);
+		    });
+
 		    // 서버로 전송할 데이터 객체 생성
 		    var sendData = {
-		        sales_date: document.getElementById("sales_date").value, // 예시로 "sales_date" 필드 추가
-		        title: document.getElementById("title").value, // 예시로 "title" 필드 추가
-		        custcode: document.querySelector('[name="custcode"]').value, // 예시로 "custcode" 필드 추가
-		        ref: document.getElementById("ref").value, // 예시로 "ref" 필드 추가
-		        salesDetails: rowDataArray // 앞서 생성한 배열 추가
+		        sales: salesData,
+		        salesDetails: salesDetailsData
 		    };
 
 		    // AJAX를 사용하여 서버로 데이터 전송
-		    // 여기서는 jQuery를 사용한 예시이며, 다른 방법으로도 가능합니다.
 		    $.ajax({
 		        type: "POST",
 		        url: "salesInsert",
@@ -139,11 +183,10 @@
 		            console.log(response);
 		        },
 		        error: function (error) {
-		            console.error("Error during data submission:", error);
+		            console.error("데이터 전송 중 오류 발생:", error);
 		        }
 		    });
 		}
-	
 		
 	</script>
 </head>
@@ -189,7 +232,6 @@
 							<thead>
 								<tr style="border: 2px solid black; background-color: #E1E2FF; color: #566A7F;">
 									<th scope="col"><input type="checkbox" name="allCheck" id="allCheck" onchange="checkAll(this)"/></th>
-									<th scope="col">No.</th>
 									<th scope="col">제품코드</th>
 									<th scope="col">제품명</th>
 									<th scope="col">수량</th>
@@ -198,9 +240,9 @@
 								</tr>
 							</thead>
 							<tbody>
+								<c:set var="num" value="1"/>
 								<tr>
 									<td><input type="checkbox" name="rowCheck" value="rowCheck"></td>
-									<td>1</td>
 									<td><input type="text" name="code"></td>
 									<td>
 										<select name="name" onchange="updateCodeAndPrice(this)">
@@ -219,6 +261,8 @@
 					
 					<div class="button-group">
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="addRow()">제품추가</button>
+						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="removeRow()">추가취소</button>
+						<!-- <button type="button" class="btn btn-primary btn-sm mb-1" onclick="saveData()">저장</button> -->
 						<input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-1" value="저장">
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='salesInquiry'">리스트</button>
 					</div>

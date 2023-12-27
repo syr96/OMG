@@ -9,7 +9,7 @@
         .table-container {
             overflow-x: auto; /*좌우스크롤  */
             overflow-y: auto; /* 세로 스크롤 추가 */
-            max-height: 600px; 
+            max-height: 700px; 
             position: relative; 
         }
         
@@ -67,14 +67,21 @@
 <div class="col-lg">
 <div class="card">
  <h5 class="card-header">재고조회</h5>
-   <div class="row mx-3" >	   
-		<div class="col-12 mb-3 d-flex ">	  		   
-		    <label for="month">
-		    <input class="form-control" type="month" id="monthSelect" name="month">
-		    </label>			
-				<select class="form-select" id="in_itemcode" style="width: 200px; " ></select>
-			<button class="btn btn-outline-primary" id="searchButton" type="button" onclick="search()" >검색</button>
-		</div>	
+ <div class="card-body">
+   <div class="row align-items-end" style="padding-left: 23px;">
+		<div class="mb-3 col-md-3">  		   
+		    <label for="month" class="col-md-2 col-form-label">기준월</label>
+		    <input class="form-control" type="month" id="monthSelect" name="month">	
+		</div>
+		<div class="mb-3 col-md-3">      	
+		    	<label for="itemcode" class="col-md-2 col-form-label" style="border-right-width: 5px; margin-right: 10px;">코드</label>
+				<select class="form-select" id="in_itemcode"  style="margin-left: 0px;"></select>
+		</div>
+
+		<div class="mb-3 col-md-3"> 		
+			<button class="btn btn-outline-primary" id="searchButton" type="button" onclick="search()">조회</button>
+		</div>
+	</div>	
     </div>
 
  <script>
@@ -108,42 +115,53 @@
 function search() {
    
 	// 선택한 월을 추출
-    var selectedMonth = document.getElementById("monthSelect").value;
-    var month = selectedMonth ? selectedMonth.split("-")[1] : "0"; 
-    var selectedCustcodes = parseInt($('#in_itemcode').val());
-    console.log("Selected Month:", month);
-    console.log("SelectedselectedCustcodes:", selectedCustcodes);
-    
-    // Ajax 요청
-    $.ajax({
-        url: '/customerSalesSearch',
-        type: 'GET',
-        data: {
-	            custcode: selectedCustcodes,
-	            month:  month,
-        },
-        success: function (data) {
-            var customerSalesSearch = data.customerSalesSearch;
+	var selectedMonth = document.getElementById("monthSelect").value;
+	var month = selectedMonth ? selectedMonth.split("-")[1] : "0"; 
+	var selectedCodes = parseInt($('#in_itemcode').val()) || 0; // 기본값 0으로 설정
+	console.log("Selected Month:", month);
+	console.log("Selected Codes:", selectedCodes);
 
-        // 검색결과 
-            $("#searchResultsTable tbody").empty();
-            $.each(customerSalesSearch, function (index, customer) {
-                var row = "<tr>" +
-                    "<td>" + warehouse.purDate + "</td>" +
-                    "<td>" + warehouse.reg_date + "</td>" +  
-                    "<td>" + warehouse.code + "</td>" +
-                    "<td>" + warehouse.name + "</td>" +
-                    "<td>" + warehouse.cnt + "</td>" +
-                    "<td>" + warehouse.price + "</td>" +                
-                    "</tr>";
 
-                $("#searchResultsTable tbody").append(row);
-            });
-        },
-        error: function () {
-            console.error('서버 오류');
-        }
-    });
+	// Ajax 요청
+	$.ajax({
+	    url: '/inventoryListSearch',
+	    type: 'GET',
+	    data: {
+	        code: selectedCodes,
+	        month: month,
+	    },
+	    success: function (data) {
+	        var inventoryListSearch = data.inventoryListSearch;
+
+	        // 검색결과 
+	        $("#searchResultsTable tbody").empty();
+	        $.each(inventoryListSearch, function (index, warehouse) {
+	            // 날짜 포맷 변환 함수
+	            function formatDate(date) {
+	                var formattedDate = new Date(date);
+	                var year = formattedDate.getFullYear();
+	                var month = ('0' + (formattedDate.getMonth() + 1)).slice(-2);
+	                var day = ('0' + formattedDate.getDate()).slice(-2);
+	                return year + '-' + month + '-' + day;
+	            }
+
+	            var row = "<tr>" +
+	                "<td>" + (warehouse.ym ? warehouse.ym : '-') + "</td>" +
+	                "<td>" + (warehouse.reg_date ? formatDate(warehouse.reg_date) : '-') + "</td>" +  
+	                "<td>" + warehouse.code + "</td>" +
+	                "<td>" + warehouse.name + "</td>" +
+	                "<td style='text-align: right;'>" + warehouse.cnt.toLocaleString() + "</td>" +
+	                "<td style='text-align: right;'>" + warehouse.price.toLocaleString() + "</td>" +
+	                "<td style='text-align: right;'>" + ((warehouse.cnt * warehouse.price).toLocaleString() || '-') + "</td>" +
+	                "</tr>";
+
+	            $("#searchResultsTable tbody").append(row);
+	        });
+	    },
+	    error: function () {
+	        console.error('서버 오류');
+	    }
+	});
 }
 
 //0일경우 '-' 표기
@@ -157,8 +175,8 @@ function formatAmount(amount) {
            <table id="searchResultsTable" class=" table table-hover">
            <thead class="fixed-thead"> 
                    <tr>
-                     <th style="width: 60.508px;">구입일자</th>
-                     <th style="width: 119.508px;">입고처리일자</th> 
+                     <th style="width: 60.508px;">기준월</th>
+                     <th style="width: 119.508px;">입고처리일</th> 
                      <th style="width: 100px;">제품코드</th>
                      <th style="width: 119.508px;">제품명</th>
                      <th style="width: 119.508px;">재고수량</th>
@@ -166,17 +184,24 @@ function formatAmount(amount) {
                      <th style="width: 119.508px;">재고총액</th>
                     </tr>
                </thead>
-               <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
+               <tbody class="table-border-bottom-0" id="tableBody" >
 
-   	  		  <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">
-	      
-      			<!--전체거래처실적조회 -->        
+   	  		  <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">   
 					 <tr>
-                     <td>${warehouse.purDate}</td>
-                     <td>${warehouse.reg_date}</td>
+                       <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty warehouse.reg_date}">
+                                    -
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:formatDate value="${warehouse.reg_date}" pattern="yyyy-MM-dd" />
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                   	 <td>${warehouse.code}</td>
                   	 <td>${warehouse.name}</td>
-                     <td style="text-align: right;">${warehouse.cnt}</td>
+                     <td style="text-align: right;"><fmt:formatNumber  value="${warehouse.cnt}" pattern="#,##0" /></td>
                      <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
                      <td style="text-align: right;"> <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/></td>
                     </tr>                   	

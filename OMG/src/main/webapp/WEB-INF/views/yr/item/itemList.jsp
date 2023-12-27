@@ -79,18 +79,17 @@
 		      </thead>
 		      <tbody class="table-border-bottom-0">
 		      	<c:forEach items="${itemList }" var="itemList">
-			        <tr>
+			        <tr onclick="showItemDetail(${itemList.code })" style="cursor: pointer;">
 			          <td class="text-center">
-			          	<a onclick="showItemDetail(${itemList.code })">${itemList.code }</a>
+			          	${itemList.code }
 			          </td>
 			          <td class="fixedCol45 ellipsis">
-			          	<a onclick="showItemDetail(${itemList.code })"><strong>${itemList.name }</strong></a>
+			          	<strong>${itemList.name }</strong>
 			          </td>
 			          <td class="text-center">
-			          	<a onclick="showItemDetail(${itemList.code })">${itemList.com_cn }</a>
+			          	${itemList.com_cn }
 			          </td>
 			          <td class="text-center">
-			          	<a onclick="showItemDetail(${itemList.code })">
 				          <c:choose>
 				          	<c:when test="${itemList.deleted == '0'}">
 				          		<span class="badge bg-label-primary me-1">정상</span>
@@ -99,7 +98,6 @@
 				          		<span class="badge bg-label-warning me-1">판매종료</span>
 				          	</c:otherwise>
 				          </c:choose>
-			          	</a>
 			          </td>
 			        </tr>
 		      	</c:forEach>

@@ -387,36 +387,20 @@
                   </div>
                 </div>
                 <!--/ Expense Overview -->
-                <!-- Transactions -->
-                <div class="col-md-6 col-lg-4 order-2 mb-4">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <h5 class="card-title m-0 me-2">팀원 목록</h5>
-                    </div>
                     <div class="table-responsive text-nowrap">
-	                  <table class="table">
-	                    <thead class="fixed-header">
-	                      <tr>
-	                        <th>이름</th>
-	                        <th></th>
-	                        <th>직위</th>
-	                        <th>직책</th>
-	                      </tr>
-	                    </thead>
-	                    <tbody class="table-border-bottom-0" id="teamTableBody">
-	                    </tbody>
-	                  </table>
-	                </div>
-	              </div>
-                  </div>
                 </div>
                 <!--/ Transactions -->
+              </div>
+            </div>
             <!-- / Content -->
 
 <%@ include file="common/footer.jsp" %>    
 <script type="text/javascript">
 	
 	$(document).ready(function(){
+		// 화면 로딩되면 공지사항 나타내기
+		showNotice();
+		
 		var purchase = document.getElementById("monthPurchase");
 		var sale = document.getElementById("monthSale");
 		var memId = ${sessionScope.mem_id}
@@ -521,67 +505,7 @@
 	//숫자를 원화 형식으로 변환하는 함수
 	function formatCurrency(amount) {
 		return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(amount);
-		};
-	
-	function deptMd(memDeptMd){
-		if(memDeptMd === 100){
-			return "회계팀";
-	    } else if (memDeptMd === 101) {
-	        return "인사팀";
-	    } else if (memDeptMd === 102) {
-	        return "영업1팀";
-	    } else if (memDeptMd === 103) {
-	        return "영업2팀";
-	    } else if (memDeptMd === 104) {
-	        return "물류1팀";
-	    } else if (memDeptMd === 105) {
-	        return "물류2팀";
-	    } else if (memDeptMd === 106) {
-	        return "CS1팀";
-	    } else if (memDeptMd === 107) {
-	        return "CS2팀";
-	    } else if (memDeptMd === 999) {
-	        return "관리자";
-	    } else {
-	        return ""; // 다른 처리가 필요할 경우 추가
-	    }
-	};	
-		
-	function positionMd(teamPosiMd){
-		 if (teamPosiMd === 100) {
-		        return "대표이사";
-		    } else if (teamPosiMd === 101) {
-		        return "상무";
-		    } else if (teamPosiMd === 102) {
-		        return "차장";
-		    } else if (teamPosiMd === 103) {
-		        return "과장";
-		    } else if (teamPosiMd === 104) {
-		        return "팀장";
-		    } else if (teamPosiMd === 105) {
-		        return "팀원";
-		    } else {
-		        return "";
-		    }
-	};
-	
-	function dutyMd(teamDutyMd){
-		 if (teamDutyMd === 100) {
-		        return "CEO";
-		    } else if (teamDutyMd === 101) {
-		        return "CFO";
-		    } else if (teamDutyMd === 102) {
-		        return "본부장";
-		    } else if (teamDutyMd === 103) {
-		        return "실장";
-		    } else if (teamDutyMd === 104) {
-		        return "팀장";
-		    } else if (teamDutyMd === 105) {
-		        return "팀원";
-		    } else {
-		        return "";
-		    }
-	};
-</script>
+		}
+</script>    
 </body>
 </html>    

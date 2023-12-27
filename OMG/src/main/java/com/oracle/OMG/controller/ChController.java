@@ -49,12 +49,13 @@ public class ChController {
 	
 	@RequestMapping("purList")
 	public String purList(Model model, String currentPage, Purchase purchase) {
+		
 		int totalPur = 0;
 		List<Purchase> purList = null;
 		Paging page = null;
 		System.out.println("ChController purList Start...");
 		// 검색(custcode가 있을 때 )
-		if(purchase.getCustcode() >0) {
+		if(purchase.getCustcode() > 0) {
 			model.addAttribute("srchCompany", purchase.getCustcode());
 		}
 		//검색(날짜가 있을 때)
@@ -92,6 +93,7 @@ public class ChController {
 				p.setTotalType(totalType);
 				p.setTotalQty(pd.stream().mapToInt(m->m.getQty()).sum());
 				p.setTotalPrice(totalPrice);
+//				p.setTotalPrice(pd.stream().mapToInt(pd2 -> pd2.getQty() * pd2.getPrice()).sum());
 			}
 		}
 		List<Customer> pur_custList = chCustService.custList();
@@ -127,11 +129,9 @@ public class ChController {
 	
 	@GetMapping("purDtail")
 	public String purDtail(Model model,Purchase purchase, HttpSession session) {
-		int mem_id = 0;
-		//회원 정보 조회 넣기, 로그인 여부 확인하기 담당자 or 신청자가 아니라면 수정 불가 
-		if(session.getAttribute("mem_id") != null) {
-			mem_id = (int) session.getAttribute("mem_id");
-		}
+		
+		int mem_id = session.getAttribute("mem_id") != null? (int) session.getAttribute("mem_id") : 0;
+		
 		
 		System.out.println("purchase.getPur_date()->" + purchase.getPur_date());
 		System.out.println("purchase.getCustcode()->" + purchase.getCustcode());
@@ -145,8 +145,6 @@ public class ChController {
 		// 람다 이용 총 합계 구하기 
 		int totalPrice = pdList.stream().mapToInt(m->m.getPrice() * m.getQty()).sum();
 		int totalQty   = pdList.stream().mapToInt(m->m.getQty()).sum();
-		
-		
 		
 		
 		model.addAttribute("pc",pc);

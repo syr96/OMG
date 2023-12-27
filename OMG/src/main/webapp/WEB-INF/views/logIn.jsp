@@ -198,8 +198,8 @@
 					
 					// 쿠키에서 아이디 제거
 					setCookie(inputId, '', -1);
-					
 					// document.cookie = `${inputId}=false; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+					
 					localStorage.removeItem(inputId);
 					
 				}
@@ -248,7 +248,8 @@
 				
 				// 정규표현식을 사용하여 쿠키 값에서 Remember Me 상태를 가져옵니다
 				//									    			   key 가 ${inputId}와 일치하는 패턴 찾기
-				//										RegExp: 정규표현식 생성	정규표현식이란, 문자열 패턴을 정의하고 검색.	이메일, 전화번호 등 특정 문자열 패턴을 찾음.
+				//			  document.cookie.match: 현재 페이지의 모든 쿠키를 가져와, 정규표현식과 일치하는 부분을 찾고 배열로 반환
+				//										RegExp: 정규표현식 생성	Regular Expression 이란, 규칙적인 문자열 패턴을 정의하고 검색.	이메일, 전화번호 등 특정 문자열 패턴을 찾음.
 				//												(?: ... ): 캡처되지 않은 그룹 -> 매치 결과를 따로 저장하지 않을 때 <-> (...): 매치된 부분 기억
 				//								  				   ^: 문자열의 시작		 			 
 				//								    				 .*;\\s*: 'key' 앞에 있는, ';'이 있는 부분까지의 모든 문자열. 주로 쿠키 문자열에서 특정 쿠키를 찾을 때 사용
@@ -267,7 +268,10 @@
 				
 				// 쿠키 값이 비어 있지 않다면 체크박스를 체크하고, 입력란에 값을 복원
 				if (cookieValue) {
+					
 					checkbox.prop("checked", true);
+					
+					//					 match[1]: 캡처된 값,	match[0]: 전체 문자열(document.cookie)
 					$("#" + inputId).val(match[1]);
 					// $("#" + inputId).val(cookieValue);
 				}
@@ -507,7 +511,7 @@
 		function showNotice() {
 			$.ajax(
 					{
-						url: "/mainNotice",
+						url: "/main/loginNotice",
 						dataType: "html",
 						success: function(data) {
 							$("#notice").html(data);

@@ -16,7 +16,7 @@
 	<span class="text-muted fw-light">제품명: </span>${i.name }
 </h6>
 <c:choose>
-	<c:when test="${sessionScope.mem_dept_md != 104 && sessionScope.mem_dept_md != 105}">
+	<c:when test="${sessionScope.mem_dept_md != 104 && sessionScope.mem_dept_md != 105 && sessionScope.mem_dept_md != 999}">
 		<!-- input X (물류팀 제외한 다른 팀 view) -->
 		<table class="table table-bordered mb-4 fixedTable">
 		
