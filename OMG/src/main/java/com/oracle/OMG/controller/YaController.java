@@ -281,4 +281,51 @@ public class YaController {
 		return result;
 	}
 	
+	//재고조회 조건별 조회 
+	@GetMapping("/inventoryListSearch")
+	@ResponseBody
+	public Map<String, Object> inventoryListSearch(HttpServletRequest request, Warehouse warehouse) {
+		System.out.println("YaController inventoryListSearch Start...");
+		List<Warehouse> inventoryListSearch = null;
+
+		String codeParam = request.getParameter("code");
+		int code = Integer.parseInt(codeParam);
+		String month = request.getParameter("month");
+
+		// 모두 전체일 경우 조회
+		if ("0".equals(codeParam) && "0".equals(month)) {
+			inventoryListSearch = yws.SearchAll(code, month);
+			System.out.println("모두 전체일 경우 조회");
+		}
+
+		// 월만 전체일 경우 조회
+		else if ("0".equals(codeParam) && !"0".equals(month)) {
+			inventoryListSearch = yws.SearchAllInventory(month);
+			System.out.println("월만 전체일 경우 조회");
+		}
+		// 제품만만 전체일 경우 조회
+		else if (!"0".equals(codeParam) && "0".equals(month)) {
+			inventoryListSearch = yws.SearchForAllMonths(code);
+			System.out.println("거래처만  전체일 경우 조회 ");
+		}
+		// 제품의 수량이 0일 경우 조회
+		
+		
+		// 조건충족일경우
+		else {
+			inventoryListSearch = yws.inventorySearch(code, month);
+			System.out.println(" 조건충족일경우 조회 ");
+		}
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("inventoryListSearch", inventoryListSearch);
+
+		System.out.println("inventoryListSearch size:" + inventoryListSearch.size());
+		System.out.println("inventoryListSearch code:" + code);
+		System.out.println("inventoryListSearch  month:" + month);
+
+		return result;
+
+	}
+	
 }
