@@ -32,6 +32,12 @@ public class ShController {
 	
 	private final ShMemberService ms;
 	
+	@RequestMapping(value = "/")
+	public String main() {
+		
+		return "main";
+	}
+	
 	//메인화면 해당 월 매입 출력
 	@ResponseBody
 	@RequestMapping(value = "monthTotalPurchase", method = RequestMethod.POST)
