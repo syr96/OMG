@@ -17,4 +17,7 @@ public interface ShMemberDao {
 	int		 	 updateResiMember(Member member);
 	int 		 updateMember(Member member);
 	int 		 detailMember(Member member);
+	List<Member> selectStatus();
+	String 		 monthTotalSale();
+	String 		 monthTotalPurchase();
 }

@@ -15,5 +15,4 @@
 		from    member
 		Where   mem_id = #{mem_id}
 	</select>
-
 </mapper>

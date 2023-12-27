@@ -15,6 +15,30 @@ public class ShMemberDaoImpl implements ShMemberDao {
 	
 	private final SqlSession session;
 	
+	@Override
+	public String monthTotalSale() {
+		System.out.println("memberDao monthTotalSale() Start");
+		String monthTotalSale = null;
+		try {
+			monthTotalSale = session.selectOne("shMonthTotalSale");
+		} catch (Exception e) {
+			System.out.println("memberDao monthTotalSale() Exception ->" + e.getMessage());
+		}
+		return monthTotalSale;
+	}
+	
+	@Override
+	public String monthTotalPurchase() {
+		System.out.println("memberDao monthTotalPurchase() Start");
+		String monthTotalPurchase = null;
+		try {
+			monthTotalPurchase = session.selectOne("shMonthTotalPurchase");
+		} catch (Exception e) {
+			System.out.println("memberDao monthTotalPurchase() Exception ->" + e.getMessage());
+		}
+		return monthTotalPurchase;
+	}
+	
 	//사원 등록 
 	@Override
 	public int createMember(Member member) {
@@ -39,6 +63,19 @@ public class ShMemberDaoImpl implements ShMemberDao {
 			System.out.println("memberDao memberList() Exception ->" + e.getMessage());
 		}
 		return memberList;
+	}
+	
+	//리스트 select option 출력 ajax
+	@Override
+	public List<Member> selectStatus() {
+		System.out.println("memberDao selectStatus() Start");
+		List<Member> statusList = null;
+		try {
+			statusList = session.selectList("shStatusList");
+		} catch (Exception e) {
+			System.out.println("memberDao selectStatus() Exception ->" + e.getMessage());
+		}
+		return statusList;
 	}
 	
 	//멤버 총 인원수
