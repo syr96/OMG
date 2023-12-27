@@ -8,13 +8,15 @@ import com.oracle.OMG.dto.Purchase;
 import com.oracle.OMG.dto.Warehouse;
 
 public interface JkWareDao {
-
+	
+	// 리스트
 	List<Warehouse> monthData(Map<String, String> params);
 	List<Warehouse> getIOData(String monthIOData);
 	List<Warehouse> getPurchaseData(Map<String, String> params);
 	List<Warehouse> getSalesData(String monthIOData);
 	List<Warehouse> getPurchaseDataResultMap(String month, String string);
 
+	// 기초재고 생성
 	int insertInv(Warehouse warehouse);
 
 	Map<String, Object> 		selectItem(int code, String ym);
@@ -24,10 +26,18 @@ public interface JkWareDao {
 	int deleteInv(Warehouse warehouse);
 
 	List<Purchase> 				purMonthData(String month);
-	void 						callInboundPD(String purDate, int custCode);
+	
 	List<Warehouse> 			inboundList();
 	int							inboundTotal(Warehouse warehouse);
-	List<Warehouse> 			monthInbound(String inboundMonth);
 	
+	
+	
+	// 프로시져 호출
+	void 						callOutoundPD(String salesDate, int custCodeStr);
+	void 						callInboundPD(String purDate, int custCode);
+	
+	// 입출고 조회
+	List<Warehouse> 			monthOutbound(String outboundMonth);
+	List<Warehouse> 			monthInbound(String inboundMonth);
 		
 }

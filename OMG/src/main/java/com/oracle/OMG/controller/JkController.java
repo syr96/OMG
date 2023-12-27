@@ -270,7 +270,7 @@ public class JkController {
 	    return "jk/inboundRegister";
 	}
 
-	// 제품정보 조회(업데이트용)
+	// 입고 조회
 	@GetMapping("/monthInbound")
 	@ResponseBody
 	public List<Warehouse> monthInbound(@RequestParam("inboundMonth") String inboundMonth, Model model ) {
@@ -285,6 +285,20 @@ public class JkController {
 	}
 
 
+	// 출고조회
+	@GetMapping("/monthOutbound")
+	@ResponseBody
+	public List<Warehouse> monthOutbound(@RequestParam("outboundMonth") String outboundMonth, Model model ) {
+	    logger.info("년도: {}", outboundMonth );
+
+	    List<Warehouse> monthOutbound = jws.monthOutbound(outboundMonth);
+	    model.addAttribute("inboundList",monthOutbound);
+	    
+	    logger.info("Response: {}", monthOutbound);
+	    
+	    return monthOutbound;
+	}
+	
 	// 월별 재고리스트 조회
 
 	@GetMapping("/monthData")
@@ -375,6 +389,37 @@ public class JkController {
 
 			return "jk/outboundRegister";
 		}
+		
+		
+	// 출고 프로시져 호출
+
+		@RequestMapping(value = "/outboundRegister", method = RequestMethod.POST)
+		public String invSalList(@RequestBody SalesDetail requestData, Model model) {
+		    System.out.println("Received data from client: " + requestData);
+
+		    // requestData에서 pur_date와 custcode를 꺼내서 사용
+		    String salesDate = requestData.getSales_date();
+		    int custCodeStr = requestData.getCustcode();
+		    System.out.println("Received data from client: " + requestData);
+		    System.out.println("Received sales_date: " + salesDate);
+		    System.out.println("Received custcode: " + custCodeStr);
+
+		    // 정상적으로 변환된 경우에만 계속 진행
+		    Map<String, String> response = jws.callOutboundPD(salesDate, custCodeStr);
+
+		    // 모델에 결과 데이터 추가
+		    model.addAttribute("response", response);
+
+		    // 뷰로 이동
+		    return "jk/outboundRegister";
+		}
+		
+		
+		
+		
+		
+		
+		
 	// 출고관리
 //	/*
 //	 * @RequestMapping(value="/outboundRegister") public String
