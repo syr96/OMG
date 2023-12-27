@@ -14,45 +14,44 @@ $(document).ready(function () {
     // 페이지 로드 시 초기 데이터 로딩
 
     // 입고 버튼 클릭 이벤트 핸들러
-    $('button.inbound-btn').on('click', handleInboundButtonClick);
+    $('button.outbound-btn').on('click', handleOutboundButtonClick);
 
     // 기준년월 변경 이벤트 핸들러
-    $('#inboundMonth').on('change', handleInboundMonthChange);
+    $('#outboundMonth').on('change', handleOutboundMonthChange);
 });
 
-function handleInboundMonthChange() {
+function handleOutboundMonthChange() {
     // 선택한 기준년월 가져오기
-    var inboundMonth = $('#inboundMonth').val();
+    var outboundMonth = $('#outboundMonth').val();
 
     // Ajax 요청을 통해 서버에 기준년월 전송
     $.ajax({
-        url: '/monthInbound',
+        url: '/monthOutbound',
         method: 'GET',
-        data: { 'inboundMonth': inboundMonth },
+        data: { 'outboundMonth': outboundMonth },
         dataType: 'html',
         success: function (response) {
             console.log('서버 응답:', response);
             
             // 서버 응답에 따른 후속 처리
             // 받아온 데이터를 JSON으로 파싱
-            var inboundData = JSON.parse(response);
+            var outboundData = JSON.parse(response);
 
             // 테이블의 tbody에 데이터 추가
             var tbody = $('#inventoryTable tbody');
             tbody.empty(); // 기존 내용 삭제
 
             // 데이터 순회하며 행 추가
-            $.each(inboundData, function (index, inboundItem) {
+            $.each(outboundData, function (index, outboundItem) {
                 var newRow = '<tr>' +
-                '<td class="text-center">' + (inboundData.length - index) + '</td>' + // 역순으로 번호 부여
-                    '<td class="text-center">' + inboundItem.pur_date + '</td>' +
-                    '<td class="text-center"><span class="badge bg-label-success me-1">입고</span></td>' +
-                    '<td class="text-center">' + inboundItem.code + '</td>' +
-                    '<td class="text-center">' + inboundItem.name + '</td>' +
-                    '<td class="text-center">' + inboundItem.company + '</td>' +
-                    '<td class="text-center">' + inboundItem.qty + '</td>' +
-                    '<td class="text-center">' + inboundItem.mem_name + '</td>' +
-                    '<td class="text-center">' + inboundItem.reg_date + '</td>' +
+                '<td class="text-center">' + (outboundData.length - index) + '</td>' + // 역순으로 번호 부여
+                    '<td class="text-center">' + outboundItem.sales_date + '</td>' +
+                    '<td class="text-center"><span class="badge bg-label-success me-1">출고</span></td>' +
+                    '<td class="text-center">' + outboundItem.code + '</td>' +
+                    '<td class="text-center">' + outboundItem.name + '</td>' +
+                    '<td class="text-center">' + outboundItem.company + '</td>' +
+                    '<td class="text-center">' + outboundItem.qty + '</td>' +
+                    '<td class="text-center">' + outboundItem.reg_date + '</td>' +
                     '</tr>';
                 tbody.append(newRow);
             });
@@ -64,19 +63,19 @@ function handleInboundMonthChange() {
 }
 
 
-function handleInboundButtonClick() {
+function handleOutboundButtonClick() {
     // 선택한 특정 데이터 가져오기 (예: 특정 발주서의 pur_date 및 custcode)
-    var pur_date = $(this).data('pur_date');
+    var sales_date = $(this).data('sales_date');
     var custcode = $(this).data('custcode');
-    console.log('pur_date:', pur_date);
+    console.log('sales_date:', sales_date);
     console.log('custcode:', custcode);
 
     // Ajax 요청을 통해 서버에 데이터 전송
     $.ajax({
-        url: '/inboundRegister', // 실제 서버 측 엔드포인트로 수정
+        url: '/outboundRegister', // 실제 서버 측 엔드포인트로 수정
         method: 'POST', // 또는 'GET' 등 필요에 따라 변경
         contentType: 'application/json', // JSON 형식으로 데이터 전송
-        data: JSON.stringify({ pur_date: pur_date, custcode: custcode }),
+        data: JSON.stringify({ sales_date: sales_date, custcode: custcode }),
         dataType: 'html', // 서버 응답 형식을 JSON으로 처리
         success: function (response) {
             console.log('서버 응답:', response);
@@ -157,7 +156,7 @@ function handleInboundButtonClick() {
 						<c:forEach var="listSalesInquiry" items="${listSalesInquiry}">
 							<tr>
 								<td style="text-align: center">${num}</td>
-								<td style="text-align: center"><a href="salesInquiryDetail?sales_date=${listSalesInquiry.sales_date}&custcode=${listSalesInquiry.custcode}">${listSalesInquiry.title}</a></td>
+								<td style="text-align: center"><a href="sales/salesInquiryDetail?sales_date=${listSalesInquiry.sales_date}&custcode=${listSalesInquiry.custcode}">${listSalesInquiry.title}</a></td>
 								<td style="text-align: center">${listSalesInquiry.company}</td>
 								<td style="text-align: center">${listSalesInquiry.sales_date}</td>
 								<td style="text-align: center">${listSalesInquiry.name}</td>
@@ -165,11 +164,11 @@ function handleInboundButtonClick() {
 								<td style="text-align: center">${listSalesInquiry.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${listSalesInquiry.sales_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
-									<c:if test="${listSalesInquiry.sales_status == 1}">  <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
-                                  출고
-                </button></c:if>
+									<c:if test="${listSalesInquiry.sales_status == 1}">  <button class="btn btn-outline-primary outbound-btn" type="button" data-sales_date="${listSalesInquiry.sales_date}" data-custcode="${listSalesInquiry.custcode}">
+					                                  출고
+					                </button></c:if>
 									<c:if test="${listSalesInquiry.sales_status == 2}"><span class="badge bg-label-danger  me-1">취소</span></c:if>
-									<c:if test="${listSalesInquiry.sales_status == 3}">입고완료</c:if>
+									<c:if test="${listSalesInquiry.sales_status == 3}"><span class="badge bg-label-success me-1">출고완료</span></c:if>
 								</td>
 							 </tr>
 						 <c:set var="num" value="${num + 1}"/>
@@ -180,7 +179,7 @@ function handleInboundButtonClick() {
 						<c:forEach var="salesInquirySearch" items="${salesInquirySearch}">
 							<tr>
 								<td style="text-align: center">${num}</td>
-								<td><a href="salesInquiryDetail?sales_date=${salesInquirySearch.sales_date}&custcode=${salesInquirySearch.custcode}">${salesInquirySearch.title}</a></td>
+								<td><a href="sales/salesInquiryDetail?sales_date=${salesInquirySearch.sales_date}&custcode=${salesInquirySearch.custcode}">${salesInquirySearch.title}</a></td>
 								<td style="text-align: center">${salesInquirySearch.company}</td>
 								<td style="text-align: center">${salesInquirySearch.sales_date}</td>
 								<td style="text-align: center">${salesInquirySearch.name}</td>
@@ -188,9 +187,9 @@ function handleInboundButtonClick() {
 								<td style="text-align: center">${salesInquirySearch.total_price}</td>
 								<td style="text-align: center">
 									<c:if test="${salesInquirySearch.sales_status == 0}"><span class="badge bg-label-primary me-1">진행중</span></c:if>
-									<c:if test="${salesInquirySearch.sales_status == 1}">  <button class="btn btn-outline-primary inbound-btn" type="button" data-pur_date="${purList.pur_date}" data-custcode="${purList.custcode}">
-                                  출고
-                </button></c:if>
+									<c:if test="${salesInquirySearch.sales_status == 1}">  <button class="btn btn-outline-primary outbound-btn" type="button" data-pur_date="${listSalesInquiry.sales_date}" data-custcode="${listSalesInquiry.custcode}">
+					                                  출고
+					                </button></c:if>
 									<c:if test="${salesInquirySearch.sales_status == 2}"><span class="badge bg-label-danger  me-1">취소</span></c:if>
 									<c:if test="${salesInquirySearch.sales_status == 3}">입고완료</c:if>
 								</td>
@@ -229,7 +228,7 @@ function handleInboundButtonClick() {
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
-                        <input class="form-control" type="month" id="inboundMonth" name="inboundMonth" >
+                        <input class="form-control" type="month" id="outboundMonth" name="outboundMonth" >
                     </div>
 <!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
@@ -257,7 +256,6 @@ function handleInboundButtonClick() {
                                     <td class="text-center">품명</td>
                                     <td class="text-center">업체명</td>
                                     <td class="text-center">수량</td>
-                                    <td class="text-center">담당자</td>
                                     <td class="text-center">등록일</td>
                                 </tr>
                             </thead>

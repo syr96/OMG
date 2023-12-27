@@ -296,13 +296,17 @@ function handleInboundButtonClick() {
     </div>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card mb-4">
-            <h5 class="card-header">입고내역</h5>
+            <h5 class="card-header">입고관리</h5>
             <div class="card-body">
-                <div class="row">
+                <div class="row align-items-end" style="padding-left: 23px;">
                     <div class="mb-3 col-md-3">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="inboundMonth" name="inboundMonth" >
                     </div>
+                  <div class="mb-3 col-md-3">
+                     
+                 <button class="btn btn-outline-primary" type="button" onclick="srch()">마감</button>
+                 </div>
 <!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
                         <select id="IO_Type" class="select2 form-select">
@@ -316,7 +320,7 @@ function handleInboundButtonClick() {
 
             <!-- 재고리스트 -->
             <div class="card">
-                <h5 class="card-header">입고내역</h5>
+                <h5 class="card-header">입고리스트</h5>
                 <div class="card-body">
                      <div class="table-responsive text-nowrap" style="height:500px;" >
                         <table class="table table-bordered" id="inventoryTable">
@@ -406,6 +410,8 @@ function handleInboundButtonClick() {
 		var day = ('0' + date.getDate()).slice(-2);
 		return year + '/' + month + '/' + day;
 	}
+	
+	
 </script>
 </body>
 </html>

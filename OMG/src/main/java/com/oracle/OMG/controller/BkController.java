@@ -49,6 +49,7 @@ public class BkController {
 		MMemberS.getLoggedInId();
 		
 		System.out.println("BkController logIn Start...");
+		log.info("BkController logIn Start...");
 		
 		return "logIn";
 	}

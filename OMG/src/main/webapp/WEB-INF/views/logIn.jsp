@@ -104,31 +104,51 @@
 	    
 	    
 	    
-	    // 쿠키 설정 함수
+	    // 쿠키 설정 함수: 이름, 값, 만료일, 유효경로를 설정해줍니다
 	    function setCookie(name, value, days) {
-	    	
-	    	// 현재 날짜에 만료기간을 더한 날짜를 계산
+			
+	    	// 현재 날짜 가져오기
 			const expirationDate = new Date();
+	    	// 현재 날짜에 만료기간을 더한 날짜를 계산
 			expirationDate.setDate(expirationDate.getDate() + days);
 			
-			// 만료 기간이 있는 경우, expires 에 값을 설정하고, 그렇지 않으면 빈 문자열을 사용
+			// 		만료 기간이 있는 경우, expires 에 값을 설정하고, 그렇지 않으면 빈 문자열을 사용				  ECMAScript(이큐마스크립트)는 JS가 어떻게 동작해야 하는지 표준화를 위해 규격을 정의한 문서
+			//													   GMT(그리니치 평균시)는 현재 사용 중인 ECMAScript 표준에서 권장 X
+			//													   UTC(협정 세계 시)형식의 문자열로 변환 
 			const expires = days ? '; expires=' + expirationDate.toUTCString() : '';	// ${expirationDate.toUTCString()}'
 			
-			// 쿠키에 아이디 저장
+			// 쿠키에 아이디 저장	  1.이름			 2.값	3.만료날짜		  유효경로 '/' -> 전체 사이트에 쿠키 유효		
 			document.cookie =  name + '=' + value + expires + '; path=/';	// '${name}=${value}${expires}; path=/';
 	    }
 	    
 	    
 	    
-	    // 쿠키 가져오기 함수
+		// 쿠키에서 특정 이름(name)의 쿠키 값을 가져오는 함수: 쿠키 문자열에서 쿠키명 name과 '='를 빼고 쿠키 값만 돌려줍니다
 	    function getCookie(name) {
+	    	
+	    	// 현재 페이지의 모든 쿠키를 문자열로 가져와 ';'로 나눠  저장
+	    	//				document.cookie: 현재 페이지의 모든 쿠키(키-값) 정보를 담고 있는 객체
+	    	//								split(';'): 모든 쿠키를 ';' 기준으로 나눠 배열로 저장
 	    	const cookies = document.cookie.split(';');
+	    	
+	    	// 모든 쿠키를 순회하며 특정 이름의 쿠키를 찾음
 	    	for (let i = 0; i < cookies.length; i++) {
+	    		
+	    		// 각 쿠키를 앞뒤 공백을 제거하고 변수 cookie에 저장
+	    		//						  trim: 문자열의 앞뒤 공백 제거하는 함수
 	    		const cookie = cookies[i].trim();
+	    		
+	    		// 현재 쿠키가 특정 이름으로 시작하는지 확인
 	    		if (cookie.startsWith(name + '=')) {
+	    			
+	    			// 쿠키 값의 시작 인덱스(name.length + 1)부터 끝까지의 부분 문자열 반환
+	    			//			  substring: 문자열의 일부분을 추출하는 메서드
+	    			//						name.length + 1: 쿠키명과 '=' 다음의 문자열(쿠키값)을 추출하기 위한 시작 인덱스
 	    			return cookie.substring(name.length + 1);
 	    		}
 	    	}
+	    	
+	    	// 찾는 쿠키가 없으면 null 반환
 	    	return null;
 	    }
 	    
@@ -168,6 +188,12 @@
 					// 로컬 스토리지에도 아이디 저장
 					localStorage.setItem(inputId, $(inputId).val());
 					
+					// 									쿠키														로컬 스토리지
+					// 데이터 전송: HTTP 요청과 함께 서버로 전송, 서버와 클라이언트 간의 통신에 주로 사용			서버로 자동 전송 X, JS 수동 조작으로 브라우저 내에서 데이터 저장 및 검색
+					// 용량:		도메인당 제한(약 4KB). 											도메인당 약 5MB, 대량의 데이터 저장
+					// 수명:		만료 기간이 있어 일정 기간 동안만 유효. 설정 안하면 브라우저 세션 동안만 지속			브라우저 닫아도 로컬 스토리지에 저장된 데이터는 계속 유지
+					// 보안:		HttpOnly 플래그를 사용하면 JS에서 쿠키에 접근을 방지할 수 있다				쿠키보다 덜 보안적, JS 코드로 쉽게 접근 -> 중요 정보 저장은 피하는 게 좋다	
+					
 				} else {
 					
 					// 쿠키에서 아이디 제거
@@ -175,6 +201,7 @@
 					
 					// document.cookie = `${inputId}=false; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
 					localStorage.removeItem(inputId);
+					
 				}
 				
 				// Remember Me 체크박스가 체크된 경우
@@ -197,11 +224,6 @@
 					
 					// 로컬 스토리지에서도 아이디 제거
 					//localStorage.removeItem(inputId);
-					// 									쿠키														로컬 스토리지
-					// 데이터 전송: HTTP 요청과 함께 서버로 전송, 서버와 클라이언트 간의 통신에 주로 사용			서버로 자동 전송 X, JS 수동 조작으로 브라우저 내에서 데이터 저장 및 검색
-					// 용량:		도메인당 제한(약 4KB). 											도메인당 약 5MB, 대량의 데이터 저장
-					// 수명:		만료 기간이 있어 일정 기간 동안만 유효. 설정 안하면 브라우저 세션 동안만 지속			브라우저 닫아도 로컬 스토리지에 저장된 데이터는 계속 유지
-					// 보안:		HttpOnly 플래그를 사용하면 JS에서 쿠키에 접근을 방지할 수 있다				쿠키보다 덜 보안적, JS 코드로 쉽게 접근 -> 중요 정보 저장은 피하는 게 좋다	
 				//}
 			}
 			
