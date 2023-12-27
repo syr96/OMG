@@ -16,6 +16,13 @@ public class ShMemberServiceImpl implements ShMemberService {
 	private final ShMemberDao md;
 	
 	@Override
+	public Member mainMember(int memId) {
+		System.out.println("memberService mainMember() Start");
+		Member member = md.mainMember(memId);
+		return member;
+	}
+	
+	@Override
 	public String monthTotalSale() {
 		System.out.println("memberService monthTotalSale() Start");
 		String monthTotalSale = md.monthTotalSale();
@@ -27,6 +34,13 @@ public class ShMemberServiceImpl implements ShMemberService {
 		System.out.println("memberService monthTotalPurchase() Start");
 		String monthTotalPurchase = md.monthTotalPurchase();
 		return monthTotalPurchase;
+	}
+	
+	@Override
+	public List<Member> mainTeamList(int memId) {
+		System.out.println("memberService mainTeamList() Start");
+		List<Member> teamMember = md.mainTeamList(memId);
+		return teamMember;
 	}
 	
 	@Override
@@ -112,5 +126,6 @@ public class ShMemberServiceImpl implements ShMemberService {
 		int result = md.detailMember(member);
 		return result;
 	}
+
 
 }
