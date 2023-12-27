@@ -34,7 +34,27 @@ public class ShController {
 	
 	@RequestMapping(value = "/")
 	public String main() {
+		
 		return "main";
+	}
+	
+	//메인화면 해당 월 매입 출력
+	@ResponseBody
+	@RequestMapping(value = "monthTotalPurchase", method = RequestMethod.POST)
+	public String monthTotalPurchase() {
+		System.out.println("shController monthTotalPurchase() Start");
+		String monthTotalPurchase = ms.monthTotalPurchase();
+		System.out.println(monthTotalPurchase);
+		return monthTotalPurchase;
+	}
+	
+	//메인화면 해당 월 매출 출력
+	@ResponseBody
+	@RequestMapping(value = "monthTotalSale", method = RequestMethod.POST)
+	public String monthTotalSale() {
+		System.out.println("shController monthTotalSale() Start");
+		String monthTotalSale = ms.monthTotalSale();
+		return monthTotalSale;
 	}
 
 	@RequestMapping(value = "memberR")
@@ -201,6 +221,16 @@ public class ShController {
 		return "sh/memberList";
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "selectStatus")
+	public HashMap<String, Object> selectStatus() {
+		System.out.println("shController selectStatus() Start");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<Member> statusList = ms.selectStatus();
+		System.out.println("statusList=>"+statusList);
+		result.put("statusList", statusList);
+		return result;
+	}
 	
 	//사원 목록 검색창
 	@RequestMapping(value = "memberRequirement", method = RequestMethod.GET)

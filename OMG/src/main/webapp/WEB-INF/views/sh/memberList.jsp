@@ -19,7 +19,37 @@
               <div class="navbar-nav align-items-center">
                 <div class="nav-item d-flex align-items-center">
                   <i class="bx bx-search fs-4 lh-0"></i>
+                  <select class="form-select" id="selectStatus" style="width: 100px;"/>
                   <script type="text/javascript">
+                  	$(document).click(function(){
+                  		$.ajax({
+                  			type : 'POST',
+                  			url : "selectStatus",
+                  			dataType: "TEXT",
+                  	        success : function(result){
+                  	       // 서버에서 받은 데이터(result)에서 mem_status 값만 추출
+                  	            var statusList = result.statusList.map(function(item) {
+                  	                return item.mem_status;
+                  	            });
+								
+                  	       		console.log("ajax->"+statusList);
+                  	       		
+                  	            // 기존 옵션 제거
+                  	            $('#selectStatus').empty();
+
+                  	          $('#selectStatus').append("<option value ="+ "" + ">" + "전체" + "</option>");
+                  	        	for(var i = 0; i < statusList.length; i++){
+                  	        		var statusText = getStatusText(statusList[i]);
+                  	        		$('#selectStatus').append("<option value ="+ result.statusList[i].mem_status + ">" + statusText + "</option>");
+                  	        	}
+                  	        },
+                  	        //에러 메시지 출력
+                  	      error:function(request, status, error){
+                  			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                  	      }
+                  		});
+                  	});
+                  	
                  	// mem_status 값에 따라 텍스트 반환
                   	function getStatusText(status) {
                   	    switch (status) {

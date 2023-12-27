@@ -27,7 +27,8 @@
                 <div data-i18n="Analytics">Home</div>
               </a>
             </li>
-
+			
+			<c:if test="${sessionScope.mem_dept_md == 101}">
 			<li class="menu-header small text-uppercase">
               <span class="menu-header-text">사원 관리</span>
             </li>
@@ -43,7 +44,8 @@
                 <div data-i18n="Form Elements">사원 등록</div>
               </a>
             </li>
-
+			</c:if>
+			
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">제품 관리</span>
             </li>
@@ -53,12 +55,14 @@
                 <div data-i18n="Account Settings">제품 조회</div>
               </a>
             </li>
+            <c:if test="${sessionScope.mem_dept_md == 104 || sessionScope.mem_dept_md == 105}">
             <li class="menu-item">
               <a href="/item/create" class="menu-link">
               	<i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">제품 등록</div>
               </a>
             </li>
+            </c:if>
             <!-- WareHouse -->
             <!--Customer  -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">거래처 관리</span></li>
@@ -158,22 +162,22 @@
 <!-- 				</li> -->
 				<li class="menu-item">
               <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                href="https://github.com/syr96/OMG"
                 target="_blank"
                 class="menu-link"
               >
                 <i class="menu-icon tf-icons bx bx-support"></i>
-                <div data-i18n="Support">Support</div>
+                <div data-i18n="Support">Github</div>
               </a>
             </li>
             <li class="menu-item">
               <a
-                href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
+                href="https://www.notion.so/OMG-ver-1-cde90b0237404add997afd8ab99bb766"
                 target="_blank"
                 class="menu-link"
               >
                 <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Documentation">Documentation</div>
+                <div data-i18n="Documentation">Notion</div>
               </a>
             </li>
           </ul>

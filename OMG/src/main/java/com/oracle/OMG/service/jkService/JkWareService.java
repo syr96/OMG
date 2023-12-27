@@ -26,11 +26,20 @@ public interface JkWareService {
 	
 	// 발주 조회
 	List<Purchase>				purMonthData(String month);
-	Map<String, String> 		callInboundPD(String purDate, int custCode);
+	
 	List<Warehouse> 			inboundList();
 	int 						inboundTotal(Warehouse warehouse);
+	
+	
+	// 입고 출고 프로시져 호출
+	Map<String, String> 		callInboundPD(String purDate, int custCode);
+	Map<String, String> 		callOutboundPD(String salesDate, int custCodeStr);
+	
+	
+	//입출고 조회
+	List<Warehouse> 			monthOutbound(String outboundMonth);
 	List<Warehouse> 			monthInbound(String inboundMonth);
-
+	
 	
 
 	
