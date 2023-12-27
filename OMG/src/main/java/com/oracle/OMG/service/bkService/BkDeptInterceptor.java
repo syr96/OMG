@@ -23,14 +23,13 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 	// AntPathMatcher는 스프링 프레임워크에서 제공하는 클래스로, 문자열 기반의 경로 패턴을 처리하는 데 사용됩니다
 	private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 	
-	
-	
 	static {
-		// 각 권한에 대한 허용된 부서별 페이지 등록				   /**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치 -> 오류 확인하기
-		 DEPT_PAGE_MAP.put(101, new String[] {"/memberL/**", "/memberR/**", "/memberU/**"});		// 승현 - 사원관리
-		 DEPT_PAGE_MAP.put(104, new String[] {"/item/create", "/sales/salesInsertForm", "/sales/salesInquiry"});	// 유림 - 제품관리
-		 DEPT_PAGE_MAP.put(105, new String[] {"/item/create"});			// 유림 - 제품관리
+		 // 각 권한에 대한 허용된 부서별 페이지 등록		  /**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치
+		 DEPT_PAGE_MAP.put(999, new String[] {"/**"});					// 모든 페이지에 대한 권한
 		 DEPT_PAGE_MAP.put(100, new String[] {"/customerSales/**"});	// 연아 - 거래처관리
+		 DEPT_PAGE_MAP.put(101, new String[] {"/memberL/**", "/memberR/**", "/memberU/**"});						// 승현 - 사원관리
+		 DEPT_PAGE_MAP.put(104, new String[] {"/item/create", "/sales/salesInsertForm", "/sales/salesInquiry"});	// 유림 - 제품관리, 준오 - 판매서 등록 및 조회
+		 DEPT_PAGE_MAP.put(105, new String[] {"/item/create"});			// 유림 - 제품관리
 	}
 	
 	
@@ -60,6 +59,7 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 		System.out.println("session.getAttribute(\"mem_id\") -> " + session.getAttribute("mem_id"));
 		System.out.println("allowedPages -> " + Arrays.toString(allowedPages));
 		
+		
 		// 세션에 담긴 사원 번호가 없다면 홈으로 이동
 		if(session.getAttribute("mem_id") == null) {
 			System.out.println("세션에 담긴 사원 정보 없음");
@@ -79,6 +79,7 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 				System.out.println("부서 권한 확인됨");
 				return true;
 			}
+			
 		} 
 	}
 	
