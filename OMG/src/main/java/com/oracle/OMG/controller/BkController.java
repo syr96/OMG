@@ -172,7 +172,7 @@ public class BkController {
 				
 				System.out.println("BkController login session -> " + session);
 				// 메인 페이지로 
-				return "/main";
+				return "redirect:/";
 				
 			} else {
 				// 2. 퇴사한 사원
