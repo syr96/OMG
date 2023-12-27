@@ -165,6 +165,7 @@ public class BkController {
 				session.setAttribute("mem_dept_lg", loginResult.getMem_dept_lg());
 				session.setAttribute("mem_dept_md", loginResult.getMem_dept_md());
 				session.setAttribute("mem_right", loginResult.getMem_right());
+				session.setAttribute("mem_img", loginResult.getMem_img());
 				
 				
 				// 세션에 관리자 권한 추가할 지 -> 보류
