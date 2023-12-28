@@ -40,18 +40,30 @@
 	
 	
 	<select id="joSearchSalesInquiry" parameterType="SalesDetail" resultType="SalesDetail">
+	
 		SELECT *
-		FROM
+    	FROM 
 		(
-			SELECT ROWNUM rn, x.*
-			FROM
-			(
-				SELECT sd.*, s.title, s.sales_status, c.company, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
-				FROM   sales_detail sd, sales s, customer c, item i
-				WHERE  sd.custcode = c.custcode
-				AND    sd.code = i.code
-				AND    sd.sales_date = s.sales_date
-				<choose>
+		    SELECT ROWNUM rn, x.*
+		    FROM
+		    (
+                SELECT sd.*, i.name, s.title, s.sales_status, c.company, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
+                FROM item i, sales s, customer c,
+                (
+                    SELECT subquery.*
+                    FROM 
+                    (
+                      SELECT sales_date, custcode, code, qty, price,
+                             ROW_NUMBER() OVER (PARTITION BY sales_date, custcode ORDER BY code) AS row_num
+                      FROM sales_detail
+                    ) subquery
+                    WHERE row_num = 1
+                ) sd
+               WHERE sd.code = i.code
+               AND   sd.sales_date = s.sales_date
+               AND   sd.custcode = s.custcode
+               AND   sd.custcode = c.custcode
+               <choose>
 					<when test="search == 's_company'">
 						AND c.company like '%' || #{keyword} || '%'
 					</when>
@@ -62,11 +74,11 @@
 						AND c.company like '%'
 					</otherwise>		
 				</choose>
-		 	 )	x 
-		  )
-		  WHERE rn BETWEEN #{start} and #{end}
+               ORDER BY sd.sales_date
+            ) x
+    	)        
+		WHERE rn BETWEEN #{start} and #{end}
 	</select>
-	
 	
 	<select id="joGetSearchTotalSalesInquiry" parameterType="salesDetail" resultType="int">
 		SELECT count(*)
@@ -100,21 +112,34 @@
 		
 	<select id="joSortSalesInquiry" parameterType="SalesDetail" resultType="SalesDetail">
 		SELECT *
-		FROM
+    	FROM 
 		(
-			SELECT ROWNUM rn, x.*
-			FROM   
-			(
-				SELECT sd.*, s.title, s.sales_status, c.company, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
-				FROM   sales_detail sd, sales s, customer c, item i
-				WHERE  sd.custcode = c.custcode
-				AND    sd.code = i.code
-				AND    sd.sales_date = s.sales_date
-				AND    s.sales_status = #{sales_status}
-				ORDER BY sd.sales_date
-			 ) x
-		 )
-		 WHERE rn BETWEEN #{start} AND #{end}
+		    SELECT ROWNUM rn, x.*
+		    FROM
+		    (
+                SELECT sd.*, i.name, s.title, s.sales_status, c.company, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
+                FROM item i, sales s, customer c,
+                (
+                    SELECT subquery.*
+                    FROM 
+                    (
+                      SELECT sales_date, custcode, code, qty, price,
+                             ROW_NUMBER() OVER (PARTITION BY sales_date, custcode ORDER BY code) AS row_num
+                      FROM sales_detail
+                    ) subquery
+                    WHERE row_num = 1
+                ) sd
+               WHERE sd.code = i.code
+               AND   sd.sales_date = s.sales_date
+               AND   sd.custcode = s.custcode
+               AND   sd.custcode = c.custcode
+               AND   s.sales_status = #{sales_status}
+               ORDER BY sd.sales_date
+            ) x
+    	)        
+		WHERE rn BETWEEN #{start} and #{end}
+	
+	
 	</select>
 		
 	

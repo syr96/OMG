@@ -2,10 +2,13 @@ package com.oracle.OMG.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -237,71 +240,118 @@ public class JoController {
 	}
 	
 		
-	
-	  // 판매서 입력
-	  @RequestMapping("salesInsert") 
-	  public String salesInsert(SalesDetail sales, String currentPage, Model model) { 
-		  UUID transactionId = UUID.randomUUID();
-		  int result = 0;
-	  
-		  log.info("sales -> " + sales);
-		  
-		  try { 
-			  log.info("[{}]{}:{}", transactionId, "salesInsert", "Start"); 
-			  result = jss.insertSales(sales); 
-			  log.info("[{}]{}:{}", transactionId, "result(insertSales)", result); 
-			  result = jss.insertSalesDetail(sales);
-			  log.info("[{}]{}:{}", transactionId, "result(insertSalesDetail)", result);
-		  
-		  } catch (Exception e) { 
-			  log.info("[{}]{}:{}", transactionId, "salesInsert Exception", e.getMessage());
-		  
-		  } finally { 
-			  log.info("[{}]{}:{}", transactionId, "salesInsert", "End");
-		  }
-		  
-		  if(result > 0) { 
-			  return "redirect:salesInquiry"; 
-		  } else {
-			  model.addAttribute("msg", "입력실패 확인해보세요"); 
-			  return "forward:salesInsertForm"; 
-	  }
-	  
-	  }
-	 
-	
 	/*
-	 * @PostMapping("salesInsert")
+	 * // 판매서 입력
 	 * 
-	 * @ResponseBody public String salesInsert(Sales sales, List<SalesDetail>
-	 * salesDetails, Model model) { UUID transactionId = UUID.randomUUID(); int
-	 * salesResult = 0; int salesDetailResult = 0;
-	 * System.out.println(sales.getSales_date());
-	 * System.out.println(sales.getCustcode()); System.out.println("details->" +
-	 * salesDetails);
+	 * @RequestMapping("salesInsert") public String salesInsert(SalesDetail sales,
+	 * String currentPage, Model model) { UUID transactionId = UUID.randomUUID();
+	 * int result = 0;
 	 * 
+	 * log.info("sales -> " + sales);
 	 * 
-	 * log.info("[{}]{}:{}", transactionId, "salesInsert", "Start");
-	 * 
-	 * try {
-	 * 
-	 * log.info("sales -> " + sales); log.info("SalesDetail -> " + salesDetails );
-	 * salesResult = jss.insertSales(sales);
-	 * 
-	 * // salesDetails에 대한 처리 추가 for (SalesDetail salesDetail : salesDetails) {
-	 * salesDetailResult = jss.insertSalesDetail(salesDetail); }
-	 * 
-	 * log.info("[{}]{}:{}", transactionId, "salesInsert", "Success"); return
-	 * "redirect:salesInquiry";
+	 * try { log.info("[{}]{}:{}", transactionId, "salesInsert", "Start"); result =
+	 * jss.insertSales(sales); log.info("[{}]{}:{}", transactionId,
+	 * "result(insertSales)", result); result = jss.insertSalesDetail(sales);
+	 * log.info("[{}]{}:{}", transactionId, "result(insertSalesDetail)", result);
 	 * 
 	 * } catch (Exception e) { log.info("[{}]{}:{}", transactionId,
-	 * "salesInsert Exception", e.getMessage()); model.addAttribute("msg",
-	 * "입력 실패 확인해보세요"); return "forward:salesInsertForm";
+	 * "salesInsert Exception", e.getMessage());
 	 * 
-	 * } finally { log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); } }
+	 * } finally { log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); }
+	 * 
+	 * if(result > 0) { return "redirect:salesInquiry"; } else {
+	 * model.addAttribute("msg", "입력실패 확인해보세요"); return "forward:salesInsertForm"; }
+	 * 
+	 * }
 	 */
-	  
+	
+	
+	 @PostMapping("salesInsert")
+	 @ResponseBody
+	 public String salesInsert(@RequestBody @Valid Sales sales) { 
+		  UUID transactionId = UUID.randomUUID(); 
+		  int salesResult = 0; 
+		  
+		  log.info("[{}]{}:{}", transactionId, "salesInsert", "Start");
+		  
+		  try {
+			  log.info("sales -> " + sales); 
+			
+			  salesResult = jss.insertSales(sales);
+			  
+			  log.info("[{}]{}:{}", transactionId, "salesInsert", "Success"); 
+			  return "1";
+			  
+		  } catch (Exception e) { 
+			  log.info("[{}]{}:{}", transactionId, "salesInsert Exception", e.getMessage()); 
+			  return "0";
+		  
+		  } finally { 
+			  log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); 
+		  } 
+	  }
+
 	 
+	 @PostMapping("salesDetailInsert")
+	 @ResponseBody
+	 public String salesDetailInsert(@RequestBody @Valid ArrayList<SalesDetail> salesDetails) { 
+		  UUID transactionId = UUID.randomUUID(); 
+	 
+		  int salesDetailResult = 0;
+		  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "Start");
+		  	      
+		  try {
+			  for (SalesDetail salesDetail : salesDetails) {
+				  log.info("salesDetailInsert -> " + salesDetail);
+				  salesDetailResult = jss.insertSalesDetail(salesDetail);
+			  }
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "Success"); 
+			  return "1";
+			  
+		  } catch (Exception e) { 
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert Exception", e.getMessage()); 
+			  return "0";
+		  
+		  } finally { 
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "End"); 
+		  } 
+	  }
+	 
+	 
+	 // 원본
+	 @PostMapping("salesInsert0")
+	 @ResponseBody
+	 public String salesInsert0(@RequestBody Sales sales, ArrayList<SalesDetail> salesDetails, Model model) { 
+		  UUID transactionId = UUID.randomUUID(); 
+		  int salesResult = 0; 
+		  int salesDetailResult = 0;
+		  		  		  		  
+		  log.info("[{}]{}:{}", transactionId, "salesInsert", "Start");
+		  
+		  try {
+			  log.info("sales.sales_date -> " + sales.getSales_date());
+			  log.info("sales -> " + sales); 
+			  log.info("SalesDetail -> " + salesDetails );
+			  salesResult = jss.insertSales(sales);
+		  
+			  // salesDetails에 대한 처리 추가 
+			  for (SalesDetail salesDetail : salesDetails) {
+			  salesDetailResult = jss.insertSalesDetail(salesDetail); 
+			  }
+			  
+			  log.info("[{}]{}:{}", transactionId, "salesInsert", "Success"); 
+			  return "redirect:/jo/salesInquiry";
+			  
+		  } catch (Exception e) { 
+			  log.info("[{}]{}:{}", transactionId, "salesInsert Exception", e.getMessage()); 
+			  model.addAttribute("msg", "입력 실패 확인해보세요"); 
+			  return "forward:salesInsertForm";
+		  
+		  } finally { 
+			  log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); 
+		  } 
+	  }
+		  	 
 	  
 	// 판매서 수정
 	@RequestMapping("salesUpdateForm")

@@ -174,8 +174,8 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	public int insertSales(SalesDetail sales) {
-	// public int insertSales(Sales sales) {
+	// public int insertSales(SalesDetail sales) {
+	public int insertSales(Sales sales) {
 		int result = 0;
 		
 		try {

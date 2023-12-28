@@ -37,7 +37,7 @@
     	}
     	
     	function deleteSelected() {
-    	    // 선택된 체크박스의 sales_date, custcode 값들을 배열에 담기
+    	    // 선택된 체크박스의 sales_date, custcode, code 값들을 배열에 담기
     	    const selectedSalesInfos = [];
     	    const checkboxes = document.querySelectorAll('input[name="rowCheck"]:checked');
     	    for (const checkbox of checkboxes) {
@@ -47,7 +47,7 @@
     	        selectedSalesInfos.push({ salesDate, custcode, code });
     	    }
 
-    	    // sales_date, custcode 값들을 서버로 전송하여 삭제 요청
+    	    // sales_date, custcode, code 값들을 서버로 전송하여 삭제 요청
     	    if (selectedSalesInfos.length > 0) {
     	        // 확인 대화상자 표시
     	        if (confirm("선택된 항목을 삭제하시겠습니까?")) {
@@ -138,9 +138,10 @@
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
-							<th scope="col" style="text-align: center;">코드</th>
+							<th scope="col" style="width: 80px; text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
-							<th scope="col" style="text-align: center;">상태</th>
+							<th scope="col" style="width: 80px; text-align: center;">상태</th>
+							
 						</tr>
 					</thead>
 					<tbody>
