@@ -10,11 +10,12 @@
 		    w.code ,
 		    w.cnt,
 		    w.ym,
+		    w.inven,
 		    pd.price
 		FROM
 		    item i
 		LEFT JOIN
-		    warehouse w ON i.code = w.code AND w.inven = 1
+		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code
 	</select>
@@ -33,11 +34,12 @@
 		    w.code ,
 		    w.cnt,
 		   	w.ym,
+		   	 w.inven,
 		    pd.price
 		FROM
 		    item i
 		LEFT JOIN
-		    warehouse w ON i.code = w.code AND w.inven = 1
+		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
@@ -53,11 +55,12 @@
 		    w.code ,
 		    w.cnt,
 		    w.ym,
+		    w.inven,
 		    pd.price
 		FROM
 		    item i
 		LEFT JOIN
-		    warehouse w ON i.code = w.code AND w.inven = 1
+		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
@@ -72,11 +75,12 @@
 		    w.code ,
 		    w.cnt,
 		    w.ym,
+		    w.inven,
 		    pd.price
 		FROM
 		    item i
 		LEFT JOIN
-		    warehouse w ON i.code = w.code AND w.inven = 1
+		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
@@ -95,7 +99,7 @@
 		FROM
 		    item i
 		LEFT JOIN
-		    warehouse w ON i.code = w.code AND w.inven = 1
+		    warehouse w ON i.code = w.code
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
