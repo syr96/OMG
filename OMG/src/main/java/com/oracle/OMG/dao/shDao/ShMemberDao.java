@@ -3,6 +3,8 @@ package com.oracle.OMG.dao.shDao;
 import java.util.List;
 
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Paging;
+import com.oracle.OMG.dto.Warehouse;
 
 public interface ShMemberDao {
 
@@ -22,4 +24,6 @@ public interface ShMemberDao {
 	String 		 monthTotalPurchase();
 	List<Member> mainTeamList(int memId);
 	Member 		 mainMember(int memId);
+	List<Warehouse> 	 mainInventory(Warehouse warehouse);
+	int 		 mainInventoryCount();
 }

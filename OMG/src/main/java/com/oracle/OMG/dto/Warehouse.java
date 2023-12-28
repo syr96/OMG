@@ -29,4 +29,8 @@ public class Warehouse {
     private int 	sales_status;
     private String	ref;
 	private int 	custcode;
+	
+	//페이징용
+    private int start;
+    private int end;
 	}

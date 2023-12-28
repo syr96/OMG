@@ -29,21 +29,21 @@
             </li>
 			
 			<c:if test="${sessionScope.mem_dept_md == 101}">
-			<li class="menu-header small text-uppercase">
-              <span class="menu-header-text">사원 관리</span>
-            </li>
-            <li class="menu-item">
-              <a href="/memberL?mem_id=${sessionScope.mem_id }" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">사원 조회</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="/memberR" class="menu-link">
-              	<i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">사원 등록</div>
-              </a>
-            </li>
+				<li class="menu-header small text-uppercase">
+	              <span class="menu-header-text">사원 관리</span>
+	            </li>
+	            <li class="menu-item">
+	              <a href="/memberL" class="menu-link">
+	                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+	                <div data-i18n="Account Settings">사원 조회</div>
+	              </a>
+	            </li>
+	            <li class="menu-item">
+	              <a href="/memberR" class="menu-link">
+	              	<i class="menu-icon tf-icons bx bx-detail"></i>
+	                <div data-i18n="Form Elements">사원 등록</div>
+	              </a>
+	            </li>
 			</c:if>
 			
             <li class="menu-header small text-uppercase">
