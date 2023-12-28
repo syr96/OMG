@@ -185,7 +185,7 @@ function formatAmount(amount) {
            <thead class="fixed-thead"> 
                    <tr>
                      <th style="width: 60.508px;">기준월</th>
-                     <th style="width: 119.508px;">입고처리일</th> 
+                     <th style="width: 119.508px;">입고처리일</th>  
                      <th style="width: 100px;">제품코드</th>
                      <th style="width: 119.508px;">제품명</th>
                      <th style="width: 119.508px;">기초재고수량</th>
@@ -199,7 +199,7 @@ function formatAmount(amount) {
    	  		  <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">   
 					 <tr>
                        <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
-                        <td>
+                         <td>
                             <c:choose>
                                 <c:when test="${empty warehouse.reg_date}">
                                     -
@@ -208,7 +208,7 @@ function formatAmount(amount) {
                                     <fmt:formatDate value="${warehouse.reg_date}" pattern="yyyy-MM-dd" />
                                 </c:otherwise>
                             </c:choose>
-                        </td>
+                        </td> 
                   	 <td>${warehouse.code}</td>
                   	 <td>${warehouse.name}</td>		
 					<!-- 기초재고수량 -->
@@ -225,8 +225,7 @@ function formatAmount(amount) {
 					</td>
 					<!-- 기말재고수량 -->
 					<td style="text-align: right;">
-					    <c:choose>
-					        
+					    <c:choose>				        
 					        <c:when test="${warehouse.inven == 1}">
 					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
 					        </c:when>      
@@ -237,7 +236,10 @@ function formatAmount(amount) {
 					</td>
                      <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
                      <td style="text-align: right;"> <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/></td>
-                    </tr>                   	
+
+                    
+                    </tr> 
+                                      	
 				</c:forEach>		
                 </tbody>
               </table>
