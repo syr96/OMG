@@ -28,7 +28,7 @@
               </a>
             </li>
 			
-			<c:if test="${sessionScope.mem_dept_md == 101}">
+			<c:if test="${sessionScope.mem_dept_md == 101 || sessionScope.mem_dept_md == 999}">
 				<li class="menu-header small text-uppercase">
 	              <span class="menu-header-text">사원 관리</span>
 	            </li>
