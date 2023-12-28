@@ -315,5 +315,22 @@ public class JkWareDaoImpl implements JkWareDao {
 		return monthOutbound;
 	}
 
+
+	@Override
+	public void callOutoundPD(String inboundMonth) {
+	    System.out.println("JkWareDaoImpl callOutoundPD start...");
+
+	    try {
+	        int updatedRows = session.update("callOutboundPD", inboundMonth);
+
+	        // 업데이트된 행의 수를 출력
+	        System.out.println("Updated rows: " + updatedRows);
+	    } catch (Exception e) {
+	        // 프로시저 호출 중 오류 처리
+	        e.printStackTrace();
+	    }
+	}
+
+
 	
 }

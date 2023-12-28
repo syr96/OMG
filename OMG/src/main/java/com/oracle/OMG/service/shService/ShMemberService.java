@@ -20,4 +20,6 @@ public interface ShMemberService {
 	List<Member> selectStatus();
 	String 		 monthTotalSale();
 	String 		 monthTotalPurchase();
+	List<Member> mainTeamList(int memId);
+	Member 		 mainMember(int memId);
 }

@@ -22,11 +22,7 @@
                         <div class="card-body">
                           <h5 class="card-title text-primary"><span class="fw-bold">${sessionScope.mem_name }</span>님 환영합니다 🎉</h5>
                           <p class="mb-4">
-                            You have done <span class="fw-bold">72%</span> more sales today. Check your new badge in
-                            your profile.
                           </p>
-
-                          <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
                         </div>
                       </div>
                       <div class="col-sm-5 text-center text-sm-left">
@@ -134,7 +130,7 @@
                   <div class="col-12 mb-4">
                       <div class="card">
                         <div class="card-body">
-                          <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                          <div class="d-flex justify-content-betFween flex-sm-row flex-column gap-3">
                             <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
                           
                           
@@ -145,8 +141,6 @@
                                 class="rounded"
                               />
                             </div>
-                            
-                            
                             
                               <div class="card-title">
                                 <h5 class="text-nowrap mb-2">금월 매출</h5>
@@ -393,25 +387,55 @@
                   </div>
                 </div>
                 <!--/ Expense Overview -->
-
-                <!-- 공지사항 -->
-                <div class="col-md-6 col-lg-4 order-2 mb-4" id="notice">
-                  
-                </div>
-                <!--/ 공지사항 -->
-              </div>
-            </div>
+                                <!-- Transactions --> 
+                <div class="col-md-6 col-lg-4 order-2 mb-4"> 
+                  <div class="card h-100"> 
+                    <div class="card-header d-flex align-items-center justify-content-between"> 
+                      <h5 class="card-title m-0 me-2">팀원 목록</h5> 
+                    </div> 
+                    <div class="table-responsive text-nowrap"> 
+	                  <table class="table"> 
+	                    <thead class="fixed-header"> 
+	                      <tr> 
+	                        <th>이름</th> 
+	                        <th></th> 
+	                        <th>직위</th> 
+	                        <th>직책</th> 
+	                      </tr> 
+	                    </thead> 
+	                    <tbody class="table-border-bottom-0" id="teamTableBody"> 
+	                    </tbody> 
+	                  </table> 
+	                </div> 
+	              </div> 
+                  </div> 
+                </div> 
+                <!--/ Transactions --> 
             <!-- / Content -->
 
 <%@ include file="common/footer.jsp" %>    
 <script type="text/javascript">
 	
 	$(document).ready(function(){
-		// 화면 로딩되면 공지사항 나타내기
-		showNotice();
-		
 		var purchase = document.getElementById("monthPurchase");
 		var sale = document.getElementById("monthSale");
+		var memId = ${sessionScope.mem_id}
+		
+		//팀원리스트
+		$.ajax({
+			url:"mainMember",
+			data : {memId : memId},
+			dataType : "json",
+			type : "POST",
+			success : function(member){
+				updateProfileCard(member);
+			},
+			//에러 메시지 출력
+			error:function(request, status, error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+		
 		//이번달 매입
 		$.ajax({
 			url:"monthTotalPurchase",
@@ -448,26 +472,116 @@
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 		});
+		
+		//팀원리스트
+		$.ajax({
+			url:"mainTeamList",
+			data : {memId : memId},
+			dataType : "json",
+			type : "POST",
+			success : function(response){
+				var teamList = response.teamMember;
+				$("#teamTableBody").empty();
+				for (var i = 0; i < teamList.length; i++) {
+	                   var team = teamList[i];
+	                   console.log(team.mem_posi_md);
+	                   $("#teamTableBody").append(
+	                       "<tr>" +
+	                       "<td> <img id='imgView' src='${pageContext.request.contextPath}/upload/sh/" +  team.mem_img + "' style='height: 30px; width: 30px;'></td>" +
+	                       "<td>" + team.mem_name + "</td>" +
+	                       "<td>" + positionMd(team.mem_posi_md) + "</td>" +
+	                       "<td>" + dutyMd(team.mem_duty_md) + "</td>" +
+	                       "</tr>"
+	                   );
+	               }
+			},
+			//에러 메시지 출력
+			error:function(request, status, error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
 	});
+	
+	function updateProfileCard(member){
+		if(member){
+			// 날짜 포맷팅 함수
+		    function formatDate(dateString) {
+		        // dateString을 Date 객체로 변환
+		        var date = new Date(dateString);
+		        // 원하는 날짜 형식으로 포맷
+		        var formattedDate = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+		        return formattedDate;
+		    }
+			
+			$(".card-body h5 .fw-bold").text(member.mem_name + " " + positionMd(member.mem_posi_md));
+			$(".card-body p").text("사원번호: " + member.mem_id + " / 부서: " + deptMd(member.mem_dept_md) + " / 직급: " +  dutyMd(member.mem_duty_md) + " / 입사일:"+ formatDate(member.mem_hiredate));
+		}
+	}
 	
 	//숫자를 원화 형식으로 변환하는 함수
 	function formatCurrency(amount) {
 		return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(amount);
-	}
-	
-	// 공지사항 출력
-	function showNotice() {
-		$.ajax(
-				{
-					url: "/main/mainNotice",
-					dataType: "html",
-					success: function(data) {
-						$("#notice").html(data);
-					}
-			
-			}
-		)
-	};
+		};
+
+	function deptMd(memDeptMd){ 
+		if(memDeptMd === 100){ 
+			return "회계팀"; 
+	    } else if (memDeptMd === 101) { 
+	        return "인사팀"; 
+	    } else if (memDeptMd === 102) { 
+	        return "영업1팀"; 
+	    } else if (memDeptMd === 103) { 
+	        return "영업2팀"; 
+	    } else if (memDeptMd === 104) { 
+	        return "물류1팀"; 
+	    } else if (memDeptMd === 105) { 
+	        return "물류2팀"; 
+	    } else if (memDeptMd === 106) { 
+	        return "CS1팀"; 
+	    } else if (memDeptMd === 107) { 
+	        return "CS2팀"; 
+	    } else if (memDeptMd === 999) { 
+	        return "관리자"; 
+	    } else { 
+	        return ""; // 다른 처리가 필요할 경우 추가 
+	    } 
+	};	 
+		 
+	function positionMd(teamPosiMd){ 
+		 if (teamPosiMd === 100) { 
+		        return "대표이사"; 
+		    } else if (teamPosiMd === 101) { 
+		        return "상무"; 
+		    } else if (teamPosiMd === 102) { 
+		        return "차장"; 
+		    } else if (teamPosiMd === 103) { 
+		        return "과장"; 
+		    } else if (teamPosiMd === 104) { 
+		        return "팀장"; 
+		    } else if (teamPosiMd === 105) { 
+		        return "팀원"; 
+		    } else { 
+		        return ""; 
+		    } 
+	}; 
+	 
+	function dutyMd(teamDutyMd){ 
+		 if (teamDutyMd === 100) { 
+		        return "CEO"; 
+		    } else if (teamDutyMd === 101) { 
+		        return "CFO"; 
+		    } else if (teamDutyMd === 102) { 
+		        return "본부장"; 
+		    } else if (teamDutyMd === 103) { 
+		        return "실장"; 
+		    } else if (teamDutyMd === 104) { 
+		        return "팀장"; 
+		    } else if (teamDutyMd === 105) { 
+		        return "팀원"; 
+		    } else { 
+		        return ""; 
+		    } 
+	}; 
 </script>    
 </body>
 </html>    

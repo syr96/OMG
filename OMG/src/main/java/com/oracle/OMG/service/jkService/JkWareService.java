@@ -35,10 +35,13 @@ public interface JkWareService {
 	Map<String, String> 		callInboundPD(String purDate, int custCode);
 	Map<String, String> 		callOutboundPD(String salesDate, int custCodeStr);
 	
+	// 마감 프로시저 호출
+	Map<String, String> 		callCloseMonth(String inboundMonth);
 	
 	//입출고 조회
 	List<Warehouse> 			monthOutbound(String outboundMonth);
 	List<Warehouse> 			monthInbound(String inboundMonth);
+	
 	
 	
 
