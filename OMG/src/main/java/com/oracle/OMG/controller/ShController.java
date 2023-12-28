@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,17 @@ public class ShController {
 		return "main";
 	}
 	
+	//메인화면 개인정보 출력
+	@ResponseBody
+	@RequestMapping(value = "mainMember", method = RequestMethod.POST)
+	public Member mainMember(@RequestParam("memId") int memId) {
+		System.out.println("shController mainMember() Start");
+		Member member = new Member();
+		member = ms.mainMember(memId);
+		System.out.println(member);
+		return member;
+	}
+	
 	//메인화면 해당 월 매입 출력
 	@ResponseBody
 	@RequestMapping(value = "monthTotalPurchase", method = RequestMethod.POST)
@@ -55,6 +67,18 @@ public class ShController {
 		System.out.println("shController monthTotalSale() Start");
 		String monthTotalSale = ms.monthTotalSale();
 		return monthTotalSale;
+	}
+	
+	//팀원 리스트 출력
+	@ResponseBody
+	@RequestMapping(value = "mainTeamList")
+	public Map<String, Object> mainTeamList(@RequestParam("memId") int memId,  Model model) {
+		System.out.println("shController teamList() Start");
+		System.out.println(memId);
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Member> teamMember = ms.mainTeamList(memId);
+		response.put("teamMember", teamMember);
+		return response;
 	}
 
 	@RequestMapping(value = "memberR")

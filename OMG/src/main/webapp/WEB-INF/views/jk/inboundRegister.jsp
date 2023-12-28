@@ -304,11 +304,7 @@ function handleInboundButtonClick() {
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="inboundMonth" name="inboundMonth" >
                     </div>
-                  <div class="mb-3 col-md-3">
-                     
-                 <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
-
-                 </div>
+                
 <!--                     <div class="mb-3 col-md-6">
                         <label for="html5-date-input" class="col-md-2 col-form-label">구분</label>
                         <select id="IO_Type" class="select2 form-select">

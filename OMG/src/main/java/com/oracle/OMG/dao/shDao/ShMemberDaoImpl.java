@@ -16,6 +16,18 @@ public class ShMemberDaoImpl implements ShMemberDao {
 	private final SqlSession session;
 	
 	@Override
+	public Member mainMember(int memId) {
+		System.out.println("memberDao mainMember() Start");
+		Member member = null;
+		try {
+			member = session.selectOne("shMainMember",memId);
+		} catch (Exception e) {
+			System.out.println("memberDao mainMember() Exception ->" + e.getMessage());
+		}
+		return member;
+	}
+	
+	@Override
 	public String monthTotalSale() {
 		System.out.println("memberDao monthTotalSale() Start");
 		String monthTotalSale = null;
@@ -37,6 +49,18 @@ public class ShMemberDaoImpl implements ShMemberDao {
 			System.out.println("memberDao monthTotalPurchase() Exception ->" + e.getMessage());
 		}
 		return monthTotalPurchase;
+	}
+	
+	@Override
+	public List<Member> mainTeamList(int memId) {
+		System.out.println("memberDao mainTeamList() Start");
+		List<Member> teamMember = null;
+		try {
+			teamMember = session.selectList("shMainTeamList",memId);
+		} catch (Exception e) {
+			System.out.println("memberDao mainTeamList() Exception ->" + e.getMessage());
+		}
+		return teamMember;
 	}
 	
 	//사원 등록 
@@ -189,5 +213,6 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		}
 		return result;
 	}
+
 
 }
