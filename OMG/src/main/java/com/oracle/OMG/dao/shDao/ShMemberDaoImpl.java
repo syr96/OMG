@@ -6,6 +6,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Paging;
+import com.oracle.OMG.dto.Warehouse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,30 @@ public class ShMemberDaoImpl implements ShMemberDao {
 			System.out.println("memberDao mainMember() Exception ->" + e.getMessage());
 		}
 		return member;
+	}
+	
+	@Override
+	public int mainInventoryCount() {
+		System.out.println("memberDao mainInventoryCount() Start");
+		int listTotal = 0;
+		try {
+			listTotal = session.selectOne("shMainInventoryCount");
+		} catch (Exception e) {
+			System.out.println("memberDao mainInventoryCount() Exception ->" + e.getMessage());
+		}
+		return listTotal;
+	}
+	
+	@Override
+	public List<Warehouse> mainInventory(Warehouse warehouse) {
+		System.out.println("memberDao mainInventory() Start");
+		List<Warehouse> warehouseList = null;
+		try {
+			warehouseList = session.selectList("shMainInventory",warehouse);
+		} catch (Exception e) {
+			System.out.println("memberDao mainInventory() Exception ->" + e.getMessage());
+		}
+		return warehouseList;
 	}
 	
 	@Override
@@ -213,6 +239,5 @@ public class ShMemberDaoImpl implements ShMemberDao {
 		}
 		return result;
 	}
-
 
 }

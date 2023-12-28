@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.oracle.OMG.dto.Member;
 import com.oracle.OMG.dto.Paging;
+import com.oracle.OMG.dto.Warehouse;
 import com.oracle.OMG.service.shService.ShMemberService;
 
 import lombok.Data;
@@ -48,6 +49,24 @@ public class ShController {
 		member = ms.mainMember(memId);
 		System.out.println(member);
 		return member;
+	}
+	
+	//메인화면 재고리스트 출력
+	@ResponseBody
+	@RequestMapping(value = "mainInventory", method = RequestMethod.POST)
+	public Map<String, Object> mainInventory(String currentPage) {
+		System.out.println("shController mainInventory() Start");
+		Warehouse warehouse = new Warehouse();
+		//paging 작업
+		int listTotal = ms.mainInventoryCount();
+		Paging page = new Paging(listTotal, currentPage);
+		warehouse.setStart(page.getStart());
+		warehouse.setEnd(page.getEnd());
+		System.out.println("page->"+page);
+		Map<String, Object> response = new HashMap<String, Object>();
+		List<Warehouse> warehouseList = ms.mainInventory(warehouse);
+		response.put("warehouseList", warehouseList);
+		return response;
 	}
 	
 	//메인화면 해당 월 매입 출력

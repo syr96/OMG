@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.oracle.OMG.dao.shDao.ShMemberDao;
 import com.oracle.OMG.dto.Member;
+import com.oracle.OMG.dto.Paging;
+import com.oracle.OMG.dto.Warehouse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,20 @@ public class ShMemberServiceImpl implements ShMemberService {
 		System.out.println("memberService mainMember() Start");
 		Member member = md.mainMember(memId);
 		return member;
+	}
+
+	@Override
+	public int mainInventoryCount() {
+		System.out.println("memberService mainInventoryCount() Start");
+		int listTotal = md.mainInventoryCount();
+		return listTotal;
+	}
+	
+	@Override
+	public List<Warehouse> mainInventory(Warehouse warehouse) {
+		System.out.println("memberService mainInventory() Start");
+		List<Warehouse> warehouseList = md.mainInventory(warehouse);
+		return warehouseList;
 	}
 	
 	@Override
