@@ -146,15 +146,24 @@ function search() {
 	            }
 
 	            var row = "<tr>" +
-	                "<td>" + (warehouse.ym ? warehouse.ym : '-') + "</td>" +
-	                "<td>" + (warehouse.reg_date ? formatDate(warehouse.reg_date) : '-') + "</td>" +  
-	                "<td>" + warehouse.code + "</td>" +
-	                "<td>" + warehouse.name + "</td>" +
-	                "<td style='text-align: right;'>" + warehouse.cnt.toLocaleString() + "</td>" +
-	                "<td style='text-align: right;'>" + warehouse.price.toLocaleString() + "</td>" +
-	                "<td style='text-align: right;'>" + ((warehouse.cnt * warehouse.price).toLocaleString() || '-') + "</td>" +
-	                "</tr>";
+	            "<td>" + (warehouse.ym ? warehouse.ym : '-') + "</td>" +
+	            "<td>" + (warehouse.reg_date ? formatDate(warehouse.reg_date) : '-') + "</td>" +
+	            "<td>" + warehouse.code + "</td>" +
+	            "<td>" + warehouse.name + "</td>";
 
+	        // 기초재고수량
+	        row += "<td style='text-align: right;'>";
+	        row += (warehouse.inven == 0 ? (warehouse.cnt !== null ? warehouse.cnt : 0).toLocaleString() : '0');
+	        row += "</td>";
+
+	        // 기말재고수량
+	        row += "<td style='text-align: right;'>";
+	        row += (warehouse.inven == 1 ? (warehouse.cnt !== null ? warehouse.cnt : 0).toLocaleString() : '0');
+	        row += "</td>";
+
+	        row += "<td style='text-align: right;'>" + warehouse.price.toLocaleString() + "</td>" +
+	            "<td style='text-align: right;'>" + ((warehouse.cnt * warehouse.price).toLocaleString() || '-') + "</td>" +
+	            "</tr>";
 	            $("#searchResultsTable tbody").append(row);
 	        });
 	    },
@@ -179,7 +188,8 @@ function formatAmount(amount) {
                      <th style="width: 119.508px;">입고처리일</th> 
                      <th style="width: 100px;">제품코드</th>
                      <th style="width: 119.508px;">제품명</th>
-                     <th style="width: 119.508px;">재고수량</th>
+                     <th style="width: 119.508px;">기초재고수량</th>
+                     <th style="width: 119.508px;">기말재고수량</th>
                      <th style="width: 119.508px;">단가</th>
                      <th style="width: 119.508px;">재고총액</th>
                     </tr>
@@ -200,8 +210,31 @@ function formatAmount(amount) {
                             </c:choose>
                         </td>
                   	 <td>${warehouse.code}</td>
-                  	 <td>${warehouse.name}</td>
-                     <td style="text-align: right;"><fmt:formatNumber  value="${warehouse.cnt}" pattern="#,##0" /></td>
+                  	 <td>${warehouse.name}</td>		
+					<!-- 기초재고수량 -->
+					<td style="text-align: right;">
+					    <c:choose>      
+					        <c:when test="${warehouse.inven == 0}">
+					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
+					        </c:when>
+					      
+					        <c:otherwise>
+					            <fmt:formatNumber value="0" pattern="#,##0" />
+					        </c:otherwise>
+					    </c:choose>
+					</td>
+					<!-- 기말재고수량 -->
+					<td style="text-align: right;">
+					    <c:choose>
+					        
+					        <c:when test="${warehouse.inven == 1}">
+					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
+					        </c:when>      
+					        <c:otherwise>
+					            <fmt:formatNumber value="0" pattern="#,##0" />
+					        </c:otherwise>
+					    </c:choose>
+					</td>
                      <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
                      <td style="text-align: right;"> <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/></td>
                     </tr>                   	
