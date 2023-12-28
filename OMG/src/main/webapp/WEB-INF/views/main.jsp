@@ -9,7 +9,6 @@
 <script type="text/javascript"></script>
 <style>
     .table-responsive {
-        max-height: 400px;
         overflow-y: auto;
     }
 </style>
@@ -18,14 +17,13 @@
 <%@ include file="common/menu.jsp" %>
 
             <!-- Content -->
-            <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
               	<!-- Welcome Card -->
-                <div class="col-lg-8 mb-4 order-0">
+                <div class="col-12 col-lg-8 order-0 order-md-0 order-lg-0 mb-4">
                   <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-7">
-                        <div class="card-body">
+                        <div class="card-body" style="margin-bottom: 35px;">
                           <h5 class="card-title text-primary"><span class="fw-bold">${sessionScope.mem_name }</span>님 환영합니다 🎉</h5>
                           <p class="mb-4">
                           </p>
@@ -39,6 +37,7 @@
                             alt="View Badge User"
                             data-app-dark-img="illustrations/man-with-laptop-dark.png"
                             data-app-light-img="illustrations/man-with-laptop-light.png"
+                            style="margin-top: 25px;"
                           />
                         </div>
                       </div>
@@ -48,8 +47,8 @@
                 <!--/ Welcome Card --> 
                 <!-- Team List --> 
                 <div class="col-12 col-lg-4 order-2 mb-4"> 
-                  <div class="card h-200"> 
-                    <div class="table-responsive text-nowrap"> 
+                  <div class="card"> 
+                    <div class="table-responsive text-nowrap" style="max-height: 189px;"> 
 	                  <table class="table"> 
 	                    <thead class="fixed-header"> 
 	                      <tr> 
@@ -66,7 +65,6 @@
 	              </div> 
                   </div>  
                 </div>
-               </div>
                 <!--/Team List -->
                
                 <div class="row">
@@ -76,7 +74,7 @@
 	                    <div class="row row-bordered g-0">
 	                      	<h5 class="card-header m-0 me-2 pb-3">재고현황</h5>
 	                      	<!-- Small table -->
-					        <div class="table-responsive text-nowrap">
+					        <div class="table-responsive text-nowrap" style="max-height: 400px;">
 					            <table class="table table-sm">
 					               	<thead class="fixed-thead">
 					                   	<tr>
@@ -106,7 +104,7 @@
 			  
 			  <div class="row">
 				  <!-- Sales -->
-				  <div class="col-12 col-lg-4 mb-4">
+				  <div class="col-12 col-lg-6 mb-4">
 				    <div class="card">
 				      <div class="card-body">
 				        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3" style="margin-bottom: 5px;">
@@ -122,32 +120,32 @@
 				            </div>
 				            <div class="mt-sm-auto">
 				              <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small>
-				              <h3 class="mb-0" id="monthPurchase"></h3>
 				            </div>
 				          </div>
+				          <h3 class="mb-2" id="monthPurchase"></h3>
 				        </div>
 				      </div>
 				    </div>
 				  </div>
 				  <!--/Sales -->
 				  <!-- Purchase -->
-				  <div class="col-12 col-lg-4 order-3 order-md-2">
+				  <div class="col-12 col-lg-6 order-3 order-md-2">
 				    <div class="card">
 				      <div class="card-body">
-				        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+				        <div class="d-flex justify-content-between flex-sm-row flex-column align-items-start gap-3">
 				          <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
 				            <div class="avatar flex-shrink-0">
 				              <img src="../assets/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded" />
 				            </div>
-				            <div class="card-title">
+				            <div class="card-title flex-grow-1">
 				              <h5 class="text-nowrap mb-2">금월 매출</h5>
 				              <span class="badge bg-label-warning rounded-pill">Year 2021</span>
 				            </div>
 				            <div class="mt-sm-auto">
 				              <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small>
-				              <h3 class="mb-0" id="monthSale"></h3>
 				            </div>
 				          </div>
+				          <h3 class="mb-2" id="monthSale"></h3>
 				        </div>
 				      </div>
 				    </div>
@@ -276,6 +274,13 @@
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
+		
+		// 스크롤 고정 thaed
+   	    $(".table-responsive").on('scroll', { passive: true }, function () {
+   	        var scrollLeft = $(this).scrollLeft();
+   	        $(".fixed-thead").css("left", -scrollLeft);
+     	});
+		
 	});
 	
 	function updateProfileCard(member){
@@ -374,11 +379,7 @@
 	}; 
 	
 	 $(document).ready(function () {
-       	// 스크롤 고정 thaed
-       	    $(".table-responsive").on('scroll', { passive: true }, function () {
-       	        var scrollLeft = $(this).scrollLeft();
-       	        $(".fixed-thead").css("left", -scrollLeft);
-         });
+       	
      });
 </script>    
 </body>
