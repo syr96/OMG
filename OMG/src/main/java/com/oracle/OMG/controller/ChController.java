@@ -159,7 +159,7 @@ public class ChController {
 	
 	// 발주서 작성 
 	@PostMapping("writePurchase")
-	public String writePurchase(@ModelAttribute Purchase purchase, @RequestParam Map<String, Object> detailMap, int rownum) {
+	public String writePurchase(Purchase purchase, @RequestParam Map<String, Object> detailMap, int rownum) {
 		System.out.println("ChController writePurchase Start...");
 		
 		int resultPur = 0;
@@ -244,8 +244,10 @@ public class ChController {
 	
 	@ResponseBody
 	@PostMapping("insertDetail")
-	public ModelAndView insertDetail(PurDetail pd,ModelAndView mav) {
+	public ModelAndView insertDetail(PurDetail pd,ModelAndView mav, HttpSession session) {
 		int result = 0;
+		int mem_id = session.getAttribute("mem_id") != null ? (int)session.getAttribute("mem_id") : 0;
+		
 		System.out.println("ChController insertDetail Start...");
 		// custcode와 price를 가져오기 위한 조회
 		Item item = itemService.selectItem(pd.getCode());
@@ -257,6 +259,7 @@ public class ChController {
 			Purchase pc = new Purchase();
 			pc.setCustcode(pd.getCustcode());
 			pc.setPur_date(pd.getPur_date());
+			pc = chPurService.onePur(pc);
 			// 해당 발주서의 상세 항목 출력 
 			List<PurDetail> pdList = chPurService.purDList(pc);
 			// 람다 이용 총 합계 구하기 
@@ -265,6 +268,8 @@ public class ChController {
 			mav.addObject("pdList",pdList);
 			mav.addObject("totalPrice", totalPrice);
 			mav.addObject("totalQty", totalQty);
+			mav.addObject("mem_id", mem_id);
+			mav.addObject("pc", pc);
 			
 			mav.setViewName("ch/purDtable");
 		}
@@ -274,8 +279,9 @@ public class ChController {
 	
 	@ResponseBody
 	@PostMapping("qtyUpdate")
-	public ModelAndView qtyUpdate(PurDetail pd, ModelAndView mav) {
+	public ModelAndView qtyUpdate(PurDetail pd, ModelAndView mav, HttpSession session) {
 		System.out.println("ChController qtyUdate Start...");
+		int mem_id = session.getAttribute("mem_id") != null ? (int)session.getAttribute("mem_id") : 0;
 		Item item = itemService.selectItem(pd.getCode());
 		pd.setCustcode(item.getCustcode());
 		int result = chPurService.qtyUpdate(pd);
@@ -284,6 +290,7 @@ public class ChController {
 			Purchase pc = new Purchase();
 			pc.setCustcode(pd.getCustcode());
 			pc.setPur_date(pd.getPur_date());
+			pc = chPurService.onePur(pc);
 			// 해당 발주서의 상세 항목 출력 
 			List<PurDetail> pdList = chPurService.purDList(pc);
 			// 람다 이용 총 합계 구하기 
@@ -292,9 +299,10 @@ public class ChController {
 			mav.addObject("pdList",pdList);
 			mav.addObject("totalPrice", totalPrice);
 			mav.addObject("totalQty", totalQty);
+			mav.addObject("mem_id", mem_id);
+			mav.addObject("pc", pc);
 			
-			Purchase purchase = chPurService.onePur(pc);
-			mav.addObject("pc", purchase);
+			mav.setViewName("ch/purDtable");
 		}
 		mav.setViewName("ch/purDtable");
 		return mav;

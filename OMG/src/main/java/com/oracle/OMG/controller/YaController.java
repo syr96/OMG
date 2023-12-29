@@ -95,15 +95,22 @@ public class YaController {
 		
 		Map<String, Object> result = new HashMap<>();
 		
+		//session에서 mem_id속성을 가져옴 
 		int mem_id=0;
 		if(session.getAttribute("mem_id") !=null ) {
 			mem_id=(int)session.getAttribute("mem_id");		
 		}
+		//session에서  mem_dept_md속성을 가져옴 
+	    int mem_dept_md = 0;
+	    if (!"999".equals(session.getAttribute("mem_dept_md"))) {
+	        mem_dept_md = (int) session.getAttribute("mem_dept_md");
+	    }
 		
 		List<Member> memberList = null;
 		memberList = ycs.memberList(member);
 		result.put("memberList", memberList);
 		result.put("mem_id", mem_id);
+		result.put("mem_dept_md", mem_dept_md);
 
 		return result;
 	}
@@ -151,23 +158,29 @@ public class YaController {
 	// 거래처삭제
 	@GetMapping("/deleteCustomer")
 	public String deleteCustomer(int custcode, Model model, HttpSession session) {
-		int deleteResult = ycs.deleteCustomer(custcode);
-		System.out.println("YaController ycs.deleteCustomer start...");
-		
-		int mem_dept_md=0;
-		if(session.getAttribute("mem_dept_md") == "100") {
-			mem_dept_md=(int)session.getAttribute("mem_dept_md");
-		
-		}
-		
-		
-		return "redirect:customerList";
+	    int deleteResult = ycs.deleteCustomer(custcode);
+	    System.out.println("YaController ycs.deleteCustomer start...");
+	    
+	    int mem_dept_md = 0;
+	    //Object로 먼저 받아오고,  적절한 자료형으로 변환
+	    Object memDeptMd = session.getAttribute("mem_dept_md");
+
+	    if (memDeptMd != null) {
+	        String memDeptMdString = memDeptMd.toString();
+
+	        if ("100".equals( memDeptMd) || "999".equals(memDeptMd)) {
+	            mem_dept_md = Integer.parseInt(memDeptMdString);
+	        }
+	    }
+	    
+	    return "redirect:customerList";
 	}
 
 	// 거래처 검색
 	@GetMapping("/customerSearch")
 	@ResponseBody
 	public Map<String, Object> customerSearch(HttpServletRequest request) {
+		
 		System.out.println("YaController ycs.customerSearch Start...");
 		String keyword = request.getParameter("keyword");
 		String currentPage = request.getParameter("currentPage");
@@ -230,7 +243,6 @@ public class YaController {
 			customerSalesSearch = ycs.SearchAll(custcode, month);
 			System.out.println("모두 전체일 경우 조회");
 		}
-
 		// 월만 전체일 경우 조회
 		else if ("0".equals(custcodeParam) && !"0".equals(month)) {
 			customerSalesSearch = ycs.SearchAllCustomer(month);

@@ -24,7 +24,7 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 	private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 	
 	static {
-		 // 각 권한에 대한 허용된 부서별 페이지 등록		  /**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치
+		 // 각 권한에 대한 허용된 부서별 페이지 등록		   /**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치
 		 DEPT_PAGE_MAP.put(999, new String[] {"/**"});					// 관리자 - 모든 페이지에 대한 권한
 		 DEPT_PAGE_MAP.put(100, new String[] {"/customerSales"});	// 연아 - 거래처관리
 		 DEPT_PAGE_MAP.put(101, new String[] {"/memberL/**", "/memberR/**", "/memberU/**"});						// 승현 - 사원관리

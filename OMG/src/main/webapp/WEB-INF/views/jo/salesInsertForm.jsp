@@ -62,16 +62,7 @@
 			
 			// 새로 추가된 행의 데이터를 배열에 추가
 		
-	    	var rowData = {
-		        code: '',
-		        name: '',
-		        qty: '',
-		        price: '',
-		        total_price: ''
-		    };
-	    				
-			rowDataArray.push(rowData);
-		}
+	    }
 		
 		// 추가행 삭제
 		function removeRow() {
@@ -139,12 +130,14 @@
 		function saveData() {
 		    // Sales 객체 생성
 		    var salesData = {
-		        sales_date: document.getElementById("sales_date").value,
+		        sales_date:document.getElementById("sales_date").value,
 		        title: document.getElementById("title").value,
 		        custcode: document.querySelector('[name="custcode"]').value,
 		        ref: document.getElementById("ref").value
 		    };
-
+			
+		    console.log(salesData);
+		    
 		    // SalesDetails 배열 생성
 		    var salesDetailsData = [];
 		    
@@ -153,34 +146,69 @@
 		    
 		    
 		    rows.forEach(function(row) {
-		        var productCode = row.querySelector('input[name="code"]');
-		        var quantity = row.querySelector('input[name="qty"]');
-		        var price = row.querySelector('input[name="price"]');
+		    	var salesDate = document.getElementById("sales_date").value;
+		    	var custCode = document.querySelector('[name="custcode"]').value;
+		        var productCode = row.querySelector('input[name="code"]').value;
+		        var quantity = row.querySelector('input[name="qty"]').value;
+		        var price = row.querySelector('input[name="price"]').value;
 
 		        var salesDetailData = {
+		        	sales_date: salesDate,
+		        	custcode: custCode,
 		            code: productCode,
-		            quantity: quantity,
+		            qty: quantity,
 		            price: price
 		        };
 
 		        salesDetailsData.push(salesDetailData);
 		    });
-
+		    
+		    console.log(salesDetailsData);
+				
 		    // 서버로 전송할 데이터 객체 생성
-		    var sendData = {
+		    var sendData1 = {
 		        sales: salesData,
-		        salesDetails: salesDetailsData
 		    };
-
+		    var sendData2 = {
+			        salesDetails: salesDetailsData
+			    };
+			
+		    
+		    
 		    // AJAX를 사용하여 서버로 데이터 전송
 		    $.ajax({
 		        type: "POST",
 		        url: "salesInsert",
 		        contentType: "application/json",
-		        data: JSON.stringify(sendData),
+		        data: JSON.stringify(salesData),
 		        success: function (response) {
 		            // 서버 응답에 따른 처리
 		            console.log(response);
+		            if (response == 1) {
+			            // alert("성공");
+	
+					    $.ajax({
+					        type: "POST",
+					        url: "salesDetailInsert",
+					        contentType: "application/json",
+					        data: JSON.stringify(salesDetailsData),
+					        success: function (response) {
+					            // 서버 응답에 따른 처리
+					            console.log(response);
+					            if (response == 1) {
+						            location.href="/jo/salesInquiry;"
+					            	
+					            }
+					        },
+					        error: function (error) {
+					        	alert("다시 한번 입력정보를 확인바랍니다" + error);
+					            
+					        }
+					    });		            
+			            
+			            
+			            
+		            }
 		        },
 		        error: function (error) {
 		            console.error("데이터 전송 중 오류 발생:", error);
@@ -262,8 +290,8 @@
 					<div class="button-group">
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="addRow()">제품추가</button>
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="removeRow()">추가취소</button>
-						<!-- <button type="button" class="btn btn-primary btn-sm mb-1" onclick="saveData()">저장</button> -->
-						<input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-1" value="저장">
+						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="saveData()">저장</button>
+						<!-- <input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-1" value="저장"> -->
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='salesInquiry'">리스트</button>
 					</div>
 						

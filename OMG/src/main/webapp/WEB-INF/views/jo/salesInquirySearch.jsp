@@ -131,9 +131,9 @@
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
-							<th scope="col" style="text-align: center;">코드</th>
+							<th scope="col" style="width: 80px; text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
-							<th scope="col" style="text-align: center;">상태</th>
+							<th scope="col" style="width: 80px; text-align: center;">상태</th>
 						</tr>
 					</thead>
 					<tbody>

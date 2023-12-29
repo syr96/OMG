@@ -94,7 +94,7 @@
 			<div class="col-12 d-flex justify-content-between align-items-center">
 				<input type="hidden" id="pur_date" value="${pc.pur_date }">
 				<input type="hidden" id="custcode" value="${pc.custcode}">
-				<c:if test="${mem_id == pc.mem_id || mem_id == pc.mgr_id}">
+				<c:if test="${(mem_id == pc.mem_id || mem_id == pc.mgr_id) && pc.pur_status == 0}">
 					<input type="hidden" id="pur_date" value="${pc.pur_date }">
 					<div class="col-5 d-flex justify-content-between align-items-center">
 						<div class="col-3 text-end">
@@ -135,7 +135,10 @@
 					<c:forEach items="${pdList }" var="pdList" varStatus="status">
 						<tr id="row${status.index }">
 							<td>
-								${pdList.item_name } <a href="javascript:void(0);" onclick="deletePurDet(${status.index})"><i class='bx bx-x'></i></a>
+								${pdList.item_name } 
+								<c:if test="${(mem_id == pc.mem_id || mem_id == pc.mgr_id) && pc.pur_status == 0}">
+									<a href="javascript:void(0);" onclick="deletePurDet(${status.index})"><i class='bx bx-x'></i></a>
+								</c:if>
 							</td>
 							<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 							<td id="td${status.index }" class="text-center">
@@ -169,13 +172,16 @@
 	function item_chk(){
 		var code = $("#code").val();
 		var i_date = $("#pur_date").val();
+		// 중복검사
 		$.ajax({
 			data:{code : code, pur_date : i_date},
 			url: "chkDItem",
 			success: function(data){
 				if(data > 0){
+					// 추가 버튼 비활성화
 					$("#insertBtn").prop("disabled", true);
 				} else{
+					// 추가 버튼 활성화 
 					$("#insertBtn").prop("disabled", false);
 				}
 			}
@@ -201,6 +207,7 @@
 				success:function(data){
 					$("#d_tble").html(data);
 					$("#qty").val('');
+					item_chk();
 				}
 			
 			});

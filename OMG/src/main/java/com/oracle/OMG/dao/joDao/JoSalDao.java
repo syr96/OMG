@@ -15,8 +15,8 @@ public interface JoSalDao {
 	List<SalesDetail>       sortSalesInquiry(SalesDetail salesDetail);
 	int                     deleteSalesDetail(SalesDetail sales);
 	List<SalesDetail>       getListCustCode(int custstyle);
-	int                     insertSales(SalesDetail sales);
-	// int                     insertSales(Sales sales);
+	// int                     insertSales(SalesDetail sales);
+	int                     insertSales(Sales sales);
 	List<SalesDetail>       getSalesDetail(SalesDetail sales);
 	int                     getTotalSalesDetail(SalesDetail sales);
 	SalesDetail     		getSalesData(SalesDetail sales);
