@@ -111,22 +111,22 @@ public class JkWareDaoImpl implements JkWareDao {
 	}
 
 
-	@Override
-	public Map<String, Object> selectItem(@Param("code") int code, @Param("ym") String ym) {
-	    System.out.println("JkWareDaoImpl selectItemByCode start");
-	    Map<String, Object> itemDetails = null;
-	    try {
-	        // 매퍼 메서드에 파라미터를 전달하도록 수정
-	        Map<String, Object> parameters = new HashMap<>();
-	        parameters.put("code", code);
-	        parameters.put("ym", ym);
-	        
-	        itemDetails = session.selectOne("selectItem", parameters);
-	    } catch (Exception e) {
-	        System.out.println(e.getMessage());
-	    }
-	    return itemDetails;
-	}
+   @Override
+   public Map<String, Object> selectItem(@Param("code") int code, @Param("ym") String ym) {
+       System.out.println("JkWareDaoImpl selectItemByCode start");
+       Map<String, Object> itemDetails = null;
+       try {
+           // 매퍼 메서드에 파라미터를 전달하도록 수정
+           Map<String, Object> parameters = new HashMap<>();
+           parameters.put("code", code);
+           parameters.put("ym", ym);
+           
+           itemDetails = session.selectOne("selectItem", parameters);
+       } catch (Exception e) {
+           System.out.println(e.getMessage());
+       }
+       return itemDetails;
+   }
 
 
 	@Override

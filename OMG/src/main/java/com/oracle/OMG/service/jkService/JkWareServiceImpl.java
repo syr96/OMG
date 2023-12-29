@@ -60,14 +60,14 @@ public class JkWareServiceImpl implements JkWareService {
 		return getPurchaseDataResultMap;
 	}
 
-	@Override
-	public Map<String, Object> selectItem(int code, String ym) {
-		System.out.println("JkWareServiceImpl selectItem Start...");
-		
-		Map<String, Object> selectItem= jwd.selectItem(code, ym);
-		
-		return selectItem;
-	}
+	  @Override
+	   public Map<String, Object> selectItem(int code, String ym) {
+	      System.out.println("JkWareServiceImpl selectItem Start...");
+	      
+	      Map<String, Object> selectItem= jwd.selectItem(code, ym);
+	      
+	      return selectItem;
+	   }
 
 	@Override
 	public int insertInv(Warehouse warehouse) {
