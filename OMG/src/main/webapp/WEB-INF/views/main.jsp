@@ -243,12 +243,13 @@
 				$('#invenTableBody').empty();
 				for(var i = 0; i < wareList.length; i++){
 					var ware = wareList[i];
+					var price = ware.price.toLocaleString();
 					$('#invenTableBody').append(
 							"<tr>"+
 							"<td class='text-center'>" + ware.code + "</td>" +
 							"<td>" + ware.name + "</td>" +
 							"<td class='text-center'>" + ware.cnt + "</td>" +
-							"<td class='text-center'>" + ware.price + "</td>" +
+							"<td class='text-center'>" + price + "</td>" +
 							"</tr>"
 					);
 				}
