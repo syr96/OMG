@@ -74,15 +74,14 @@
 	                    <div class="row row-bordered g-0">
 	                      	<h5 class="card-header m-0 me-2 pb-3"><a href="/item/list" style="color: black;">재고현황</a></h5>
 	                      	<!-- Small table -->
-					        <div class="table-responsive text-nowrap" style="max-height: 390px;">
+					        <div class="table-responsive text-nowrap" style="max-height: 395px;">
 					            <table class="table table-sm">
 					               	<thead class="fixed-thead">
 					                   	<tr>
-						         	       <th>제품코드</th>
-						                   <th>제품명</th>
-						                   <th>수량</th>
-						                   <th>가격</th>
-						                   <th>...</th>
+						         	       <th class='text-center'>제품코드</th>
+						                   <th >제품명</th>
+						                   <th class='text-center'>수량</th>
+						                   <th class='text-center'>가격</th>
 					                	</tr>
 					                </thead>
 					                <tbody class="table-border-bottom-0" id="invenTableBody">
@@ -95,7 +94,7 @@
 	                </div>
 	                <!--/ Total Revenue -->
 	                <!-- Notice --> 
-	                <div class="col-md-6 col-lg-4 order-2 mb-4" id="notice"> 
+	                <div class="col-12 col-lg-4 order-2 mb-4" id="notice"> 
 	                   
 	                </div>
 	                <!--/ Notice -->
@@ -246,15 +245,10 @@
 					var ware = wareList[i];
 					$('#invenTableBody').append(
 							"<tr>"+
-							"<td>" + ware.code + "</td>" +
+							"<td class='text-center'>" + ware.code + "</td>" +
 							"<td>" + ware.name + "</td>" +
-							"<td>" + ware.cnt + "</td>" +
-							"<td>" + ware.price + "</td>" +
-							"<td><div class='dropdown'>" +
-							"<button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>" +
-                            "<i class='bx bx-dots-vertical-rounded'></i></button>" +
-                            "<div class='dropdown-menu'><a class='dropdown-item' href='javascript:void(0);'>" + "<i class='bx bx-edit-alt me-1'></i> Edit</a>" + 
-                            "<a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>" + "</div></div></td>"+
+							"<td class='text-center'>" + ware.cnt + "</td>" +
+							"<td class='text-center'>" + ware.price + "</td>" +
 							"</tr>"
 					);
 				}
