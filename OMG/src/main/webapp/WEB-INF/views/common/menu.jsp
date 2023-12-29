@@ -56,7 +56,7 @@
                 <div data-i18n="Account Settings">제품 조회</div>
               </a>
             </li>
-            <c:if test="${sessionScope.mem_dept_md == 104 || sessionScope.mem_dept_md == 105}">
+            <c:if test="${sessionScope.mem_dept_md == 104 || sessionScope.mem_dept_md == 105 || sessionScope.mem_dept_md == 999}">
             <li class="menu-item">
               <a href="/item/create" class="menu-link">
               	<i class="menu-icon tf-icons bx bx-detail"></i>
