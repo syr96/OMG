@@ -453,7 +453,7 @@
 	                      </div>
                         </div>
                         <div class="mt-2">
-                          <button type="submit" class="btn btn-primary me-2">Create</button>
+                          <button type="submit" class="btn btn-primary me-2" <c:if test="${mem_right != 1}">disabled="disabled"</c:if>>Create</button>
                           <button type="reset" class="btn btn-outline-secondary">Cancel</button>
                         </div>
                     </div>
@@ -518,7 +518,7 @@
 		});
 	});
 	
-	//이메일 주소 설정
+	//option 선택마다 input 값 노출(이메일 도메인) 설정
 	$(document).ready(function(){
 		$('#mem_email3').on('change',function(){
 			var selected = $(this).val();

@@ -39,19 +39,32 @@ public class ShMemberServiceImpl implements ShMemberService {
 	}
 	
 	@Override
-	public String monthTotalSale() {
-		System.out.println("memberService monthTotalSale() Start");
-		String monthTotalSale = md.monthTotalSale();
-		return monthTotalSale;
+	public int thisMonthSale() {
+		System.out.println("memberService thisMonthSale() Start");
+		int thisMonthSale = md.thisMonthSale();
+		return thisMonthSale;
+	}
+
+	@Override
+	public int exMonthSale() {
+		System.out.println("memberService exMonthSale() Start");
+		int exMonthSale = md.exMonthSale();
+		return exMonthSale;
+	}
+	@Override
+	public int thisMonthPurchase() {
+		System.out.println("memberService thisMonthPurchase() Start");
+		int thisMonthPurchase = md.thisMonthPurchase();
+		return thisMonthPurchase;
 	}
 	
 	@Override
-	public String monthTotalPurchase() {
-		System.out.println("memberService monthTotalPurchase() Start");
-		String monthTotalPurchase = md.monthTotalPurchase();
-		return monthTotalPurchase;
+	public int exMonthPurchase() {
+		System.out.println("memberService exMonthPurchase() Start");
+		int exMonthPurchase = md.exMonthPurchase();
+		return exMonthPurchase;
 	}
-	
+
 	@Override
 	public List<Member> mainTeamList(int memId) {
 		System.out.println("memberService mainTeamList() Start");
@@ -142,6 +155,7 @@ public class ShMemberServiceImpl implements ShMemberService {
 		int result = md.detailMember(member);
 		return result;
 	}
+
 
 
 }

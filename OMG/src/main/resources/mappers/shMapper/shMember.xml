@@ -9,9 +9,11 @@
 	
 	<select id="shMemberList" parameterType="Member" resultType="Member">
 		Select a.*
-		From 
-			(Select rownum rn, mem_hiredate, mem_id, mem_name, mem_dept_md, mem_posi_md, mem_email, mem_leave, mem_rein, mem_resi, mem_status
-			From member)a
+		From (
+			Select rownum rn, mem_hiredate, mem_id, mem_name, mem_dept_md, 
+				   mem_posi_md, mem_email, mem_leave, mem_rein, mem_resi, mem_status
+			From member
+			)a
 		Where rn between #{start} and #{end}
 		ORDER BY rn
 	</select>

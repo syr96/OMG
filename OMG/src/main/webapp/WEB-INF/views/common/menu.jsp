@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -215,12 +216,45 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                              <img src="${pageContext.request.contextPath}/upload/sh/${sessionScope.mem_img}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">${sessionScope.mem_name }</span>
-                            <small class="text-muted">Admin</small>
+                            <small class="text-muted">
+								<c:choose>
+    <c:when test="${sessionScope.mem_dept_md eq 100}">
+        회계팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 101}">
+        인사팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 102}">
+        영업1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 103}">
+        영업2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 104}">
+        물류1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 105}">
+        물류2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 106}">
+        CS1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 107}">
+        CS2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 999}">
+        관리자
+    </c:when>
+    <c:otherwise>
+        기타 부서
+    </c:otherwise>
+</c:choose>                          
+                            </small>
                           </div>
                         </div>
                       </a>
@@ -232,21 +266,6 @@
                       <a class="dropdown-item" href="memberD?mem_id=${sessionScope.mem_id }">
                         <i class="bx bx-user me-2"></i>
                         <span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">로그인 관리</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
                       </a>
                     </li>
                     <li>

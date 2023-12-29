@@ -13,11 +13,11 @@
 		color: black;
 	}
 </style>
-<div class="card h-100">
-	<div class="card-header d-flex align-items-center justify-content-between">
-		<h5 class="card-title m-0 me-2"><a href="/notice/list" class="textBlack">공지사항</a></h5>
-	</div>
-	<div class="table-responsive text-nowrap">
+<div class="card">
+	<div class="row row-bordered g-0">
+		<h5 class="card-header m-0 me-2 pb-3"><a href="/notice/list" class="textBlack">공지사항</a></h5>
+	
+	<div class="table-responsive text-nowrap" style="max-height: 390px;">
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -41,5 +41,6 @@
 				</c:forEach>				
 			</tbody>
 		</table>
+	</div>
 	</div>
 </div>
