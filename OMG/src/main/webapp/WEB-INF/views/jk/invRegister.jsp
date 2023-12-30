@@ -206,6 +206,7 @@ $(document).ready(function() {
 
 });
 
+
 </script>
 
 <%@ include file="../common/header.jsp" %>
@@ -412,7 +413,7 @@ $(document).ready(function() {
      $.ajax({
          type: "POST",
          url: "/callCloseMonth",
-         data: { month: selectedMonth },
+         data: { ym: selectedMonth },
          success: function(response) {
              // 마감 성공 시 서버 응답에 따른 처리
              console.log("마감이 완료되었습니다.", response);

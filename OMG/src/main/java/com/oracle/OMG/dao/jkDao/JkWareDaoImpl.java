@@ -317,11 +317,11 @@ public class JkWareDaoImpl implements JkWareDao {
 
 
 	@Override
-	public void callOutoundPD(String inboundMonth) {
+	public void callCloseMonth(String inboundMonth) {
 	    System.out.println("JkWareDaoImpl callOutoundPD start...");
 
 	    try {
-	        int updatedRows = session.update("callOutboundPD", inboundMonth);
+	        int updatedRows = session.update("callCloseMonth", inboundMonth);
 
 	        // 업데이트된 행의 수를 출력
 	        System.out.println("Updated rows: " + updatedRows);
