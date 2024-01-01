@@ -27,7 +27,7 @@ public class BkDeptInterceptor implements HandlerInterceptor {
 		 // 각 권한에 대한 허용된 부서별 페이지 등록		   /**: 와일드카드 패턴. 특정 경로 및 하위 경로에 대한 일치
 		 DEPT_PAGE_MAP.put(999, new String[] {"/**"});					// 관리자 - 모든 페이지에 대한 권한
 		 DEPT_PAGE_MAP.put(100, new String[] {"/customerSales"});	// 연아 - 거래처관리
-		 DEPT_PAGE_MAP.put(101, new String[] {"/memberL/**", "/memberR/**", "/memberU/**", "/notice/register"});						// 승현 - 사원관리
+		 DEPT_PAGE_MAP.put(101, new String[] {"/memberL/**", "/memberR/**", "/memberU/**", "/notice/register"});	// 승현 - 사원관리, 태현 - 공지사항 작성
 		 DEPT_PAGE_MAP.put(104, new String[] {"/item/create", "/sales/salesInsertForm", "/sales/salesInquiry"});	// 유림 - 제품관리, 준오 - 판매서 등록 및 조회
 		 DEPT_PAGE_MAP.put(105, new String[] {"/item/create"});			// 유림 - 제품관리
 	}
