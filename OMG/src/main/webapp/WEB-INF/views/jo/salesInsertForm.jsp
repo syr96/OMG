@@ -60,8 +60,7 @@
 		    cell5.innerHTML = '<input type="text" name="price">';
 		    cell6.innerHTML = '<input type="text" name="total_price">';
 			
-			// 새로 추가된 행의 데이터를 배열에 추가
-		
+			
 	    }
 		
 		// 추가행 삭제
@@ -94,11 +93,7 @@
 	
 		    codeInput.value = selectedOption.getAttribute('data-code');
 		    priceInput.value = selectedOption.getAttribute('data-price');
-		    
-		    // 선택된 행의 데이터를 배열에 업데이트
-		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
-		    rowDataArray[index].code = codeInput.value;
-		    rowDataArray[index].price = priceInput.value;
+		       
 		
 		}
 	
@@ -111,11 +106,7 @@
 	
 		    var total_price = parseInt(qty) * parseInt(price);
 		    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
-		    
-		    // 선택된 행의 데이터를 배열에 업데이트
-		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
-		    rowDataArray[index].qty = qty;
-		    rowDataArray[index].total_price = total_price;
+		 	  
 		
 		}
 	
@@ -128,9 +119,17 @@
 		}
 		
 		function saveData() {
+			// date형식 변환
+			var dateInput = document.getElementById("sales_date ");
+    		var selectedDate = dateInput.value;
+    
+    		// 원하는 형식으로 날짜 변환
+    		var parts = selectedDate.split("-");
+    		var formattedDate = parts[2] + "/" + parts[1] + "/" + parts[0].slice(-2);
+    					
 		    // Sales 객체 생성
 		    var salesData = {
-		        sales_date:document.getElementById("sales_date").value,
+		        sales_date: formattedDate.value,
 		        title: document.getElementById("title").value,
 		        custcode: document.querySelector('[name="custcode"]').value,
 		        ref: document.getElementById("ref").value
@@ -196,7 +195,7 @@
 					            // 서버 응답에 따른 처리
 					            console.log(response);
 					            if (response == 1) {
-						            location.href="/jo/salesInquiry;"
+						            location.href="/jo/salesInquiry";
 					            	
 					            }
 					        },
@@ -234,7 +233,8 @@
 					<form id="salesForm" action="salesInsert" method="post">
 						<div class="mb-3 ">
 						  <label for="sales_date" class="form-label" style="font-size: 15px;">매출일자</label>
-						  <input type="text" class="form-control" name="sales_date" id="sales_date" required="required" pattern="\d{2}/\d{2}/\d{2}" placeholder="23/MM/DD">
+						  <input type="date" class="form-control" name="sales_date" id="sales_date" required="required">
+						  <!-- <input type="text" class="form-control" name="sales_date" id="sales_date" required="required" pattern="\d{2}/\d{2}/\d{2}" placeholder="23/MM/DD"> -->
 						</div>
 						<div class="mb-3 ">
 						  <label for="title" class="form-label" style="font-size: 15px;">제목</label>
@@ -291,7 +291,6 @@
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="addRow()">제품추가</button>
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="removeRow()">추가취소</button>
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="saveData()">저장</button>
-						<!-- <input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-1" value="저장"> -->
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='salesInquiry'">리스트</button>
 					</div>
 						

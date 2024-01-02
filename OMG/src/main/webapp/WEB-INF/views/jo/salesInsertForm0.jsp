@@ -60,8 +60,7 @@
 		    cell5.innerHTML = '<input type="text" name="price">';
 		    cell6.innerHTML = '<input type="text" name="total_price">';
 			
-			// 새로 추가된 행의 데이터를 배열에 추가
-		
+			
 	    }
 		
 		// 추가행 삭제
@@ -94,11 +93,7 @@
 	
 		    codeInput.value = selectedOption.getAttribute('data-code');
 		    priceInput.value = selectedOption.getAttribute('data-price');
-		    
-		    // 선택된 행의 데이터를 배열에 업데이트
-		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
-		    rowDataArray[index].code = codeInput.value;
-		    rowDataArray[index].price = priceInput.value;
+		       
 		
 		}
 	
@@ -111,11 +106,7 @@
 	
 		    var total_price = parseInt(qty) * parseInt(price);
 		    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
-		    
-		    // 선택된 행의 데이터를 배열에 업데이트
-		    var index = row.rowIndex - 1; // 헤더 행을 제외한 실제 인덱스
-		    rowDataArray[index].qty = qty;
-		    rowDataArray[index].total_price = total_price;
+		 	  
 		
 		}
 	
@@ -130,7 +121,7 @@
 		function saveData() {
 		    // Sales 객체 생성
 		    var salesData = {
-		        sales_date: document.getElementById("sales_date").value,
+		        sales_date:document.getElementById("sales_date").value,
 		        title: document.getElementById("title").value,
 		        custcode: document.querySelector('[name="custcode"]').value,
 		        ref: document.getElementById("ref").value
@@ -166,10 +157,12 @@
 		    console.log(salesDetailsData);
 				
 		    // 서버로 전송할 데이터 객체 생성
-		    var sendData = {
+		    var sendData1 = {
 		        sales: salesData,
-		        salesDetails: salesDetailsData
 		    };
+		    var sendData2 = {
+			        salesDetails: salesDetailsData
+			    };
 			
 		    
 		    
@@ -178,11 +171,35 @@
 		        type: "POST",
 		        url: "salesInsert",
 		        contentType: "application/json",
-		        data: JSON.stringify(sendData),
+		        data: JSON.stringify(salesData),
 		        success: function (response) {
 		            // 서버 응답에 따른 처리
 		            console.log(response);
-		            alert("성공");
+		            if (response == 1) {
+			            // alert("성공");
+	
+					    $.ajax({
+					        type: "POST",
+					        url: "salesDetailInsert",
+					        contentType: "application/json",
+					        data: JSON.stringify(salesDetailsData),
+					        success: function (response) {
+					            // 서버 응답에 따른 처리
+					            console.log(response);
+					            if (response == 1) {
+						            location.href="/jo/salesInquiry"
+					            	
+					            }
+					        },
+					        error: function (error) {
+					        	alert("다시 한번 입력정보를 확인바랍니다" + error);
+					            
+					        }
+					    });		            
+			            
+			            
+			            
+		            }
 		        },
 		        error: function (error) {
 		            console.error("데이터 전송 중 오류 발생:", error);
@@ -265,7 +282,6 @@
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="addRow()">제품추가</button>
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="removeRow()">추가취소</button>
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="saveData()">저장</button>
-						<!-- <input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-1" value="저장"> -->
 						<button type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='salesInquiry'">리스트</button>
 					</div>
 						
