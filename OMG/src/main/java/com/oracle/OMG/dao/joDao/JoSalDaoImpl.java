@@ -133,6 +133,7 @@ public class JoSalDaoImpl implements JoSalDao {
 	
 	}
 	
+	
 	  @Override 
 	  public int deleteSalesDetail(SalesDetail sales) { 
 		  int result = 0;
@@ -155,8 +156,8 @@ public class JoSalDaoImpl implements JoSalDao {
 	  
 	  return result; 
 	  }
-	 
 
+		
 
 	@Override
 	public List<SalesDetail> getListCustCode(int custstyle) {
@@ -176,7 +177,6 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	// public int insertSales(SalesDetail sales) {
 	public int insertSales(Sales sales) {
 		int result = 0;
 		
@@ -313,6 +313,8 @@ public class JoSalDaoImpl implements JoSalDao {
 		
 		return result;
 	}
+
+
 
 
 }

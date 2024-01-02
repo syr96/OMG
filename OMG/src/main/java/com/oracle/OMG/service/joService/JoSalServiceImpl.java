@@ -215,7 +215,5 @@ public class JoSalServiceImpl implements JoSalService {
 		return result;
 	}
 	
-
-	
 	
 }

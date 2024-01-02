@@ -33,7 +33,7 @@
 		     AND   sd.sales_date = s.sales_date
 		     AND   sd.custcode = s.custcode
 		     AND   sd.custcode = c.custcode
-		    ORDER BY sd.sales_date
+		    ORDER BY sd.sales_date desc
 		    ) x
 		)    
 		WHERE rn BETWEEN #{start} and #{end}
@@ -154,7 +154,6 @@
 		DELETE FROM sales_detail
 		WHERE       sales_date = #{sales_date}
 		AND 		custcode   = #{custcode}
-		AND   		code       = #{code}
 	</delete>
 	
 	
@@ -172,14 +171,12 @@
 	
 	
 	<select id="joGetSalesDetail" parameterType="SalesDetail" resultType="SalesDetail">
-		SELECT x.*
-		FROM 
+		SELECT *
+		FROM
 		(
-    		SELECT sd.*, s.title, s.sales_status, c.company, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
-    		FROM   sales_detail sd, sales s, customer c, item i
-		    WHERE  sd.custcode = c.custcode
-		    AND    sd.code = i.code
-		    AND    sd.sales_date = s.sales_date
+    		SELECT sd.*, i.name, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
+    		FROM   sales_detail sd, item i
+		    WHERE  sd.code = i.code
 		 ) x    
 		 WHERE x.sales_date = #{sales_date}
 		 AND   x.custcode   = #{custcode}

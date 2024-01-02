@@ -17,7 +17,6 @@ public interface JoSalService {
 	List<SalesDetail>      sortSalesInquiry(SalesDetail salesDetail);
 	int                    deleteSalesDetail(SalesDetail salesDetails);
 	List<SalesDetail>      getListCustCode(int custstyle);
-	// int                    insertSales(SalesDetail sales);
 	int                    insertSales(Sales sales);
 	List<SalesDetail>      getSalesDetail(SalesDetail sales);
 	int                    getTotalSalesDetail(SalesDetail sales);
@@ -26,6 +25,6 @@ public interface JoSalService {
 	int                    insertSalesDetail(SalesDetail sales);
 	int                    updateSales(@Valid Sales sales);
 	int                    updateSalesDetail(SalesDetail salesDetail);
-
+	
 
 }

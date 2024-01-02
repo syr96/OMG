@@ -225,8 +225,8 @@
 										<td style="text-align: center"><input type="checkbox" name="rowCheck" value=""></td>
 										<td style="text-align: center">${num}</td>
 										<td style="text-align: center">
-											<input type="text" name="afterCode" value="${salesDetail.code}">
-											<input type="hidden" name="beforeCode" id="beforeCode" value="${salesDetail.code}">
+											<input type="text" name="afterCode" value="${salesDetail.code}" readonly style="background-color: #f2f2f2; border: 1px solid #000;">
+											<input type="hidden" name="beforeCode" id="beforeCode" value="${salesDetail.code}" >
 										</td>
 										<td>
 											<select name="name" onchange="updateCodeAndPrice(this)">
@@ -236,8 +236,8 @@
 												</c:forEach>	
 											</select>
 										</td>										
-										<td style="text-align: center"><input type="text" name="qty" value="${salesDetail.qty}"></td>
-										<td style="text-align: center"><input type="text" name="price" value="${salesDetail.price}"></td>
+										<td style="text-align: center"><input type="text" name="qty" value="${salesDetail.qty}" oninput="calculateTotalPrice(this)"></td>
+										<td style="text-align: center"><input type="text" name="price" value="${salesDetail.price}"readonly style="background-color: #f2f2f2; border: 1px solid #000;"></td>
 										<td style="text-align: center"><input type="text" name="total_price" value="${salesDetail.total_price}"></td>
 								   </tr>
 								 <c:set var="num" value="${num+1}"/>  

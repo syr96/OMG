@@ -165,7 +165,6 @@ public class JoController {
 	@RequestMapping("salesDetailDelete")
 	public String salesDetailDelete(@RequestParam(value = "salesDates") List<String> salesDates,
 	                                @RequestParam(value = "custcodes") List<String> custcodes,
-	                                @RequestParam(value = "codes") List<String> codes,
 	                                String currentPage, Model model) {
 	    UUID transactionId = UUID.randomUUID();
 
@@ -178,11 +177,11 @@ public class JoController {
 	        	SalesDetail sales = new SalesDetail();
 	            sales.setSales_date(salesDates.get(i));
 	            sales.setCustcode(Integer.parseInt(custcodes.get(i)));
-	            sales.setCode(Integer.parseInt(codes.get(i)));
-	            
+	            	            
 	            int result = jss.deleteSalesDetail(sales);
 	        }
 	        
+
 	    } catch (Exception e) {
 	        log.error("[{}]{}:{}", transactionId, "salesDetailDelete Exception", e.getMessage());
 	        
@@ -192,26 +191,8 @@ public class JoController {
 
 	    return "redirect:salesInquiry";
 	}
+	
 
-	/*
-	 * // 판매서 삭제
-	 * 
-	 * @RequestMapping("salesDetailDelete") public String
-	 * salesDetailDelete(SalesDetail sales, String currentPage, Model model) { UUID
-	 * transactionId = UUID.randomUUID();
-	 * 
-	 * try { log.info("[{}]{}:{}", transactionId, "salesInquiryDelete", "Start");
-	 * int result = jss.deleteSalesDetail(sales);
-	 * 
-	 * } catch (Exception e) { log.error("[{}]{}:{}", transactionId,
-	 * "salesDetailDelete Exception", e.getMessage());
-	 * 
-	 * } finally { log.info("[{}]{}:{}", transactionId, "salesDetailDelete", "End");
-	 * 
-	 * } return "redirect:jo/salesInquiry"; }
-	 */
-	 	
-	  
 	// 판매서 입력
 	@RequestMapping("salesInsertForm")
 	public String salesInsertForm(SalesDetail sales, String currentPage, Model model) {
@@ -239,33 +220,7 @@ public class JoController {
 		return "jo/salesInsertForm";
 	}
 	
-		
-	/*
-	 * // 판매서 입력
-	 * 
-	 * @RequestMapping("salesInsert") public String salesInsert(SalesDetail sales,
-	 * String currentPage, Model model) { UUID transactionId = UUID.randomUUID();
-	 * int result = 0;
-	 * 
-	 * log.info("sales -> " + sales);
-	 * 
-	 * try { log.info("[{}]{}:{}", transactionId, "salesInsert", "Start"); result =
-	 * jss.insertSales(sales); log.info("[{}]{}:{}", transactionId,
-	 * "result(insertSales)", result); result = jss.insertSalesDetail(sales);
-	 * log.info("[{}]{}:{}", transactionId, "result(insertSalesDetail)", result);
-	 * 
-	 * } catch (Exception e) { log.info("[{}]{}:{}", transactionId,
-	 * "salesInsert Exception", e.getMessage());
-	 * 
-	 * } finally { log.info("[{}]{}:{}", transactionId, "salesInsert", "End"); }
-	 * 
-	 * if(result > 0) { return "redirect:salesInquiry"; } else {
-	 * model.addAttribute("msg", "입력실패 확인해보세요"); return "forward:salesInsertForm"; }
-	 * 
-	 * }
-	 */
-	
-	
+			
 	 @PostMapping("salesInsert")
 	 @ResponseBody
 	 public String salesInsert(@RequestBody @Valid Sales sales) { 
@@ -277,7 +232,7 @@ public class JoController {
 		  try {
 			  log.info("sales -> " + sales); 
 			
-			  // salesResult = jss.insertSales(sales);
+			  salesResult = jss.insertSales(sales);
 			  
 			  log.info("[{}]{}:{}", transactionId, "salesInsert", "Success"); 
 			  return "1";
@@ -303,7 +258,7 @@ public class JoController {
 		  try {
 			  for (SalesDetail salesDetail : salesDetails) {
 				  log.info("salesDetailInsert -> " + salesDetail);
-				  // salesDetailResult = jss.insertSalesDetail(salesDetail);
+				  salesDetailResult = jss.insertSalesDetail(salesDetail);
 			  }
 			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "Success"); 
 			  return "1";

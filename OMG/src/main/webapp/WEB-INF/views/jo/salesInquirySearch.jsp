@@ -119,6 +119,7 @@
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='../sales/salesInquirySort?sales_status=0'">진행</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='../sales/salesInquirySort?sales_status=1'">완료</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='../sales/salesInquirySort?sales_status=2'">취소</button>
+					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='../sales/salesInquirySort?sales_status=3'">출고완료</button>
 				</div>
 			<div>	
 				<div class="table-button-gap">
@@ -152,7 +153,7 @@
 									<c:if test="${salesInquirySearch.sales_status == 0}">진행</c:if>
 									<c:if test="${salesInquirySearch.sales_status == 1}">완료</c:if>
 									<c:if test="${salesInquirySearch.sales_status == 2}">취소</c:if>
-									<c:if test="${salesInquirySearch.sales_status == 3}">입고완료</c:if>
+									<c:if test="${salesInquirySearch.sales_status == 3}">출고완료</c:if>
 								</td>
 							</tr>
 						<c:set var="num" value="${num + 1}"/>

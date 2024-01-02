@@ -69,6 +69,14 @@
 						  <label for="ref" class="form-label" style="font-size: 15px;">비고</label>
 						  <textarea class="form-control" name="ref" id="ref" rows="5" disabled>${salesDetail.ref}</textarea>
 						</div>
+						<div class="mb-3 ">
+						  <label for="sales_status" class="form-label"  style="font-size: 15px;">상태</label>
+						  <select class="form-select" aria-label="sales_status" name="sales_status" disabled>
+								<option value="0" ${0 == salesDetail.sales_status? 'selected' : ''} >진행</option>
+						  		<option value="1" ${1 == salesDetail.sales_status? 'selected' : ''} >완료</option>
+						  		<option value="2" ${2 == salesDetail.sales_status? 'selected' : ''} >취소</option>
+						  </select>
+						</div>
 																							
 						<hr class="hr" />			
 						
