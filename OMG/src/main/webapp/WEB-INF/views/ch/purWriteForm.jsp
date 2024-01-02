@@ -15,6 +15,7 @@
 				<div class="col-12">
 					<h2>발주 작성</h2>
 				</div>
+				<div class="col-12 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></div>
 				<input name="rownum" type="hidden" id="rownum" value="0">
 				<div class="col-12">
 					<div class="row text-center bg-white">
