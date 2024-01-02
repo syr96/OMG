@@ -71,11 +71,11 @@ function sample6_execDaumPostcode() {
 		
 		// 폼 제출 여부 결정
 	    if (!isValid) {
-	    	alert("(!isValid)false");
+	    	alert("등록에 실패하였습니다.");
 	        return false; // 유효성 검사에서 실패한 경우 폼 제출 중단
 	    } else{
 	    	// 유효성 검사 통과 시  폼 제출
-	    	alert("true");
+	    	alert("등록에 성공하였습니다.");
 	    	return true;
 	    	}
 	    
@@ -88,7 +88,6 @@ function sample6_execDaumPostcode() {
 			
 			if(!koreanNameRegex.test(name)){
 				if(!englishNameRregex.test(name)){
-					alert("이름을 다시 작성해주세요.");
 					formAccountSettings.name.value= "";
 					isValid = false;
 				}
@@ -104,7 +103,6 @@ function sample6_execDaumPostcode() {
 			var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 			
 			if(!emailRegex.test(email)){
-				alert("이메일 양식이 맞지 않습니다.");
 				isValid = false;
 			}
 		}
@@ -113,7 +111,6 @@ function sample6_execDaumPostcode() {
 		function hiredateCheck(){
 			var hiredate = document.getElementById("mem_hiredate").value;;
 			if(!hiredate || !hiredate.trim()){
-				alert("입사일자를 입력해주세요.");
 				isValid = false;
 			}
 		}
@@ -123,7 +120,6 @@ function sample6_execDaumPostcode() {
 			var birthday = document.getElementById("mem_bd").value;
 			
 			if(!birthday || !birthday.trim()){
-				alert("생년월일을 입력해주세요.");
 				isValid = false;
 			}
 		}
@@ -133,7 +129,6 @@ function sample6_execDaumPostcode() {
 			var dept = 	document.getElementById("mem_dept_md").value;
 			
 			if(!dept || !dept.trim()){
-				alert("부서항목란을를 체크해주세요.");
 				isValid = false;
 			}
 		}
@@ -143,7 +138,6 @@ function sample6_execDaumPostcode() {
 			var posi = 	document.getElementById("mem_posi_md").value;
 			
 			if(!posi || !posi.trim()){
-				alert("직위항목란을 체크해주세요.");
 				isValid = false;
 			}
 		}
@@ -153,7 +147,6 @@ function sample6_execDaumPostcode() {
 			var duty = 	document.getElementById("mem_duty_md").value;
 			
 			if(!duty || !duty.trim()){
-				alert("직급항목란을 체크해주세요.");
 				isValid = false;
 			}
 		}
@@ -165,9 +158,12 @@ function sample6_execDaumPostcode() {
 			var cnt = 0;
 			var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 			
-			//유효성 검사	
-			if(!pwRegex.test(pw1)){
-				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+			if(pw1 == pw2){
+				//유효성 검사	
+				if(!pwRegex.test(pw1)){
+					pwValid = false;
+				}
+			} else {
 				pwValid = false;
 			}
 			
