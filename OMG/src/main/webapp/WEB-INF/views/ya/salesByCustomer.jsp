@@ -201,13 +201,16 @@ function formatAmount(amount) {
                     </tr>
                </thead>
                <tbody class="table-border-bottom-0" id="tableBody" style="font-size: 12px;">
+             
+             
                <!-- 월별 소계 -->
 		        <c:set var="currentMonth" value=" " />
 		        <c:set var="monthlyPurTotal" value="0" />
 		        <c:set var="monthlySalesTotal" value="0" />
-			    <c:set var="firstMonth" value="true" />
+			    <c:set var="firstMonth" value="true"/>
 		
 		   	    <c:forEach var="customer" items="${customerSalesList}" varStatus="loop">
+		   	  		<!--customerSalesList의 index가 첫번째 & 월이 달라지는 index -1줄에 소계 부분 생김 -->
 			        <c:if test="${loop.index == 0 || !customer.month.equals(customerSalesList[loop.index - 1].month)}">
 			        	<!-- 첫 번째 월 소계 행에 hidden-row 클래스 추가 -->
 			            <tr class="${firstMonth ? 'hidden-row' : ''}"  style="background-color: #f2f2f2;"> 
@@ -230,10 +233,11 @@ function formatAmount(amount) {
 								    </c:otherwise>
 								</c:choose>
 	          			  </tr>	   
-	            <c:set var="firstMonth" value="false" />
-	            <!-- 월별 총액을 초기화하고 현재 월 업데이트 -->
+	          	<!--첫번째 월 소계 부분 숨김-->		  
+	            <c:set var="firstMonth" value="false"/>	            
+	            <!-- 월이 달라지기 때문에 monthlyPurTotal,monthlySalesTotal 총액을 초기화하고 현재 월 업데이트 -->
 	            <c:set var="monthlyPurTotal" value="0" />
-	            <c:set var="monthlySalesTotal" value="0" />
+	            <c:set var="monthlySalesTotal" value="0"/>
 	            <c:set var="currentMonth" value="${customer.month}" />
 	       			 </c:if>
       			<!--전체거래처실적조회 -->        
@@ -267,7 +271,7 @@ function formatAmount(amount) {
 				        </c:choose>
 			        </td>
                     </tr>
-                
+              <!--월별 소계 계산부분-->  
               <c:choose>
                 <c:when test="${customer.custstyle == 0}">
                     <c:set var="monthlyPurTotal" value="${monthlyPurTotal + (customer.purQty * customer.purPrice)}" />

@@ -137,17 +137,16 @@ function search() {
 	        $("#searchResultsTable tbody").empty();
 	        $.each(inventoryListSearch, function (index, warehouse) {
 	            // 날짜 포맷 변환 함수
-	            function formatDate(date) {
+	/*             function formatDate(date) {
 	                var formattedDate = new Date(date);
 	                var year = formattedDate.getFullYear();
 	                var month = ('0' + (formattedDate.getMonth() + 1)).slice(-2);
 	                var day = ('0' + formattedDate.getDate()).slice(-2);
 	                return year + '-' + month + '-' + day;
-	            }
+	            } */
 
 	            var row = "<tr>" +
 	            "<td>" + (warehouse.ym ? warehouse.ym : '-') + "</td>" +
-	            "<td>" + (warehouse.reg_date ? formatDate(warehouse.reg_date) : '-') + "</td>" +
 	            "<td>" + warehouse.code + "</td>" +
 	            "<td>" + warehouse.name + "</td>";
 
@@ -181,68 +180,67 @@ function formatAmount(amount) {
     		
   <div class="table-responsive text-nowrap mx-3 ">
   <div class="table-container">
-           <table id="searchResultsTable" class=" table table-hover">
-           <thead class="fixed-thead"> 
-                   <tr>
-                     <th style="width: 60.508px;">기준월</th>
-                     <th style="width: 119.508px;">입고처리일</th>  
-                     <th style="width: 100px;">제품코드</th>
-                     <th style="width: 119.508px;">제품명</th>
-                     <th style="width: 119.508px;">기초재고수량</th>
-                     <th style="width: 119.508px;">기말재고수량</th>
-                     <th style="width: 119.508px;">단가</th>
-                     <th style="width: 119.508px;">재고총액</th>
-                    </tr>
-               </thead>
-               <tbody class="table-border-bottom-0" id="tableBody" >
 
-   	  		  <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">   
-					 <tr>
-                       <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
-                         <td>
-                            <c:choose>
-                                <c:when test="${empty warehouse.reg_date}">
-                                    -
-                                </c:when>
-                                <c:otherwise>
-                                    <fmt:formatDate value="${warehouse.reg_date}" pattern="yyyy-MM-dd" />
-                                </c:otherwise>
-                            </c:choose>
-                        </td> 
-                  	 <td>${warehouse.code}</td>
-                  	 <td>${warehouse.name}</td>		
-					<!-- 기초재고수량 -->
-					<td style="text-align: right;">
-					    <c:choose>      
-					        <c:when test="${warehouse.inven == 0}">
-					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
-					        </c:when>
-					      
-					        <c:otherwise>
-					            <fmt:formatNumber value="0" pattern="#,##0" />
-					        </c:otherwise>
-					    </c:choose>
-					</td>
-					<!-- 기말재고수량 -->
-					<td style="text-align: right;">
-					    <c:choose>				        
-					        <c:when test="${warehouse.inven == 1}">
-					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
-					        </c:when>      
-					        <c:otherwise>
-					            <fmt:formatNumber value="0" pattern="#,##0" />
-					        </c:otherwise>
-					    </c:choose>
-					</td>
-                     <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
-                     <td style="text-align: right;"> <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/></td>
+<table id="searchResultsTable" class="table table-hover">
+    <thead class="fixed-thead">
+        <tr>
+            <th style="width: 60.508px;">기준월</th>
+            <th style="width: 100px;">제품코드</th>
+            <th style="width: 119.508px;">제품명</th>
+            <th style="width: 119.508px;">기초재고수량</th>
+            <th style="width: 119.508px;">기말재고수량</th>
+            <th style="width: 119.508px;">단가</th>
+            <th style="width: 119.508px;">재고총액</th>
+        </tr>
+    </thead>
+    <tbody class="table-border-bottom-0" id="tableBody">
+     <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">
+         <!-- 3. ym과 icode가 같은 경우 warehouse.inven 값이 각각 0과 1인 행이 함께 표시 -->
+            <c:if test="${!loop.last && warehouse.inven == 0 && inventoryList[loop.index + 1].code == warehouse.code 
+                            && inventoryList[loop.index + 1].ym == warehouse.ym && inventoryList[loop.index + 1].inven == 1}">
+                <tr>
+                    <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
+                    <td>${warehouse.code}</td>
+                    <td>${warehouse.name}</td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${inventoryList[loop.index + 1].cnt}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${inventoryList[loop.index + 1].price}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${inventoryList[loop.index + 1].cnt * inventoryList[loop.index + 1].price}" pattern="#,##0" /></td>
+                </tr>
+                <!-- 이미 처리된 행은 숨김 -->
+                 <c:set var="loopIndex" value="${loop.index + 1}" /> 
 
-                    
-                    </tr> 
-                                      	
-				</c:forEach>		
-                </tbody>
-              </table>
+            </c:if>
+
+            <!-- 1. 앞 행의 code와 ym이 일치하는 경우를 제외하면서  warehouse.inven이 0만 있는경우 -->
+            <c:if test="${warehouse.inven == 0 && empty warehouseInven1}">
+                <tr>
+                    <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
+                    <td>${warehouse.code}</td>
+                    <td>${warehouse.name}</td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="0" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0" /></td>
+                </tr>
+            </c:if>
+
+            <!-- 2. 앞 행의 code와 ym이 일치하는 경우를 제외하면서 warehouse.inven이 1만 있는 경우 -->
+            <c:if test="${warehouse.inven == 1 && empty warehouseInven0}">
+                <tr>
+                    <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
+                    <td>${warehouse.code}</td>
+                    <td>${warehouse.name}</td>
+                    <td style="text-align: right;"><fmt:formatNumber value="0" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
+                    <td style="text-align: right;"><fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0" /></td>
+                </tr>
+            </c:if>
+
+        </c:forEach>
+    </tbody>
+</table>
               </div>
               
    </div>           

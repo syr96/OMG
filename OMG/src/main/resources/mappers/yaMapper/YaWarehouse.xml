@@ -18,7 +18,9 @@
 		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code
+				WHERE w.inven = 0 or w.inven = 1    
 		ORDER BY w.ym DESC    
+
 	</select>
 	
 	<select id="itemListSelectOne"  parameterType="item" resultType="item">
