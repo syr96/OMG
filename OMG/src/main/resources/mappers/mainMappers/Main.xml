@@ -45,14 +45,19 @@
 	</select>
 	
 	<select id="shMainInventory" resultType="Warehouse">
-		Select DISTINCT i.code, i.name, NVL(w.cnt,0) as cnt, NVL(p.price,0) as price
+	    Select i.code, i.name, NVL(SUM(DISTINCT w.cnt), 0) as cnt, NVL(p.price, 0) as price
 		From item i 
-		Left JOIN    warehouse w 
-        	On i.code = w.code
-			And w.inven = 1
-		Left Join    pur_detail p 
-        	On i.code = p.code
-		Order by i.code
+		Left Join
+		    warehouse w 
+		    	On i.code = w.code 
+		    	And w.inven = 1
+		Left Join
+		    pur_detail p 
+		    	On i.code = p.code
+		Group By
+		    i.code, i.name, p.price
+		Order By
+	    i.code
 	</select>
 	
 	<select id="shMainInventoryCount" resultType="int">
