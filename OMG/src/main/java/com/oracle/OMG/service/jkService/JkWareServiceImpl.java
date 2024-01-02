@@ -60,14 +60,14 @@ public class JkWareServiceImpl implements JkWareService {
 		return getPurchaseDataResultMap;
 	}
 
-	@Override
-	public Map<String, Object> selectItem(int code, String ym) {
-		System.out.println("JkWareServiceImpl selectItem Start...");
-		
-		Map<String, Object> selectItem= jwd.selectItem(code, ym);
-		
-		return selectItem;
-	}
+	  @Override
+	   public Map<String, Object> selectItem(int code, String ym) {
+	      System.out.println("JkWareServiceImpl selectItem Start...");
+	      
+	      Map<String, Object> selectItem= jwd.selectItem(code, ym);
+	      
+	      return selectItem;
+	   }
 
 	@Override
 	public int insertInv(Warehouse warehouse) {
@@ -193,7 +193,7 @@ public class JkWareServiceImpl implements JkWareService {
 
 	        try {
 	            // 프로시저 호출
-	            jwd.callOutoundPD(inboundMonth);
+	            jwd.callCloseMonth(inboundMonth);
 
 	            // 성공적으로 프로시저가 호출되면 성공 메시지를 추가
 	            response.put("status", "success");

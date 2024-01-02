@@ -152,16 +152,16 @@ public class JkController {
 
 		
 	// 제품정보 조회(업데이트용)
-	@GetMapping("/getItemDetails")
-	@ResponseBody
-	public Map<String, Object> getItemDetails(@RequestParam("code") int code, @RequestParam("ym") String ym ) {
-	    logger.info("Fetching item details for product code: {}", code, "ym",ym);
+	   @GetMapping("/getItemDetails")
+	   @ResponseBody
+	   public Map<String, Object> getItemDetails(@RequestParam("code") int code, @RequestParam("ym") String ym ) {
+	       logger.info("Fetching item details for product code: {}", code, "ym",ym);
 
-	    Map<String, Object> response = jws.selectItem(code, ym);
-	    
-	    logger.info("Response: {}", response);
-	    return response;
-	}
+	       Map<String, Object> response = jws.selectItem(code, ym);
+	       
+	       logger.info("Response: {}", response);
+	       return response;
+	   }
 
 	// 제품정보 조회(등록용)
 	@GetMapping("/getItemDetails2")
@@ -414,12 +414,13 @@ public class JkController {
 		    return "jk/outboundRegister";
 		}
 		
-		// 출고 프로시져 호출
+		// 마감 프로시져 호출
 
 		@RequestMapping(value = "/callCloseMonth", method = RequestMethod.POST)
-		public String callCloseMonth(@RequestParam("inboundMonth") String inboundMonth, Model model) {
+		public String callCloseMonth(@RequestParam("ym") String ym, Model model) {
 		    // "-" 제거
-		    String formattedMonth = inboundMonth.replace("-", "");
+			log.info("ym", ym);
+		    String formattedMonth = ym.replace("-", "");
 		    System.out.println("vvv"+formattedMonth);
 		    // 정상적으로 변환된 경우에만 계속 진행
 		    Map<String, String> response = jws.callCloseMonth(formattedMonth);

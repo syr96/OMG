@@ -255,7 +255,7 @@ function handleInboundButtonClick() {
                                         </thead>
                                      
 				   <tbody>
-						<c:set var="num" value="${page.start}"/>
+						<c:set var="num" value="${loop.index + 1}"/>
 						<c:forEach var="listSalesInquiry" items="${listSalesInquiry}">
 							<tr>
 								<td style="text-align: center">${num}</td>
@@ -274,7 +274,7 @@ function handleInboundButtonClick() {
 									<c:if test="${listSalesInquiry.sales_status == 3}">입고완료</c:if>
 								</td>
 							 </tr>
-						 <c:set var="num" value="${num + 1}"/>
+						 <c:set var="num" value="${loop.index + 1}"/>
 						</c:forEach>
 					</tbody>
 

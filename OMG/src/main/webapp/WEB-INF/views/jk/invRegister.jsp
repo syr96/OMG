@@ -124,6 +124,7 @@ $(document).ready(function() {
                     data: { code: code, ym: selectedMonth2 },
                     dataType: 'json',
                     success: function(response) {
+                    	console.log("Response from server:", response); 
                         var memName = response.MEM_NAME;
                         var productName = response.NAME;
                         var cnt2 = response.CNT;
@@ -205,6 +206,7 @@ $(document).ready(function() {
 
 });
 
+
 </script>
 
 <%@ include file="../common/header.jsp" %>
@@ -283,11 +285,7 @@ $(document).ready(function() {
 		                          <input class="form-control" type="month" id="monthSelect1" name="monthSelect1" >
 		                        </div>
 		                         <div class="mb-3 col-md-6">
-		                          <div class="mb-3 col-md-3">
-                     
-                 <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
 
-                 </div>
 		                         </div>
 		                      </div>
 		               <div class="row"> 
@@ -332,14 +330,17 @@ $(document).ready(function() {
     <div class="card">
         <form action="updateInv" method="post" id="updateInv">
             <div class="card-body">
-                <div class="row">
-                    <div class="mb-3 col-md-6">
+ <div class="row">
+                    <div class="row align-items-end" style="padding-left: 23px;">
+                    <div class="mb-3 col-md-3">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="monthSelect2" name="monthSelect2">
+                        </div>
+                        <div class="mb-3 col-md-3">
+                        <button class="btn btn-outline-primary" type="button" id="closeMonthBtn">마감</button>
                     </div>
-                    <div class="mb-3 col-md-6">
-                    </div>
-                </div>
+                 </div>
+                 </div>
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label class="form-label">제품코드</label>
@@ -402,6 +403,29 @@ $(document).ready(function() {
       $('#adjustmentForm').show();
       $('#invRegisterForm').hide();
     });
+
+ // 마감 버튼 클릭 시
+ $('#closeMonthBtn').click(function() {
+     // 선택한 기준년월 가져오기
+     var selectedMonth = $("#monthSelect2").val().replace('-', '');
+
+     // Ajax 요청을 통해 서버에 마감 이벤트 호출
+     $.ajax({
+         type: "POST",
+         url: "/callCloseMonth",
+         data: { ym: selectedMonth },
+         success: function(response) {
+             // 마감 성공 시 서버 응답에 따른 처리
+             console.log("마감이 완료되었습니다.", response);
+             alert(response);
+             // 여기에 추가적인 처리를 할 수 있습니다.
+         },
+         error: function(xhr, status, error) {
+             // 마감 중 에러가 발생했을 때의 처리
+             console.error("마감 중 에러가 발생했습니다: " + error);
+         }
+     });
+ });
   });
   
 </script>

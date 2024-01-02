@@ -84,12 +84,12 @@
             </li>
 
             <!-- Sales -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">매입&amp;매출 관리</span></li>
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">주문관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">매입</div>
+                <div data-i18n="Form Elements">발주관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
@@ -99,7 +99,7 @@
                 </li>
                 <li class="menu-item">
                   <a href="/purList" class="menu-link">
-                    <div data-i18n="Input groups">발주서 리스트</div>
+                    <div data-i18n="Input groups">발주 리스트</div>
                   </a>
                 </li>
               </ul>
@@ -107,17 +107,17 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">매출</div>
+                <div data-i18n="Form Layouts">수주관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="/sales/salesInsertForm" class="menu-link">
-                    <div data-i18n="Vertical Form">판매서 작성</div>
+                    <div data-i18n="Vertical Form">수주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="/sales/salesInquiry" class="menu-link">
-                    <div data-i18n="Horizontal Form">판매서 리스트</div>
+                    <div data-i18n="Horizontal Form">수주 리스트</div>
                   </a>
                 </li>
               </ul>
