@@ -5,30 +5,37 @@
 <mapper namespace="com.oracle.OMG.mappers.joSales">
 	<select id="joListSalesInquiry" parameterType="SalesDetail" resultType="SalesDetail">
 		SELECT *
-    	FROM 
+		FROM 
 		(
 		    SELECT ROWNUM rn, x.*
 		    FROM
-		    (
-                SELECT sd.*, i.name, s.title, s.sales_status, c.company, TO_CHAR(sd.qty * sd.price, 'L999,999,999') AS total_price
-                FROM item i, sales s, customer c,
-                (
-                    SELECT subquery.*
-                    FROM 
-                    (
-                      SELECT sales_date, custcode, code, qty, price,
-                             ROW_NUMBER() OVER (PARTITION BY sales_date, custcode ORDER BY code) AS row_num
-                      FROM sales_detail
-                    ) subquery
-                    WHERE row_num = 1
-                ) sd
-               WHERE sd.code = i.code
-               AND   sd.sales_date = s.sales_date
-               AND   sd.custcode = s.custcode
-               AND   sd.custcode = c.custcode
-               ORDER BY sd.sales_date
-            ) x
-    	)        
+			(
+		         SELECT sd.*, i.name, s.title, s.sales_status, c.company
+		         FROM item i, sales s, customer c,
+		        (
+		          SELECT subquery.*, total.total_price
+		          FROM 
+		          (
+		               SELECT sales_date, custcode, code, qty, price,
+		                      ROW_NUMBER() OVER (PARTITION BY sales_date, custcode ORDER BY code) AS row_num
+		              FROM sales_detail
+		           ) subquery,
+		          (
+		               SELECT sales_date, custcode, to_char(sum(qty * price), 'L999,999,999') as total_price
+		               FROM sales_detail
+		               GROUP BY sales_date, custcode
+		           ) total
+		           WHERE subquery.row_num = 1
+		           AND subquery.sales_date = total.sales_date
+		           AND subquery.custcode = total.custcode
+		         ) sd
+		     WHERE sd.code = i.code
+		     AND   sd.sales_date = s.sales_date
+		     AND   sd.custcode = s.custcode
+		     AND   sd.custcode = c.custcode
+		    ORDER BY sd.sales_date
+		    ) x
+		)    
 		WHERE rn BETWEEN #{start} and #{end}
 	</select>
 	
@@ -189,9 +196,10 @@
 	
 	<update id="joUpdateSalesDetail" parameterType="SalesDetail">
 		UPDATE sales_detail 
-		SET	   code=#{code}, qty=#{qty}, price=#{price}
+		SET	   code=#{afterCode}, qty=#{qty}, price=#{price}
 		WHERE  sales_date = #{sales_date} 
 		AND    custcode   = #{custcode}
+		AND    code=#{beforeCode}
 	</update>
 	
 	
@@ -217,7 +225,7 @@
 	</select>
 	
 	
-	<update id="joUpdateSales" parameterType="SalesDetail">
+	<update id="joUpdateSales" parameterType="Sales">
 		UPDATE sales 
 		SET    sales_status=#{sales_status}, title=#{title}, ref=#{ref}
 		WHERE  sales_date=#{sales_date}

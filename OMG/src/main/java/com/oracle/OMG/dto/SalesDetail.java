@@ -37,5 +37,9 @@ public class SalesDetail {
 	private int    start;
 	private int    end;
 	
+	// Update
+	private int beforeCode; 
+	private int afterCode;
+	 
 	
 }

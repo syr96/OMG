@@ -2,6 +2,8 @@ package com.oracle.OMG.service.joService;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -163,9 +165,9 @@ public class JoSalServiceImpl implements JoSalService {
 
 
 	@Override
-	public int UpdateSales(SalesDetail sales) {
+	public int updateSalesDetail(SalesDetail sales) {
 		int result = 0;
-		result = jsd.UpdateSales(sales);
+		result = jsd.updateSalesDetail(sales);
 		
 		if(result == 0) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 데이터를 수정하는데 실패하였습니다.");
@@ -198,6 +200,19 @@ public class JoSalServiceImpl implements JoSalService {
 		}
 		
 		return insertSalesDetail;
+	}
+
+
+	@Override
+	public int updateSales(@Valid Sales sales) {
+		int result = 0;
+		result = jsd.updateSales(sales);
+		
+		if(result == 0) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "판매 업데이트 하는데 실패하였습니다");
+		}
+		
+		return result;
 	}
 	
 
