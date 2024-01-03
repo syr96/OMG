@@ -241,7 +241,7 @@
 						</div>
 						<div class="mb-3 ">
 						  <label for="title" class="form-label" style="font-size: 15px;">제목</label>
-						  <input type="text" class="form-control" name="title" id="title" required="required" placeholder="판매전표_2023YYMM_(주)XXX">
+						  <input type="text" class="form-control" name="title" id="title" required="required" placeholder="판매전표_2024YYMM_(주)XXX">
 						</div>
 						<div class="mb-3 ">
 						  <label for="company" class="form-label" style="font-size: 15px;">거래처명</label>

@@ -25,6 +25,7 @@ public interface JoSalService {
 	int                    insertSalesDetail(SalesDetail sales);
 	int                    updateSales(@Valid Sales sales);
 	int                    updateSalesDetail(SalesDetail salesDetail);
+	// int                    salesDelete(SalesDetail salesDetail);
 	
 
 }

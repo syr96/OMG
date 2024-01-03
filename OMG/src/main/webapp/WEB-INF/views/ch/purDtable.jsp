@@ -16,7 +16,7 @@
 		<tr id="row${status.index }">
 			<td>
 				${pdList.item_name }
-				<c:if test="${(mem_id == pc.mem_id || mem_id == pc.mgr_id) && pc.pur_status == 0}">
+				<c:if test="${(mem_id == pc.mem_id || mem_id == pc.mgr_id || mem_id == 1025) && pc.pur_status == 0}">
 					<a href="javascript:void(0);" onclick="deletePurDet(${status.index})"><i class='bx bx-x'></i></a>
 				</c:if>
 			</td>
@@ -24,7 +24,7 @@
 			<td><fmt:formatNumber value="${pdList.price }" pattern="#,###"/>원</td>
 			<td id="td${status.index }" class="text-center">
 				${pdList.qty }개
-				<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id )}">
+				<c:if test="${pc.pur_status == 0 &&(mem_id == pc.mem_id || mem_id == pc.mgr_id || mem_id == 1025)}">
 					<button type="button" onclick="changeQtyBtn(${status.index})" id="btn${status.index }" class="btn btn-outline-primary">변경</button>
 				</c:if>
 			</td>

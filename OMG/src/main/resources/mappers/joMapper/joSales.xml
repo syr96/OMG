@@ -210,7 +210,7 @@
 	
 	<insert id="joInsertSales" parameterType="SalesDetail">
 		INSERT INTO sales(sales_date, custcode, sales_status, title, ref)
-		VALUES           (#{sales_date}, #{custcode}, '0', #{title}, #{ref}) 
+		VALUES           (#{sales_date}, #{custcode}, '1', #{title}, #{ref}) 
 	</insert>
 	
 	
