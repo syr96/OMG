@@ -344,7 +344,7 @@
               
               
               
-			<ul class="nav nav-pills mb-3 nav-fill" role="tablist">
+			<!-- <ul class="nav nav-pills mb-3 nav-fill" role="tablist">
               	<li class="nav-item">
 					<button
 						 id="manager-btn"
@@ -371,7 +371,7 @@
                      <i class="tf-icons bx bx-user"></i> 사원
                    </button>
                  </li>
-			</ul>
+			</ul> -->
               
               
 		              <form id="hr_manager" class="mb-3" action="/auth" method="POST">
