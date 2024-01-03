@@ -131,6 +131,10 @@ public class ChController {
 	public String purDtail(Model model,Purchase purchase, HttpSession session) {
 		
 		int mem_id = session.getAttribute("mem_id") != null? (int) session.getAttribute("mem_id") : 0;
+		int mem_dept_md = 0;
+		if(mem_id > 0) {
+			mem_dept_md = (int) session.getAttribute("mem_dept_md"); 
+		}
 		
 		System.out.println("mem_id------------------------------------------>" + mem_id);
 		
@@ -155,6 +159,7 @@ public class ChController {
 		model.addAttribute("totalQty", totalQty);
 		model.addAttribute("itemList", itemList);
 		model.addAttribute("mem_id", mem_id);
+		model.addAttribute("mem_dept_md", mem_dept_md);
 		
 		return "ch/purDtailPage";
 	}
@@ -250,6 +255,12 @@ public class ChController {
 		int result = 0;
 		int mem_id = session.getAttribute("mem_id") != null ? (int)session.getAttribute("mem_id") : 0;
 		
+		int mem_dept_md = 0;
+		if(mem_id > 0) {
+			mem_dept_md = (int) session.getAttribute("mem_dept_md"); 
+		}
+		
+		
 		System.out.println("ChController insertDetail Start...");
 		// custcode와 price를 가져오기 위한 조회
 		Item item = itemService.selectItem(pd.getCode());
@@ -271,6 +282,7 @@ public class ChController {
 			mav.addObject("totalPrice", totalPrice);
 			mav.addObject("totalQty", totalQty);
 			mav.addObject("mem_id", mem_id);
+			mav.addObject("mem_dept_md", mem_dept_md);
 			mav.addObject("pc", pc);
 			
 			mav.setViewName("ch/purDtable");
@@ -284,6 +296,13 @@ public class ChController {
 	public ModelAndView qtyUpdate(PurDetail pd, ModelAndView mav, HttpSession session) {
 		System.out.println("ChController qtyUdate Start...");
 		int mem_id = session.getAttribute("mem_id") != null ? (int)session.getAttribute("mem_id") : 0;
+		
+		int mem_dept_md = 0;
+		if(mem_id > 0) {
+			mem_dept_md = (int) session.getAttribute("mem_dept_md"); 
+		}
+		
+		
 		Item item = itemService.selectItem(pd.getCode());
 		pd.setCustcode(item.getCustcode());
 		int result = chPurService.qtyUpdate(pd);
@@ -302,6 +321,7 @@ public class ChController {
 			mav.addObject("totalPrice", totalPrice);
 			mav.addObject("totalQty", totalQty);
 			mav.addObject("mem_id", mem_id);
+			mav.addObject("mem_dept_md", mem_dept_md);
 			mav.addObject("pc", pc);
 			
 			mav.setViewName("ch/purDtable");
