@@ -167,8 +167,7 @@ public class YaController {
 
 	    if (memDeptMd != null) {
 	        String memDeptMdString = memDeptMd.toString();
-
-	        if ("100".equals( memDeptMd) || "999".equals(memDeptMd)) {
+	        if ("100".equals(memDeptMdString) || "999".equals(memDeptMdString)) {
 	            mem_dept_md = Integer.parseInt(memDeptMdString);
 	        }
 	    }
@@ -179,7 +178,7 @@ public class YaController {
 	// 거래처 검색
 	@GetMapping("/customerSearch")
 	@ResponseBody
-	public Map<String, Object> customerSearch(HttpServletRequest request) {
+	public Map<String, Object> customerSearch(HttpServletRequest request, HttpSession session) {
 		
 		System.out.println("YaController ycs.customerSearch Start...");
 		String keyword = request.getParameter("keyword");
@@ -190,12 +189,25 @@ public class YaController {
 		int totalSearch = ycs.totalSearch(keyword);
 		System.out.println("YaController totalSearch(keyword):" + totalSearch);
 
+	    
+		int mem_dept_md = 0;
+	    //Object로 먼저 받아오고,  적절한 자료형으로 변환
+	    Object memDeptMd = session.getAttribute("mem_dept_md");
+
+	    if (memDeptMd != null) {
+	        String memDeptMdString = memDeptMd.toString();
+	        if ("100".equals(memDeptMdString) || "999".equals(memDeptMdString)) {
+	            mem_dept_md = Integer.parseInt(memDeptMdString);
+	        }
+	    }	        
+		
 		Paging paging = new Paging(totalSearch, currentPage);
 		List<Customer> customerSearchList = ycs.customerSearch(keyword, paging.getStart(), paging.getEnd());
 
 		Map<String, Object> result = new HashMap<>();
 		result.put("customerSearchList", customerSearchList);
 		result.put("paging", paging);
+		result.put("mem_dept_md", mem_dept_md);
 
 		return result;
 	}

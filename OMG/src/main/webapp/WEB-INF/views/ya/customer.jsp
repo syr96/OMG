@@ -219,11 +219,14 @@ $(document).ready(function () {
                 data: {
                     keyword: keyword,
                     currentPage: pageNumber,
+                    mem_dept_md: ${sessionScope.mem_dept_md} 
                 },
                 success: function (data) {
                     console.log("서버 응답 데이터:", data);
                     var customerSearchList = data.customerSearchList;
                     var paging = data.paging;
+                    var mem_dept_md = data.mem_dept_md;
+                    
 
                     // 검색 결과가 없을 경우
                     if (customerSearchList.length === 0) {
@@ -237,6 +240,9 @@ $(document).ready(function () {
                         // 검색 결과가 있을 경우
                         $("#searchResultsTable tbody").empty();
                         $.each(customerSearchList, function (index, customer) {
+                            console.log("customer.mem_dept_md type:", typeof customer.mem_dept_md);
+                            console.log("customer.mem_dept_md value:", customer.mem_dept_md);
+                            console.log("customer.custcodevalue:", customer.custcode);    
                             var row = "<tr>" +
                                 "<td><strong>" + customer.custcode + "</strong></td>" +
                                 "<td>" + (customer.cust_md == 101 ? '매입처' : '매출처') + "</td>" +
@@ -249,8 +255,8 @@ $(document).ready(function () {
                                 "data-bs-toggle='offcanvas' data-bs-target='#offcanvasScroll' " +
                                 "data-custcode='" + customer.custcode + "' aria-controls='offcanvasScroll'>상세</button></td>" +
                                 "<td><button class='btn btn-xs btn-primary' type='button' " +
-                                "onclick='confirmDelete(\"" + customer.custcode + "\", \"" + data.mem_dept_md + "\")'" +
-                                (data.mem_dept_md === 999 || data.mem_dept_md === 100 ? '' : ' disabled') +
+                                "onclick='confirmDelete(\"" + customer.custcode + "\", \"" + customer.mem_dept_md + "\")'" +
+                                ((mem_dept_md === 999 || mem_dept_md === 100) ? '' : ' disabled') +
                                 ">삭제</button></td>" +
                                 "</tr>";
                             $("#searchResultsTable tbody").append(row);
