@@ -25,7 +25,7 @@
 			</div>
 			
 			<div class="d-flex align-content-center flex-wrap gap-3">
-				<c:if test="${sessionScope.mem_id eq notice.mem_id  }">
+				<c:if test="${sessionScope.mem_id eq notice.mem_id || sessionScope.mem_dept_md == 999  }">
 					<button type="submit" class="btn btn-primary" 	data-oper='modify'>수정하기</button>
 					<button type="submit" class="btn btn-warning" 	data-oper='remove'>삭제</button>
 				</c:if>

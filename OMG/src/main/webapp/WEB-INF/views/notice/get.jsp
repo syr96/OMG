@@ -28,7 +28,7 @@
 			</div>
 			
 			<div class="d-flex align-content-center flex-wrap gap-3 mb-3">
-				<c:if test="${sessionScope.mem_id eq notice.mem_id }">
+				<c:if test="${sessionScope.mem_id eq notice.mem_id || sessionScope.mem_dept_md == 999}">
 					<button data-oper='modify' class="btn btn-primary">수정하기</button>
 				</c:if>
 					<button data-oper='list' class="btn btn-secondary">목록</button>
@@ -356,7 +356,7 @@
 	    		  return;
 	    	 }
 	    	  
-	    	 if(mem_name != originalMem_name ){
+	    	 if(mem_name != originalMem_name && ${sessionScope.mem_dept_md} != 999 ){
 	    		  alert("자신이 작성한 댓글만 수정 가능합니다.");
 	    		  modal.modal("hide");
 	    		  return;
@@ -392,7 +392,7 @@
     	  var originalMem_name = modalInputMem_name.val();
     	  console.log("originalMem_name : " + originalMem_name );
     	  
-    	  if(mem_name != originalMem_name ){
+    	  if(mem_name != originalMem_name && ${sessionScope.mem_dept_md} != 999 ){
     		  alert("자신이 작성한 댓글만 삭제가 가능합니다.");
     		  modal.modal("hide");
     		  return;
@@ -400,7 +400,7 @@
     	  
     	  replyService.remove(rep_id, function(result){
 	    	        
-    	      alert(result);
+    	      //alert(result);
     	      modal.modal("hide");
     	      showList(pageNum);
 	    	      
