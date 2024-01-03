@@ -112,7 +112,7 @@
 	    	// 현재 날짜에 만료기간을 더한 날짜를 계산
 			expirationDate.setDate(expirationDate.getDate() + days);
 			
-			// 		만료 기간이 있는 경우, expires 에 값을 설정하고, 그렇지 않으면 빈 문자열을 사용			      ECMAScript(이큐마스크립트)는 JS가 어떻게 동작해야 하는지 표준화를 위해 규격을 정의한 문서
+			// 		만료 기간이 있는 경우, expires 에 값을 설정하고, 그렇지 않으면 빈 문자열을 사용				  ECMAScript(이큐마스크립트)는 JS가 어떻게 동작해야 하는지 표준화를 위해 규격을 정의한 문서
 			//													   GMT(그리니치 평균시)는 현재 사용 중인 ECMAScript 표준에서 권장 X
 			//													   UTC(협정 세계 시)형식의 문자열로 변환 
 			const expires = days ? '; expires=' + expirationDate.toUTCString() : '';	// ${expirationDate.toUTCString()}'
@@ -256,7 +256,7 @@
 				//								    						 ${inputId}\\s*=\\s*:	${inputId}에 해당하는 KEY와 '=' 사이에 있는 공백을 포함한 패턴 찾기
 				const match = document.cookie.match(new RegExp('(?:^|.*;\\s*)${inputId}\\s*=\\s*([^;]*).*$'));
 				//								    								   \\s*: 0개 이상의 공백 문자
-				//								     									 		([^;]*): 쿠키값'value'에 해당하는 부분 찾기(';'를 제외한 모든 문자열을 포함하는 패턴)
+				//								     									 		b): 쿠키값'value'에 해당하는 부분 찾기(';'를 제외한 모든 문자열을 포함하는 패턴)
 				//																					   .*$: 패턴 뒤에 나오는 모든 문자열을 포함
 				
 				// 쿠키 값에서 Remember Me 상태를 가져옵니다	replace: 문자열에서 특정 패턴을 찾아, 지정된 문자열(cookieValue 같은)에 저장

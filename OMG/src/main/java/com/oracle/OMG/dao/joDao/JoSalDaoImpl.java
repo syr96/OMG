@@ -285,9 +285,9 @@ public class JoSalDaoImpl implements JoSalDao {
 		int result = 0;
 		
 		try {
-			log.info("JoSalDaoImpl getInsertSalesDetail Start");
+			log.info("JoSalDaoImpl insertSalesDetail Start");
 			result = session.insert("joInsertSalesDetail", sales);
-			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
+			log.info("JoSalDaoImpl insertSalesDetail Result -> " + result);
 			
 		} catch (Exception e) {
 			log.error("JoSalDaoImpl getInsertSalesDetail Exception -> " + e.getMessage());

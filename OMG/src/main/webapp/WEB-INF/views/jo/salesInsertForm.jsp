@@ -119,9 +119,16 @@
 		}
 		
 		function saveData() {
+			
+			// date형식 변경
+			var dateInput = document.getElementById("sales_date");
+		    var selectedDate = dateInput.value;
+		    var parts = selectedDate.split("-");
+		    var formattedDate = parts[0].slice(2) + "/" + parts[1] + "/" + parts[2]; // 수정된 부분
+		    			
 		    // Sales 객체 생성
 		    var salesData = {
-		        sales_date:document.getElementById("sales_date").value,
+		        sales_date: formattedDate,
 		        title: document.getElementById("title").value,
 		        custcode: document.querySelector('[name="custcode"]').value,
 		        ref: document.getElementById("ref").value
@@ -137,14 +144,18 @@
 		    
 		    
 		    rows.forEach(function(row) {
+		    	// date형식 변경
 		    	var salesDate = document.getElementById("sales_date").value;
+		    	var salesDate2 = salesDate.split("-");
+		    	var salesDate3 = parts[0].slice(2) + "/" + parts[1] + "/" + parts[2];
+		    	
 		    	var custCode = document.querySelector('[name="custcode"]').value;
 		        var productCode = row.querySelector('input[name="code"]').value;
 		        var quantity = row.querySelector('input[name="qty"]').value;
 		        var price = row.querySelector('input[name="price"]').value;
 
 		        var salesDetailData = {
-		        	sales_date: salesDate,
+		        	sales_date: salesDate3,
 		        	custcode: custCode,
 		            code: productCode,
 		            qty: quantity,
@@ -225,7 +236,8 @@
 					<form id="salesForm" action="salesInsert" method="post">
 						<div class="mb-3 ">
 						  <label for="sales_date" class="form-label" style="font-size: 15px;">매출일자</label>
-						  <input type="text" class="form-control" name="sales_date" id="sales_date" required="required" pattern="\d{2}/\d{2}/\d{2}" placeholder="23/MM/DD">
+						  <input type="date" class="form-control" name="sales_date" id="sales_date" required="required">
+						  <!-- <input type="text" class="form-control" name="sales_date" id="sales_date" required="required" pattern="\d{2}/\d{2}/\d{2}" placeholder="23/MM/DD"> -->
 						</div>
 						<div class="mb-3 ">
 						  <label for="title" class="form-label" style="font-size: 15px;">제목</label>
