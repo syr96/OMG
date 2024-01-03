@@ -54,27 +54,51 @@ public class ShMemberDaoImpl implements ShMemberDao {
 	}
 	
 	@Override
-	public String monthTotalSale() {
-		System.out.println("memberDao monthTotalSale() Start");
-		String monthTotalSale = null;
+	public int thisMonthSale() {
+		System.out.println("memberDao thisMonthSale() Start");
+		int thisMonthSale = 0;
 		try {
-			monthTotalSale = session.selectOne("shMonthTotalSale");
+			thisMonthSale = session.selectOne("shThisMonthSale");
 		} catch (Exception e) {
-			System.out.println("memberDao monthTotalSale() Exception ->" + e.getMessage());
+			System.out.println("memberDao thisMonthSale() Exception ->" + e.getMessage());
 		}
-		return monthTotalSale;
+		return thisMonthSale;
 	}
 	
 	@Override
-	public String monthTotalPurchase() {
-		System.out.println("memberDao monthTotalPurchase() Start");
-		String monthTotalPurchase = null;
+	public int exMonthSale() {
+		System.out.println("memberDao exMonthSale() Start");
+		int exMonthSale = 0;
 		try {
-			monthTotalPurchase = session.selectOne("shMonthTotalPurchase");
+			exMonthSale = session.selectOne("shExMonthSale");
 		} catch (Exception e) {
-			System.out.println("memberDao monthTotalPurchase() Exception ->" + e.getMessage());
+			System.out.println("memberDao exMonthSale() Exception ->" + e.getMessage());
 		}
-		return monthTotalPurchase;
+		return exMonthSale;
+	}
+
+	@Override
+	public int thisMonthPurchase() {
+		System.out.println("memberDao thisMonthPurchase() Start");
+		int thisMonthPurchase = 0;
+		try {
+			thisMonthPurchase = session.selectOne("shThisMonthPurchase");
+		} catch (Exception e) {
+			System.out.println("memberDao thisMonthPurchase() Exception ->" + e.getMessage());
+		}
+		return thisMonthPurchase;
+	}
+	
+	@Override
+	public int exMonthPurchase() {
+		System.out.println("memberDao exMonthPurchase() Start");
+		int exMonthPurchase = 0;
+		try {
+			exMonthPurchase = session.selectOne("shExMonthPurchase");
+		} catch (Exception e) {
+			System.out.println("memberDao exMonthPurchase() Exception ->" + e.getMessage());
+		}
+		return exMonthPurchase;
 	}
 	
 	@Override

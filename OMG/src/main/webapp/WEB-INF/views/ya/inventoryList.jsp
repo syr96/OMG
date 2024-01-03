@@ -136,33 +136,16 @@ function search() {
 	        // 검색결과 
 	        $("#searchResultsTable tbody").empty();
 	        $.each(inventoryListSearch, function (index, warehouse) {
-	            // 날짜 포맷 변환 함수
-	            function formatDate(date) {
-	                var formattedDate = new Date(date);
-	                var year = formattedDate.getFullYear();
-	                var month = ('0' + (formattedDate.getMonth() + 1)).slice(-2);
-	                var day = ('0' + formattedDate.getDate()).slice(-2);
-	                return year + '-' + month + '-' + day;
-	            }
-
 	            var row = "<tr>" +
 	            "<td>" + (warehouse.ym ? warehouse.ym : '-') + "</td>" +
-	            "<td>" + (warehouse.reg_date ? formatDate(warehouse.reg_date) : '-') + "</td>" +
 	            "<td>" + warehouse.code + "</td>" +
 	            "<td>" + warehouse.name + "</td>";
-
-	        // 기초재고수량
+	     // 기말재고수량
 	        row += "<td style='text-align: right;'>";
-	        row += (warehouse.inven == 0 ? (warehouse.cnt !== null ? warehouse.cnt : 0).toLocaleString() : '0');
+	        row += (warehouse.inven == 1 ? (warehouse.cnt !== null ? warehouse.cnt.toLocaleString() : '0') : '0');
 	        row += "</td>";
-
-	        // 기말재고수량
-	        row += "<td style='text-align: right;'>";
-	        row += (warehouse.inven == 1 ? (warehouse.cnt !== null ? warehouse.cnt : 0).toLocaleString() : '0');
-	        row += "</td>";
-
-	        row += "<td style='text-align: right;'>" + warehouse.price.toLocaleString() + "</td>" +
-	            "<td style='text-align: right;'>" + ((warehouse.cnt * warehouse.price).toLocaleString() || '-') + "</td>" +
+	        row += "<td style='text-align: right;'>" + (warehouse.inven == 1 ? warehouse.price.toLocaleString() : '0') + "</td>" +
+	            "<td style='text-align: right;'>" + ((warehouse.inven == 1 ? warehouse.cnt * warehouse.price : 0).toLocaleString() || '-') + "</td>" +
 	            "</tr>";
 	            $("#searchResultsTable tbody").append(row);
 	        });
@@ -178,40 +161,29 @@ function formatAmount(amount) {
     return amount !== 0 ? amount.toLocaleString() : '-';
 }
 </script>
-    		
+
   <div class="table-responsive text-nowrap mx-3 ">
   <div class="table-container">
-           <table id="searchResultsTable" class=" table table-hover">
-           <thead class="fixed-thead"> 
-                   <tr>
-                     <th style="width: 60.508px;">기준월</th>
-                     <th style="width: 119.508px;">입고처리일</th> 
-                     <th style="width: 100px;">제품코드</th>
-                     <th style="width: 119.508px;">제품명</th>
-                     <th style="width: 119.508px;">기초재고수량</th>
-                     <th style="width: 119.508px;">기말재고수량</th>
-                     <th style="width: 119.508px;">단가</th>
-                     <th style="width: 119.508px;">재고총액</th>
-                    </tr>
-               </thead>
-               <tbody class="table-border-bottom-0" id="tableBody" >
 
-   	  		  <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">   
-					 <tr>
-                       <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${empty warehouse.reg_date}">
-                                    -
-                                </c:when>
-                                <c:otherwise>
-                                    <fmt:formatDate value="${warehouse.reg_date}" pattern="yyyy-MM-dd" />
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                  	 <td>${warehouse.code}</td>
-                  	 <td>${warehouse.name}</td>		
-					<!-- 기초재고수량 -->
+<table id="searchResultsTable" class="table table-hover">
+    <thead class="fixed-thead">
+        <tr>
+            <th style="width: 60.508px;">기준월</th>
+            <th style="width: 100px;">제품코드</th>
+            <th style="width: 119.508px;">제품명</th>
+           <!--  <th style="width: 119.508px;">기초재고수량</th> -->
+            <th style="width: 119.508px;">기말재고수량</th>
+            <th style="width: 119.508px;">단가</th>
+            <th style="width: 119.508px;">재고총액</th>
+        </tr>
+    </thead>
+    <tbody class="table-border-bottom-0" id="tableBody">
+        <c:forEach var="warehouse" items="${inventoryList}" varStatus="loop">
+                <tr>
+                    <td>${empty warehouse.ym ? '-' : warehouse.ym}</td>
+                    <td>${warehouse.code}</td>
+                    <td>${warehouse.name}</td>
+			<%-- 		<!-- 기초재고수량 -->
 					<td style="text-align: right;">
 					    <c:choose>      
 					        <c:when test="${warehouse.inven == 0}">
@@ -222,11 +194,10 @@ function formatAmount(amount) {
 					            <fmt:formatNumber value="0" pattern="#,##0" />
 					        </c:otherwise>
 					    </c:choose>
-					</td>
+					</td> --%>
 					<!-- 기말재고수량 -->
 					<td style="text-align: right;">
-					    <c:choose>
-					        
+					    <c:choose>	        
 					        <c:when test="${warehouse.inven == 1}">
 					            <fmt:formatNumber value="${warehouse.cnt}" pattern="#,##0" />
 					        </c:when>      
@@ -235,12 +206,31 @@ function formatAmount(amount) {
 					        </c:otherwise>
 					    </c:choose>
 					</td>
-                     <td style="text-align: right;"><fmt:formatNumber value="${warehouse.price}" pattern="#,##0" /></td>
-                     <td style="text-align: right;"> <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/></td>
-                    </tr>                   	
-				</c:forEach>		
-                </tbody>
-              </table>
+                     <td style="text-align: right;">
+					    <c:choose>
+					        <c:when test="${warehouse.inven == 1}">
+					            <fmt:formatNumber value="${warehouse.price}" pattern="#,##0" />
+					        </c:when>
+					        <c:otherwise>
+					             <fmt:formatNumber value="0" pattern="#,##0"/>
+					        </c:otherwise>
+					    </c:choose>
+					</td>
+					<td style="text-align: right;">
+					    <c:choose>
+					        <c:when test="${warehouse.inven == 1}">
+					            <fmt:formatNumber value="${warehouse.cnt * warehouse.price}" pattern="#,##0"/>
+					        </c:when>
+					        <c:otherwise>
+					             <fmt:formatNumber value="0" pattern="#,##0"/>
+					        </c:otherwise>
+					    </c:choose>
+					</td>
+                </tr>
+
+        </c:forEach>
+    </tbody>
+</table>
               </div>
               
    </div>           

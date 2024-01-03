@@ -18,6 +18,8 @@
 		    warehouse w ON i.code = w.code 
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code
+		where w.inven = 1        
+	
 	</select>
 	
 	<select id="itemListSelectOne"  parameterType="item" resultType="item">
@@ -43,8 +45,9 @@
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
-        	i.code= #{code} or #{code} ='0'
-            AND SUBSTR(w.ym, 5, 2) = #{month}  OR #{month} = '0'	
+        (i.code = #{code} OR #{code} = '0')
+        AND (SUBSTR(w.ym, 5, 2) = #{month} OR #{month} = '0')
+        AND w.inven = 1  
 	</select>
 	
 	<select id="searchAllInventory" resultType="warehouse">
@@ -64,7 +67,9 @@
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
-            SUBSTR(w.ym, 5, 2) = #{month} 
+            w.inven = 1    
+        	AND SUBSTR(w.ym, 5, 2) = #{month} 
+     
 	</select>
 	
 	<select id="searchForAllMonth" resultType="warehouse">
@@ -84,7 +89,10 @@
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
+        	w.inven = 1  
+        	AND
             i.code= #{code}	
+          
 	</select>
 	
 	<select id="inventorySearch" resultType="warehouse">
@@ -95,6 +103,7 @@
 		    w.code ,
 		    w.cnt,
 		    w.ym,
+		    W.inven,
 		    pd.price
 		FROM
 		    item i
@@ -103,8 +112,11 @@
 		LEFT JOIN
 		    pur_detail pd ON i.code = pd.code	
         WHERE
+        	w.inven = 1  
+        	AND
         	i.code= #{code} 
             AND SUBSTR(w.ym, 5, 2) = #{month} 
+          
 	</select>
 	
 </mapper>

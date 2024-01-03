@@ -108,7 +108,7 @@
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=0'">진행</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=1'">완료</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=2'">취소</button>
-					
+					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=3'">출고완료</button>
 				</div>
 				<div class="table-button-gap">
 				<table style="border: 2px solid black; width: 100%" id="userTable" class="table table-md text-center p-3">
@@ -120,9 +120,9 @@
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
-							<th scope="col" style="text-align: center;">코드</th>
+							<th scope="col" style="width: 80px; text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
-							<th scope="col" style="text-align: center;">상태</th>
+							<th scope="col" style="width: 120px; text-align: center;">상태</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -141,7 +141,7 @@
 									<c:if test="${salesInquirySort.sales_status == 0}">진행</c:if>
 									<c:if test="${salesInquirySort.sales_status == 1}">완료</c:if>
 									<c:if test="${salesInquirySort.sales_status == 2}">취소</c:if>
-									<c:if test="${salesInquirySort.sales_status == 3}">입고완료</c:if>
+									<c:if test="${salesInquirySort.sales_status == 3}">출고완료</c:if>
 								</td>
 							 </tr>
 						 <c:set var="num" value="${num + 1}"/>

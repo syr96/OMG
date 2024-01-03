@@ -34,6 +34,7 @@ public class ShController {
 	
 	private final ShMemberService ms;
 	
+	/* 메인 화면용 컨트롤러 */
 	@RequestMapping(value = "/")
 	public String main() {
 		
@@ -71,21 +72,35 @@ public class ShController {
 	
 	//메인화면 해당 월 매입 출력
 	@ResponseBody
-	@RequestMapping(value = "monthTotalPurchase", method = RequestMethod.POST)
-	public String monthTotalPurchase() {
+	@RequestMapping(value = "thisMonthPurchase", method = RequestMethod.POST)
+	public Map<String, Object> thisMonthPurchase() {
 		System.out.println("shController monthTotalPurchase() Start");
-		String monthTotalPurchase = ms.monthTotalPurchase();
-		System.out.println(monthTotalPurchase);
-		return monthTotalPurchase;
+		Map<String, Object> response = new HashMap<String, Object>();
+		int thisMonthPurchase = ms.thisMonthPurchase();
+		int exMonthPurchase   = ms.exMonthPurchase();
+		float purchase = (float)(thisMonthPurchase - exMonthPurchase)/exMonthPurchase* 100;
+		int purchaseCrease = (int)purchase;
+		response.put("thisMonthPurchase", thisMonthPurchase);
+		response.put("purchaseCrease", purchaseCrease);
+		return response;
 	}
 	
 	//메인화면 해당 월 매출 출력
 	@ResponseBody
-	@RequestMapping(value = "monthTotalSale", method = RequestMethod.POST)
-	public String monthTotalSale() {
+	@RequestMapping(value = "thisMonthSale", method = RequestMethod.POST)
+	public Map<String, Object> thisMonthSale() {
 		System.out.println("shController monthTotalSale() Start");
-		String monthTotalSale = ms.monthTotalSale();
-		return monthTotalSale;
+		Map<String, Object> response = new HashMap<String, Object>();
+		int thisMonthSale = ms.thisMonthSale();
+		int exMonthSale   = ms.exMonthSale();
+		float sale = (float)(thisMonthSale - exMonthSale)/exMonthSale* 100;
+		int saleCrease = (int)sale;
+		System.out.println("thisMonthPurchase->"+thisMonthSale);
+		System.out.println("exMonthPurchase->"+exMonthSale);
+		System.out.println("purchaseCrease->"+saleCrease);
+		response.put("thisMonthSale", thisMonthSale);
+		response.put("saleCrease", saleCrease);
+		return response;
 	}
 	
 	//팀원 리스트 출력
@@ -99,13 +114,15 @@ public class ShController {
 		response.put("teamMember", teamMember);
 		return response;
 	}
-
+	/*/메인 화면용 컨트롤러 */
+	
+	//사원등록 페이지
 	@RequestMapping(value = "memberR")
 	public String memberRegistration() {
 		return "sh/memberRegistration";
 	}
 	
-
+	//사원 정보 생성
 	@RequestMapping(value = "createMember", method = RequestMethod.POST)
 	public String createMember( @RequestParam("mem_address1") 	   String address1,
 								@RequestParam("mem_address2")  String address2,

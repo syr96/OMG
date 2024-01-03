@@ -15,6 +15,7 @@
 				<div class="col-12">
 					<h2>발주 작성</h2>
 				</div>
+				<div class="col-12 text-end"><button type="button" onclick="location.href='purList'" class="btn btn-outline-primary">목록</button></div>
 				<input name="rownum" type="hidden" id="rownum" value="0">
 				<div class="col-12">
 					<div class="row text-center bg-white">
@@ -88,11 +89,12 @@
 	function chkduplication(data){
 		var chkdupli = $('[id^="chkDupli"]'); // id가 chkDupli 인 항목들 선택 
 		var values = []; // 위에 선택된 항목들의 값을 담을 배열 
-		var result = true; // 성
+		var result = true; // 성공
+		//chkdupli의 값들을 values에 넣는다.
 		chkdupli.each(function(){
 			values.push($(this).val());
 		})
-		
+		// 만약 들어온 data값(제품 코드(code))과 values의 값이 같으먼 false
 		for(var i in values){
 			if(values[i] == data){
 				result= false;

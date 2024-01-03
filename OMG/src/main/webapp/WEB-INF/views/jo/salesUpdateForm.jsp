@@ -64,6 +64,98 @@
 		    totalPriceInput.value = isNaN(total_price) ? '' : '￦' + total_price.toFixed();
 		}
 	
+		// 저장시 update
+		function updateData() {
+		    // Sales 객체 생성
+		    var salesData = {
+		        sales_date:document.getElementById("sales_date").value,
+		        title: document.getElementById("title").value,
+		        custcode: document.querySelector('[name="custcode"]').value,
+		        ref: document.getElementById("ref").value
+		    };
+			
+		    console.log(salesData);
+		    
+		    // SalesDetails 배열 생성
+		    var salesDetailsData = [];
+		    
+		    // SalesDetails 데이터 수집
+		    var rows = document.querySelectorAll("#itemTable tbody tr");
+		    
+		    
+		    rows.forEach(function(row) {
+		    	var salesDate = document.getElementById("sales_date").value;
+		    	var custCode = document.querySelector('[name="custcode"]').value;
+		        var beforeCode = row.querySelector('input[name="beforeCode"]').value; // 수정된 부분
+		    	var afterCode = row.querySelector('input[name="afterCode"]').value; // 수정된 부분
+		    	var quantity = row.querySelector('input[name="qty"]').value;
+		        var price = row.querySelector('input[name="price"]').value;
+
+		        var salesDetailData = {
+		        	sales_date: salesDate,
+		        	custcode: custCode,
+		        	beforeCode: beforeCode, 
+		            afterCode: afterCode,
+		            qty: quantity,
+		            price: price
+		        };
+
+		        salesDetailsData.push(salesDetailData);
+		    });
+		    
+		    console.log(salesDetailsData);
+				
+		    // 서버로 전송할 데이터 객체 생성
+		    var sendData1 = {
+		        sales: salesData,
+		    };
+		    var sendData2 = {
+			        salesDetails: salesDetailsData
+			    };
+			
+		    
+		    
+		    // AJAX를 사용하여 서버로 데이터 전송
+		    $.ajax({
+		        type: "POST",
+		        url: "salesUpdate",
+		        contentType: "application/json",
+		        data: JSON.stringify(salesData),
+		        success: function (response) {
+		            // 서버 응답에 따른 처리
+		            console.log(response);
+		            if (response == 1) {
+			            // alert("성공");
+	
+					    $.ajax({
+					        type: "POST",
+					        url: "salesDetailUpdate",
+					        contentType: "application/json",
+					        data: JSON.stringify(salesDetailsData),
+					        success: function (response) {
+					            // 서버 응답에 따른 처리
+					            console.log(response);
+					            if (response == 1) {
+						            location.href="/sales/salesInquiry";
+					            	
+					            }
+					        },
+					        error: function (error) {
+					        	alert("다시 한번 입력정보를 확인바랍니다" + error);
+					            
+					        }
+					    });		            
+			            
+			            
+			            
+		            }
+		        },
+		        error: function (error) {
+		            console.error("데이터 전송 중 오류 발생:", error);
+		        }
+		    });
+		}
+		
 	</script>
 </head>
 <body>
@@ -132,7 +224,10 @@
 								   <tr>
 										<td style="text-align: center"><input type="checkbox" name="rowCheck" value=""></td>
 										<td style="text-align: center">${num}</td>
-										<td style="text-align: center"><input type="text" name="code" value="${salesDetail.code}"></td>
+										<td style="text-align: center">
+											<input type="text" name="afterCode" value="${salesDetail.code}" readonly style="background-color: #f2f2f2; border: 1px solid #000;">
+											<input type="hidden" name="beforeCode" id="beforeCode" value="${salesDetail.code}" >
+										</td>
 										<td>
 											<select name="name" onchange="updateCodeAndPrice(this)">
 												<option>선택</option>
@@ -141,8 +236,8 @@
 												</c:forEach>	
 											</select>
 										</td>										
-										<td style="text-align: center"><input type="text" name="qty" value="${salesDetail.qty}"></td>
-										<td style="text-align: center"><input type="text" name="price" value="${salesDetail.price}"></td>
+										<td style="text-align: center"><input type="text" name="qty" value="${salesDetail.qty}" oninput="calculateTotalPrice(this)"></td>
+										<td style="text-align: center"><input type="text" name="price" value="${salesDetail.price}"readonly style="background-color: #f2f2f2; border: 1px solid #000;"></td>
 										<td style="text-align: center"><input type="text" name="total_price" value="${salesDetail.total_price}"></td>
 								   </tr>
 								 <c:set var="num" value="${num+1}"/>  
@@ -151,7 +246,8 @@
 						 </table>
 							
 					<div class="button-group">
-						<input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-4" value="저장">
+						<button type="button" class="btn btn-primary btn-sm mb-4" onclick="updateData()">저장</button>
+						<!-- <input type=submit id="regist-btn" class="btn btn-primary btn-sm mb-4" value="저장"> -->
 						<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-4" onclick="location.href='salesInquiry'">리스트</button>
 					</div>
 					

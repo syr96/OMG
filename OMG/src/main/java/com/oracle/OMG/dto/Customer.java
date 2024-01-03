@@ -21,6 +21,7 @@ public class Customer {
     //참조용
     private String mem_name;	//직원이름
     private String mem_dept;	//직원부서
+    private String mem_dept_md; //부서 중분류
     private String com_cn;     //분류 내용
     
     //거래처 실적 join

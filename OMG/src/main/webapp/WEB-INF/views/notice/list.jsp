@@ -27,7 +27,7 @@
 <!-- 				</div> -->
 				<div class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start mt-md-0 mt-3">
 					<div class="dt-buttons">
-						<c:if test="${sessionScope.mem_right == 1}">
+						<c:if test="${sessionScope.mem_dept_md == 101 || sessionScope.mem_dept_md == 999}">
 							<button id="regBtn" class="dt-button btn btn-primary my-1" tabindex="0" aria-controls="DataTables_Table_0" type="button">
 								<span><i class="bx bx-plus me-md-1"></i><span class="d-md-inline-block d-none">공지글 작성</span></span>
 							</button>
@@ -97,7 +97,7 @@
 							<h5 class="modal-title" id="exampleModalLabel">결과창</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
-						<div class="modal-body">수정 완료되었습니다</div>
+						<div class="modal-body">처리 완료되었습니다</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
 						</div>

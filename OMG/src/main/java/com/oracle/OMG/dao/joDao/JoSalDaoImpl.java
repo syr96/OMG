@@ -3,6 +3,8 @@ package com.oracle.OMG.dao.joDao;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -131,6 +133,7 @@ public class JoSalDaoImpl implements JoSalDao {
 	
 	}
 	
+	
 	  @Override 
 	  public int deleteSalesDetail(SalesDetail sales) { 
 		  int result = 0;
@@ -153,8 +156,8 @@ public class JoSalDaoImpl implements JoSalDao {
 	  
 	  return result; 
 	  }
-	 
 
+		
 
 	@Override
 	public List<SalesDetail> getListCustCode(int custstyle) {
@@ -174,8 +177,7 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	public int insertSales(SalesDetail sales) {
-	// public int insertSales(Sales sales) {
+	public int insertSales(Sales sales) {
 		int result = 0;
 		
 		try {
@@ -244,25 +246,17 @@ public class JoSalDaoImpl implements JoSalDao {
 
 
 	@Override
-	public int UpdateSales(SalesDetail sales) {
+	public int updateSalesDetail(SalesDetail sales) {
 		int result = 0;
-		
-		TransactionStatus txStatus =
-				transactionManager.getTransaction(new DefaultTransactionDefinition());
-				
+						
 		try {
-			log.info("JoSalDaoImpl updateSales Start");
+			log.info("JoSalDaoImpl updateSalesDetail Start");
 			result = session.update("joUpdateSalesDetail", sales);
 			log.info("JoSalDaoImpl updateSalesDetail reuslt -> " + result);
-			result = session.update("joUpdateSales", sales);
-			log.info("JoSalDaoImpl updateSales reuslt -> " + result);
-			
-			transactionManager.commit(txStatus);
-			
+						
 		} catch (Exception e) {
-			transactionManager.rollback(txStatus);
 			log.error("JoSalDaoImpl updateSales Exception -> " + e.getMessage());
-			result = -1;
+		
 		}
 		return result;
 		
@@ -291,9 +285,9 @@ public class JoSalDaoImpl implements JoSalDao {
 		int result = 0;
 		
 		try {
-			log.info("JoSalDaoImpl getInsertSalesDetail Start");
+			log.info("JoSalDaoImpl insertSalesDetail Start");
 			result = session.insert("joInsertSalesDetail", sales);
-			log.info("JoSalDaoImpl InsertSalesDetail Result -> " + result);
+			log.info("JoSalDaoImpl insertSalesDetail Result -> " + result);
 			
 		} catch (Exception e) {
 			log.error("JoSalDaoImpl getInsertSalesDetail Exception -> " + e.getMessage());
@@ -301,6 +295,26 @@ public class JoSalDaoImpl implements JoSalDao {
 		
 		return result;
 	}
+
+
+	@Override
+	public int updateSales(@Valid Sales sales) {
+		int result = 0;
+		
+		try {
+			log.info("JoSalDaoImpl updateSales Start");
+			result = session.update("joUpdateSales", sales);
+			log.info("JoSalDaoImpl updateSales Result -> " + result);
+		
+		} catch (Exception e) {
+			log.error("JoSalDaoImpl updateSales Exception -> " + e.getMessage());
+		
+		}
+		
+		return result;
+	}
+
+
 
 
 }

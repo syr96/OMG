@@ -44,7 +44,7 @@
         INNER JOIN customer c ON i.custcode = c.custcode
         INNER JOIN member m ON c.mem_id = m.mem_id
         INNER JOIN warehouse w ON i.code = w.code
-        WHERE i.code = #{code} and w.ym = #{ym}
+        WHERE i.code = #{code} and w.ym = #{ym} AND w.inven = '0'
     </select>
 
     <!-- 아이템 조회2 -->
@@ -156,8 +156,10 @@
         JOIN item i ON pd.code = i.code
         JOIN warehouse w ON pd.code = w.code AND w.inven = 1
         WHERE p.pur_status = 2
-        AND (#{inboundMonth} IS NULL OR TO_CHAR(w.reg_date, 'YYYY-MM') = #{inboundMonth, jdbcType=VARCHAR})
-        ORDER BY p.pur_date DESC
+        <if test="inboundMonth != null and inboundMonth != ''">
+        AND TO_CHAR(w.reg_date, 'YYYY-MM') = #{inboundMonth, jdbcType=VARCHAR}
+      </if>
+    ORDER BY p.pur_date DESC
     </select>
     
     <!-- 월간 출고 목록 조회 -->

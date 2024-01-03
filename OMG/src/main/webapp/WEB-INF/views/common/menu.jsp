@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -28,7 +29,7 @@
               </a>
             </li>
 			
-			<c:if test="${sessionScope.mem_dept_md == 101}">
+			<c:if test="${sessionScope.mem_dept_md == 101 || sessionScope.mem_dept_md == 999}">
 				<li class="menu-header small text-uppercase">
 	              <span class="menu-header-text">사원 관리</span>
 	            </li>
@@ -55,7 +56,7 @@
                 <div data-i18n="Account Settings">제품 조회</div>
               </a>
             </li>
-            <c:if test="${sessionScope.mem_dept_md == 104 || sessionScope.mem_dept_md == 105}">
+            <c:if test="${sessionScope.mem_dept_md == 104 || sessionScope.mem_dept_md == 105 || sessionScope.mem_dept_md == 999}">
             <li class="menu-item">
               <a href="/item/create" class="menu-link">
               	<i class="menu-icon tf-icons bx bx-detail"></i>
@@ -83,12 +84,12 @@
             </li>
 
             <!-- Sales -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">매입&amp;매출 관리</span></li>
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">주문관리</span></li>
             <!-- Forms -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">매입</div>
+                <div data-i18n="Form Elements">발주관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
@@ -98,7 +99,7 @@
                 </li>
                 <li class="menu-item">
                   <a href="/purList" class="menu-link">
-                    <div data-i18n="Input groups">발주서 리스트</div>
+                    <div data-i18n="Input groups">발주 리스트</div>
                   </a>
                 </li>
               </ul>
@@ -106,17 +107,17 @@
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">매출</div>
+                <div data-i18n="Form Layouts">수주관리</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="/sales/salesInsertForm" class="menu-link">
-                    <div data-i18n="Vertical Form">판매서 작성</div>
+                    <div data-i18n="Vertical Form">수주서 작성</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="/sales/salesInquiry" class="menu-link">
-                    <div data-i18n="Horizontal Form">판매서 리스트</div>
+                    <div data-i18n="Horizontal Form">수주 리스트</div>
                   </a>
                 </li>
               </ul>
@@ -215,12 +216,45 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                              <img src="${pageContext.request.contextPath}/upload/sh/${sessionScope.mem_img}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">
                             <span class="fw-semibold d-block">${sessionScope.mem_name }</span>
-                            <small class="text-muted">Admin</small>
+                            <small class="text-muted">
+								<c:choose>
+    <c:when test="${sessionScope.mem_dept_md eq 100}">
+        회계팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 101}">
+        인사팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 102}">
+        영업1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 103}">
+        영업2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 104}">
+        물류1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 105}">
+        물류2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 106}">
+        CS1팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 107}">
+        CS2팀
+    </c:when>
+    <c:when test="${sessionScope.mem_dept_md eq 999}">
+        관리자
+    </c:when>
+    <c:otherwise>
+        기타 부서
+    </c:otherwise>
+</c:choose>                          
+                            </small>
                           </div>
                         </div>
                       </a>
@@ -232,21 +266,6 @@
                       <a class="dropdown-item" href="memberD?mem_id=${sessionScope.mem_id }">
                         <i class="bx bx-user me-2"></i>
                         <span class="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <i class="bx bx-cog me-2"></i>
-                        <span class="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        <span class="d-flex align-items-center align-middle">
-                          <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span class="flex-grow-1 align-middle">로그인 관리</span>
-                          <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
                       </a>
                     </li>
                     <li>

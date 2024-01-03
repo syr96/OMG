@@ -30,7 +30,7 @@ public class YrMainController {
 	@GetMapping("/mainNotice")
 	public String mainNotice(Criteria cri, Model model) {
 		log.info("/main/mainNotice");
-		cri.setAmount(9);
+		cri.setAmount(8);
 		model.addAttribute("noticeList", ns.getNoticeList(cri));
 		log.info("mainNotice: " + cri);
 		return "yr/main/mainNotice";

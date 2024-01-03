@@ -70,11 +70,11 @@ function detailValidCheck(){
 	
 	// 폼 제출 여부 결정
     if (!isValid) {
-    	alert("(!isValid)false");
+    	alert("등록에 실패하였습니다.");
         return false; // 유효성 검사에서 실패한 경우 폼 제출 중단
     } else{
     	// 유효성 검사 통과 시  폼 제출
-    	alert("true");
+    	alert("등록에 성공하였습니다.");
     	return true;
     	}
     
@@ -87,7 +87,6 @@ function detailValidCheck(){
 		
 		if(!koreanNameRegex.test(name)){
 			if(!englishNameRregex.test(name)){
-				alert("이름을 다시 작성해주세요.");
 				formAccountSettings.name.value= "";
 				isValid = false;
 			}
@@ -103,7 +102,6 @@ function detailValidCheck(){
 		var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 		
 		if(!emailRegex.test(email)){
-			alert("이메일 양식이 맞지 않습니다.");
 			isValid = false;
 		}
 	}
@@ -112,7 +110,6 @@ function detailValidCheck(){
 	function hiredateCheck(){
 		var hiredate = document.getElementById("mem_hiredate").value;;
 		if(!hiredate || !hiredate.trim()){
-			alert("입사일자를 입력해주세요.");
 			isValid = false;
 		}
 	}
@@ -122,23 +119,30 @@ function detailValidCheck(){
 		var birthday = document.getElementById("mem_bd").value;
 		
 		if(!birthday || !birthday.trim()){
-			alert("생년월일을 입력해주세요.");
 			isValid = false;
 		}
 	}
 	
 	function passwordValid(){
-		var pw = document.getElementById("basic-default-password1").value;
+		var pw1 = document.getElementById("basic-default-password1").value;
+		var pw2 = document.getElementById("basic-default-password2").value;
 		var pwValid = true;
 		var cnt = 0;
 		var pwRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 		
 		if(!pw.isEmpty()){
 			//유효성 검사	
-			if(!pwRegex.test(pw)){
-				alert("8~20자의 영대,소문자, 숫자, 특수기호를 사용하여 만들어주세요.");
+			if(pw1 == pw2){
+				//유효성 검사	
+				if(!pwRegex.test(pw1)){
+					pwValid = false;
+				}
+			} else {
 				pwValid = false;
 			}
+		} else {
+			pwValid = false;
+		}
 			
 			if(!pwValid){
 				isValid = false;
@@ -357,7 +361,7 @@ function detailValidCheck(){
                            <!-- mem_pw1 -->
                            <div class="mb-2 col-md-4">
 	                          <div class="form-password-toggle">
-	                        	<label class="form-label" for="basic-default-password1">비밀번호</label>
+	                        	<label class="form-label" for="basic-default-password1">비밀번호(변경시에만 입력하세요)</label>
 	                        	<span id="pswd1Msg" aria-live="assertive" style="font-size: 10px;   margin-left: 10px; color: red; font-weight: bold; width: 170px;"></span>
 	                       		<div class="input-group">
 	                       		<span class="ps_box int_pass"></span>

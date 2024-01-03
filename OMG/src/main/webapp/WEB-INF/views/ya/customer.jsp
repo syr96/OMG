@@ -151,8 +151,7 @@ $(document).ready(function () {
         var insertData = {
             company: $('#in_company').val(),
             businum: $('#in_busiNum').val(),
-            custstyle: $('#in_custStyle').val(),
-            
+            custstyle: $('#in_custStyle').val(),           
             cust_md: $('#in_cust_md').val(),
             ceo: $('#in_ceo').val(),
             busitype: $('#in_busiType').val(),
@@ -250,7 +249,9 @@ $(document).ready(function () {
                                 "data-bs-toggle='offcanvas' data-bs-target='#offcanvasScroll' " +
                                 "data-custcode='" + customer.custcode + "' aria-controls='offcanvasScroll'>상세</button></td>" +
                                 "<td><button class='btn btn-xs btn-primary' type='button' " +
-                                "onclick='location.href=\"/deleteCustomer?custcode=" + customer.custcode + "\"'>삭제</button></td>" +
+                                "onclick='confirmDelete(\"" + customer.custcode + "\", \"" + data.mem_dept_md + "\")'" +
+                                (data.mem_dept_md === 999 || data.mem_dept_md === 100 ? '' : ' disabled') +
+                                ">삭제</button></td>" +
                                 "</tr>";
                             $("#searchResultsTable tbody").append(row);
                         });
@@ -334,24 +335,25 @@ $(document).ready(function () {
                         <td>${customer.busiitems}</td>
                         <td><button class="btn btn-xs  btn-primary btn-show-detail" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScroll"
                           			data-custcode="${customer.custcode}"  aria-controls="offcanvasScroll">상세 </button></td>                      
-                         <td><button class="btn btn-xs btn-primary deleteBtn"  data-mem_dept_md="${sessionScope.mem_dept_md}" type="button" onclick="confirmDelete('${customer.custcode}')">삭제</button></td>	 
+                         <td><button class="btn btn-xs btn-primary deleteBtn"  data-mem_dept_md="${sessionScope.mem_dept_md}" type="button" 
+                         														onclick="confirmDelete('${customer.custcode}')">삭제</button></td>	 
                       </tr>
                 </c:forEach>
                 </tbody>
               </table>
               
 			<script>
-			/*부서번호 100(회계팀)만 삭제 가능  */
+			
 			    document.addEventListener('DOMContentLoaded', function() {
 			        var mem_dept_md = ${sessionScope.mem_dept_md};
 			        console.log('mem_dept_md:', mem_dept_md);
 			        disableButton();
 			    });
-			
+			    /*부서번호 100(회계팀),999(전체권한자)만 삭제 가능  */
 			    function disableButton() {
 			        var mem_dept_md = ${sessionScope.mem_dept_md};
 
-			        if (mem_dept_md !== 100) {
+			        if (mem_dept_md !== 100 && mem_dept_md !== 999) {
 			            var buttons = document.querySelectorAll('.deleteBtn');
 			            buttons.forEach(function(button) {
 			                button.disabled = true;
@@ -407,27 +409,23 @@ $(document).on('click', '.btn-show-detail', function () {
             $('#email').val(data.customer.email);
             $('#mem_id').val(data.customer.mem_id);
             $('#mem_dept').val(data.customer.mem_dept);
+            $('#mem_dept_md').val(data.customer.mem_dept_md);
             $('#mem_name').val(data.customer.mem_name);
                
             // 담당직원(mem_id) 설정
             var memId = $('#mem_id');
             memId.val(data.customer.mem_id);
-
-            // 로그인한 mem_id와 선택된 담당직원(mem_id)가 다를 경우 담당직원 입력란 비활성화
+       	    //부서번호(mem_dept_md)999일 경우 항상 활성화, 그 외의 경우는 mem_id가 같을 때만 활성화
             var loggedInMemId = ${sessionScope.mem_id};
-            if (loggedInMemId !== data.customer.mem_id) {
-                memId.prop('disabled', true);
-            } else {
-                memId.prop('disabled', false);
-            }
+            var memDeptMd = ${sessionScope.mem_dept_md};
+            console.log('memDeptMd:', memDeptMd);       	 
+            memId.prop('disabled', memDeptMd !== 999 && loggedInMemId !== data.customer.mem_id);
         },
         error: function () {
             console.error('Error customer detail.');
         }
     });
 });
-
-
 function confirmDelete(custcode) {
   var result = confirm("삭제하시겠습니까?");
   if (result) {

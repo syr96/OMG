@@ -20,10 +20,13 @@ public interface ShMemberService {
 	int 		 updateMember(Member member);
 	int 		 detailMember(Member member);
 	List<Member> selectStatus();
-	String 		 monthTotalSale();
-	String 		 monthTotalPurchase();
+	int 		 thisMonthPurchase();
+	int 		 exMonthPurchase();
+	int 		 thisMonthSale();
+	int 		 exMonthSale();
 	List<Member> mainTeamList(int memId);
 	Member 		 mainMember(int memId);
 	List<Warehouse> 	 mainInventory(Warehouse warehouse);
 	int 		 mainInventoryCount();
+	
 }

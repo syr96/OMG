@@ -6,5 +6,6 @@
 		Select *
 		From item
 		Where custcode = #{custcode}
+		and DELETED = 0
 	</select>
 </mapper>

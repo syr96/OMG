@@ -38,6 +38,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		 registry.addInterceptor(new BkDeptInterceptor()).addPathPatterns("/memberL/**")		// 승현 - 사원 목록 조회		200 - 101 (인사팀)
 														 .addPathPatterns("/memberR/**")		// 승현 - 사원 등록			200 - 101 (인사팀)
 														 .addPathPatterns("/memberU/**")		// 승현 - 사원 정보			200 - 101 (인사팀)
+														 .addPathPatterns("/notice/register")	// 태현 - 공지사항 작성		200 - 101 (인사팀)
 														 .addPathPatterns("/customerSales")		// 연아 - 월별실적조회		200 - 100 (회계팀)
 														 .addPathPatterns("/item/create")		// 유림 - 제품 등록			200 - 104, 105 (물류 1, 2팀)
 														 .addPathPatterns("/sales/salesInsertForm")			// 준오 - 판매서 등록			200 - 104 (물류1팀)

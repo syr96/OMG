@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -28,62 +26,65 @@
     	
 	</style>
 	<script>
-    	// 체크박스 전체 선택/해제 함수
-    	function checkAll(source) {
-        	var checkboxes = document.getElementsByName('rowCheck');
-        	for (var i = 0; i < checkboxes.length; i++) {
-            	checkboxes[i].checked = source.checked;
-        	}
+	// 체크박스 전체 선택/해제 함수
+	function checkAll(source) {
+    	var checkboxes = document.getElementsByName('rowCheck');
+    	for (var i = 0; i < checkboxes.length; i++) {
+        	checkboxes[i].checked = source.checked;
     	}
-    	
-    	function deleteSelected() {
-    	    // 선택된 체크박스의 sales_date, custcode 값들을 배열에 담기
-    	    const selectedSalesInfos = [];
-    	    const checkboxes = document.querySelectorAll('input[name="rowCheck"]:checked');
-    	    for (const checkbox of checkboxes) {
-    	        const custcode = checkbox.value;
-    	        const salesDate = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText;
-    	        const code = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
-    	        selectedSalesInfos.push({ salesDate, custcode, code });
-    	    }
+	}
+	
+	function deleteSelected() {
+	    // 선택된 체크박스의 sales_date, custcode, code 값들을 배열에 담기
+	    const selectedSalesInfos = [];
+	    const checkboxes = document.querySelectorAll('input[name="rowCheck"]:checked');
+	    for (const checkbox of checkboxes) {
+	        const custcode = checkbox.value;
+	        const salesDate = checkbox.parentElement.nextElementSibling.nextElementSibling.innerText;
+	        const code = checkbox.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerText;
+	        selectedSalesInfos.push({ salesDate, custcode, code });
+	    }
+	    console.log(selectedSalesInfos);
+		
+	 // sales_date, custcode, code 값들을 서버로 전송하여 삭제 요청
+	    if (selectedSalesInfos.length > 0) {
+	        // 확인 대화상자 표시
+	        if (confirm("선택된 항목을 삭제하시겠습니까?")) {
+	            // 폼 생성 및 값 전송
+	            const form = document.createElement("form");
+	            form.action = "/sales/salesDetailDelete"; // 삭제 처리 서블릿 주소
+	            form.method = "POST";
 
-    	    // sales_date, custcode 값들을 서버로 전송하여 삭제 요청
-    	    if (selectedSalesInfos.length > 0) {
-    	        // 확인 대화상자 표시
-    	        if (confirm("선택된 항목을 삭제하시겠습니까?")) {
-    	            // 폼 생성 및 값 전송
-    	            const form = document.createElement("form");
-    	            form.action = "/sales/salesDetailDelete"; // 삭제 처리 서블릿 주소
-    	            form.method = "POST";
+	            for (const salesInfo of selectedSalesInfos) {
+	                const hiddenFieldSalesDate = document.createElement("input");
+	                hiddenFieldSalesDate.type = "hidden";
+	                hiddenFieldSalesDate.name = "salesDates"; // 서버에서 받을 파라미터 이름
+	                hiddenFieldSalesDate.value = salesInfo.salesDate;
+	                form.appendChild(hiddenFieldSalesDate);
 
-    	            for (const salesInfo of selectedSalesInfos) {
-    	                const hiddenFieldSalesDate = document.createElement("input");
-    	                hiddenFieldSalesDate.type = "hidden";
-    	                hiddenFieldSalesDate.name = "salesDates"; // 서버에서 받을 파라미터 이름
-    	                hiddenFieldSalesDate.value = salesInfo.salesDate;
-    	                form.appendChild(hiddenFieldSalesDate);
+	                const hiddenFieldCustCode = document.createElement("input");
+	                hiddenFieldCustCode.type = "hidden";
+	                hiddenFieldCustCode.name = "custcodes"; // 서버에서 받을 파라미터 이름
+	                hiddenFieldCustCode.value = salesInfo.custcode;
+	                form.appendChild(hiddenFieldCustCode);
+	                
+	                const hiddenFieldCode = document.createElement("input");
+	                hiddenFieldCode.type = "hidden";
+	                hiddenFieldCode.name = "codes"; // 서버에서 받을 파라미터 이름
+	                hiddenFieldCode.value = salesInfo.code;
+	                form.appendChild(hiddenFieldCode);
+	            }
 
-    	                const hiddenFieldCustCode = document.createElement("input");
-    	                hiddenFieldCustCode.type = "hidden";
-    	                hiddenFieldCustCode.name = "custcodes"; // 서버에서 받을 파라미터 이름
-    	                hiddenFieldCustCode.value = salesInfo.custcode;
-    	                form.appendChild(hiddenFieldCustCode);
-    	                
-    	                const hiddenFieldCode = document.createElement("input");
-    	                hiddenFieldCode.type = "hidden";
-    	                hiddenFieldCode.name = "codes"; // 서버에서 받을 파라미터 이름
-    	                hiddenFieldCode.value = salesInfo.code;
-    	                form.appendChild(hiddenFieldCode);
-    	            }
+	            document.body.appendChild(form);
+	            form.submit();
+	        }
+	    } else {
+	        alert("삭제할 항목을 선택해주세요.");
+	    }
 
-    	            document.body.appendChild(form);
-    	            form.submit();
-    	        }
-    	    } else {
-    	        alert("삭제할 항목을 선택해주세요.");
-    	    }
-    	}
-
+		
+	}
+		
    	    
 
     	
@@ -126,6 +127,7 @@
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=0'">진행</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=1'">완료</button>
 					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=2'">취소</button>
+					<button id="regist-btn" type="button" class="btn btn-primary btn-sm mb-1" onclick="location.href='/sales/salesInquirySort?sales_status=3'">출고완료</button>
 				</div>
 			<div>
 				<div class="table-button-gap">
@@ -138,9 +140,10 @@
 							<th scope="col" style="text-align: center;">제목</th>
 							<th scope="col" style="text-align: center;">거래처</th>
 							<th scope="col" style="text-align: center;">제품</th>
-							<th scope="col" style="text-align: center;">코드</th>
+							<th scope="col" style="width: 80px; text-align: center;">코드</th>
 							<th scope="col" style="text-align: center;">총 금액</th>
-							<th scope="col" style="text-align: center;">상태</th>
+							<th scope="col" style="width: 120px; text-align: center;">상태</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -159,6 +162,7 @@
 									<c:if test="${listSalesInquiry.sales_status == 0}">진행</c:if>
 									<c:if test="${listSalesInquiry.sales_status == 1}">완료</c:if>
 									<c:if test="${listSalesInquiry.sales_status == 2}">취소</c:if>
+									<c:if test="${listSalesInquiry.sales_status == 3}">출고완료</c:if>
 								</td>
 							 </tr>
 						 <c:set var="num" value="${num + 1}"/>
@@ -196,20 +200,7 @@
 				        </c:if>
 				    </ul>
 				</div>		             
-					
-					
-					<%-- <!-- Section3: Paging -->
-					<div class=" container text-center" id="staticPagination">
-						<c:if test="${page.startPage > page.pageBlock }">
-							<a href="salesInquiry?currentPage=${page.startPage-page.pageBlock }">[이전]</a>
-						</c:if>
-						<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-							<a href="salesInquiry?currentPage=${i}">[${i}]</a>
-						</c:forEach>	
-						<c:if test="${page.endPage > page.totalPage }">
-							<a href="salesInquiry?currentPage=${page.startPage+page.pageBlock }">[다음]</a>
-						</c:if>
-					</div> --%>	
+							
 				</div>
 			</div>	
 			

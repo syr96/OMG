@@ -21,11 +21,11 @@
               	<!-- Welcome Card -->
                 <div class="col-12 col-lg-8 order-0 order-md-0 order-lg-0 mb-4">
                   <div class="card">
-                    <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
-                        <div class="card-body" style="margin-bottom: 35px;">
-                          <h5 class="card-title text-primary"><span class="fw-bold">${sessionScope.mem_name }</span>님 환영합니다 🎉</h5>
-                          <p class="mb-4">
+                    <div class="d-flex align-items-end row" >
+                      <div class="col-sm-7" style="max-height: 189px;">
+                        <div class="card-body" style="margin-bottom: 12px;">
+                          <h5 class="card-title text-primary"><a href="memberD?mem_id=${sessionScope.mem_id}"><span class="fw-bold"></span></a>님 환영합니다 🎉</h5>
+                          <p class="mt-4"><strong></strong>
                           </p>
                         </div>
                       </div>
@@ -72,17 +72,16 @@
 	                <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
 	                  <div class="card">
 	                    <div class="row row-bordered g-0">
-	                      	<h5 class="card-header m-0 me-2 pb-3">재고현황</h5>
+	                      	<h5 class="card-header m-0 me-2 pb-3"><a href="/item/list" style="color: black;">재고현황</a></h5>
 	                      	<!-- Small table -->
-					        <div class="table-responsive text-nowrap" style="max-height: 400px;">
+					        <div class="table-responsive text-nowrap" style="max-height: 395px;">
 					            <table class="table table-sm">
 					               	<thead class="fixed-thead">
 					                   	<tr>
-						         	       <th>code</th>
-						                   <th>name</th>
-						                   <th>qty</th>
-						                   <th>price</th>
-						                   <th>...</th>
+						         	       <th class='text-center'>제품코드</th>
+						                   <th >제품명</th>
+						                   <th class='text-center'>수량</th>
+						                   <th class='text-center'>가격</th>
 					                	</tr>
 					                </thead>
 					                <tbody class="table-border-bottom-0" id="invenTableBody">
@@ -95,7 +94,7 @@
 	                </div>
 	                <!--/ Total Revenue -->
 	                <!-- Notice --> 
-	                <div class="col-md-6 col-lg-4 order-2 mb-4" id="notice"> 
+	                <div class="col-12 col-lg-4 order-2 mb-4" id="notice"> 
 	                   
 	                </div>
 	                <!--/ Notice -->
@@ -107,22 +106,25 @@
 				  <div class="col-12 col-lg-6 mb-4">
 				    <div class="card">
 				      <div class="card-body">
-				        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3" style="margin-bottom: 5px;">
-				          <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
-				            <div class="avatar flex-shrink-0">
+				        <div class="d-flex justify-content-between flex-sm-row flex-column align-items-start gap-3">
+				          <div class="d-flex align-items-start">
+				            <div class="avatar flex-shrink-0 mt-4">
 				              <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
 				            </div>
-				            <div class="card-title">
-				              <div class="d-flex align-items-start">
-				                <h5 class="text-nowrap mb-0">금월 매입</h5>
+				            <div class="card-title ms-3">
+				              <span class="badge bg-label-warning rounded-pill" id="saleYear"></span>
+				              <div class="d-flex align-items-start" style="margin-top: 10px; ">
+				                <h5 class="text-nowrap mb-0" id="saleTitle"></h5>
 				              </div>
-				              <span class="badge bg-label-warning rounded-pill">Year 2021</span>
-				            </div>
-				            <div class="mt-sm-auto">
-				              <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small>
+				              
 				            </div>
 				          </div>
-				          <h3 class="mb-2" id="monthPurchase"></h3>
+				          <div class="mt-4">
+				          	<div class="mt-sm-auto">
+				              <small id="saleCrease"></small>
+				            </div>
+				          	<h3 class="mb-2" id="monthSale"></h3>
+				          </div>
 				        </div>
 				      </div>
 				    </div>
@@ -133,19 +135,23 @@
 				    <div class="card">
 				      <div class="card-body">
 				        <div class="d-flex justify-content-between flex-sm-row flex-column align-items-start gap-3">
-				          <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
-				            <div class="avatar flex-shrink-0">
+				          <div class="d-flex align-items-start">
+				            <div class="avatar flex-shrink-0 mt-4">
 				              <img src="../assets/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded" />
 				            </div>
-				            <div class="card-title flex-grow-1">
-				              <h5 class="text-nowrap mb-2">금월 매출</h5>
-				              <span class="badge bg-label-warning rounded-pill">Year 2021</span>
-				            </div>
-				            <div class="mt-sm-auto">
-				              <small class="text-success text-nowrap fw-semibold"><i class="bx bx-chevron-up"></i> 68.2%</small>
+				            <div class="card-title ms-3">
+				              <span class="badge bg-label-warning rounded-pill" id="purchaseYear"></span>
+				              <div class="d-flex align-items-start" style="margin-top: 10px; margin-bottom: 10px;">
+				                <h5 class="text-nowrap mb-0" id="purchaseTitle"></h5>
+				              </div>
 				            </div>
 				          </div>
-				          <h3 class="mb-2" id="monthSale"></h3>
+				          <div class="mt-4">
+				          	<div class="mt-sm-auto">
+				              <small id="purCrease"></small>
+				            </div>
+				          	<h3 class="mb-2" id="monthPurchase"></h3>
+				          </div>
 				        </div>
 				      </div>
 				    </div>
@@ -158,14 +164,28 @@
 <script type="text/javascript">
 	
 	$(document).ready(function(){
+		memberInfo();
+		teamList();
 		//공지사항 메소드
-		showNotice(); 
+		showNotice(); 	
+		invenList();
+		monthPurchase();
+		monthSale();
+		//매출매입 div 날짜 정보 받는 함수
+		thisDate();
 		
-		var purchase = document.getElementById("monthPurchase");
-		var sale = document.getElementById("monthSale");
+		// 스크롤 고정 thaed
+   	    $(".table-responsive").on('scroll', { passive: true }, function () {
+   	        var scrollLeft = $(this).scrollLeft();
+   	        $(".fixed-thead").css("left", -scrollLeft);
+     	});
+		
+	});
+	
+	//개인 정보 출력
+	function memberInfo(){
 		var memId = ${sessionScope.mem_id}
 		
-		//개인 정보 출력
 		$.ajax({
 			url:"mainMember",
 			data : {memId : memId},
@@ -179,75 +199,11 @@
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
-		
-		//재고리스트
-		$.ajax({
-			url:"mainInventory",
-			dataType : "json",
-			type : "POST",
-			success : function(response){
-				var wareList = response.warehouseList;
-				$('#invenTableBody').empty();
-				for(var i = 0; i < wareList.length; i++){
-					var ware = wareList[i];
-					$('#invenTableBody').append(
-							"<tr>"+
-							"<td>" + ware.code + "</td>" +
-							"<td>" + ware.name + "</td>" +
-							"<td>" + ware.cnt + "</td>" +
-							"<td>" + ware.price + "</td>" +
-							"<td><div class='dropdown'>" +
-							"<button type='button' class='btn p-0 dropdown-toggle hide-arrow' data-bs-toggle='dropdown'>" +
-                            "<i class='bx bx-dots-vertical-rounded'></i></button>" +
-                            "<div class='dropdown-menu'><a class='dropdown-item' href='javascript:void(0);'>" + "<i class='bx bx-edit-alt me-1'></i> Edit</a>" + 
-                            "<a class='dropdown-item' href='javascript:void(0);'><i class='bx bx-trash me-1'></i> Delete</a>" + "</div></div></td>"+
-							"</tr>"
-					);
-				}
-			},
-			error:function(request, status, error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-		
-		//이번달 매입
-		$.ajax({
-			url:"monthTotalPurchase",
-			dataType : "Text",
-			async : true,
-			type : "POST",
-			success : function(data){
-				if(data){
-					var formattedAmount = formatCurrency(parseFloat(data));
-					purchase.innerText = formattedAmount;
-				}
-			},
-			error : function(request, status, error){
-  			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	      }
-		});
-
-		//이번달 매출
-		$.ajax({
-			url:"monthTotalSale",
-			type : 'POST',
-			//async - "true" : 비동기화, "false" : "동기화"
-			async : true,
-			dataType : "text",
-			success : function(data){
-			if(data){
-			// 서버에서 받은 데이터를 숫자로 파싱하고 원화 형식으로 변환하여 업데이트
-			var formattedAmount = formatCurrency(parseFloat(data));
-			sale.innerText = formattedAmount;
-			}
-		},
-		//에러 메시지 출력
-		error:function(request, status, error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-		});
-		
-		//팀원리스트
+	}
+	
+	//팀원리스트
+	function teamList(){
+		var memId = ${sessionScope.mem_id}
 		$.ajax({
 			url:"mainTeamList",
 			data : {memId : memId},
@@ -274,30 +230,117 @@
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
-		
-		// 스크롤 고정 thaed
-   	    $(".table-responsive").on('scroll', { passive: true }, function () {
-   	        var scrollLeft = $(this).scrollLeft();
-   	        $(".fixed-thead").css("left", -scrollLeft);
-     	});
-		
-	});
+	}
+	
+	//재고리스트
+	function invenList(){
+		$.ajax({
+			url:"mainInventory",
+			dataType : "json",
+			type : "POST",
+			success : function(response){
+				var wareList = response.warehouseList;
+				$('#invenTableBody').empty();
+				for(var i = 0; i < wareList.length; i++){
+					var ware = wareList[i];
+					var price = ware.price.toLocaleString();
+					$('#invenTableBody').append(
+							"<tr>"+
+							"<td class='text-center'>" + ware.code + "</td>" +
+							"<td>" + ware.name + "</td>" +
+							"<td class='text-center'>" + ware.cnt + "</td>" +
+							"<td class='text-center'>" + price + "</td>" +
+							"</tr>"
+					);
+				}
+			},
+			error:function(request, status, error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	}
+	
+	// 공지사항 출력 
+	function showNotice() { 
+		$.ajax({ 
+			url: "/main/mainNotice", 
+			dataType: "html", 
+			success: function(data) { 
+				$("#notice").html(data); 
+			} 
+		}) 
+	}
+	
+	//인화면 매입 div 출력
+	function monthPurchase(){
+		var purchase = document.getElementById("monthPurchase");
+		$.ajax({
+			url:"thisMonthPurchase",
+			dataType : "json",
+			//async - "true" : 비동기화, "false" : "동기화"
+			async : true,
+			type : "POST",
+			success : function(response){
+					var thisMonthPurchase = response.thisMonthPurchase;
+					var purCrease = response.purchaseCrease;
+					//이번달 매입 총 금액
+					// 서버에서 받은 데이터를 원화 형식으로 변환하여 업데이트
+					var thisMonthPurchaseAmount = formatCurrency(thisMonthPurchase);
+					purchase.innerText = thisMonthPurchaseAmount;
+					
+					//매입 증감률 출력
+					if(purCrease >= 0) {
+						$('#purCrease').append("<i class='bx bx-chevron-up'></i>+"+purCrease+"%");
+						$('#purCrease').addClass('text-success text-nowrap fw-semibold');
+					} else{
+						$('#purCrease').append("<i class='bx bx-down-arrow-alt'></i>"+purCrease+"%");	
+						$('#purCrease').addClass('text-danger fw-semibold');
+					}
+					
+			},
+			error : function(request, status, error){
+  			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	      }
+		});
+	}
+	
+	//메인화면 매출 div 출력
+	function monthSale(){
+		var sale = document.getElementById("monthSale");
+		$.ajax({
+			url:"thisMonthSale",
+			type : 'POST',
+			async : true,
+			dataType : "json",
+			success : function(response){
+				//이번달 매출 총 금액
+				var thisMonthSale = response.thisMonthSale;
+				var saleCrease = response.saleCrease;
+				//이번달 총매출
+				var thisMonthSaleAmount = formatCurrency(thisMonthSale);
+				sale.innerText = thisMonthSaleAmount;
+				//매출 증감률 출력
+				if(saleCrease >= 0) {
+					$('#saleCrease').append("<i class='bx bx-chevron-up'></i>+"+saleCrease+"%");
+					$('#saleCrease').addClass('text-success text-nowrap fw-semibold');
+				} else{
+					$('#saleCrease').append("<i class='bx bx-down-arrow-alt'></i>"+saleCrease+"%");	
+					$('#saleCrease').addClass('text-danger fw-semibold');
+				}
+		},
+		//에러 메시지 출력
+		error:function(request, status, error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+		});
+	}
 	
 	function updateProfileCard(member){
-		if(member){
-			// 날짜 포맷팅 함수
-		    function formatDate(dateString) {
-		        // dateString을 Date 객체로 변환
-		        var date = new Date(dateString);
-		        // 원하는 날짜 형식으로 포맷
-		        var formattedDate = date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
-		        return formattedDate;
-		    }
-			
 			$(".card-body h5 .fw-bold").text(member.mem_name + " " + positionMd(member.mem_posi_md));
-			$(".card-body p").text("사원번호: " + member.mem_id + " / 부서: " + deptMd(member.mem_dept_md) + " / 직급: " +  dutyMd(member.mem_duty_md) + " / 입사일:"+ formatDate(member.mem_hiredate));
-		}
+			$(".card-body p strong").html("사원번호: " + member.mem_id + "<br>&nbsp;&nbsp;&nbsp;&nbsp;부서" + "&nbsp;&nbsp;&nbsp;:&nbsp;" + deptMd(member.mem_dept_md));
 	}
+	
+	//aJax 서포트 함수 
 	
 	//숫자를 원화 형식으로 변환하는 함수
 	function formatCurrency(amount) {
@@ -364,23 +407,23 @@
 		    } 
 	}; 
 	
-	// 공지사항 출력 
-	function showNotice() { 
-		$.ajax( 
-				{ 
-					url: "/main/mainNotice", 
-					dataType: "html", 
-					success: function(data) { 
-						$("#notice").html(data); 
-					} 
-			 
-			} 
-		) 
-	}; 
+	function thisDate(){
+		var currentDate = new Date();
+		
+		var year = currentDate.getFullYear();
+		var thisYear = "YEAR " +year 
+		
+		var month = currentDate.getMonth() + 1;
+		
+		$('#purchaseTitle').append("<a href='/inventoryList' style='color: black;'>" + month + "월 매입</a>");
+		$('#saleTitle').append("<a href='/inventoryList' style='color: black;'>" +  month + "월 매출</a>");
+		$('#saleYear').text(thisYear);
+		$('#purchaseYear').text(thisYear);
+		
+	}
 	
-	 $(document).ready(function () {
-       	
-     });
+
+
 </script>    
 </body>
 </html>    

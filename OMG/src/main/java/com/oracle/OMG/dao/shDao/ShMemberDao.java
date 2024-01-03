@@ -20,10 +20,13 @@ public interface ShMemberDao {
 	int 		 updateMember(Member member);
 	int 		 detailMember(Member member);
 	List<Member> selectStatus();
-	String 		 monthTotalSale();
-	String 		 monthTotalPurchase();
+	int 		 thisMonthSale();
+	int 		 exMonthSale();
+	int 		 thisMonthPurchase();
+	int 		 exMonthPurchase();
 	List<Member> mainTeamList(int memId);
 	Member 		 mainMember(int memId);
 	List<Warehouse> 	 mainInventory(Warehouse warehouse);
 	int 		 mainInventoryCount();
+
 }
