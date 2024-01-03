@@ -90,6 +90,7 @@ public class JkWareServiceImpl implements JkWareService {
 	public int updateInv(Warehouse warehouse) {
 		System.out.println("JkWareServiceImpl updateInv Start...");
 		int result = jwd.updateInv(warehouse);
+		System.out.println("warehouse"+warehouse);
 		
 		return result;
 	}
