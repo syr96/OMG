@@ -192,6 +192,32 @@ public class JoController {
 	    return "redirect:salesInquiry";
 	}
 	
+	
+	@PostMapping("salesDelete")
+	 @ResponseBody
+	 public String salesDelete(@RequestBody @Valid ArrayList<SalesDetail> salesDetails) { 
+		  UUID transactionId = UUID.randomUUID(); 
+	 
+		  int salesDeleteResult = 0;
+		  log.info("[{}]{}:{}", transactionId, "salesDelete", "Start");
+		  	      
+		  try {
+			  for (SalesDetail salesDetail : salesDetails) {
+				  log.info("salesDelete -> " + salesDetail);
+				  // salesDeleteResult = jss.salesDelete(salesDetail);
+			  }
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "Success"); 
+			  return "1";
+			  
+		  } catch (Exception e) { 
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert Exception", e.getMessage()); 
+			  return "0";
+		  
+		  } finally { 
+			  log.info("[{}]{}:{}", transactionId, "salesDetailInsert", "End"); 
+		  } 
+	  }
+	
 
 	// 판매서 입력
 	@RequestMapping("salesInsertForm")
