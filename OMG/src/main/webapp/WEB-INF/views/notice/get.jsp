@@ -303,7 +303,7 @@
 	   
 			replyService.add(reply, function(result){
 			
-				alert("RESULT: " + result);
+				alert("댓글이 등록 되었습니다.");
 				
 				// 댓글 추가 이후 다시 등록못하게 입력창 비우고 모달창 닫음
 				modal.find("input").val("");
@@ -366,7 +366,7 @@
 	      
 	      replyService.update(reply, function(result){
 	            
-	        alert(result);
+	        //alert(result);
 	        modal.modal("hide");
 	        showList(pageNum);
 	        
