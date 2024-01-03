@@ -132,6 +132,8 @@ public class ChController {
 		
 		int mem_id = session.getAttribute("mem_id") != null? (int) session.getAttribute("mem_id") : 0;
 		
+		System.out.println("mem_id------------------------------------------>" + mem_id);
+		
 		
 		System.out.println("purchase.getPur_date()->" + purchase.getPur_date());
 		System.out.println("purchase.getCustcode()->" + purchase.getCustcode());
