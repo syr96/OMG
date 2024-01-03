@@ -59,7 +59,7 @@ public class JkController {
 	
 	// 기초재고등록
 	@RequestMapping(value="/invRegister")
-	public String invRegister(@RequestParam(value = "monthSelect1", required = false)  String selectedMonth, HttpSession session, Warehouse warehouse, Model model) {
+	public String invRegister(@RequestParam(value = "monthSelect1", required = false)  String selectedMonth,  @RequestParam(value = "in_itemcode", required = false)  List<Integer> selectedCodes ,HttpSession session, Warehouse warehouse, Model model) {
 	    System.out.println("JkController invRegister start...");
 
 	    
@@ -95,7 +95,7 @@ public class JkController {
 	// 기초재고 조정
 	@RequestMapping(value="/updateInv")
 	public ResponseEntity<String> updateInv(@RequestParam(value = "monthSelect2", required = false) String selectedMonth,
-	                        @RequestParam(value = "code") int code,
+			 @RequestParam(value = "in_itemcode2", required = false)  List<Integer> code,
 	                        @RequestParam(value = "cnt") int cnt,
 	                        Warehouse warehouse) {
 	    System.out.println("JkController updateInv start...");
@@ -232,7 +232,8 @@ public class JkController {
 		
 		List<Customer> pur_custList = ccs.custList();
 		List<Warehouse> inboundList = jws.inboundList();
-	
+		
+		
 		model.addAttribute("pur_custList", pur_custList);
 		model.addAttribute("purList",purList);
 		model.addAttribute("totalPur",totalPur);

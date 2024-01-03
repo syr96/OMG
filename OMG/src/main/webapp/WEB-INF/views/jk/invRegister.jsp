@@ -72,11 +72,11 @@ $(document).ready(function() {
 
     var timeout;
 
-    $("#productCodeInput").on("input", function() {
+    $("#in_itemcode").on("change", function() {
         var code = $(this).val();
         var selectedMonth = $('#monthSelect').val().replace('-', '');
-        console.log("code: " + code);
-        console.log("Ajax request data:", { code: code, ym: selectedMonth });
+        console.log("Selected Code: " + code);
+        console.log("Selected Month: " + selectedMonth);
 
         clearTimeout(timeout);
 
@@ -105,14 +105,15 @@ $(document).ready(function() {
                 });
             }
         }, 500);
-    }); 
+    });
 
-    $("#productCodeInput2").on("input", function() {
+
+    $("#in_itemcode2").on("change", function() {
         var code = $(this).val();
         var selectedMonth2 = $('#monthSelect2').val().replace('-', '');
 
-        console.log("code: " + code);
-        console.log("selectedMonth2: " + selectedMonth2);
+        console.log("Selected Code: " + code);
+        console.log("Selected Month2: " + selectedMonth2);
 
         clearTimeout(timeout);
 
@@ -124,7 +125,7 @@ $(document).ready(function() {
                     data: { code: code, ym: selectedMonth2 },
                     dataType: 'json',
                     success: function(response) {
-                    	console.log("Response from server:", response); 
+                        console.log("Response from server:", response);
                         var memName = response.MEM_NAME;
                         var productName = response.NAME;
                         var cnt2 = response.CNT;
@@ -146,10 +147,11 @@ $(document).ready(function() {
         }, 500);
     });
 
+
     $("#updateInvBtn").click(function() {
         // 선택한 기준년월과 제품코드 가져오기
         var selectedMonth = $("#monthSelect2").val().replace('-', '');
-        var selectedCode = $("#productCodeInput2").val();
+        var selectedCode = $("#in_itemcode2").val(); // 수정된 부분
 
         // 수정할 cnt 가져오기
         var updatedCnt = $("#cnt2").val();
@@ -159,7 +161,7 @@ $(document).ready(function() {
             type: "POST",
             url: "/updateInv",  // 수정이 이루어질 서버 엔드포인트 주소
             data: {
-                month: selectedMonth,
+            	monthSelect2: selectedMonth,
                 code: selectedCode,
                 cnt: updatedCnt
             },
@@ -175,13 +177,14 @@ $(document).ready(function() {
             }
         });
     });
+
     
     
     
     $("#deleteInvBtn").click(function() {
         // 선택한 기준년월과 제품코드 가져오기
         var selectedMonth = $("#monthSelect2").val().replace('-', '');
-        var selectedCode = $("#productCodeInput2").val();
+        var selectedCode = $("#in_itemcode2").val();
         console.log(selectedMonth);
         // 서버로 데이터 전송
    
@@ -291,9 +294,13 @@ $(document).ready(function() {
 		               <div class="row"> 
 		               <div class="mb-3 col-md-6">      
 		               <label class="form-label">제품코드</label>
-                        <input type="number" class="form-control" id="productCodeInput" placeholder="예시)1101" name="code" aria-describedby="defaultFormControlHelp"/>
+                  
+                  		<div class="mb-3 col-md-6">      	
+		    		<select class="form-select" id="in_itemcode" name="code"  style="margin-left: 0px;"></select>
+						</div>
+                               <!-- <input type="number" class="form-control" id="productCodeInput" placeholder="예시)1101" name="code" aria-describedby="defaultFormControlHelp"/> -->
 	                       <div id="defaultFormControlHelp" class="form-text">
-                          	제품 코드를 입력하시면 제품명이 출력됩니다.
+                          	제품 코드를 선택하시면 제품명이 출력됩니다.
                         	</div>
                         	</div>
                         	<div class="mb-3 col-md-6">     
@@ -332,7 +339,7 @@ $(document).ready(function() {
             <div class="card-body">
  <div class="row">
                     <div class="row align-items-end" style="padding-left: 23px;">
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-md-3"  style=" padding-left: 1px">
                         <label for="html5-date-input" class="col-md-2 col-form-label">기준년월</label>
                         <input class="form-control" type="month" id="monthSelect2" name="monthSelect2">
                         </div>
@@ -344,9 +351,12 @@ $(document).ready(function() {
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label class="form-label">제품코드</label>
-                        <input type="number" class="form-control" id="productCodeInput2" placeholder="예시)1101" name="code" aria-describedby="defaultFormControlHelp" />
+                   <div class="mb-3 col-md-6">      	
+		    		<select class="form-select" id="in_itemcode2" name="code2"  style="margin-left: 0px;"></select>
+						</div>
+                        <!-- <input type="number" class="form-control" id="productCodeInput2" placeholder="예시)1101" name="code" aria-describedby="defaultFormControlHelp" /> -->
                         <div id="defaultFormControlHelp" class="form-text">
-                            제품 코드를 입력하시면 제품명이 출력됩니다.
+                            제품 코드를 선택하시면 제품명이 출력됩니다.
                         </div>
                     </div>
                     <div class="mb-3 col-md-6">
@@ -427,6 +437,49 @@ $(document).ready(function() {
      });
  });
   });
+  $(document).ready(function () {
+		
+		//제품리스트  조회
+	    $.ajax({
+	        url: '/itemListSelect',
+	        type: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	        	custcode: $('#in_itemcode').val(),
+	        }),
+	        success: function (response) {
+	        	var itemListSelect = response.itemListSelect;
+
+	            for (var i = 0; i < itemListSelect.length; i++) {
+	            	$('#in_itemcode').append('<option value="' +  itemListSelect[i].code + '">' + itemListSelect[i].code + 
+	            			'  ' +'</option>');
+	            }
+	        },
+	        error: function () {
+	            console.error('서버 오류');
+	        }
+	    });
+	    // 두 번째 제품리스트 조회
+	    $.ajax({
+	        url: '/itemListSelect',
+	        type: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify({
+	            custcode: $('#in_itemcode2').val(),
+	        }),
+	        success: function (response) {
+	            var itemListSelect = response.itemListSelect;
+
+	            for (var i = 0; i < itemListSelect.length; i++) {
+	                $('#in_itemcode2').append('<option value="' + itemListSelect[i].code + '">' + itemListSelect[i].code +
+	                    '  ' + '</option>');
+	            }
+	        },
+	        error: function () {
+	            console.error('서버 오류');
+	        }
+	    });
+	});
   
 </script>
 <%@ include file="../common/footer.jsp" %>
