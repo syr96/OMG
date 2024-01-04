@@ -427,7 +427,7 @@ $(document).ready(function() {
          success: function(response) {
              // 마감 성공 시 서버 응답에 따른 처리
              console.log("마감이 완료되었습니다.", response);
-             alert(response);
+             location.reload();
              // 여기에 추가적인 처리를 할 수 있습니다.
          },
          error: function(xhr, status, error) {
